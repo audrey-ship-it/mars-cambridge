@@ -12,7 +12,7 @@ const SIDEBAR_MODULES = [
   { id: 'reading',  icon: '📄', label: '阅读',  path: 'reading' },
   { id: 'writing',  icon: '✍️', label: '写作',  path: 'writing' },
   { id: 'speaking', icon: '🎙️', label: '口语',  path: 'speaking'},
-  { id: 'exams',    icon: '📝', label: '真题',  path: 'exams'   },
+  { id: 'exams',    icon: '📝', label: '模考',  path: 'exams'   },
 ]
 
 const LEVELS = [
@@ -103,9 +103,9 @@ export function CambridgeLayout({ children, activeModule, level, setLevel }) {
               <span className="font-semibold text-gray-800">7</span>
               <span>天连续</span>
             </div>
-            <button className="px-3 py-1.5 bg-[#064e3b] text-white text-xs font-bold rounded-lg hover:bg-[#065f46] transition-colors">
-              升级 Premium
-            </button>
+            <Link to="/cambridge" className="px-3 py-1.5 bg-[#064e3b] text-white text-xs font-bold rounded-lg hover:bg-[#065f46] transition-colors">
+              返回我的学习
+            </Link>
           </div>
         </header>
 
@@ -194,8 +194,11 @@ function TopicChooser({ onSelect, onBack }) {
 }
 
 /* ── 词汇集选择器 ── */
-function VocabSetChooser({ level, onSelect, onCollocation }) {
+function VocabSetChooser({ onSelect, onCollocation }) {
   const [showTopics, setShowTopics] = useState(false)
+  const [lastResult] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('mars_vocab_last_result') || 'null') } catch { return null }
+  })
 
   if (showTopics) {
     return (
@@ -206,76 +209,69 @@ function VocabSetChooser({ level, onSelect, onCollocation }) {
     )
   }
 
+  const primarySet = VOCAB_SETS[0]
+  const otherSets = VOCAB_SETS.slice(1)
+  const practiced = lastResult?.total || 0
+  const accuracy = lastResult?.accuracy ?? 0
+  const wrongCount = lastResult?.wrongCount || 0
+
+  function openSet(vs) {
+    if (vs.mode === 'topic') setShowTopics(true)
+    else onSelect({ mode: vs.mode })
+  }
+
   return (
-    <div className="max-w-2xl mx-auto px-6 py-8">
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-1">选择词汇集</h2>
-        <p className="text-gray-400 text-sm">选择你想练习的单词范围，开始今天的训练</p>
+    <div className="max-w-6xl mx-auto px-6 lg:px-10 py-8 lg:py-10">
+      <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5 mb-8">
+        <div>
+          <div className="text-xs font-extrabold tracking-[.18em] text-emerald-700">KET VOCABULARY</div>
+          <h1 className="mt-2 text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-950">词汇学习</h1>
+          <p className="mt-2 text-gray-500">每天练一组，及时复习错词，慢慢把词汇变成真正会用的英语。</p>
+        </div>
+        <div className="inline-flex items-center gap-2 text-sm text-gray-500 bg-white border border-gray-200 rounded-full px-4 py-2 self-start lg:self-auto">
+          <span className="w-2 h-2 rounded-full bg-emerald-500" /> A2 Key（KET）
+        </div>
       </div>
-      <div className="grid grid-cols-1 gap-3">
-        {VOCAB_SETS.map(vs => (
-          <button
-            key={vs.id}
-            onClick={() => {
-              if (vs.mode === 'topic') { setShowTopics(true) }
-              else { onSelect({ mode: vs.mode }) }
-            }}
-            className="relative flex items-center gap-5 rounded-2xl overflow-hidden text-left group transition-all hover:scale-[1.01] active:scale-[0.99]"
-            style={{ background: `linear-gradient(135deg, ${vs.from} 0%, ${vs.to} 100%)` }}
-          >
-            {/* subtle grid texture */}
-            <div className="absolute inset-0 opacity-[0.04]"
-              style={{ backgroundImage: 'repeating-linear-gradient(0deg,transparent,transparent 19px,rgba(255,255,255,1) 20px),repeating-linear-gradient(90deg,transparent,transparent 19px,rgba(255,255,255,1) 20px)' }} />
 
-            <div className="relative flex items-center gap-5 px-6 py-5 w-full">
-              <span className="text-4xl flex-shrink-0">{vs.emoji}</span>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-0.5">
-                  <span className="font-bold text-white text-lg leading-tight">{vs.title}</span>
-                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full text-white ${vs.badgeColor}`}>{vs.badge}</span>
-                </div>
-                <div className="text-white/60 text-xs mb-1.5">{vs.subtitle}</div>
-                <div className="text-white/50 text-xs leading-relaxed">{vs.desc}</div>
-              </div>
-              <div className="flex-shrink-0 text-right">
-                {vs.count ? (
-                  <>
-                    <div className="text-2xl font-extrabold text-white">{vs.count}</div>
-                    <div className="text-white/40 text-[10px]">词</div>
-                  </>
-                ) : (
-                  <div className="text-2xl font-extrabold text-white">→</div>
-                )}
-              </div>
-            </div>
-          </button>
-        ))}
-
-        {/* ── 固定搭配入口 ── */}
-        <button
-          onClick={onCollocation}
-          className="relative flex items-center gap-5 rounded-2xl overflow-hidden text-left hover:scale-[1.01] active:scale-[0.99] transition-all"
-          style={{ background: 'linear-gradient(135deg, #0d9488 0%, #0f766e 100%)' }}
-        >
-          <div className="absolute inset-0 opacity-[0.04]"
-            style={{ backgroundImage: 'repeating-linear-gradient(0deg,transparent,transparent 19px,rgba(255,255,255,1) 20px),repeating-linear-gradient(90deg,transparent,transparent 19px,rgba(255,255,255,1) 20px)' }} />
-          <div className="relative flex items-center gap-5 px-6 py-5 w-full">
-            <span className="text-4xl flex-shrink-0">🔗</span>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-0.5">
-                <span className="font-bold text-white text-lg leading-tight">固定搭配专项</span>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full text-white bg-white/20">270 词组</span>
-              </div>
-              <div className="text-white/60 text-xs mb-1.5">KET 核心固定搭配 · 填空练习</div>
-              <div className="text-white/50 text-xs leading-relaxed">分批练习，掌握高频搭配用法，阅读写作双提升</div>
-            </div>
-            <div className="flex-shrink-0 text-right">
-              <div className="text-2xl font-extrabold text-white">270</div>
-              <div className="text-white/40 text-[10px]">词组</div>
-            </div>
+      <section className="grid lg:grid-cols-[1.45fr_.75fr] gap-5">
+        <button onClick={() => openSet(primarySet)} className="relative overflow-hidden text-left rounded-[28px] bg-[#064e3b] text-white p-7 sm:p-9 min-h-[270px] group shadow-sm">
+          <div className="absolute inset-0 opacity-[.07]" style={{backgroundImage:'linear-gradient(rgba(255,255,255,.7) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.7) 1px,transparent 1px)',backgroundSize:'42px 42px'}} />
+          <div className="relative h-full flex flex-col">
+            <div className="flex items-center justify-between"><span className="text-xs font-extrabold tracking-[.16em] text-[#f4c95d]">今日推荐</span><span className="rounded-full bg-white/10 px-3 py-1 text-xs">约 8 分钟</span></div>
+            <div className="mt-10 text-sm text-white/55">中文释义与例句提示 · 拼写训练</div>
+            <h2 className="mt-2 text-3xl sm:text-4xl font-extrabold">KET 核心词汇</h2>
+            <div className="mt-auto pt-8 flex items-center justify-between"><span className="text-sm text-white/60">本组 20 词</span><span className="bg-[#f4c95d] text-[#064e3b] rounded-2xl px-5 py-3 font-extrabold group-hover:bg-[#f7d574]">开始练习 →</span></div>
           </div>
         </button>
-      </div>
+
+        <div className="grid grid-cols-3 lg:grid-cols-1 gap-3">
+          {[
+            ['今日完成', `${practiced}/20`, '按最近一次记录'],
+            ['最近正确率', lastResult ? `${accuracy}%` : '—', lastResult ? '继续保持' : '完成后显示'],
+            ['待复习错词', `${wrongCount}`, wrongCount ? '建议优先复习' : '暂无记录'],
+          ].map(([label,value,note]) => <div key={label} className="bg-white border border-gray-200 rounded-2xl p-4 sm:p-5"><div className="text-xs text-gray-400">{label}</div><div className="mt-2 text-2xl sm:text-3xl font-extrabold text-gray-950">{value}</div><div className="mt-1 text-[11px] text-gray-400 hidden sm:block">{note}</div></div>)}
+        </div>
+      </section>
+
+      <section className="mt-10">
+        <div className="flex items-end justify-between mb-4"><div><h2 className="text-xl sm:text-2xl font-extrabold text-gray-950">选择专项训练</h2><p className="text-sm text-gray-400 mt-1">根据当前需要，选择一种词汇范围</p></div></div>
+        <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4">
+          {otherSets.map((vs, i) => (
+            <button key={vs.id} onClick={() => openSet(vs)} className="group text-left bg-white border border-gray-200 rounded-[22px] p-5 hover:border-emerald-300 hover:shadow-md hover:-translate-y-0.5 transition-all min-h-[190px] flex flex-col">
+              <div className="flex items-start justify-between"><span className="w-11 h-11 rounded-2xl bg-emerald-50 text-xl grid place-items-center">{vs.emoji}</span><span className="text-[10px] font-extrabold tracking-[.12em] text-gray-300">0{i + 2}</span></div>
+              <h3 className="mt-5 font-extrabold text-lg text-gray-950">{vs.title}</h3>
+              <p className="mt-1 text-xs text-gray-400 leading-relaxed">{vs.desc}</p>
+              <div className="mt-auto pt-4 flex items-center justify-between text-xs"><span className="text-gray-400">{vs.count ? `${vs.count} 词` : vs.subtitle}</span><span className="font-bold text-emerald-700">进入 →</span></div>
+            </button>
+          ))}
+          <button onClick={onCollocation} className="group text-left bg-[#fff8e7] border border-[#eed27b] rounded-[22px] p-5 hover:shadow-md hover:-translate-y-0.5 transition-all min-h-[190px] flex flex-col">
+            <div className="flex items-start justify-between"><span className="w-11 h-11 rounded-2xl bg-[#f4c95d] text-xl grid place-items-center">🔗</span><span className="text-[10px] font-extrabold tracking-[.12em] text-[#c39a2e]">06</span></div>
+            <h3 className="mt-5 font-extrabold text-lg text-gray-950">固定搭配专项</h3>
+            <p className="mt-1 text-xs text-gray-500 leading-relaxed">通过填空练习掌握常见搭配，帮助阅读理解和写作表达。</p>
+            <div className="mt-auto pt-4 flex items-center justify-between text-xs"><span className="text-gray-400">270 个词组</span><span className="font-bold text-[#8a6500]">进入 →</span></div>
+          </button>
+        </div>
+      </section>
     </div>
   )
 }
@@ -488,7 +484,6 @@ function WordsContent({ level }) {
   }
   return (
     <VocabSetChooser
-      level={level}
       onSelect={choice => { setVocabChoice(choice); setView('words') }}
       onCollocation={() => setView('collocation')}
     />
@@ -571,6 +566,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
     const updated = [...results, { word: current.word, chinese: current.chinese, answer, correct }]
     setResults(updated)
     if (index + 1 >= words.length) {
+      try { localStorage.setItem('mars_vocab_last_result', JSON.stringify({ total: updated.length, accuracy: Math.round(updated.filter(r => r.correct).length / updated.length * 100), wrongCount: updated.filter(r => !r.correct).length, completedAt: new Date().toISOString() })) } catch { /* local storage may be unavailable */ }
       setShowResult(true)
     } else {
       setIndex(i => i + 1)
@@ -621,9 +617,9 @@ function WordsPractice({ level, vocabChoice, onBack }) {
           </div>
           <div className="text-sm text-gray-400 mt-1">{
             vocabChoice.mode === 'topic' ? vocabChoice.topic.titleZh :
-            vocabChoice.mode === 'must500' ? '必默500词' :
+            vocabChoice.mode === 'must500' ? 'KET 核心词汇' :
             vocabChoice.mode === 'reading288' ? '阅读高频词' :
-            vocabChoice.mode === 'irregular' ? '不规则动词' : '官方词表'
+            vocabChoice.mode === 'irregular' ? '不规则动词' : 'A2 综合词表'
           } · {words.length} 词</div>
         </div>
 
@@ -821,6 +817,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                       const updated = [...results, { word: current.word, chinese: current.chinese, answer: '', correct: false }]
                       setResults(updated)
                       if (index + 1 >= words.length) {
+                        try { localStorage.setItem('mars_vocab_last_result', JSON.stringify({ total: updated.length, accuracy: Math.round(updated.filter(r => r.correct).length / updated.length * 100), wrongCount: updated.filter(r => !r.correct).length, completedAt: new Date().toISOString() })) } catch { /* local storage may be unavailable */ }
                         setShowResult(true)
                       } else {
                         setIndex(i => i + 1)
@@ -1014,7 +1011,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                 </div>
                 <div className="text-xs text-gray-400 mt-0.5">{
                   vocabChoice.mode === 'topic' ? vocabChoice.topic.titleZh :
-                  vocabChoice.mode === 'must500' ? '必默500词' :
+                  vocabChoice.mode === 'must500' ? 'KET 核心词汇' :
                   vocabChoice.mode === 'reading288' ? '阅读高频词' : `Cambridge ${level}`
                 }</div>
               </div>
@@ -1047,8 +1044,8 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                 <div className="text-sm text-gray-600">{allWords.length.toLocaleString()} 词</div>
                 <div className="text-xs text-gray-400 mt-0.5">{
                   vocabChoice.mode === 'topic' ? `话题：${vocabChoice.topic.titleZh}` :
-                  vocabChoice.mode === 'must500' ? '必默500词（全部话题）' :
-                  vocabChoice.mode === 'reading288' ? '阅读高频词288' : `Cambridge ${level} 官方词汇表`
+                  vocabChoice.mode === 'must500' ? 'KET 核心词汇（全部话题）' :
+                  vocabChoice.mode === 'reading288' ? '阅读常用词 288' : `${level} 综合词表`
                 }</div>
                 <button onClick={onBack} className="mt-3 w-full py-2 text-xs text-[#064e3b] font-semibold border border-emerald-200 rounded-xl hover:bg-emerald-50 transition-colors">
                   换个词汇集

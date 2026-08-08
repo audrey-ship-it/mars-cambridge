@@ -13,7 +13,7 @@ const levels = [
 ]
 
 const coreModules = [
-  { icon: 'book', number: '01', en: 'VOCABULARY', title: '词汇', desc: '核心词表与错词循环', path: '/cambridge/vocabulary' },
+  { icon: 'book', number: '01', en: 'VOCABULARY', title: '词汇', desc: '核心词表与错词循环', path: '/cambridge/words' },
   { icon: 'blocks', number: '02', en: 'GRAMMAR', title: '语法', desc: '按考点拆分即时练习', path: '/cambridge/grammar' },
   { icon: 'reading', number: '03', en: 'READING', title: '阅读', desc: '按照考试 Part 训练', path: '/cambridge/reading' },
   { icon: 'headphones', number: '04', en: 'LISTENING', title: '听力', desc: '题型训练、精听与拼写', path: '/cambridge/listening' },
