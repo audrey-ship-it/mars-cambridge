@@ -137,6 +137,18 @@ function SpeakerIcon({ className = 'w-5 h-5' }) {
   return <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M11 5 6.5 9H3v6h3.5l4.5 4V5Z"/><path d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"/></svg>
 }
 
+function VocabPanelIcon({ name, className = 'w-5 h-5' }) {
+  const paths = {
+    tips: <><path d="M9 18h6"/><path d="M10 22h4"/><path d="M8.5 14.5A7 7 0 1 1 15.5 14.5C14.5 15.3 14 16.2 14 18h-4c0-1.8-.5-2.7-1.5-3.5Z"/></>,
+    progress: <><path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M22 20V7"/></>,
+    library: <><path d="M4 4h5v16H4z"/><path d="M9 6h5v14H9z"/><path d="m14 5 4-1 3 15-4 1z"/></>,
+    phonetic: <><path d="M5 18 9 6l4 12"/><path d="M6.5 14h5"/><path d="M16 8v10"/><path d="M14 10h4"/></>,
+    example: <><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3V4Z"/><path d="M8 4v16M11 9h5M11 13h4"/></>,
+    spelling: <><path d="M4 7h16v10H4z"/><path d="M7 10h.01M11 10h.01M15 10h.01M18 10h.01M8 14h8"/></>,
+  }
+  return <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[name]}</svg>
+}
+
 function playCorrect() {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)()
@@ -926,9 +938,9 @@ function WordsPractice({ level, vocabChoice, onBack }) {
         {/* 标签 */}
         <div className="grid grid-cols-3 border-b border-gray-100">
           {[
-            { id: 'tips',     label: '提示', number: '01' },
-            { id: 'progress', label: '进度', number: '02' },
-            { id: 'library',  label: '词库', number: '03' },
+            { id: 'tips',     label: '提示' },
+            { id: 'progress', label: '进度' },
+            { id: 'library',  label: '词库' },
           ].map(tab => (
             <button key={tab.id}
               onClick={() => setActivePanel(tab.id)}
@@ -938,7 +950,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                   : 'border-transparent text-gray-400 hover:text-gray-600'
               }`}
             >
-              <span className="text-[9px] tracking-[.18em] opacity-45">{tab.number}</span><span>{tab.label}</span>
+              <span className="w-8 h-8 rounded-xl bg-[#f4c95d] text-[#064e3b] grid place-items-center"><VocabPanelIcon name={tab.id} className="w-[18px] h-[18px]"/></span><span>{tab.label}</span>
             </button>
           ))}
         </div>
@@ -961,7 +973,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                 }`}
               >
                 <div className="flex items-center justify-between px-4 py-4">
-                  <span className="text-base font-extrabold text-gray-800">音标</span>
+                  <span className="flex items-center gap-3 text-base font-extrabold text-gray-800"><span className="w-8 h-8 rounded-xl bg-[#f4c95d] text-[#064e3b] grid place-items-center"><VocabPanelIcon name="phonetic" className="w-[18px] h-[18px]"/></span>音标</span>
                   <svg className={`w-3.5 h-3.5 text-gray-400 transition-transform ${openHints.has('phonetic') ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
                 </div>
                 {openHints.has('phonetic') && (
@@ -982,7 +994,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                   }`}
                 >
                   <div className="flex items-center justify-between px-4 py-4">
-                    <span className="text-base font-extrabold text-gray-800">英文例句</span>
+                    <span className="flex items-center gap-3 text-base font-extrabold text-gray-800"><span className="w-8 h-8 rounded-xl bg-[#f4c95d] text-[#064e3b] grid place-items-center"><VocabPanelIcon name="example" className="w-[18px] h-[18px]"/></span>英文例句</span>
                     <svg className={`w-3.5 h-3.5 text-gray-400 transition-transform ${openHints.has('english') ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
                   </div>
                   {openHints.has('english') && (
@@ -998,7 +1010,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                 className="w-full rounded-2xl border border-gray-200 bg-white hover:border-gray-300 disabled:hover:border-gray-200 text-left transition-all overflow-hidden"
               >
                 <div className="flex items-center justify-between px-4 py-4">
-                  <span className="text-base font-extrabold text-gray-800">拼写提示</span>
+                  <span className="flex items-center gap-3 text-base font-extrabold text-gray-800"><span className="w-8 h-8 rounded-xl bg-[#f4c95d] text-[#064e3b] grid place-items-center"><VocabPanelIcon name="spelling" className="w-[18px] h-[18px]"/></span>拼写提示</span>
                   <span className="text-[10px] text-gray-400">{openHints.has('partial') ? '已显示三级' : openHints.has('lastLetter') ? '显示更多' : openHints.has('firstLetter') ? '显示首尾' : '逐级显示'}</span>
                 </div>
                 {openHints.has('firstLetter') && (
