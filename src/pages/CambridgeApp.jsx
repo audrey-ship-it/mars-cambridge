@@ -741,16 +741,16 @@ function WordsPractice({ level, vocabChoice, onBack }) {
         </div>
 
         {/* 页面层级 */}
-        <nav className="mx-6 mt-4 flex items-center gap-2 text-xs" aria-label="词汇学习路径">
-          <button onClick={requestBackToCenter} className="font-extrabold text-emerald-700 hover:text-emerald-900 transition-colors">词汇中心</button>
-          <span className="text-gray-300">/</span>
-          <button onClick={requestBackToCenter} className="font-semibold text-gray-500 hover:text-gray-800 transition-colors">{libraryName}</button>
-          <span className="text-gray-300">/</span>
-          <span className="text-gray-400">本次练习</span>
+        <nav className="mx-6 mt-4 flex items-center gap-3 text-sm" aria-label="词汇学习路径">
+          <button onClick={requestBackToCenter} className="inline-flex items-center gap-2 rounded-xl bg-[#fff5d6] border border-[#efd681] px-3.5 py-2 font-extrabold text-[#735500] hover:bg-[#fbe9ad] transition-colors"><span aria-hidden="true">←</span>词汇中心</button>
+          <span className="text-gray-300" aria-hidden="true">›</span>
+          <button onClick={requestBackToCenter} className="font-extrabold text-gray-800 hover:text-emerald-800 transition-colors">{libraryName}</button>
+          <span className="text-gray-300" aria-hidden="true">›</span>
+          <span className="font-medium text-gray-400">本次练习</span>
         </nav>
 
         {/* 当前词库掌握概览 */}
-        <div className="mx-6 mt-3 bg-white border border-gray-200 rounded-2xl px-5 py-3 flex items-center gap-5 shadow-sm">
+        <div className="mx-6 mt-4 bg-white border border-gray-200 rounded-2xl px-5 py-3 flex items-center gap-5 shadow-sm">
           <div className="min-w-[145px] pr-5 border-r border-gray-100">
             <div className="text-[10px] font-extrabold tracking-[.13em] text-emerald-700">当前词库</div>
             <div className="mt-1 text-sm font-extrabold text-gray-900 truncate">{libraryName}</div>
