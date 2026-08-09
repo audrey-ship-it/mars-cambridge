@@ -543,6 +543,9 @@ function WordsPractice({ level, vocabChoice, onBack }) {
   const [showResult, setShowResult] = useState(false)
   const [activePanel, setActivePanel] = useState('tips')
   const [openHints, setOpenHints] = useState(new Set())
+  const [masteryRecords, setMasteryRecords] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('mars_vocab_mastery_v1') || '{}') } catch { return {} }
+  })
   const inputRef = useRef(null)
   const startRef = useRef(Date.now())
 
@@ -550,6 +553,16 @@ function WordsPractice({ level, vocabChoice, onBack }) {
   const current = words[index]
   const progress = (index / words.length) * 100
   const levelInfo = LEVELS.find(l => l.abbr === level) || LEVELS[0]
+  const libraryName = vocabChoice.mode === 'topic' ? vocabChoice.topic.titleZh
+    : vocabChoice.mode === 'must500' ? 'KET 核心词汇'
+    : vocabChoice.mode === 'reading288' ? '阅读常用词'
+    : vocabChoice.mode === 'irregular' ? '不规则动词'
+    : 'A2 综合词表'
+  const libraryRecords = allWords.map(w => masteryRecords[w.word.toLowerCase()]).filter(Boolean)
+  const learnedCount = libraryRecords.length
+  const masteredCount = libraryRecords.filter(r => r.mastered).length
+  const reviewCount = libraryRecords.filter(r => r.needsReview).length
+  const masteryPercent = allWords.length ? Math.round(masteredCount / allWords.length * 100) : 0
 
   // Focus input on new word
   useEffect(() => {
@@ -570,7 +583,9 @@ function WordsPractice({ level, vocabChoice, onBack }) {
   }
 
   function handleNext() {
-    const updated = [...results, { word: current.word, chinese: current.chinese, answer, correct }]
+    const usedHint = openHints.size > 0
+    const updated = [...results, { word: current.word, chinese: current.chinese, answer, correct, usedHint }]
+    recordMastery(current.word, correct, usedHint)
     setResults(updated)
     if (index + 1 >= words.length) {
       try { localStorage.setItem('mars_vocab_last_result', JSON.stringify({ total: updated.length, accuracy: Math.round(updated.filter(r => r.correct).length / updated.length * 100), wrongCount: updated.filter(r => !r.correct).length, completedAt: new Date().toISOString() })) } catch { /* local storage may be unavailable */ }
@@ -591,6 +606,33 @@ function WordsPractice({ level, vocabChoice, onBack }) {
     setOpenHints(prev => {
       const next = new Set(prev)
       next.has(key) ? next.delete(key) : next.add(key)
+      return next
+    })
+  }
+
+  function revealSpellHint() {
+    if (!openHints.has('firstLetter')) toggleHint('firstLetter')
+    else if (!openHints.has('lastLetter')) toggleHint('lastLetter')
+    else if (!openHints.has('partial')) toggleHint('partial')
+  }
+
+  function recordMastery(word, isCorrect, usedHint) {
+    const key = word.toLowerCase()
+    setMasteryRecords(prev => {
+      const old = prev[key] || { attempts: 0, streak: 0, mastered: false, needsReview: false }
+      const cleanCorrect = isCorrect && !usedHint
+      const streak = cleanCorrect ? old.streak + 1 : 0
+      const next = {
+        ...prev,
+        [key]: {
+          attempts: old.attempts + 1,
+          streak,
+          mastered: streak >= 2,
+          needsReview: !cleanCorrect,
+          lastSeen: new Date().toISOString(),
+        },
+      }
+      try { localStorage.setItem('mars_vocab_mastery_v1', JSON.stringify(next)) } catch { /* local storage may be unavailable */ }
       return next
     })
   }
@@ -676,6 +718,26 @@ function WordsPractice({ level, vocabChoice, onBack }) {
           <motion.div className="h-full bg-[#064e3b]" animate={{ width: `${progress}%` }} transition={{ duration: 0.4 }} />
         </div>
 
+        {/* 当前词库掌握概览 */}
+        <div className="mx-6 mt-4 bg-white border border-gray-200 rounded-2xl px-5 py-3 flex items-center gap-5 shadow-sm">
+          <div className="min-w-[145px] pr-5 border-r border-gray-100">
+            <div className="text-[10px] font-extrabold tracking-[.13em] text-emerald-700">当前词库</div>
+            <div className="mt-1 text-sm font-extrabold text-gray-900 truncate">{libraryName}</div>
+          </div>
+          <div className="grid grid-cols-4 gap-5 flex-1">
+            {[
+              ['总词数', allWords.length],
+              ['已学习', learnedCount],
+              ['已掌握', masteredCount],
+              ['待复习', reviewCount],
+            ].map(([label,value]) => <div key={label}><div className="text-[10px] text-gray-400">{label}</div><div className="mt-0.5 text-lg font-extrabold text-gray-900">{value}</div></div>)}
+          </div>
+          <div className="w-36 hidden xl:block">
+            <div className="flex justify-between text-[10px] text-gray-400 mb-1.5"><span>整体掌握</span><strong className="text-emerald-700">{masteryPercent}%</strong></div>
+            <div className="h-2 bg-gray-100 rounded-full overflow-hidden"><div className="h-full bg-emerald-600 rounded-full transition-all" style={{width:`${masteryPercent}%`}} /></div>
+          </div>
+        </div>
+
         <div className="flex-1 flex items-center justify-center px-8 py-4">
           <AnimatePresence mode="wait">
             <motion.div key={index}
@@ -729,17 +791,15 @@ function WordsPractice({ level, vocabChoice, onBack }) {
 
                   {/* 英文释义展开 */}
                   <AnimatePresence>
-                    {openHints.has('english') && current.english && (
-                      <motion.div key="english"
-                        initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="mt-3 py-3 px-4 bg-blue-50 rounded-xl text-blue-700 text-sm leading-relaxed text-left">
-                        {current.english}
-                        {current.sentence && (
-                          <div className="mt-1.5 text-blue-500 text-xs italic">e.g. {current.sentence}</div>
-                        )}
+                  {openHints.has('english') && current.english && (
+                    <motion.div key="english"
+                      initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="mt-3 py-3 px-4 bg-blue-50 rounded-xl text-blue-700 text-sm leading-relaxed text-left">
+                        <span className="text-[10px] font-extrabold tracking-[.12em] text-blue-400 mr-2">例句</span>
+                        {current.sentence || current.english}
                       </motion.div>
-                    )}
+                  )}
                   </AnimatePresence>
                 </div>
 
@@ -821,8 +881,9 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                   <button
                     onClick={() => {
                       // Skip: record as wrong without showing answer screen
-                      const updated = [...results, { word: current.word, chinese: current.chinese, answer: '', correct: false }]
+                      const updated = [...results, { word: current.word, chinese: current.chinese, answer: '', correct: false, usedHint: openHints.size > 0 }]
                       setResults(updated)
+                      recordMastery(current.word, false, openHints.size > 0)
                       if (index + 1 >= words.length) {
                         try { localStorage.setItem('mars_vocab_last_result', JSON.stringify({ total: updated.length, accuracy: Math.round(updated.filter(r => r.correct).length / updated.length * 100), wrongCount: updated.filter(r => !r.correct).length, completedAt: new Date().toISOString() })) } catch { /* local storage may be unavailable */ }
                         setShowResult(true)
@@ -863,7 +924,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
           {[
             { id: 'tips',     label: '提示', icon: '💡' },
             { id: 'progress', label: '进度', icon: '📊' },
-            { id: 'settings', label: '设置', icon: '⚙️' },
+            { id: 'library',  label: '词库', icon: '▤' },
           ].map(tab => (
             <button key={tab.id}
               onClick={() => setActivePanel(tab.id)}
@@ -900,15 +961,17 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                   <span className="text-sm font-semibold text-gray-700">🔤 音标</span>
                   <svg className={`w-3.5 h-3.5 text-gray-400 transition-transform ${openHints.has('phonetic') ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
                 </div>
-                {openHints.has('phonetic') && current.phonetic && (
-                  <div className="px-3 pb-2.5 text-sm font-mono text-gray-800 border-t border-gray-100">{current.phonetic}</div>
+                {openHints.has('phonetic') && (
+                  <div className="px-3 py-3 text-sm border-t border-gray-100">
+                    {current.phonetic ? <span className="font-mono text-gray-800">{current.phonetic}</span> : <span className="text-xs text-amber-700">音标数据待校对</span>}
+                  </div>
                 )}
               </button>
 
-              {/* 英文释义 */}
-              {current.english && (
+              {/* 英文例句 */}
+              {(current.sentence || current.english) && (
                 <button
-                  onClick={() => { toggleHint('english'); if (!openHints.has('english')) speak(current.word) }}
+                  onClick={() => toggleHint('english')}
                   className={`w-full rounded-lg border text-left transition-all overflow-hidden ${
                     openHints.has('english')
                       ? 'border-gray-300 bg-white'
@@ -916,60 +979,34 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                   }`}
                 >
                   <div className="flex items-center justify-between px-3 py-2.5">
-                    <span className="text-sm font-semibold text-gray-700">📖 英文释义</span>
+                    <span className="text-sm font-semibold text-gray-700">📖 英文例句</span>
                     <svg className={`w-3.5 h-3.5 text-gray-400 transition-transform ${openHints.has('english') ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
                   </div>
                   {openHints.has('english') && (
-                    <div className="px-3 pb-2.5 text-xs text-gray-600 leading-relaxed border-t border-gray-100">{current.english}</div>
+                    <div className="px-3 py-3 text-xs text-gray-600 leading-relaxed border-t border-gray-100">{current.sentence || current.english}</div>
                   )}
                 </button>
               )}
 
-              {/* 首字母 */}
+              {/* 分级拼写提示 */}
               <button
-                onClick={() => toggleHint('firstLetter')}
-                className={`w-full rounded-lg border text-left transition-all overflow-hidden ${
-                  openHints.has('firstLetter')
-                    ? 'border-gray-300 bg-white'
-                    : 'border-gray-200 bg-white hover:border-gray-300'
-                }`}
+                onClick={revealSpellHint}
+                disabled={openHints.has('partial')}
+                className="w-full rounded-lg border border-gray-200 bg-white hover:border-gray-300 disabled:hover:border-gray-200 text-left transition-all overflow-hidden"
               >
                 <div className="flex items-center justify-between px-3 py-2.5">
-                  <span className="text-sm font-semibold text-gray-700">🔡 首字母</span>
-                  <svg className={`w-3.5 h-3.5 text-gray-400 transition-transform ${openHints.has('firstLetter') ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                  <span className="text-sm font-semibold text-gray-700">🔡 拼写提示</span>
+                  <span className="text-[10px] text-gray-400">{openHints.has('partial') ? '已显示三级' : openHints.has('lastLetter') ? '显示更多' : openHints.has('firstLetter') ? '显示首尾' : '逐级显示'}</span>
                 </div>
                 {openHints.has('firstLetter') && (
-                  <div className="px-3 pb-2.5 text-xl font-extrabold text-gray-800 font-mono border-t border-gray-100">{current.word[0].toUpperCase()}</div>
+                  <div className="px-3 py-3 text-lg font-extrabold text-gray-800 font-mono tracking-[.2em] border-t border-gray-100">
+                    {openHints.has('partial')
+                      ? current.word.split('').map((letter, i) => i === 0 || i === current.word.length - 1 || i % 2 === 0 ? letter.toUpperCase() : '_').join(' ')
+                      : openHints.has('lastLetter')
+                        ? `${current.word[0].toUpperCase()} ${Array(Math.max(0,current.word.length-2)).fill('_').join(' ')} ${current.word[current.word.length-1].toUpperCase()}`
+                        : `${current.word[0].toUpperCase()} ${Array(Math.max(0,current.word.length-1)).fill('_').join(' ')}`}
+                  </div>
                 )}
-              </button>
-
-              {/* 末字母 */}
-              <button
-                onClick={() => toggleHint('lastLetter')}
-                className={`w-full rounded-lg border text-left transition-all overflow-hidden ${
-                  openHints.has('lastLetter')
-                    ? 'border-gray-300 bg-white'
-                    : 'border-gray-200 bg-white hover:border-gray-300'
-                }`}
-              >
-                <div className="flex items-center justify-between px-3 py-2.5">
-                  <span className="text-sm font-semibold text-gray-700">🔡 末字母</span>
-                  <svg className={`w-3.5 h-3.5 text-gray-400 transition-transform ${openHints.has('lastLetter') ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-                </div>
-                {openHints.has('lastLetter') && (
-                  <div className="px-3 pb-2.5 text-xl font-extrabold text-gray-800 font-mono border-t border-gray-100">{current.word[current.word.length - 1].toUpperCase()}</div>
-                )}
-              </button>
-
-              {/* 发音 */}
-              <button
-                onClick={() => speak(current.word)}
-                className="w-full rounded-lg border border-gray-200 bg-white hover:border-gray-300 transition-all px-3 py-2.5 text-left"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-semibold text-gray-700">🔊 播放发音</span>
-                  <span className="text-xs text-gray-400">British English</span>
-                </div>
               </button>
 
               {/* 词频 */}
@@ -991,7 +1028,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
           {/* PROGRESS */}
           {activePanel === 'progress' && (
             <div className="space-y-4">
-              <div className="text-xs font-bold text-gray-500 uppercase tracking-widest">进度</div>
+              <div className="text-xs font-bold text-gray-500 uppercase tracking-widest">本次练习</div>
               <div className="bg-gray-50 rounded-xl p-4">
                 <div className="flex justify-between text-xs text-gray-500 mb-2">
                   <span>本次练习</span>
@@ -1012,23 +1049,32 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                 </div>
               </div>
               <div className="bg-gray-50 rounded-xl p-3">
-                <div className="text-xs text-gray-500 mb-1">已练词汇</div>
+                <div className="text-xs text-gray-500 mb-1">已完成</div>
                 <div className="text-sm font-bold text-gray-800">
                   {results.length} <span className="text-gray-400 font-normal">/ {words.length} 词</span>
                 </div>
-                <div className="text-xs text-gray-400 mt-0.5">{
-                  vocabChoice.mode === 'topic' ? vocabChoice.topic.titleZh :
-                  vocabChoice.mode === 'must500' ? 'KET 核心词汇' :
-                  vocabChoice.mode === 'reading288' ? '阅读高频词' : `Cambridge ${level}`
-                }</div>
+                <div className="text-xs text-gray-400 mt-0.5">{libraryName}</div>
+              </div>
+              <div className="border-t border-gray-100 pt-4">
+                <div className="flex justify-between text-xs text-gray-500"><span>词库整体掌握</span><strong className="text-emerald-700">{masteryPercent}%</strong></div>
+                <div className="mt-2 h-2 bg-gray-100 rounded-full overflow-hidden"><div className="h-full bg-emerald-600 rounded-full" style={{width:`${masteryPercent}%`}} /></div>
+                <div className="mt-3 grid grid-cols-3 gap-1 text-center"><div><strong className="block text-gray-900">{learnedCount}</strong><span className="text-[10px] text-gray-400">已学习</span></div><div><strong className="block text-emerald-700">{masteredCount}</strong><span className="text-[10px] text-gray-400">已掌握</span></div><div><strong className="block text-amber-600">{reviewCount}</strong><span className="text-[10px] text-gray-400">待复习</span></div></div>
               </div>
             </div>
           )}
 
-          {/* SETTINGS */}
-          {activePanel === 'settings' && (
+          {/* LIBRARY */}
+          {activePanel === 'library' && (
             <div className="space-y-4">
-              <div className="text-xs font-bold text-gray-500 uppercase tracking-widest">设置</div>
+              <div className="text-xs font-bold text-gray-500 uppercase tracking-widest">词库掌握</div>
+              <div className="rounded-xl bg-emerald-50 border border-emerald-100 p-4">
+                <div className="text-sm font-extrabold text-gray-900">{libraryName}</div>
+                <div className="mt-3 text-3xl font-extrabold text-emerald-700">{masteredCount}<span className="text-base font-medium text-gray-400"> / {allWords.length}</span></div>
+                <div className="text-xs text-gray-500 mt-1">词汇已经掌握</div>
+              </div>
+              <div className="grid grid-cols-2 gap-2"><div className="rounded-xl bg-gray-50 p-3"><div className="text-xl font-extrabold">{learnedCount}</div><div className="text-[10px] text-gray-400 mt-1">已经学习</div></div><div className="rounded-xl bg-amber-50 p-3"><div className="text-xl font-extrabold text-amber-700">{reviewCount}</div><div className="text-[10px] text-gray-400 mt-1">等待复习</div></div></div>
+              <p className="text-[11px] text-gray-400 leading-relaxed">同一个词在不同练习中连续两次答对且未使用提示，计为“已掌握”。</p>
+              <div className="border-t border-gray-100 pt-4">
               <div>
                 <div className="text-xs font-bold text-gray-700 mb-2">每次练习词数</div>
                 <div className="grid grid-cols-2 gap-2">
@@ -1046,14 +1092,6 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                 </div>
                 <p className="text-xs text-gray-400 mt-2">更改后下次开始生效</p>
               </div>
-              <div className="border-t border-gray-100 pt-4">
-                <div className="text-xs font-bold text-gray-700 mb-1">当前词库</div>
-                <div className="text-sm text-gray-600">{allWords.length.toLocaleString()} 词</div>
-                <div className="text-xs text-gray-400 mt-0.5">{
-                  vocabChoice.mode === 'topic' ? `话题：${vocabChoice.topic.titleZh}` :
-                  vocabChoice.mode === 'must500' ? 'KET 核心词汇（全部话题）' :
-                  vocabChoice.mode === 'reading288' ? '阅读常用词 288' : `${level} 综合词表`
-                }</div>
                 <button onClick={onBack} className="mt-3 w-full py-2 text-xs text-[#064e3b] font-semibold border border-emerald-200 rounded-xl hover:bg-emerald-50 transition-colors">
                   换个词汇集
                 </button>
