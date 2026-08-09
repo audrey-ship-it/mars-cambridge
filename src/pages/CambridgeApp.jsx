@@ -133,6 +133,10 @@ function speak(word) {
   window.speechSynthesis.speak(u)
 }
 
+function SpeakerIcon({ className = 'w-5 h-5' }) {
+  return <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M11 5 6.5 9H3v6h3.5l4.5 4V5Z"/><path d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"/></svg>
+}
+
 function playCorrect() {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)()
@@ -682,7 +686,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
             <div className="space-y-2">
               {wrong.map((r, i) => (
                 <div key={i} className="flex items-center gap-3 bg-red-50 rounded-xl px-4 py-2.5">
-                  <button onClick={() => speak(r.word)} className="text-gray-400 hover:text-blue-500 transition-colors flex-shrink-0">🔊</button>
+                  <button onClick={() => speak(r.word)} className="text-gray-400 hover:text-emerald-700 transition-colors flex-shrink-0" aria-label={`播放 ${r.word} 的发音`}><SpeakerIcon className="w-4 h-4"/></button>
                   <span className="text-sm font-bold text-gray-900 tracking-wide">{r.word}</span>
                   <span className="text-xs text-gray-400">{r.chinese}</span>
                   <span className="text-xs text-red-400 font-mono ml-auto line-through">{r.answer || '（空）'}</span>
@@ -753,8 +757,8 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                 </div>
                 <div className="flex items-center gap-2">
                   <button onClick={() => speak(current.word)}
-                    className="text-gray-300 hover:text-blue-500 transition-colors text-lg" title="播放发音">
-                    🔊
+                    className="w-10 h-10 rounded-full border border-gray-200 bg-white text-gray-500 hover:text-emerald-700 hover:border-emerald-300 grid place-items-center transition-colors" title="播放发音" aria-label="播放当前单词发音">
+                    <SpeakerIcon />
                   </button>
                   <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${levelInfo.light}`}>
                     {levelInfo.code} {level}
@@ -864,7 +868,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                         <span className="text-red-400 text-xl">✗</span>
                         <span>正确答案：<span className="font-extrabold tracking-widest ml-1">{current.word}</span></span>
                         <button onClick={() => speak(current.word)}
-                          className="text-red-400 hover:text-red-600 transition-colors ml-1">🔊</button>
+                          className="text-red-400 hover:text-red-600 transition-colors ml-1" aria-label="播放正确答案发音"><SpeakerIcon className="w-4 h-4"/></button>
                       </>
                     )}
                   </motion.div>
@@ -918,51 +922,50 @@ function WordsPractice({ level, vocabChoice, onBack }) {
       </div>
 
       {/* 右侧面板 */}
-      <aside className="w-64 border-l border-gray-100 flex flex-col bg-white flex-shrink-0">
+      <aside className="w-80 xl:w-[360px] border-l border-gray-100 flex flex-col bg-white flex-shrink-0">
         {/* 标签 */}
         <div className="grid grid-cols-3 border-b border-gray-100">
           {[
-            { id: 'tips',     label: '提示', icon: '💡' },
-            { id: 'progress', label: '进度', icon: '📊' },
-            { id: 'library',  label: '词库', icon: '▤' },
+            { id: 'tips',     label: '提示', number: '01' },
+            { id: 'progress', label: '进度', number: '02' },
+            { id: 'library',  label: '词库', number: '03' },
           ].map(tab => (
             <button key={tab.id}
               onClick={() => setActivePanel(tab.id)}
-              className={`flex flex-col items-center gap-0.5 py-3 text-xs font-semibold transition-colors border-b-2 ${
+              className={`flex flex-col items-center gap-1 py-4 text-sm font-extrabold transition-colors border-b-2 ${
                 activePanel === tab.id
                   ? 'border-[#064e3b] text-[#064e3b]'
                   : 'border-transparent text-gray-400 hover:text-gray-600'
               }`}
             >
-              <span className="text-base leading-none">{tab.icon}</span>
-              {tab.label}
+              <span className="text-[9px] tracking-[.18em] opacity-45">{tab.number}</span><span>{tab.label}</span>
             </button>
           ))}
         </div>
 
         {/* 面板内容 */}
-        <div className="flex-1 p-4 overflow-y-auto">
+        <div className="flex-1 p-6 overflow-y-auto">
 
           {/* TIPS */}
           {activePanel === 'tips' && (
             <div className="space-y-3">
-              <div className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">提示</div>
+              <div className="text-sm font-extrabold text-gray-700 tracking-wide mb-5">需要时再打开提示</div>
 
               {/* 音标 */}
               <button
                 onClick={() => toggleHint('phonetic')}
-                className={`w-full rounded-lg border text-left transition-all overflow-hidden ${
+                className={`w-full rounded-2xl border text-left transition-all overflow-hidden ${
                   openHints.has('phonetic')
                     ? 'border-gray-300 bg-white'
                     : 'border-gray-200 bg-white hover:border-gray-300'
                 }`}
               >
-                <div className="flex items-center justify-between px-3 py-2.5">
-                  <span className="text-sm font-semibold text-gray-700">🔤 音标</span>
+                <div className="flex items-center justify-between px-4 py-4">
+                  <span className="text-base font-extrabold text-gray-800">音标</span>
                   <svg className={`w-3.5 h-3.5 text-gray-400 transition-transform ${openHints.has('phonetic') ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
                 </div>
                 {openHints.has('phonetic') && (
-                  <div className="px-3 py-3 text-sm border-t border-gray-100">
+                    <div className="px-4 py-4 text-base border-t border-gray-100 bg-gray-50/60">
                     {current.phonetic ? <span className="font-mono text-gray-800">{current.phonetic}</span> : <span className="text-xs text-amber-700">音标数据待校对</span>}
                   </div>
                 )}
@@ -972,18 +975,18 @@ function WordsPractice({ level, vocabChoice, onBack }) {
               {(current.sentence || current.english) && (
                 <button
                   onClick={() => toggleHint('english')}
-                  className={`w-full rounded-lg border text-left transition-all overflow-hidden ${
+                  className={`w-full rounded-2xl border text-left transition-all overflow-hidden ${
                     openHints.has('english')
                       ? 'border-gray-300 bg-white'
                       : 'border-gray-200 bg-white hover:border-gray-300'
                   }`}
                 >
-                  <div className="flex items-center justify-between px-3 py-2.5">
-                    <span className="text-sm font-semibold text-gray-700">📖 英文例句</span>
+                  <div className="flex items-center justify-between px-4 py-4">
+                    <span className="text-base font-extrabold text-gray-800">英文例句</span>
                     <svg className={`w-3.5 h-3.5 text-gray-400 transition-transform ${openHints.has('english') ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
                   </div>
                   {openHints.has('english') && (
-                    <div className="px-3 py-3 text-xs text-gray-600 leading-relaxed border-t border-gray-100">{current.sentence || current.english}</div>
+                    <div className="px-4 py-4 text-sm text-gray-600 leading-relaxed border-t border-gray-100 bg-gray-50/60">{current.sentence || current.english}</div>
                   )}
                 </button>
               )}
@@ -992,14 +995,14 @@ function WordsPractice({ level, vocabChoice, onBack }) {
               <button
                 onClick={revealSpellHint}
                 disabled={openHints.has('partial')}
-                className="w-full rounded-lg border border-gray-200 bg-white hover:border-gray-300 disabled:hover:border-gray-200 text-left transition-all overflow-hidden"
+                className="w-full rounded-2xl border border-gray-200 bg-white hover:border-gray-300 disabled:hover:border-gray-200 text-left transition-all overflow-hidden"
               >
-                <div className="flex items-center justify-between px-3 py-2.5">
-                  <span className="text-sm font-semibold text-gray-700">🔡 拼写提示</span>
+                <div className="flex items-center justify-between px-4 py-4">
+                  <span className="text-base font-extrabold text-gray-800">拼写提示</span>
                   <span className="text-[10px] text-gray-400">{openHints.has('partial') ? '已显示三级' : openHints.has('lastLetter') ? '显示更多' : openHints.has('firstLetter') ? '显示首尾' : '逐级显示'}</span>
                 </div>
                 {openHints.has('firstLetter') && (
-                  <div className="px-3 py-3 text-lg font-extrabold text-gray-800 font-mono tracking-[.2em] border-t border-gray-100">
+                  <div className="px-4 py-5 text-xl font-extrabold text-gray-800 font-mono tracking-[.2em] border-t border-gray-100 bg-gray-50/60">
                     {openHints.has('partial')
                       ? current.word.split('').map((letter, i) => i === 0 || i === current.word.length - 1 || i % 2 === 0 ? letter.toUpperCase() : '_').join(' ')
                       : openHints.has('lastLetter')
