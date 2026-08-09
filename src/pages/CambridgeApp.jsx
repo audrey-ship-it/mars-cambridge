@@ -209,8 +209,6 @@ function VocabSetChooser({ onSelect, onCollocation }) {
     )
   }
 
-  const primarySet = VOCAB_SETS[0]
-  const otherSets = VOCAB_SETS.slice(1)
   const practiced = lastResult?.total || 0
   const accuracy = lastResult?.accuracy ?? 0
   const wrongCount = lastResult?.wrongCount || 0
@@ -220,58 +218,51 @@ function VocabSetChooser({ onSelect, onCollocation }) {
     else onSelect({ mode: vs.mode })
   }
 
+  const cards = [
+    ...VOCAB_SETS.map(vs => ({ ...vs, action: () => openSet(vs) })),
+    { id: 'collocations', emoji: '🔗', title: '固定搭配专项', subtitle: '270 个词组', desc: '通过填空练习掌握常见搭配，帮助阅读理解和写作表达。', action: onCollocation },
+  ]
+
   return (
-    <div className="max-w-6xl mx-auto px-6 lg:px-10 py-8 lg:py-10">
-      <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5 mb-8">
+    <div className="max-w-7xl mx-auto px-6 lg:px-9 py-5 lg:py-6 min-h-full flex flex-col">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
-          <div className="text-xs font-extrabold tracking-[.18em] text-emerald-700">KET VOCABULARY</div>
-          <h1 className="mt-2 text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-950">词汇学习</h1>
-          <p className="mt-2 text-gray-500">每天练一组，及时复习错词，慢慢把词汇变成真正会用的英语。</p>
+          <div className="text-[11px] font-extrabold tracking-[.18em] text-emerald-700">KET VOCABULARY</div>
+          <div className="mt-1 flex items-baseline gap-4">
+            <h1 className="text-3xl font-extrabold tracking-tight text-gray-950">词汇学习</h1>
+            <p className="hidden md:block text-sm text-gray-400">选择一个类别，开始今天的拼写与复习训练。</p>
+          </div>
         </div>
-        <div className="inline-flex items-center gap-2 text-sm text-gray-500 bg-white border border-gray-200 rounded-full px-4 py-2 self-start lg:self-auto">
-          <span className="w-2 h-2 rounded-full bg-emerald-500" /> A2 Key（KET）
+        <div className="grid grid-cols-3 gap-2 lg:w-[470px]">
+          {[
+            ['今日完成', `${practiced}/20`],
+            ['最近正确率', lastResult ? `${accuracy}%` : '—'],
+            ['待复习错词', `${wrongCount}`],
+          ].map(([label,value]) => <div key={label} className="bg-white border border-gray-200 rounded-xl px-4 py-2.5 flex items-center justify-between gap-3"><span className="text-[11px] text-gray-400">{label}</span><strong className="text-lg text-gray-950">{value}</strong></div>)}
         </div>
       </div>
 
-      <section className="grid lg:grid-cols-[1.45fr_.75fr] gap-5">
-        <button onClick={() => openSet(primarySet)} className="relative overflow-hidden text-left rounded-[28px] bg-[#064e3b] text-white p-7 sm:p-9 min-h-[270px] group shadow-sm">
-          <div className="absolute inset-0 opacity-[.07]" style={{backgroundImage:'linear-gradient(rgba(255,255,255,.7) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.7) 1px,transparent 1px)',backgroundSize:'42px 42px'}} />
-          <div className="relative h-full flex flex-col">
-            <div className="flex items-center justify-between"><span className="text-xs font-extrabold tracking-[.16em] text-[#f4c95d]">今日推荐</span><span className="rounded-full bg-white/10 px-3 py-1 text-xs">约 8 分钟</span></div>
-            <div className="mt-10 text-sm text-white/55">中文释义与例句提示 · 拼写训练</div>
-            <h2 className="mt-2 text-3xl sm:text-4xl font-extrabold">KET 核心词汇</h2>
-            <div className="mt-auto pt-8 flex items-center justify-between"><span className="text-sm text-white/60">本组 20 词</span><span className="bg-[#f4c95d] text-[#064e3b] rounded-2xl px-5 py-3 font-extrabold group-hover:bg-[#f7d574]">开始练习 →</span></div>
-          </div>
-        </button>
-
-        <div className="grid grid-cols-3 lg:grid-cols-1 gap-3">
-          {[
-            ['今日完成', `${practiced}/20`, '按最近一次记录'],
-            ['最近正确率', lastResult ? `${accuracy}%` : '—', lastResult ? '继续保持' : '完成后显示'],
-            ['待复习错词', `${wrongCount}`, wrongCount ? '建议优先复习' : '暂无记录'],
-          ].map(([label,value,note]) => <div key={label} className="bg-white border border-gray-200 rounded-2xl p-4 sm:p-5"><div className="text-xs text-gray-400">{label}</div><div className="mt-2 text-2xl sm:text-3xl font-extrabold text-gray-950">{value}</div><div className="mt-1 text-[11px] text-gray-400 hidden sm:block">{note}</div></div>)}
-        </div>
-      </section>
-
-      <section className="mt-10">
-        <div className="flex items-end justify-between mb-4"><div><h2 className="text-xl sm:text-2xl font-extrabold text-gray-950">选择专项训练</h2><p className="text-sm text-gray-400 mt-1">根据当前需要，选择一种词汇范围</p></div></div>
-        <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4">
-          {otherSets.map((vs, i) => (
-            <button key={vs.id} onClick={() => openSet(vs)} className="group text-left bg-white border border-gray-200 rounded-[22px] p-5 hover:border-emerald-300 hover:shadow-md hover:-translate-y-0.5 transition-all min-h-[190px] flex flex-col">
-              <div className="flex items-start justify-between"><span className="w-11 h-11 rounded-2xl bg-emerald-50 text-xl grid place-items-center">{vs.emoji}</span><span className="text-[10px] font-extrabold tracking-[.12em] text-gray-300">0{i + 2}</span></div>
-              <h3 className="mt-5 font-extrabold text-lg text-gray-950">{vs.title}</h3>
-              <p className="mt-1 text-xs text-gray-400 leading-relaxed">{vs.desc}</p>
-              <div className="mt-auto pt-4 flex items-center justify-between text-xs"><span className="text-gray-400">{vs.count ? `${vs.count} 词` : vs.subtitle}</span><span className="font-bold text-emerald-700">进入 →</span></div>
-            </button>
-          ))}
-          <button onClick={onCollocation} className="group text-left bg-[#fff8e7] border border-[#eed27b] rounded-[22px] p-5 hover:shadow-md hover:-translate-y-0.5 transition-all min-h-[190px] flex flex-col">
-            <div className="flex items-start justify-between"><span className="w-11 h-11 rounded-2xl bg-[#f4c95d] text-xl grid place-items-center">🔗</span><span className="text-[10px] font-extrabold tracking-[.12em] text-[#c39a2e]">06</span></div>
-            <h3 className="mt-5 font-extrabold text-lg text-gray-950">固定搭配专项</h3>
-            <p className="mt-1 text-xs text-gray-500 leading-relaxed">通过填空练习掌握常见搭配，帮助阅读理解和写作表达。</p>
-            <div className="mt-auto pt-4 flex items-center justify-between text-xs"><span className="text-gray-400">270 个词组</span><span className="font-bold text-[#8a6500]">进入 →</span></div>
+      <div className="mt-5 grid sm:grid-cols-2 lg:grid-cols-3 gap-3.5 flex-1">
+        {cards.map((card, i) => {
+          const featured = i === 0
+          const gold = card.id === 'collocations'
+          return <button key={card.id} onClick={card.action} className={`relative overflow-hidden group text-left rounded-[22px] border p-5 lg:p-6 min-h-[190px] flex flex-col hover:-translate-y-0.5 hover:shadow-md transition-all ${featured ? 'bg-[#064e3b] border-[#064e3b] text-white' : gold ? 'bg-[#fff8e7] border-[#eed27b]' : 'bg-white border-gray-200 hover:border-emerald-300'}`}>
+            {featured && <div className="absolute inset-0 opacity-[.07]" style={{backgroundImage:'linear-gradient(rgba(255,255,255,.7) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.7) 1px,transparent 1px)',backgroundSize:'38px 38px'}} />}
+            <div className="relative flex items-start justify-between">
+              <span className={`w-11 h-11 rounded-2xl text-xl grid place-items-center ${featured ? 'bg-white/10' : gold ? 'bg-[#f4c95d]' : 'bg-emerald-50'}`}>{card.emoji}</span>
+              <span className={`text-[10px] font-extrabold tracking-[.14em] ${featured ? 'text-[#f4c95d]' : gold ? 'text-[#b78a19]' : 'text-gray-300'}`}>{featured ? '今日推荐' : `0${i + 1}`}</span>
+            </div>
+            <div className="relative mt-4">
+              <h2 className={`font-extrabold text-xl ${featured ? 'text-white' : 'text-gray-950'}`}>{card.title}</h2>
+              <p className={`mt-1.5 text-xs leading-relaxed line-clamp-2 ${featured ? 'text-white/55' : 'text-gray-400'}`}>{card.desc}</p>
+            </div>
+            <div className="relative mt-auto pt-4 flex items-center justify-between text-xs">
+              <span className={featured ? 'text-white/55' : 'text-gray-400'}>{featured ? '本组 20 词 · 约 8 分钟' : card.count ? `${card.count} 词` : card.subtitle}</span>
+              <span className={`font-extrabold ${featured ? 'bg-[#f4c95d] text-[#064e3b] rounded-xl px-3 py-2' : gold ? 'text-[#8a6500]' : 'text-emerald-700'}`}>{featured ? '开始练习 →' : '进入 →'}</span>
+            </div>
           </button>
-        </div>
-      </section>
+        })}
+      </div>
     </div>
   )
 }
