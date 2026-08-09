@@ -1025,7 +1025,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
               >
                 <div className="flex items-center justify-between px-4 py-4">
                   <span className="flex items-center gap-3 text-base font-extrabold text-gray-800"><span className="w-8 h-8 rounded-xl bg-[#f4c95d] text-[#064e3b] grid place-items-center"><VocabPanelIcon name="spelling" className="w-[18px] h-[18px]"/></span>拼写提示</span>
-                  <span className="text-[10px] text-gray-400">{openHints.has('partial') ? '已显示三级' : openHints.has('lastLetter') ? '显示更多' : openHints.has('firstLetter') ? '显示首尾' : '逐级显示'}</span>
+                  <span className={`rounded-full border px-3 py-1.5 text-xs font-extrabold ${openHints.has('partial') ? 'bg-gray-100 border-gray-200 text-gray-500' : 'bg-emerald-50 border-emerald-200 text-emerald-700'}`}>{openHints.has('partial') ? '提示已全部显示' : openHints.has('lastLetter') ? '显示部分字母 →' : openHints.has('firstLetter') ? '显示首尾字母 →' : '显示首字母 →'}</span>
                 </div>
                 {openHints.has('firstLetter') && (
                   <div className="px-4 py-5 text-xl font-extrabold text-gray-800 font-mono tracking-[.2em] border-t border-gray-100 bg-gray-50/60">
