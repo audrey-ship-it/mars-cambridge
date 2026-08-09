@@ -559,6 +559,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
   const [showResult, setShowResult] = useState(false)
   const [activePanel, setActivePanel] = useState('tips')
   const [openHints, setOpenHints] = useState(new Set())
+  const [showLeaveConfirm, setShowLeaveConfirm] = useState(false)
   const [masteryRecords, setMasteryRecords] = useState(() => {
     try { return JSON.parse(localStorage.getItem('mars_vocab_mastery_v1') || '{}') } catch { return {} }
   })
@@ -664,6 +665,11 @@ function WordsPractice({ level, vocabChoice, onBack }) {
     startRef.current = Date.now()
   }
 
+  function requestBackToCenter() {
+    if (results.length > 0 || index > 0) setShowLeaveConfirm(true)
+    else onBack()
+  }
+
   // ── Result screen ──
   if (showResult) {
     const score = results.filter(r => r.correct).length
@@ -714,7 +720,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
         </button>
         <button onClick={onBack}
           className="w-full py-3 bg-white border border-gray-200 text-gray-600 font-semibold rounded-2xl hover:bg-gray-50 transition-colors text-sm">
-          换个词汇集
+          返回词汇中心
         </button>
         <p className="text-center text-xs text-gray-400 mt-3">或切换左侧其他模块继续练习</p>
       </div>
@@ -734,8 +740,17 @@ function WordsPractice({ level, vocabChoice, onBack }) {
           <motion.div className="h-full bg-[#064e3b]" animate={{ width: `${progress}%` }} transition={{ duration: 0.4 }} />
         </div>
 
+        {/* 页面层级 */}
+        <nav className="mx-6 mt-4 flex items-center gap-2 text-xs" aria-label="词汇学习路径">
+          <button onClick={requestBackToCenter} className="font-extrabold text-emerald-700 hover:text-emerald-900 transition-colors">词汇中心</button>
+          <span className="text-gray-300">/</span>
+          <button onClick={requestBackToCenter} className="font-semibold text-gray-500 hover:text-gray-800 transition-colors">{libraryName}</button>
+          <span className="text-gray-300">/</span>
+          <span className="text-gray-400">本次练习</span>
+        </nav>
+
         {/* 当前词库掌握概览 */}
-        <div className="mx-6 mt-4 bg-white border border-gray-200 rounded-2xl px-5 py-3 flex items-center gap-5 shadow-sm">
+        <div className="mx-6 mt-3 bg-white border border-gray-200 rounded-2xl px-5 py-3 flex items-center gap-5 shadow-sm">
           <div className="min-w-[145px] pr-5 border-r border-gray-100">
             <div className="text-[10px] font-extrabold tracking-[.13em] text-emerald-700">当前词库</div>
             <div className="mt-1 text-sm font-extrabold text-gray-900 truncate">{libraryName}</div>
@@ -764,7 +779,6 @@ function WordsPractice({ level, vocabChoice, onBack }) {
               {/* 题号 + set badge + back */}
               <div className="flex items-center justify-between mb-5">
                 <div className="flex items-center gap-2">
-                  <button onClick={onBack} className="text-gray-300 hover:text-gray-600 transition-colors text-xs" title="换词汇集">← 换词汇集</button>
                   <span className="text-sm font-bold text-gray-400">{index + 1} / {words.length}</span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -1107,8 +1121,8 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                 </div>
                 <p className="text-xs text-gray-400 mt-2">更改后下次开始生效</p>
               </div>
-                <button onClick={onBack} className="mt-3 w-full py-2 text-xs text-[#064e3b] font-semibold border border-emerald-200 rounded-xl hover:bg-emerald-50 transition-colors">
-                  换个词汇集
+                <button onClick={requestBackToCenter} className="mt-3 w-full py-2.5 text-xs text-[#064e3b] font-semibold border border-emerald-200 rounded-xl hover:bg-emerald-50 transition-colors">
+                  返回词汇中心
                 </button>
               </div>
             </div>
@@ -1116,6 +1130,17 @@ function WordsPractice({ level, vocabChoice, onBack }) {
 
         </div>
       </aside>
+
+      <AnimatePresence>
+        {showLeaveConfirm && <motion.div className="fixed inset-0 z-[120] bg-[#061c17]/55 backdrop-blur-sm grid place-items-center p-5" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onClick={()=>setShowLeaveConfirm(false)}>
+          <motion.div className="w-full max-w-md bg-white rounded-[24px] p-6 shadow-2xl" initial={{scale:.96,y:12}} animate={{scale:1,y:0}} exit={{scale:.96,y:12}} onClick={e=>e.stopPropagation()}>
+            <div className="text-[10px] font-extrabold tracking-[.16em] text-emerald-700">返回词汇中心</div>
+            <h3 className="mt-3 text-xl font-extrabold text-gray-950">要结束本次练习吗？</h3>
+            <p className="mt-2 text-sm text-gray-500 leading-relaxed">已经完成的 {results.length} 个词会保存在浏览器中，尚未回答的词不会计入进度。</p>
+            <div className="mt-6 grid grid-cols-2 gap-3"><button onClick={()=>setShowLeaveConfirm(false)} className="py-3 rounded-xl border border-gray-200 font-bold text-gray-600">继续练习</button><button onClick={onBack} className="py-3 rounded-xl bg-[#064e3b] text-white font-bold">返回词汇中心</button></div>
+          </motion.div>
+        </motion.div>}
+      </AnimatePresence>
     </div>
   )
 }
