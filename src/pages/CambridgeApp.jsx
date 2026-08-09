@@ -594,7 +594,8 @@ function WordsPractice({ level, vocabChoice, onBack }) {
 
   function handleCheck() {
     if (!answer.trim()) return
-    const isCorrect = answer.trim().toLowerCase() === current.word.toLowerCase()
+    const normalizeSpelling = value => value.toLowerCase().replace(/\s+/g, '')
+    const isCorrect = normalizeSpelling(answer.trim()) === normalizeSpelling(current.word)
     setCorrect(isCorrect); setChecked(true)
     if (isCorrect) playCorrect(); else playWrong()
   }
@@ -838,7 +839,12 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                   onClick={() => inputRef.current?.focus()}>
                   <div className="flex justify-center gap-2 flex-wrap pt-4">
                     {current.word.split('').map((letter, i) => {
-                      const typed = answer[i] || ''
+                      if (letter === ' ') {
+                        return <div key={i} className="w-8 sm:w-10 flex-shrink-0" aria-label="单词间空格" />
+                      }
+                      const answerLetters = answer.replace(/\s/g, '')
+                      const nonSpaceIndex = current.word.slice(0, i).replace(/\s/g, '').length
+                      const typed = answerLetters[nonSpaceIndex] || ''
                       const isRight = checked && typed.toLowerCase() === letter.toLowerCase()
                       const isWrong = checked && !isRight && typed
                       const letterColor = !checked && typed ? 'text-blue-600'
