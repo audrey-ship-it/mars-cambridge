@@ -194,6 +194,18 @@ function TopicChooser({ onSelect, onBack }) {
 }
 
 /* ── 词汇集选择器 ── */
+function VocabPathIcon({ id }) {
+  const paths = {
+    must500: <><path d="M5 4h6a3 3 0 0 1 3 3v13H8a3 3 0 0 0-3 3V4Z"/><path d="M19 4h-2a3 3 0 0 0-3 3v13h2a3 3 0 0 1 3 3V4Z"/></>,
+    reading288: <><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5"/></>,
+    official: <><path d="M7 3h10v4H7z"/><path d="M5 6h14v15H5z"/><path d="M8 11h8M8 15h6"/></>,
+    topic: <><path d="M3 7h7l2 2h9v11H3z"/><path d="M7 13h10"/></>,
+    irregular: <><path d="M20 7h-6V1"/><path d="M20 7a9 9 0 1 0 1 9"/><path d="m8 12 3 3 5-6"/></>,
+    collocations: <><path d="m9 15-2 2a4 4 0 0 1-6-6l3-3a4 4 0 0 1 6 0"/><path d="m15 9 2-2a4 4 0 0 1 6 6l-3 3a4 4 0 0 1-6 0"/><path d="m8 16 8-8"/></>,
+  }
+  return <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[id]}</svg>
+}
+
 function VocabSetChooser({ onSelect, onCollocation }) {
   const [showTopics, setShowTopics] = useState(false)
   const [lastResult] = useState(() => {
@@ -246,21 +258,25 @@ function VocabSetChooser({ onSelect, onCollocation }) {
         {cards.map((card, i) => {
           const featured = i === 0
           const gold = card.id === 'collocations'
-          return <button key={card.id} onClick={card.action} className={`relative overflow-hidden group text-left rounded-[22px] border p-5 lg:p-6 min-h-[190px] flex flex-col hover:-translate-y-0.5 hover:shadow-md transition-all ${featured ? 'bg-[#064e3b] border-[#064e3b] text-white' : gold ? 'bg-[#fff8e7] border-[#eed27b]' : 'bg-white border-gray-200 hover:border-emerald-300'}`}>
-            {featured && <div className="absolute inset-0 opacity-[.07]" style={{backgroundImage:'linear-gradient(rgba(255,255,255,.7) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.7) 1px,transparent 1px)',backgroundSize:'38px 38px'}} />}
+          const hasArrow = i === 0 || i === 1 || i === 3 || i === 4
+          return <div key={card.id} className="relative">
+          <button onClick={card.action} className={`relative overflow-hidden w-full h-full group text-left rounded-[22px] border p-5 lg:p-6 min-h-[190px] flex flex-col hover:-translate-y-0.5 hover:shadow-md transition-all ${featured ? 'bg-emerald-50/40 border-emerald-500' : gold ? 'bg-[#fffaf0] border-[#e8cf88]' : 'bg-white border-gray-200 hover:border-emerald-300'}`}>
+            {featured && <div className="absolute top-0 inset-x-0 h-1.5 bg-[#064e3b]" />}
             <div className="relative flex items-start justify-between">
-              <span className={`w-11 h-11 rounded-2xl text-xl grid place-items-center ${featured ? 'bg-white/10' : gold ? 'bg-[#f4c95d]' : 'bg-emerald-50'}`}>{card.emoji}</span>
-              <span className={`text-[10px] font-extrabold tracking-[.14em] ${featured ? 'text-[#f4c95d]' : gold ? 'text-[#b78a19]' : 'text-gray-300'}`}>{featured ? '今日推荐' : `0${i + 1}`}</span>
+              <span className={`w-11 h-11 rounded-2xl grid place-items-center ${featured ? 'bg-[#064e3b] text-white' : gold ? 'bg-[#f4c95d] text-[#684d00]' : 'bg-emerald-50 text-emerald-700'}`}><VocabPathIcon id={card.id}/></span>
+              <div className="flex items-center gap-2"><span className={`text-[10px] font-extrabold tracking-[.14em] ${gold ? 'text-[#b78a19]' : 'text-gray-300'}`}>0{i + 1}</span>{featured && <span className="rounded-full bg-[#f4c95d] text-[#604800] px-2.5 py-1 text-[10px] font-extrabold">今日推荐</span>}</div>
             </div>
             <div className="relative mt-4">
-              <h2 className={`font-extrabold text-xl ${featured ? 'text-white' : 'text-gray-950'}`}>{card.title}</h2>
-              <p className={`mt-1.5 text-xs leading-relaxed line-clamp-2 ${featured ? 'text-white/55' : 'text-gray-400'}`}>{card.desc}</p>
+              <h2 className="font-extrabold text-xl text-gray-950">{card.title}</h2>
+              <p className="mt-1.5 text-xs leading-relaxed line-clamp-2 text-gray-400">{card.desc}</p>
             </div>
             <div className="relative mt-auto pt-4 flex items-center justify-between text-xs">
-              <span className={featured ? 'text-white/55' : 'text-gray-400'}>{featured ? '本组 20 词 · 约 8 分钟' : card.count ? `${card.count} 词` : card.subtitle}</span>
-              <span className={`font-extrabold ${featured ? 'bg-[#f4c95d] text-[#064e3b] rounded-xl px-3 py-2' : gold ? 'text-[#8a6500]' : 'text-emerald-700'}`}>{featured ? '开始练习 →' : '进入 →'}</span>
+              <span className="text-gray-400">{featured ? '本组 20 词 · 约 8 分钟' : card.count ? `${card.count} 词` : card.subtitle}</span>
+              <span className={`font-extrabold ${featured ? 'bg-[#064e3b] text-white rounded-xl px-3 py-2' : gold ? 'text-[#8a6500]' : 'text-emerald-700'}`}>{featured ? '开始练习 →' : '进入 →'}</span>
             </div>
           </button>
+          {hasArrow && <span className="hidden lg:grid absolute -right-[13px] top-1/2 -translate-y-1/2 z-10 w-7 h-7 rounded-full bg-[#f4c95d] text-[#064e3b] place-items-center text-sm font-extrabold shadow-sm">→</span>}
+          </div>
         })}
       </div>
     </div>
