@@ -1,23 +1,43 @@
-import { useState, useRef } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { GRAMMAR_QUESTIONS } from '../data/grammarQuestions'
 import { CambridgeLayout } from './CambridgeApp'
+import { GRAMMAR_GROUPS } from './CambridgeGrammar'
+import { grammarMistakeId, markGrammarMistakeCorrect, recordGrammarMistake } from '../utils/grammarMistakes'
 
 const LABELS = ['A', 'B', 'C', 'D']
 
 const MODES = [
-  { id: 'questions',   label: '单选题',   icon: '📝' },
-  { id: 'blanks',      label: '挖空练习', icon: '✏️' },
-  { id: 'corrections', label: '改错题',   icon: '🔍' },
+  { id: 'questions',   number: '01', label: '选择题' },
+  { id: 'blanks',      number: '02', label: '挖空练习' },
+  { id: 'corrections', number: '03', label: '改错题' },
 ]
+
+const containsChinese = value => /[\u3400-\u9fff]/.test(String(value || ''))
+
+function questionChinese(item, type) {
+  if (item.qZh || item.sentenceZh) return item.qZh || item.sentenceZh
+  if (type === 'questions') return '中文题意待补充。'
+  if (type === 'blanks') return '中文题意待补充。'
+  return '中文题意待补充。'
+}
+
+function chineseExplanation(item, correctLabel) {
+  const explanation = item.expZh || item.exp
+  if (containsChinese(explanation)) return explanation
+  return `正确答案是“${correctLabel}”。请结合上方语法要点，注意该英文形式在句子中的正确用法。`
+}
 
 export default function CambridgeGrammarUnit() {
   const { unit } = useParams()
+  const [searchParams] = useSearchParams()
   const unitNum = parseInt(unit)
   const data = GRAMMAR_QUESTIONS[unitNum]
   const [level, setLevel] = useState(() => { try { return localStorage.getItem('cambridge_level') || 'KET' } catch { return 'KET' } })
-  const [mode, setMode] = useState('questions')
+  const requestedMode = searchParams.get('mode')
+  const [mode, setMode] = useState(MODES.some(item => item.id === requestedMode) ? requestedMode : 'questions')
+  const group = GRAMMAR_GROUPS.find(item => item.unitNums.includes(unitNum))
 
   if (!data) {
     return (
@@ -40,21 +60,38 @@ export default function CambridgeGrammarUnit() {
   return (
     <CambridgeLayout activeModule="grammar" level={level} setLevel={setLevel}>
 
+      <nav className="w-full border-b border-gray-100 bg-white px-6 py-4 flex items-center gap-3 text-sm" aria-label="语法学习路径">
+        <Link to="/cambridge/grammar"
+          className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#e7c65f] bg-[#fff8e7] px-4 py-2.5 font-extrabold text-[#735500] hover:bg-[#fbe9ad] transition-colors">
+          <span aria-hidden="true">←</span>我的语法中心
+        </Link>
+        <span className="text-gray-300" aria-hidden="true">›</span>
+        {group ? (
+          <Link to={`/cambridge/grammar/category/${group.id}`} className="font-extrabold text-gray-700 hover:text-emerald-800 transition-colors">
+            {group.title}
+          </Link>
+        ) : (
+          <span className="font-extrabold text-gray-700">语法单元</span>
+        )}
+        <span className="text-gray-300" aria-hidden="true">›</span>
+        <span className="min-w-0 truncate font-semibold text-gray-400">{data.title}</span>
+      </nav>
+
       {/* 模式切换 Tab */}
-      <div className="bg-white border-b border-gray-100">
-        <div className="max-w-xl mx-auto px-6">
-          <div className="flex">
+      <div className="border-b border-[#ead795] bg-white py-4">
+        <div className="mx-auto max-w-4xl px-6">
+          <div className="grid grid-cols-3 gap-3 rounded-[22px] border border-[#ead795] bg-[#fffaf0] p-2">
             {MODES.map(m => (
               <button
                 key={m.id}
                 onClick={() => setMode(m.id)}
-                className={`flex items-center gap-1.5 px-4 py-3 text-sm font-semibold border-b-2 transition-colors ${
+                className={`flex min-h-[68px] items-center justify-center gap-3 rounded-2xl px-4 py-3 text-lg font-extrabold transition-all ${
                   mode === m.id
-                    ? 'border-[#064e3b] text-[#064e3b]'
-                    : 'border-transparent text-gray-400 hover:text-gray-600'
+                    ? 'bg-[#f4c95d] text-[#143f35] shadow-sm'
+                    : 'bg-white text-gray-500 hover:bg-[#fff1bd] hover:text-[#684d00]'
                 }`}
               >
-                <span>{m.icon}</span>
+                <span className={`text-xs font-extrabold tracking-[.12em] ${mode === m.id ? 'text-[#735500]' : 'text-gray-300'}`}>{m.number}</span>
                 <span>{m.label}</span>
               </button>
             ))}
@@ -62,12 +99,30 @@ export default function CambridgeGrammarUnit() {
         </div>
       </div>
 
-      {/* 语法要点卡 */}
-      <div className="max-w-xl mx-auto px-6 pt-6">
-        <div className="bg-[#064e3b]/5 border border-[#064e3b]/10 rounded-2xl px-5 py-4 mb-6">
-          <div className="text-[10px] font-bold text-[#064e3b] uppercase tracking-widest mb-1">语法要点</div>
-          <p className="text-sm text-gray-700 leading-relaxed">{data.intro}</p>
-        </div>
+      {/* 统一知识讲解区 */}
+      <div className="max-w-4xl mx-auto px-6 pt-6">
+        {data.guide ? (
+          <section className="mb-7 overflow-hidden rounded-[24px] border border-emerald-200 bg-white shadow-sm">
+            <div className="border-b border-emerald-100 bg-emerald-50/60 px-6 py-5">
+              <div className="text-[10px] font-extrabold uppercase tracking-[.18em] text-emerald-700">GRAMMAR GUIDE</div>
+              <h1 className="mt-1 text-2xl font-extrabold text-gray-950">{data.title}</h1>
+              <p className="mt-2 text-sm leading-relaxed text-gray-600">{data.intro}</p>
+            </div>
+            <div className="grid gap-px bg-gray-100 md:grid-cols-3">
+              <GuideBlock number="01" title="什么时候用" items={data.guide.uses} />
+              <GuideBlock number="02" title="基本结构" items={data.guide.structures} />
+              <GuideBlock number="03" title="判断线索" items={data.guide.signals} tags />
+            </div>
+            <div className="border-t border-amber-100 bg-amber-50 px-6 py-4 text-sm leading-relaxed text-amber-950">
+              <strong className="mr-2">易错提醒</strong>{data.guide.warning}
+            </div>
+          </section>
+        ) : (
+          <div className="bg-[#064e3b]/5 border border-[#064e3b]/10 rounded-2xl px-5 py-4 mb-6">
+            <div className="text-[10px] font-bold text-[#064e3b] uppercase tracking-widest mb-1">语法要点</div>
+            <p className="text-sm text-gray-700 leading-relaxed">{data.intro}</p>
+          </div>
+        )}
       </div>
 
       <AnimatePresence mode="wait">
@@ -97,377 +152,309 @@ export default function CambridgeGrammarUnit() {
   )
 }
 
+function GuideBlock({ number, title, items = [], tags = false }) {
+  return (
+    <div className="bg-white px-6 py-5">
+      <div className="flex items-center gap-2">
+        <span className="text-[10px] font-extrabold text-emerald-600">{number}</span>
+        <h2 className="text-sm font-extrabold text-gray-900">{title}</h2>
+      </div>
+      {tags ? (
+        <div className="mt-3 flex flex-wrap gap-2">
+          {items.map(item => <span key={item} className="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-800">{item}</span>)}
+        </div>
+      ) : (
+        <ul className="mt-3 space-y-2 text-sm leading-relaxed text-gray-600">
+          {items.map(item => <li key={item} className="flex gap-2"><span className="text-emerald-500">•</span><span>{item}</span></li>)}
+        </ul>
+      )}
+    </div>
+  )
+}
+
 /* ───────── MCQ ───────── */
 function MCQSection({ data, unitNum }) {
-  const [index, setIndex]       = useState(0)
-  const [selected, setSelected] = useState(null)
-  const [confirmed, setConfirmed] = useState(false)
-  const [results, setResults]   = useState([])
-  const [done, setDone]         = useState(false)
-
   const questions = data.questions
-  const total     = questions.length
-  const q         = questions[index]
-  const correct   = results.filter(Boolean).length
+  const [selected, setSelected] = useState(() => questions.map(() => []))
+  const [feedback, setFeedback] = useState(() => questions.map(() => null))
 
-  function confirm() { if (selected !== null) setConfirmed(true) }
-
-  function next() {
-    const isRight = selected === q.ans
-    const updated = [...results, isRight]
-    if (index + 1 >= total) { setResults(updated); setDone(true) }
-    else { setResults(updated); setIndex(i => i + 1); setSelected(null); setConfirmed(false) }
+  function answerIndexes(item) {
+    return Array.isArray(item.ans) ? item.ans : [item.ans]
   }
 
-  function restart() { setIndex(0); setSelected(null); setConfirmed(false); setResults([]); setDone(false) }
+  function isRight(item, selectedAnswers) {
+    const correctAnswers = answerIndexes(item)
+    return selectedAnswers.length === correctAnswers.length && selectedAnswers.every(value => correctAnswers.includes(value))
+  }
 
-  if (done) return <ResultScreen results={results} total={total} correct={correct}
-    questions={questions.map(q => ({ text: q.q, correctLabel: `${LABELS[q.ans]}. ${q.opts[q.ans]}`, exp: q.exp }))}
-    onRestart={restart} unitNum={unitNum} title={data.title} mode="单选题" />
+  function choose(itemIndex, optionIndex) {
+    if (feedback[itemIndex] === 'correct') return
+    const multiple = answerIndexes(questions[itemIndex]).length > 1
+    const nextSelection = multiple
+      ? selected[itemIndex].includes(optionIndex) ? selected[itemIndex].filter(value => value !== optionIndex) : [...selected[itemIndex], optionIndex]
+      : [optionIndex]
+    setSelected(current => current.map((value, index) => index === itemIndex ? nextSelection : value))
+    if (!multiple) saveQuestionAttempt(questions[itemIndex], itemIndex, isRight(questions[itemIndex], nextSelection))
+    setFeedback(current => current.map((value, index) => index === itemIndex ? (multiple ? null : (isRight(questions[itemIndex], nextSelection) ? 'correct' : 'wrong')) : value))
+  }
+
+  function checkMultiple(itemIndex) {
+    if (!selected[itemIndex].length) return
+    saveQuestionAttempt(questions[itemIndex], itemIndex, isRight(questions[itemIndex], selected[itemIndex]))
+    setFeedback(current => current.map((value, index) => index === itemIndex ? (isRight(questions[itemIndex], selected[itemIndex]) ? 'correct' : 'wrong') : value))
+  }
+
+  function saveQuestionAttempt(item, index, correct) {
+    const id = grammarMistakeId(unitNum, 'questions', index)
+    if (correct) return markGrammarMistakeCorrect(id)
+    const answerIndexesValue = answerIndexes(item)
+    recordGrammarMistake({ id, unitNum, unitTitle: data.title, type: 'questions', index, prompt: item.q, promptZh: questionChinese(item, 'questions'), correctAnswer: answerIndexesValue.map(answer => item.opts[answer]).join('；'), explanation: chineseExplanation(item, answerIndexesValue.map(answer => item.opts[answer]).join('；')) })
+  }
+
+  const completed = feedback.filter(value => value === 'correct').length
 
   return (
-    <div className="max-w-xl mx-auto px-6 pb-10">
-      <ProgressDots index={index} total={total} results={results} />
-
-      {/* 进度条 */}
-      <div className="h-1 bg-gray-100 rounded-full mb-6 overflow-hidden">
-        <motion.div className="h-full bg-[#064e3b] rounded-full"
-          animate={{ width: `${(index / total) * 100}%` }} transition={{ duration: 0.35 }} />
+    <div className="max-w-4xl mx-auto px-6 pb-12">
+      <div className="mb-4 flex items-end justify-between gap-4">
+        <div><h2 className="text-xl font-extrabold text-gray-950">{data.title}选择题</h2><p className="mt-1 text-sm text-gray-500">从上到下完成15题，每题作答后立即获得反馈。</p></div>
+        <span className="text-sm font-bold text-emerald-700">{completed}/{questions.length} 已掌握</span>
       </div>
-
-      <AnimatePresence mode="wait">
-        <motion.div key={index}
-          initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }}
-          transition={{ duration: 0.18 }}>
-
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mb-4">
-            <p className="text-base font-semibold text-gray-900 leading-relaxed mb-5">{q.q}</p>
-            <div className="space-y-2.5">
-              {q.opts.map((opt, oi) => {
-                let style = 'border-gray-200 bg-white hover:border-[#064e3b]/40 hover:bg-gray-50/50 cursor-pointer'
-                if (confirmed) {
-                  if (oi === q.ans)              style = 'border-emerald-400 bg-emerald-50 cursor-default'
-                  else if (oi === selected)      style = 'border-red-300 bg-red-50 cursor-default'
-                  else                           style = 'border-gray-100 bg-white opacity-50 cursor-default'
-                } else if (oi === selected) {
-                  style = 'border-[#064e3b] bg-[#064e3b]/5 cursor-pointer'
-                }
-                return (
-                  <button key={oi}
-                    onClick={() => !confirmed && setSelected(oi)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl border text-left transition-all ${style}`}>
-                    <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-extrabold flex-shrink-0 ${
-                      confirmed && oi === q.ans                        ? 'bg-emerald-500 text-white'
-                      : confirmed && oi === selected && oi !== q.ans  ? 'bg-red-400 text-white'
-                      : oi === selected                                ? 'bg-[#064e3b] text-white'
-                      : 'bg-gray-100 text-gray-500'}`}>
-                      {LABELS[oi]}
-                    </span>
-                    <span className="text-sm text-gray-800 font-medium">{opt}</span>
-                    {confirmed && oi === q.ans         && <span className="ml-auto text-emerald-500 text-base">✓</span>}
-                    {confirmed && oi === selected && oi !== q.ans && <span className="ml-auto text-red-400 text-base">✗</span>}
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-
-          <ExplanationBox show={confirmed} correct={selected === q.ans} exp={q.exp} />
-
-          {!confirmed
-            ? <button onClick={confirm} disabled={selected === null}
-                className="w-full py-4 bg-[#064e3b] text-white font-bold rounded-2xl hover:bg-[#065f46] transition-all disabled:opacity-30 text-base">
-                确认答案
-              </button>
-            : <button onClick={next}
-                className="w-full py-4 bg-gray-900 text-white font-bold rounded-2xl hover:bg-gray-800 transition-all text-base">
-                {index + 1 < total ? '下一题 →' : '查看结果 →'}
-              </button>
-          }
-        </motion.div>
-      </AnimatePresence>
+      {completed === questions.length && <div className="mb-4 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 font-extrabold text-emerald-800">🎉 太棒了！15道题已全部答对。</div>}
+      <div className="space-y-4">
+        {questions.map((item, itemIndex) => {
+          const answers = answerIndexes(item)
+          const multiple = answers.length > 1
+          return (
+            <section key={item.q} className={`rounded-[22px] border bg-white p-5 shadow-sm ${feedback[itemIndex] === 'correct' ? 'border-emerald-300' : feedback[itemIndex] === 'wrong' ? 'border-amber-200' : 'border-gray-200'}`}>
+              <div className="flex items-start gap-3">
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-emerald-50 text-sm font-extrabold text-emerald-700">{itemIndex + 1}</span>
+                <div className="min-w-0 flex-1">
+                  <div className={`mb-2 inline-flex rounded-full px-2.5 py-1 text-[10px] font-extrabold ${multiple ? 'bg-amber-100 text-amber-800' : 'bg-emerald-50 text-emerald-700'}`}>{multiple ? '多选题 · 选择所有正确答案' : '单选题'}</div>
+                  <p className="text-base font-bold leading-relaxed text-gray-900">{item.q}</p>
+                  <p className="mt-1 text-sm font-medium leading-relaxed text-gray-500">{questionChinese(item, 'questions')}</p>
+                  <div className="mt-4 grid gap-2 md:grid-cols-2">
+                    {item.opts.map((option, optionIndex) => {
+                      const chosen = selected[itemIndex].includes(optionIndex)
+                      const locked = feedback[itemIndex] === 'correct'
+                      const style = locked && answers.includes(optionIndex) ? 'border-emerald-400 bg-emerald-50 text-emerald-900' : feedback[itemIndex] === 'wrong' && chosen ? 'border-amber-300 bg-amber-50 text-amber-900' : chosen ? 'border-[#064e3b] bg-emerald-50 text-[#064e3b]' : 'border-gray-200 bg-white text-gray-800 hover:border-emerald-400'
+                      return <button key={optionIndex} disabled={locked} onClick={() => choose(itemIndex, optionIndex)} className={`flex items-center gap-3 rounded-xl border px-4 py-3 text-left text-sm font-semibold transition-colors ${style}`}><span className={`grid h-6 w-6 shrink-0 place-items-center rounded-full text-xs font-extrabold ${chosen || (locked && answers.includes(optionIndex)) ? 'bg-[#064e3b] text-white' : 'bg-gray-100 text-gray-500'}`}>{LABELS[optionIndex]}</span>{option}</button>
+                    })}
+                  </div>
+                  {multiple && feedback[itemIndex] !== 'correct' && <button onClick={() => checkMultiple(itemIndex)} disabled={!selected[itemIndex].length} className="mt-3 rounded-xl bg-[#064e3b] px-5 py-2.5 text-sm font-extrabold text-white disabled:opacity-30">检查答案</button>}
+                  {feedback[itemIndex] === 'correct' && <div className="mt-3 rounded-xl bg-emerald-50 px-4 py-3 text-sm leading-relaxed text-emerald-800"><strong>✓ 回答正确！</strong><span className="ml-2">{chineseExplanation(item, answers.map(answer => item.opts[answer]).join('；'))}</span></div>}
+                  {feedback[itemIndex] === 'wrong' && <div className="mt-3 rounded-xl bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-900"><strong>还差一点，再试一次。</strong><span className="ml-2">请结合题目中的时间线索、主语和动词结构重新判断。</span></div>}
+                </div>
+              </div>
+            </section>
+          )
+        })}
+      </div>
     </div>
   )
 }
 
 /* ───────── Fill-in-blank ───────── */
 function BlanksSection({ data, unitNum }) {
-  const [index, setIndex]         = useState(0)
-  const [input, setInput]         = useState('')
-  const [confirmed, setConfirmed] = useState(false)
-  const [results, setResults]     = useState([])
-  const [done, setDone]           = useState(false)
-  const inputRef = useRef(null)
-
   const blanks = data.blanks
-  const total  = blanks.length
-  const b      = blanks[index]
+  const [inputs, setInputs] = useState(() => blanks.map(() => ''))
+  const [submitted, setSubmitted] = useState(false)
 
-  function isCorrect(val) {
-    return b.ans.some(a => a.trim().toLowerCase() === val.trim().toLowerCase())
+  function isCorrect(item, value) {
+    return item.ans.some(answer => answer.trim().toLowerCase() === value.trim().toLowerCase())
   }
 
-  function confirm() {
-    if (!input.trim()) return
-    setConfirmed(true)
-    setTimeout(() => inputRef.current?.blur(), 0)
+  function updateInput(index, value) {
+    setInputs(current => current.map((item, itemIndex) => itemIndex === index ? value : item))
   }
 
-  function next() {
-    const correct = isCorrect(input)
-    const updated = [...results, correct]
-    if (index + 1 >= total) { setResults(updated); setDone(true) }
-    else { setResults(updated); setIndex(i => i + 1); setInput(''); setConfirmed(false); setTimeout(() => inputRef.current?.focus(), 100) }
+  function submitAll() {
+    if (inputs.some(value => !value.trim())) return
+    blanks.forEach((item, index) => {
+      const id = grammarMistakeId(unitNum, 'blanks', index)
+      if (isCorrect(item, inputs[index])) markGrammarMistakeCorrect(id)
+      else recordGrammarMistake({ id, unitNum, unitTitle: data.title, type: 'blanks', index, prompt: item.sentence, promptZh: questionChinese(item, 'blanks'), correctAnswer: item.ans[0], explanation: chineseExplanation(item, item.ans[0]) })
+    })
+    setSubmitted(true)
   }
 
-  function restart() { setIndex(0); setInput(''); setConfirmed(false); setResults([]); setDone(false) }
-
-  // Split sentence on ___ to render blank placeholder
-  function renderSentence(sentence) {
-    const parts = sentence.split('___')
-    return parts.map((part, i) => (
-      <span key={i}>
-        {part}
-        {i < parts.length - 1 && (
-          <span className={`inline-block min-w-[60px] border-b-2 text-center font-bold px-1 ${
-            confirmed ? (isCorrect(input) ? 'border-emerald-500 text-emerald-700' : 'border-red-400 text-red-600') : 'border-[#064e3b] text-[#064e3b]'
-          }`}>
-            {confirmed ? input || '___' : (input || '      ')}
-          </span>
-        )}
-      </span>
-    ))
+  function restart() {
+    setInputs(blanks.map(() => ''))
+    setSubmitted(false)
   }
 
-  if (done) {
-    const correct = results.filter(Boolean).length
-    return <ResultScreen results={results} total={total} correct={correct}
-      questions={blanks.map(b => ({ text: b.sentence.replace('___', '___'), correctLabel: b.ans[0], exp: b.exp }))}
-      onRestart={restart} unitNum={unitNum} title={data.title} mode="挖空练习" />
-  }
+  const results = blanks.map((item, index) => isCorrect(item, inputs[index]))
+  const correct = results.filter(Boolean).length
 
-  const correct = confirmed ? isCorrect(input) : null
+  if (submitted) return <ResultScreen results={results} total={blanks.length} correct={correct}
+    questions={blanks.map(item => ({ text: item.sentence, textZh: questionChinese(item, 'blanks'), correctLabel: item.ans[0], exp: chineseExplanation(item, item.ans[0]) }))}
+    onRestart={restart} unitNum={unitNum} title={data.title} mode="挖空练习" />
 
   return (
-    <div className="max-w-xl mx-auto px-6 pb-10">
-      <ProgressDots index={index} total={total} results={results} />
-
-      <div className="h-1 bg-gray-100 rounded-full mb-6 overflow-hidden">
-        <motion.div className="h-full bg-[#064e3b] rounded-full"
-          animate={{ width: `${(index / total) * 100}%` }} transition={{ duration: 0.35 }} />
+    <div className="max-w-4xl mx-auto px-6 pb-12">
+      <div className="mb-4 flex items-end justify-between gap-4">
+        <div><h2 className="text-xl font-extrabold text-gray-950">{data.title}填空</h2><p className="mt-1 text-sm text-gray-500">完成全部 {blanks.length} 题后统一提交。（用括号里的单词适当形式填空）</p></div>
+        <span className="text-sm font-bold text-emerald-700">{inputs.filter(value => value.trim()).length}/{blanks.length} 已填写</span>
       </div>
-
-      <AnimatePresence mode="wait">
-        <motion.div key={index}
-          initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }}
-          transition={{ duration: 0.18 }}>
-
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mb-4">
-            <div className="text-xs font-bold text-gray-400 mb-3">题目 {index + 1} / {total} · 填入正确答案</div>
-            <p className="text-base font-semibold text-gray-800 leading-relaxed mb-5">
-              {renderSentence(b.sentence)}
-            </p>
-
-            <input
-              ref={inputRef}
-              value={input}
-              onChange={e => !confirmed && setInput(e.target.value)}
-              onKeyDown={e => { if (e.key === 'Enter') confirmed ? next() : confirm() }}
-              disabled={confirmed}
-              placeholder="在此输入答案…"
-              className={`w-full px-4 py-3 rounded-xl border text-sm font-medium outline-none transition-all ${
-                confirmed
-                  ? correct
-                    ? 'border-emerald-400 bg-emerald-50 text-emerald-700'
-                    : 'border-red-300 bg-red-50 text-red-700'
-                  : 'border-gray-200 bg-gray-50 focus:border-[#064e3b] focus:bg-white'
-              }`}
-            />
-
-            {confirmed && !correct && (
-              <div className="mt-2 text-xs text-gray-500">
-                正确答案：<span className="font-bold text-emerald-700">{b.ans.join(' / ')}</span>
+      <div className="overflow-hidden rounded-[22px] border border-gray-200 bg-white shadow-sm">
+        {blanks.map((item, index) => {
+          const parts = item.sentence.split('___')
+          return (
+            <div key={item.sentence} className="grid gap-3 border-b border-gray-100 px-5 py-5 last:border-b-0 md:grid-cols-[44px_1fr]">
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-emerald-50 text-sm font-extrabold text-emerald-700">{index + 1}</span>
+              <div>
+                <div className="flex flex-wrap items-end gap-x-2 gap-y-3 text-base font-semibold leading-relaxed text-gray-800">
+                  {parts.map((part, partIndex) => <span key={partIndex} className="contents"><span>{part}</span>{partIndex < parts.length - 1 && <input value={inputs[index]} onChange={event => updateInput(index, event.target.value)} placeholder="填写答案" className="min-w-[150px] flex-1 border-0 border-b-2 border-emerald-400 bg-transparent px-2 py-1 font-bold text-emerald-800 outline-none placeholder:text-gray-300" />}</span>)}
+                </div>
               </div>
-            )}
-          </div>
-
-          <ExplanationBox show={confirmed} correct={correct} exp={b.exp} />
-
-          {!confirmed
-            ? <button onClick={confirm} disabled={!input.trim()}
-                className="w-full py-4 bg-[#064e3b] text-white font-bold rounded-2xl hover:bg-[#065f46] transition-all disabled:opacity-30 text-base">
-                确认答案
-              </button>
-            : <button onClick={next}
-                className="w-full py-4 bg-gray-900 text-white font-bold rounded-2xl hover:bg-gray-800 transition-all text-base">
-                {index + 1 < total ? '下一题 →' : '查看结果 →'}
-              </button>
-          }
-        </motion.div>
-      </AnimatePresence>
+            </div>
+          )
+        })}
+      </div>
+      <button onClick={submitAll} disabled={inputs.some(value => !value.trim())} className="mt-5 w-full rounded-2xl bg-[#064e3b] py-4 text-base font-bold text-white transition-colors hover:bg-[#065f46] disabled:opacity-30">提交全部答案</button>
     </div>
   )
 }
 
 /* ───────── Error Correction ───────── */
 function CorrectionsSection({ data, unitNum }) {
-  const [index, setIndex]         = useState(0)
-  const [input, setInput]         = useState('')
-  const [confirmed, setConfirmed] = useState(false)
-  const [results, setResults]     = useState([])
-  const [done, setDone]           = useState(false)
-  const inputRef = useRef(null)
-
   const corrections = data.corrections
-  const total       = corrections.length
-  const c           = corrections[index]
+  const [selectedParts, setSelectedParts] = useState(() => corrections.map(() => null))
+  const [selectionFeedback, setSelectionFeedback] = useState(() => corrections.map(() => null))
+  const [answers, setAnswers] = useState(() => corrections.map(() => ''))
+  const [answerFeedback, setAnswerFeedback] = useState(() => corrections.map(() => null))
+  const [submitted, setSubmitted] = useState(false)
 
-  function isCorrect(val) {
-    return val.trim().toLowerCase() === c.correct.trim().toLowerCase()
+  function normalize(value) {
+    return String(value).trim().toLowerCase().replace(/[’‘]/g, "'").replace(/\s+/g, ' ')
   }
 
-  function confirm() {
-    if (!input.trim()) return
-    setConfirmed(true)
-    setTimeout(() => inputRef.current?.blur(), 0)
+  function partsFor(item) {
+    const errorStart = item.sentence.indexOf(item.error)
+    if (errorStart < 0) return [...item.sentence.matchAll(/\S+/g)].map((match, index) => ({ text: match[0], index, isError: false }))
+    const before = item.sentence.slice(0, errorStart).trim().split(/\s+/).filter(Boolean)
+    const after = item.sentence.slice(errorStart + item.error.length).trim().split(/\s+/).filter(Boolean)
+    return [
+      ...before.map(text => ({ text, isError: false })),
+      { text: item.error, isError: true },
+      ...after.map(text => ({ text, isError: false })),
+    ].map((part, index) => ({ ...part, index }))
   }
 
-  function next() {
-    const correct = isCorrect(input)
-    const updated = [...results, correct]
-    if (index + 1 >= total) { setResults(updated); setDone(true) }
-    else { setResults(updated); setIndex(i => i + 1); setInput(''); setConfirmed(false); setTimeout(() => inputRef.current?.focus(), 100) }
+  function resultFor(item, index) {
+    const foundError = selectionFeedback[index] === 'correct'
+    const correctedPart = normalize(answers[index]) === normalize(item.correct)
+    return { foundError, correctedPart, correct: foundError && correctedPart }
   }
 
-  function restart() { setIndex(0); setInput(''); setConfirmed(false); setResults([]); setDone(false) }
+  const results = corrections.map(resultFor)
+  const completed = answerFeedback.filter(value => value === 'correct').length
 
-  // Highlight the error word in the sentence
-  function renderSentenceWithError(sentence, error) {
-    const idx = sentence.indexOf(error)
-    if (idx === -1) return <span>{sentence}</span>
-    return (
-      <>
-        <span>{sentence.slice(0, idx)}</span>
-        <span className="underline decoration-red-400 decoration-2 text-red-500 font-bold">{error}</span>
-        <span>{sentence.slice(idx + error.length)}</span>
-      </>
-    )
+  function selectPart(itemIndex, part) {
+    if (selectionFeedback[itemIndex] === 'correct') return
+    setSelectedParts(current => current.map((value, index) => index === itemIndex ? part.index : value))
+    setSelectionFeedback(current => current.map((value, index) => index === itemIndex ? (part.isError ? 'correct' : 'wrong') : value))
+    if (!part.isError) saveCorrectionMistake(corrections[itemIndex], itemIndex)
   }
 
-  if (done) {
-    const correct = results.filter(Boolean).length
-    return <ResultScreen results={results} total={total} correct={correct}
-      questions={corrections.map(c => ({ text: c.sentence, correctLabel: `${c.error} → ${c.correct}`, exp: c.exp }))}
-      onRestart={restart} unitNum={unitNum} title={data.title} mode="改错题" />
+  function checkCorrection(item, itemIndex) {
+    if (!answers[itemIndex].trim()) return
+    const correct = normalize(answers[itemIndex]) === normalize(item.correct)
+    const id = grammarMistakeId(unitNum, 'corrections', itemIndex)
+    if (correct) markGrammarMistakeCorrect(id)
+    else saveCorrectionMistake(item, itemIndex)
+    setAnswerFeedback(current => current.map((value, index) => index === itemIndex ? (correct ? 'correct' : 'wrong') : value))
   }
 
-  const correct = confirmed ? isCorrect(input) : null
+  function saveCorrectionMistake(item, index) {
+    const id = grammarMistakeId(unitNum, 'corrections', index)
+    recordGrammarMistake({ id, unitNum, unitTitle: data.title, type: 'corrections', index, prompt: item.sentence, promptZh: questionChinese(item, 'corrections'), correctAnswer: `${item.error} → ${item.correct}`, explanation: chineseExplanation(item, `${item.error} → ${item.correct}`) })
+  }
+
+  function correctionHint(item) {
+    const lower = item.correct.toLowerCase()
+    if (/^(do|does|don’t|doesn’t|don't|doesn't)$/.test(lower)) return '想一想：这个主语是第三人称单数，还是I、you或复数主语？'
+    if (/^(do|does)\s/.test(lower)) return '想一想：一般现在时疑问句需要哪个助动词？助动词后使用动词原形。'
+    if (lower.split(' ').length > 1) return `提示：正确部分包含 ${lower.split(' ').length} 个单词，请检查助动词和动词形式。`
+    return `提示：正确答案以“${item.correct.charAt(0)}”开头，请检查主语和动词的搭配。`
+  }
+
+  function restart() {
+    setSelectedParts(corrections.map(() => null))
+    setSelectionFeedback(corrections.map(() => null))
+    setAnswers(corrections.map(() => ''))
+    setAnswerFeedback(corrections.map(() => null))
+    setSubmitted(false)
+  }
 
   return (
-    <div className="max-w-xl mx-auto px-6 pb-10">
-      <ProgressDots index={index} total={total} results={results} />
-
-      <div className="h-1 bg-gray-100 rounded-full mb-6 overflow-hidden">
-        <motion.div className="h-full bg-[#064e3b] rounded-full"
-          animate={{ width: `${(index / total) * 100}%` }} transition={{ duration: 0.35 }} />
+    <div className="max-w-4xl mx-auto px-6 pb-12">
+      <div className="mb-4 flex items-end justify-between gap-4">
+        <div><h2 className="text-xl font-extrabold text-gray-950">{data.title}改错</h2><p className="mt-1 text-sm text-gray-500">先点击错误部分，再输入改正后的部分。</p></div>
+        <span className="text-sm font-bold text-emerald-700">{completed}/{corrections.length} 已完成</span>
       </div>
-
-      <AnimatePresence mode="wait">
-        <motion.div key={index}
-          initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }}
-          transition={{ duration: 0.18 }}>
-
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mb-4">
-            <div className="text-xs font-bold text-gray-400 mb-1">题目 {index + 1} / {total}</div>
-            <div className="text-xs text-gray-400 mb-3">找出划线错误，在下方输入正确形式</div>
-            <p className="text-base font-semibold text-gray-800 leading-relaxed mb-5">
-              {renderSentenceWithError(c.sentence, c.error)}
-            </p>
-
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-sm text-red-400 font-bold line-through">{c.error}</span>
-              <span className="text-gray-300">→</span>
-              <input
-                ref={inputRef}
-                value={input}
-                onChange={e => !confirmed && setInput(e.target.value)}
-                onKeyDown={e => { if (e.key === 'Enter') confirmed ? next() : confirm() }}
-                disabled={confirmed}
-                placeholder="输入正确形式…"
-                className={`flex-1 px-3 py-2 rounded-xl border text-sm font-medium outline-none transition-all ${
-                  confirmed
-                    ? correct
-                      ? 'border-emerald-400 bg-emerald-50 text-emerald-700'
-                      : 'border-red-300 bg-red-50 text-red-700'
-                    : 'border-gray-200 bg-gray-50 focus:border-[#064e3b] focus:bg-white'
-                }`}
-              />
-            </div>
-
-            {confirmed && !correct && (
-              <div className="mt-2 text-xs text-gray-500 ml-1">
-                正确答案：<span className="font-bold text-emerald-700">{c.correct}</span>
+      {submitted && (
+        <div className="mb-4 flex items-center justify-between rounded-2xl bg-emerald-50 px-5 py-4 text-emerald-900">
+          <span className="font-bold">本次答对 {results.filter(result => result.correct).length} / {corrections.length} 题</span>
+          <button onClick={restart} className="text-sm font-extrabold text-emerald-700">重新练习 →</button>
+        </div>
+      )}
+      <div className="space-y-3">
+        {corrections.map((item, index) => {
+          const result = results[index]
+          return (
+            <section key={item.sentence} className={`rounded-[20px] border bg-white p-5 ${answerFeedback[index] === 'correct' ? 'border-emerald-300' : 'border-gray-200'}`}>
+              <div className="flex items-start gap-3">
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-emerald-50 text-sm font-extrabold text-emerald-700">{index + 1}</span>
+                <div className="min-w-0 flex-1">
+                  <p className="mb-3 text-xs font-bold text-gray-400">点击你认为有错误的部分</p>
+                  <div className="flex flex-wrap gap-2">
+                    {partsFor(item).map(part => {
+                      const selected = selectedParts[index] === part.index
+                      const style = submitted
+                        ? part.isError ? 'border-emerald-400 bg-emerald-50 text-emerald-800' : selected ? 'border-red-300 bg-red-50 text-red-700' : 'border-gray-100 bg-white text-gray-500'
+                        : selectionFeedback[index] === 'correct' && part.isError ? 'border-emerald-400 bg-emerald-50 text-emerald-800' : selected && selectionFeedback[index] === 'wrong' ? 'border-red-300 bg-red-50 text-red-700' : 'border-gray-200 bg-white text-gray-800 hover:border-emerald-400'
+                      return <button key={part.index} disabled={submitted || selectionFeedback[index] === 'correct'} onClick={() => selectPart(index, part)} className={`rounded-lg border px-2.5 py-1.5 text-base font-semibold transition-colors ${style}`}>{part.text}</button>
+                    })}
+                  </div>
+                  {selectionFeedback[index] === 'wrong' && <p className="mt-3 text-sm font-bold text-red-500">这里不是错误，再试一下。</p>}
+                  {selectionFeedback[index] === 'correct' && <p className="mt-3 text-sm font-bold text-emerald-700">✓ 找对了！请在下方输入改正后的部分。</p>}
+                  {selectionFeedback[index] === 'correct' && (
+                    <div className="mt-3 flex gap-2">
+                      <input disabled={submitted || answerFeedback[index] === 'correct'} value={answers[index]} onChange={event => { setAnswers(current => current.map((value, itemIndex) => itemIndex === index ? event.target.value : value)); setAnswerFeedback(current => current.map((value, itemIndex) => itemIndex === index ? null : value)) }} onKeyDown={event => { if (event.key === 'Enter') checkCorrection(item, index) }} placeholder="输入改正后的部分" className="min-w-0 flex-1 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm font-medium text-gray-800 outline-none focus:border-emerald-500 focus:bg-white disabled:opacity-70" />
+                      {answerFeedback[index] !== 'correct' && <button onClick={() => checkCorrection(item, index)} disabled={!answers[index].trim()} className="shrink-0 rounded-xl bg-[#064e3b] px-5 py-3 text-sm font-extrabold text-white disabled:opacity-30">检查答案</button>}
+                    </div>
+                  )}
+                  {answerFeedback[index] === 'correct' && (
+                    <div className="mt-3 rounded-xl border border-emerald-100 bg-emerald-50 px-4 py-3 text-sm leading-relaxed text-emerald-800">
+                      <p className="font-extrabold">✓ 太棒了，修改正确！</p>
+                      <p className="mt-1">{chineseExplanation(item, `${item.error} → ${item.correct}`)}</p>
+                    </div>
+                  )}
+                  {answerFeedback[index] === 'wrong' && (
+                    <div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-900">
+                      <p className="font-extrabold">还差一点，再试一次。</p>
+                      <p className="mt-1">{correctionHint(item)}</p>
+                    </div>
+                  )}
+                  {submitted && (
+                    <div className="mt-3 space-y-1 text-sm">
+                      <p className={result.foundError ? 'text-emerald-700' : 'text-red-600'}>{result.foundError ? '✓ 已找对错误位置' : `✗ 错误位置应为：${item.error}`}</p>
+                      <p className={result.correctedPart ? 'text-emerald-700' : 'text-red-600'}>{result.correctedPart ? '✓ 改正后的部分填写正确' : `✗ 正确答案：${item.correct}`}</p>
+                      <p className="pt-1 leading-relaxed text-gray-500">{chineseExplanation(item, `${item.error} → ${item.correct}`)}</p>
+                    </div>
+                  )}
+                </div>
               </div>
-            )}
-          </div>
-
-          <ExplanationBox show={confirmed} correct={correct} exp={c.exp} />
-
-          {!confirmed
-            ? <button onClick={confirm} disabled={!input.trim()}
-                className="w-full py-4 bg-[#064e3b] text-white font-bold rounded-2xl hover:bg-[#065f46] transition-all disabled:opacity-30 text-base">
-                确认答案
-              </button>
-            : <button onClick={next}
-                className="w-full py-4 bg-gray-900 text-white font-bold rounded-2xl hover:bg-gray-800 transition-all text-base">
-                {index + 1 < total ? '下一题 →' : '查看结果 →'}
-              </button>
-          }
-        </motion.div>
-      </AnimatePresence>
+            </section>
+          )
+        })}
+      </div>
+      {!submitted && <button onClick={() => setSubmitted(true)} disabled={completed !== corrections.length} className="mt-5 w-full rounded-2xl bg-[#064e3b] py-4 text-base font-bold text-white hover:bg-[#065f46] disabled:opacity-30">完成练习</button>}
     </div>
   )
 }
 
 /* ───────── Shared sub-components ───────── */
-
-function ProgressDots({ index, total, results }) {
-  return (
-    <div className="flex items-center justify-between mb-2">
-      <span className="text-xs font-bold text-gray-400">题目 {index + 1} / {total}</span>
-      <div className="flex gap-1">
-        {Array.from({ length: total }).map((_, i) => (
-          <div key={i} className={`w-2 h-2 rounded-full ${
-            i < index ? (results[i] ? 'bg-emerald-400' : 'bg-red-400')
-            : i === index ? 'bg-[#064e3b]'
-            : 'bg-gray-200'
-          }`} />
-        ))}
-      </div>
-    </div>
-  )
-}
-
-function ExplanationBox({ show, correct, exp }) {
-  return (
-    <AnimatePresence>
-      {show && (
-        <motion.div
-          initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}
-          exit={{ opacity: 0, height: 0 }}
-          className={`rounded-2xl px-5 py-4 mb-4 border text-sm leading-relaxed overflow-hidden ${
-            correct
-              ? 'bg-emerald-50 border-emerald-100 text-emerald-800'
-              : 'bg-red-50 border-red-100 text-red-800'
-          }`}
-        >
-          <span className="font-bold mr-1">{correct ? '✓ 正确！' : '✗ 解析：'}</span>
-          {exp}
-        </motion.div>
-      )}
-    </AnimatePresence>
-  )
-}
 
 function ResultScreen({ results, total, correct, questions, onRestart, unitNum, title, mode }) {
   const pct = Math.round(correct / total * 100)
@@ -496,6 +483,7 @@ function ResultScreen({ results, total, correct, questions, onRestart, unitNum, 
               </span>
               <span className="text-sm font-medium text-gray-800 flex-1">{q.text}</span>
             </div>
+            {q.textZh && <div className="text-xs text-gray-500 ml-5 mb-2 leading-relaxed">{q.textZh}</div>}
             <div className={`text-xs font-semibold ml-5 ${results[i] ? 'text-emerald-700' : 'text-red-600'}`}>
               正确答案：{q.correctLabel}
             </div>
@@ -517,4 +505,3 @@ function ResultScreen({ results, total, correct, questions, onRestart, unitNum, 
     </div>
   )
 }
-

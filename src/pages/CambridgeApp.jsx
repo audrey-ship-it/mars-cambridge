@@ -125,6 +125,7 @@ export function CambridgeLayout({ children, activeModule, level, setLevel }) {
 import { cambridgeWordsByLevel, LEVEL_WORD_COUNTS } from '../data/cambridgeWords'
 import { VOCAB_SETS, MUST_SPELL_TOPICS, mustSpell500, READING_FREQ_288, irregularVerbWords } from '../data/ketVocabSets'
 import { COLLOCATION_BATCHES } from '../data/ketCollocations'
+import { getKetEnglishDefinition } from '../data/ketEnglishDefinitions'
 
 function speak(word) {
   const u = new SpeechSynthesisUtterance(word)
@@ -152,45 +153,55 @@ function VocabPanelIcon({ name, className = 'w-5 h-5' }) {
 function playCorrect() {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)()
-    ;[523.25, 659.25, 783.99].forEach((f, i) => {
+    ;[659.25, 880].forEach((f, i) => {
       const o = ctx.createOscillator(), g = ctx.createGain()
       o.connect(g); g.connect(ctx.destination)
-      o.type = 'sine'; o.frequency.value = f
-      const t = ctx.currentTime + i * 0.12
+      o.type = i === 0 ? 'sine' : 'triangle'; o.frequency.value = f
+      const t = ctx.currentTime + i * 0.14
       g.gain.setValueAtTime(0, t)
-      g.gain.linearRampToValueAtTime(0.22, t + 0.02)
-      g.gain.exponentialRampToValueAtTime(0.001, t + 0.22)
-      o.start(t); o.stop(t + 0.25)
+      g.gain.linearRampToValueAtTime(i === 0 ? 0.12 : 0.09, t + 0.025)
+      g.gain.exponentialRampToValueAtTime(0.001, t + 0.32)
+      o.start(t); o.stop(t + 0.34)
     })
+    setTimeout(() => ctx.close(), 650)
   } catch {}
 }
 
 function playWrong() {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)()
-    ;[246.94, 196.00].forEach((f, i) => {
+    ;[329.63, 261.63].forEach((f, i) => {
       const o = ctx.createOscillator(), g = ctx.createGain()
       o.connect(g); g.connect(ctx.destination)
-      o.type = 'sawtooth'; o.frequency.value = f
-      const t = ctx.currentTime + i * 0.15
+      o.type = 'triangle'; o.frequency.value = f
+      const t = ctx.currentTime + i * 0.16
       g.gain.setValueAtTime(0, t)
-      g.gain.linearRampToValueAtTime(0.15, t + 0.02)
-      g.gain.exponentialRampToValueAtTime(0.001, t + 0.28)
-      o.start(t); o.stop(t + 0.3)
+      g.gain.linearRampToValueAtTime(0.14, t + 0.025)
+      g.gain.exponentialRampToValueAtTime(0.001, t + 0.3)
+      o.start(t); o.stop(t + 0.32)
     })
+    setTimeout(() => ctx.close(), 650)
   } catch {}
 }
 
 
 const DAILY_OPTIONS = [10, 20, 30, 50]
 
+function VocabCenterButton({ onClick, className = '' }) {
+  return (
+    <button onClick={onClick}
+      className={`inline-flex items-center justify-center gap-2 rounded-xl border border-[#e7c65f] bg-[#fff8e7] px-4 py-2.5 font-extrabold text-[#735500] hover:bg-[#fbe9ad] transition-colors ${className}`}>
+      <span aria-hidden="true">←</span>
+      我的词汇中心
+    </button>
+  )
+}
+
 /* ── 话题选择器 (for 必默500词 topic mode) ── */
 function TopicChooser({ onSelect, onBack }) {
   return (
     <div className="max-w-2xl mx-auto px-6 py-8">
-      <button onClick={onBack} className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-gray-700 mb-6 transition-colors">
-        ← 返回
-      </button>
+      <VocabCenterButton onClick={onBack} className="mb-6" />
       <h2 className="text-xl font-bold text-gray-900 mb-1">选择话题</h2>
       <p className="text-sm text-gray-400 mb-6">专项突破，每次专注一个主题</p>
       <div className="grid grid-cols-2 gap-3">
@@ -218,6 +229,7 @@ function VocabPathIcon({ id }) {
     topic: <><path d="M3 7h7l2 2h9v11H3z"/><path d="M7 13h10"/></>,
     irregular: <><path d="M20 7h-6V1"/><path d="M20 7a9 9 0 1 0 1 9"/><path d="m8 12 3 3 5-6"/></>,
     collocations: <><path d="m9 15-2 2a4 4 0 0 1-6-6l3-3a4 4 0 0 1 6 0"/><path d="m15 9 2-2a4 4 0 0 1 6 6l-3 3a4 4 0 0 1-6 0"/><path d="m8 16 8-8"/></>,
+    review: <><path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v5h5"/><path d="m9 12 2 2 4-5"/></>,
   }
   return <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[id]}</svg>
 }
@@ -239,16 +251,57 @@ function VocabSetChooser({ onSelect, onCollocation }) {
 
   const practiced = lastResult?.total || 0
   const accuracy = lastResult?.accuracy ?? 0
-  const wrongCount = lastResult?.wrongCount || 0
+  const reviewWords = (() => {
+    try {
+      const queue = JSON.parse(localStorage.getItem('mars_vocab_review_queue_v1') || '[]')
+      if (queue.length) return queue
+
+      // Bring review records created before the dedicated queue was added into the new entry.
+      const mastery = JSON.parse(localStorage.getItem('mars_vocab_mastery_v1') || '{}')
+      const needsReview = new Set(Object.entries(mastery).filter(([, record]) => record?.needsReview).map(([word]) => word))
+      const catalog = [
+        ...mustSpell500,
+        ...READING_FREQ_288,
+        ...(cambridgeWordsByLevel.KET || []),
+      ]
+      const recovered = []
+      const seen = new Set()
+      catalog.forEach(word => {
+        const key = word.word?.toLowerCase()
+        if (key && needsReview.has(key) && !seen.has(key)) {
+          seen.add(key)
+          recovered.push(word)
+        }
+      })
+      if (recovered.length) localStorage.setItem('mars_vocab_review_queue_v1', JSON.stringify(recovered))
+      return recovered
+    } catch { return [] }
+  })()
+  const wrongCount = reviewWords.length
 
   function openSet(vs) {
     if (vs.mode === 'topic') setShowTopics(true)
+    else if (vs.pending) return
     else onSelect({ mode: vs.mode })
   }
 
   const cards = [
     ...VOCAB_SETS.map(vs => ({ ...vs, action: () => openSet(vs) })),
-    { id: 'collocations', emoji: '🔗', title: '固定搭配专项', subtitle: '270 个词组', desc: '通过填空练习掌握常见搭配，帮助阅读理解和写作表达。', action: onCollocation },
+    {
+      id: 'collocations',
+      title: '固定搭配专项',
+      subtitle: '270 组',
+      desc: '通过填空练习掌握常见搭配，帮助阅读理解和写作表达。',
+      action: onCollocation,
+    },
+    {
+      id: 'review',
+      title: '错词复习',
+      subtitle: wrongCount ? `${wrongCount} 个待复习` : '暂无错词',
+      desc: wrongCount ? '集中复习练习中拼错或跳过的单词，答对后自动移出错词列表。' : '练习中拼错或跳过的单词，会自动收集到这里。',
+      action: () => wrongCount && onSelect({ mode: 'review', words: reviewWords }),
+      disabled: !wrongCount,
+    },
   ]
 
   return (
@@ -257,15 +310,14 @@ function VocabSetChooser({ onSelect, onCollocation }) {
         <div>
           <div className="text-[11px] font-extrabold tracking-[.18em] text-emerald-700">KET VOCABULARY</div>
           <div className="mt-1 flex items-baseline gap-4">
-            <h1 className="text-3xl font-extrabold tracking-tight text-gray-950">词汇学习</h1>
-            <p className="hidden md:block text-sm text-gray-400">选择一个类别，开始今天的拼写与复习训练。</p>
+            <h1 className="text-4xl font-extrabold tracking-tight text-gray-950">我的词汇中心</h1>
+            <p className="hidden md:block text-base text-gray-500">选择一个类别，开始今天的拼写与复习训练。</p>
           </div>
         </div>
-        <div className="grid grid-cols-3 gap-2 lg:w-[470px]">
+        <div className="grid grid-cols-2 gap-2 lg:w-[320px]">
           {[
             ['今日完成', `${practiced}/20`],
             ['最近正确率', lastResult ? `${accuracy}%` : '—'],
-            ['待复习错词', `${wrongCount}`],
           ].map(([label,value]) => <div key={label} className="bg-white border border-gray-200 rounded-xl px-4 py-2.5 flex items-center justify-between gap-3"><span className="text-[11px] text-gray-400">{label}</span><strong className="text-lg text-gray-950">{value}</strong></div>)}
         </div>
       </div>
@@ -273,22 +325,22 @@ function VocabSetChooser({ onSelect, onCollocation }) {
       <div className="mt-5 grid sm:grid-cols-2 lg:grid-cols-3 gap-3.5 flex-1">
         {cards.map((card, i) => {
           const featured = i === 0
-          const gold = card.id === 'collocations'
-          const hasArrow = i === 0 || i === 1 || i === 3 || i === 4
+          const gold = card.id === 'review'
+          const hasArrow = !card.disabled && (i === 0 || i === 1 || i === 3 || i === 4)
           return <div key={card.id} className="relative">
-          <button onClick={card.action} className={`relative overflow-hidden w-full h-full group text-left rounded-[22px] border p-5 lg:p-6 min-h-[190px] flex flex-col hover:-translate-y-0.5 hover:shadow-md transition-all ${featured ? 'bg-emerald-50/40 border-emerald-500' : gold ? 'bg-[#fffaf0] border-[#e8cf88]' : 'bg-white border-gray-200 hover:border-emerald-300'}`}>
+          <button onClick={card.action} disabled={card.disabled} className={`relative overflow-hidden w-full h-full group text-left rounded-[22px] border p-5 lg:p-6 min-h-[190px] flex flex-col transition-all ${featured ? 'bg-emerald-50/40 border-emerald-500 hover:-translate-y-0.5 hover:shadow-md' : gold ? `bg-[#fffaf0] border-[#e8cf88] ${card.disabled ? 'cursor-default' : 'hover:-translate-y-0.5 hover:shadow-md'}` : 'bg-white border-gray-200 hover:border-emerald-300 hover:-translate-y-0.5 hover:shadow-md'}`}>
             {featured && <div className="absolute top-0 inset-x-0 h-1.5 bg-[#064e3b]" />}
             <div className="relative flex items-start justify-between">
               <span className={`w-11 h-11 rounded-2xl grid place-items-center ${featured ? 'bg-[#064e3b] text-white' : gold ? 'bg-[#f4c95d] text-[#684d00]' : 'bg-emerald-50 text-emerald-700'}`}><VocabPathIcon id={card.id}/></span>
-              <div className="flex items-center gap-2"><span className={`text-[10px] font-extrabold tracking-[.14em] ${gold ? 'text-[#b78a19]' : 'text-gray-300'}`}>0{i + 1}</span>{featured && <span className="rounded-full bg-[#f4c95d] text-[#604800] px-2.5 py-1 text-[10px] font-extrabold">今日推荐</span>}</div>
+              <div className="flex items-center gap-2"><span className={`text-[10px] font-extrabold tracking-[.14em] ${gold ? 'text-[#b78a19]' : 'text-gray-300'}`}>0{i + 1}</span>{featured && <span className="rounded-full bg-[#f4c95d] text-[#604800] px-2.5 py-1 text-[10px] font-extrabold">今日推荐</span>}{gold && wrongCount > 0 && <span className="rounded-full bg-[#f4c95d] text-[#604800] px-2.5 py-1 text-[10px] font-extrabold">{wrongCount} 词</span>}</div>
             </div>
             <div className="relative mt-4">
-              <h2 className="font-extrabold text-xl text-gray-950">{card.title}</h2>
-              <p className="mt-1.5 text-xs leading-relaxed line-clamp-2 text-gray-400">{card.desc}</p>
+              <h2 className="font-extrabold text-2xl text-gray-950">{card.title}</h2>
+              <p className="mt-2 text-sm leading-relaxed line-clamp-2 text-gray-500">{card.desc}</p>
             </div>
-            <div className="relative mt-auto pt-4 flex items-center justify-between text-xs">
-              <span className="text-gray-400">{featured ? '本组 20 词 · 约 8 分钟' : card.count ? `${card.count} 词` : card.subtitle}</span>
-              <span className={`font-extrabold ${featured ? 'bg-[#064e3b] text-white rounded-xl px-3 py-2' : gold ? 'text-[#8a6500]' : 'text-emerald-700'}`}>{featured ? '开始练习 →' : '进入 →'}</span>
+            <div className="relative mt-auto pt-4 flex items-center justify-between text-sm">
+              <span className="font-medium text-gray-500">{featured ? `${card.count} 词 · 按话题练习` : card.count ? `${card.count} ${card.countUnit || '词'}` : card.subtitle}</span>
+              <span className={`font-extrabold ${featured ? 'bg-[#064e3b] text-white rounded-xl px-3 py-2' : gold ? card.disabled ? 'text-[#b8a779]' : 'text-[#8a6500]' : 'text-emerald-700'}`}>{featured ? '选择话题 →' : gold ? card.disabled ? '暂无错词' : '开始复习 →' : '进入 →'}</span>
             </div>
           </button>
           {hasArrow && <span className="hidden lg:grid absolute -right-[13px] top-1/2 -translate-y-1/2 z-10 w-7 h-7 rounded-full bg-[#f4c95d] text-[#064e3b] place-items-center text-sm font-extrabold shadow-sm">→</span>}
@@ -301,12 +353,61 @@ function VocabSetChooser({ onSelect, onCollocation }) {
 
 /* ── 固定搭配练习 ── */
 function CollocationsContent({ onBack }) {
+  const [practiceMode, setPracticeMode] = useState(null) // 'phrase' | 'sentence'
   const [colBatch,   setColBatch]   = useState(0)
   const [colAnswers, setColAnswers] = useState({})
   const [colChecked, setColChecked] = useState(false)
   const [colScore,   setColScore]   = useState(null)
 
   const currentBatch = COLLOCATION_BATCHES[colBatch]
+
+  function phraseWithBlank(item) {
+    const phrase = item.phrase
+    const answer = item.answer
+    const escaped = answer.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    const matches = [...phrase.matchAll(new RegExp(`\\b${escaped}\\b`, 'gi'))]
+    if (matches.length) {
+      const match = matches[matches.length - 1]
+      return `${phrase.slice(0, match.index)}___${phrase.slice(match.index + match[0].length)}`
+    }
+    if (/self$/i.test(answer) && /oneself/i.test(phrase)) return phrase.replace(/oneself/i, '___')
+    const words = phrase.split(' ')
+    words[words.length - 1] = '___'
+    return words.join(' ')
+  }
+
+  if (!practiceMode) {
+    return (
+      <div className="max-w-4xl mx-auto px-6 py-10">
+        <VocabCenterButton onClick={onBack} />
+        <div className="mt-6 text-center">
+          <div className="text-[11px] font-extrabold tracking-[.18em] text-emerald-700">KET COLLOCATIONS</div>
+          <h1 className="mt-2 text-3xl font-extrabold text-gray-950">固定搭配专项</h1>
+          <p className="mt-2 text-sm text-gray-400">选择一种练习方式，两种模式使用同一套 270 个固定搭配。</p>
+        </div>
+        <div className="mt-8 grid md:grid-cols-2 gap-5">
+          <button onClick={() => setPracticeMode('phrase')}
+            className="group min-h-[260px] rounded-[26px] border border-emerald-300 bg-emerald-50/40 p-7 text-left hover:-translate-y-1 hover:shadow-lg transition-all">
+            <span className="grid h-12 w-12 place-items-center rounded-2xl bg-[#064e3b] text-xl font-extrabold text-white">Aa</span>
+            <h2 className="mt-6 text-2xl font-extrabold text-gray-950">搭配填空</h2>
+            <p className="mt-2 text-sm leading-relaxed text-gray-500">直接补全固定搭配，先记住词与词之间的组合。</p>
+            <div className="mt-6 rounded-xl border border-emerald-200 bg-white px-4 py-3 text-lg font-bold text-gray-700">
+              <span className="mr-2 font-semibold text-gray-500">例：</span>as soon <span className="text-emerald-700">___</span><span className="ml-3 font-semibold text-gray-700">一……就</span>
+            </div>
+            <span className="mt-5 inline-block font-extrabold text-emerald-700">开始练习 →</span>
+          </button>
+          <button onClick={() => setPracticeMode('sentence')}
+            className="group min-h-[260px] rounded-[26px] border border-gray-200 bg-white p-7 text-left hover:-translate-y-1 hover:border-emerald-300 hover:shadow-lg transition-all">
+            <span className="grid h-12 w-12 place-items-center rounded-2xl bg-[#f4c95d] text-[#684d00]"><VocabPathIcon id="collocations"/></span>
+            <h2 className="mt-6 text-2xl font-extrabold text-gray-950">句中运用</h2>
+            <p className="mt-2 text-sm leading-relaxed text-gray-500">在完整句子中填写搭配，理解真实语境中的用法。</p>
+            <div className="mt-6 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm font-semibold text-gray-700">Please tell me as soon <span className="text-emerald-700">___</span> you come back.</div>
+            <span className="mt-5 inline-block font-extrabold text-emerald-700">开始练习 →</span>
+          </button>
+        </div>
+      </div>
+    )
+  }
 
   function handleSubmit() {
     let correct = 0
@@ -340,28 +441,28 @@ function CollocationsContent({ onBack }) {
     <div className="max-w-3xl mx-auto px-6 py-8">
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
-        <button onClick={onBack} className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-gray-700 transition-colors">
-          ← 返回
+        <button onClick={() => setPracticeMode(null)} className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-gray-700 transition-colors">
+          ← 切换模式
         </button>
         <div className="w-px h-4 bg-gray-200" />
         <h2 className="text-xl font-bold text-gray-900">🔗 固定搭配专项</h2>
-        <span className="text-xs bg-teal-50 text-teal-700 border border-teal-100 font-semibold px-3 py-1 rounded-full">270 词组 · 填空</span>
+        <span className="text-xs bg-teal-50 text-teal-700 border border-teal-100 font-semibold px-3 py-1 rounded-full">{practiceMode === 'phrase' ? '搭配填空' : '句中运用'} · 270 词组</span>
       </div>
 
       <div className="flex gap-4">
         {/* Batch selector sidebar */}
         <div className="w-28 flex-shrink-0">
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-3">
-            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">批次</p>
+            <p className="text-sm font-bold text-gray-500 tracking-wider mb-3">批次</p>
             <div className="space-y-1 max-h-[420px] overflow-y-auto">
               {COLLOCATION_BATCHES.map((b, i) => (
                 <button key={i} onClick={() => switchBatch(i)}
-                  className={`w-full text-left px-2.5 py-2 rounded-lg text-xs transition-all ${
+                  className={`w-full text-left px-3 py-2.5 rounded-lg text-sm transition-all ${
                     colBatch === i ? 'bg-teal-50 text-teal-700 font-bold ring-1 ring-teal-200' : 'text-gray-500 hover:bg-gray-50'
                   }`}
                 >
                   <div className="font-bold">{b.label}</div>
-                  <div className="text-[10px] text-gray-400">{b.range}</div>
+                  <div className="mt-0.5 text-xs text-gray-400">{b.range}</div>
                 </button>
               ))}
             </div>
@@ -401,7 +502,8 @@ function CollocationsContent({ onBack }) {
               {currentBatch.items.map((item, qi) => {
                 const ua    = colAnswers[item.id] || ''
                 const ok    = colChecked ? isCorrect(item) : null
-                const parts = item.sentence.split('___')
+                const prompt = practiceMode === 'phrase' ? phraseWithBlank(item) : item.sentence
+                const parts = prompt.split('___')
                 return (
                   <motion.div key={item.id}
                     initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
@@ -418,7 +520,7 @@ function CollocationsContent({ onBack }) {
                         : ua ? 'bg-teal-600 text-white' : 'bg-teal-100 text-teal-600'
                     }`}>{qi + 1}</span>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm text-gray-700 leading-relaxed">
+                      <p className={`${practiceMode === 'phrase' ? 'text-lg font-bold text-gray-800' : 'text-sm text-gray-700'} leading-relaxed`}>
                         {parts[0]}
                         {colChecked ? (
                           <span className={`mx-1 px-2 py-0.5 rounded font-bold text-sm border ${
@@ -436,12 +538,26 @@ function CollocationsContent({ onBack }) {
                           />
                         )}
                         {parts[1]}
+                        {practiceMode === 'phrase' && !colChecked && (
+                          <span className="ml-3 text-lg font-semibold text-gray-700">{item.chinese}</span>
+                        )}
                       </p>
                       {colChecked && (
-                        <div className="flex items-center gap-2 mt-1">
-                          <span className="text-[10px] text-gray-400 font-mono">{item.phrase}</span>
-                          <span className="text-[10px] text-gray-300">·</span>
-                          <span className="text-[10px] text-gray-400">{item.chinese}</span>
+                        <div className={`mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 rounded-lg px-3 py-2 ${
+                          ok
+                            ? 'bg-emerald-100/70 text-emerald-800'
+                            : 'border border-red-200 bg-white text-gray-700'
+                        }`}>
+                          {!ok && (
+                            <span className="text-xs font-bold text-red-600">正确搭配</span>
+                          )}
+                          <span className={`text-sm font-extrabold ${ok ? 'text-emerald-800' : 'text-gray-900'}`}>
+                            {item.phrase}
+                          </span>
+                          <span className={ok ? 'text-emerald-400' : 'text-gray-300'}>·</span>
+                          <span className={`text-sm font-semibold ${ok ? 'text-emerald-700' : 'text-gray-600'}`}>
+                            {item.chinese}
+                          </span>
                         </div>
                       )}
                     </div>
@@ -516,17 +632,23 @@ function WordsContent({ level }) {
 function WordsPractice({ level, vocabChoice, onBack }) {
   // Build word list based on choice
   function buildWordList() {
+    if (vocabChoice.mode === 'review') {
+      return vocabChoice.words.map(w => ({
+        ...w,
+        english: getKetEnglishDefinition(w.word, w.english),
+      }))
+    }
     if (vocabChoice.mode === 'must500') {
       return mustSpell500.map(w => ({
         word: w.word, part: w.part, chinese: w.chinese,
-        phonetic: '', english: w.sentence, sentence: w.sentence,
+        phonetic: '', english: getKetEnglishDefinition(w.word), sentence: w.sentence,
         topic: w.topicTitleZh,
       }))
     }
     if (vocabChoice.mode === 'reading288') {
       return READING_FREQ_288.map(w => ({
         word: w.word, part: w.part, chinese: w.chinese,
-        phonetic: w.phonetic, english: w.sentence, sentence: w.sentence,
+        phonetic: w.phonetic, english: getKetEnglishDefinition(w.word), sentence: w.sentence,
         topic: '阅读高频词',
       }))
     }
@@ -534,7 +656,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
       const t = vocabChoice.topic
       return t.words.map(w => ({
         word: w.word, part: w.part, chinese: w.chinese,
-        phonetic: '', english: w.sentence, sentence: w.sentence,
+        phonetic: '', english: getKetEnglishDefinition(w.word), sentence: w.sentence,
         topic: t.titleZh,
       }))
     }
@@ -544,6 +666,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
     // official / default
     return (cambridgeWordsByLevel[level] || cambridgeWordsByLevel.KET)
       .filter(w => w.word && (w.chinese || w.english))
+      .map(w => ({ ...w, english: getKetEnglishDefinition(w.word, w.english) }))
   }
 
   const allWords = buildWordList()
@@ -571,7 +694,8 @@ function WordsPractice({ level, vocabChoice, onBack }) {
   const progress = (index / words.length) * 100
   const levelInfo = LEVELS.find(l => l.abbr === level) || LEVELS[0]
   const libraryName = vocabChoice.mode === 'topic' ? vocabChoice.topic.titleZh
-    : vocabChoice.mode === 'must500' ? 'KET 核心词汇'
+    : vocabChoice.mode === 'review' ? '待复习错词'
+    : vocabChoice.mode === 'must500' ? 'KET 必默词汇'
     : vocabChoice.mode === 'reading288' ? '阅读常用词'
     : vocabChoice.mode === 'irregular' ? '不规则动词'
     : 'A2 综合词表'
@@ -606,12 +730,30 @@ function WordsPractice({ level, vocabChoice, onBack }) {
     recordMastery(current.word, correct, usedHint)
     setResults(updated)
     if (index + 1 >= words.length) {
-      try { localStorage.setItem('mars_vocab_last_result', JSON.stringify({ total: updated.length, accuracy: Math.round(updated.filter(r => r.correct).length / updated.length * 100), wrongCount: updated.filter(r => !r.correct).length, completedAt: new Date().toISOString() })) } catch { /* local storage may be unavailable */ }
+      finishSession(updated)
       setShowResult(true)
     } else {
       setIndex(i => i + 1)
       setAnswer(''); setChecked(false); setCorrect(false); setOpenHints(new Set())
     }
+  }
+
+  function finishSession(updated) {
+    const resultByWord = new Map(updated.map(r => [r.word.toLowerCase(), r]))
+    let previous = []
+    try { previous = JSON.parse(localStorage.getItem('mars_vocab_review_queue_v1') || '[]') } catch { /* local storage may be unavailable */ }
+    const queue = new Map(previous.map(w => [w.word.toLowerCase(), w]))
+    resultByWord.forEach((result, key) => {
+      if (result.correct) queue.delete(key)
+      else {
+        const source = allWords.find(w => w.word.toLowerCase() === key)
+        if (source) queue.set(key, source)
+      }
+    })
+    try {
+      localStorage.setItem('mars_vocab_review_queue_v1', JSON.stringify([...queue.values()]))
+      localStorage.setItem('mars_vocab_last_result', JSON.stringify({ total: updated.length, accuracy: Math.round(updated.filter(r => r.correct).length / updated.length * 100), wrongCount: queue.size, completedAt: new Date().toISOString() }))
+    } catch { /* local storage may be unavailable */ }
   }
 
   function handleKey(e) {
@@ -666,6 +808,17 @@ function WordsPractice({ level, vocabChoice, onBack }) {
     startRef.current = Date.now()
   }
 
+  function reviewWrongWords() {
+    const wrongKeys = new Set(results.filter(r => !r.correct).map(r => r.word.toLowerCase()))
+    const reviewItems = allWords.filter(w => wrongKeys.has(w.word.toLowerCase()))
+    if (!reviewItems.length) return
+    vocabChoice.mode = 'review'
+    vocabChoice.words = reviewItems
+    setIndex(0); setAnswer(''); setChecked(false); setCorrect(false)
+    setResults([]); setShowResult(false); setActivePanel('tips'); setOpenHints(new Set())
+    startRef.current = Date.now()
+  }
+
   function requestBackToCenter() {
     if (results.length > 0 || index > 0) setShowLeaveConfirm(true)
     else onBack()
@@ -689,7 +842,8 @@ function WordsPractice({ level, vocabChoice, onBack }) {
           </div>
           <div className="text-sm text-gray-400 mt-1">{
             vocabChoice.mode === 'topic' ? vocabChoice.topic.titleZh :
-            vocabChoice.mode === 'must500' ? 'KET 核心词汇' :
+            vocabChoice.mode === 'review' ? '待复习错词' :
+            vocabChoice.mode === 'must500' ? 'KET 必默词汇' :
             vocabChoice.mode === 'reading288' ? '阅读高频词' :
             vocabChoice.mode === 'irregular' ? '不规则动词' : 'A2 综合词表'
           } · {words.length} 词</div>
@@ -715,14 +869,18 @@ function WordsPractice({ level, vocabChoice, onBack }) {
           </div>
         )}
 
-        <button onClick={restart}
-          className="w-full py-4 bg-[#064e3b] text-white font-bold rounded-2xl hover:bg-[#065f46] transition-colors text-base mb-2">
-          再练一次 →
-        </button>
-        <button onClick={onBack}
-          className="w-full py-3 bg-white border border-gray-200 text-gray-600 font-semibold rounded-2xl hover:bg-gray-50 transition-colors text-sm">
-          返回词汇中心
-        </button>
+        {wrong.length > 0 ? (
+          <button onClick={reviewWrongWords}
+            className="w-full py-4 bg-[#064e3b] text-white font-bold rounded-2xl hover:bg-[#065f46] transition-colors text-base mb-2">
+            复习本轮错词（{wrong.length}）→
+          </button>
+        ) : (
+          <button onClick={restart}
+            className="w-full py-4 bg-[#064e3b] text-white font-bold rounded-2xl hover:bg-[#065f46] transition-colors text-base mb-2">
+            再练一次 →
+          </button>
+        )}
+        <VocabCenterButton onClick={onBack} className="w-full" />
         <p className="text-center text-xs text-gray-400 mt-3">或切换左侧其他模块继续练习</p>
       </div>
     )
@@ -743,11 +901,11 @@ function WordsPractice({ level, vocabChoice, onBack }) {
 
         {/* 页面层级 */}
         <nav className="mx-6 mt-4 flex items-center gap-3 text-sm" aria-label="词汇学习路径">
-          <button onClick={requestBackToCenter} className="inline-flex items-center gap-2 rounded-xl bg-[#fff5d6] border border-[#efd681] px-3.5 py-2 font-extrabold text-[#735500] hover:bg-[#fbe9ad] transition-colors"><span aria-hidden="true">←</span>词汇中心</button>
+          <VocabCenterButton onClick={requestBackToCenter} />
           <span className="text-gray-300" aria-hidden="true">›</span>
           <button onClick={requestBackToCenter} className="font-extrabold text-gray-800 hover:text-emerald-800 transition-colors">{libraryName}</button>
           <span className="text-gray-300" aria-hidden="true">›</span>
-          <span className="font-medium text-gray-400">本次练习</span>
+          <span className="font-medium text-gray-400">{vocabChoice.mode === 'review' ? '本次复习' : '本次练习'}</span>
         </nav>
 
         {/* 当前词库掌握概览 */}
@@ -820,18 +978,6 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                     </div>
                   )}
 
-                  {/* 英文释义展开 */}
-                  <AnimatePresence>
-                  {openHints.has('english') && current.english && (
-                    <motion.div key="english"
-                      initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}
-                      exit={{ opacity: 0, height: 0 }}
-                      className="mt-3 py-3 px-4 bg-blue-50 rounded-xl text-blue-700 text-sm leading-relaxed text-left">
-                        <span className="text-[10px] font-extrabold tracking-[.12em] text-blue-400 mr-2">例句</span>
-                        {current.sentence || current.english}
-                      </motion.div>
-                  )}
-                  </AnimatePresence>
                 </div>
 
                 {/* 字母格 */}
@@ -921,7 +1067,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                       setResults(updated)
                       recordMastery(current.word, false, openHints.size > 0)
                       if (index + 1 >= words.length) {
-                        try { localStorage.setItem('mars_vocab_last_result', JSON.stringify({ total: updated.length, accuracy: Math.round(updated.filter(r => r.correct).length / updated.length * 100), wrongCount: updated.filter(r => !r.correct).length, completedAt: new Date().toISOString() })) } catch { /* local storage may be unavailable */ }
+                        finishSession(updated)
                         setShowResult(true)
                       } else {
                         setIndex(i => i + 1)
@@ -1003,8 +1149,8 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                 )}
               </button>
 
-              {/* 英文例句 */}
-              {(current.sentence || current.english) && (
+              {/* 英文释义 */}
+              {current.english && (
                 <button
                   onClick={() => toggleHint('english')}
                   className={`w-full rounded-2xl border text-left transition-all overflow-hidden ${
@@ -1014,11 +1160,11 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                   }`}
                 >
                   <div className="flex items-center justify-between px-4 py-4">
-                    <span className="flex items-center gap-3 text-base font-extrabold text-gray-800"><span className="w-8 h-8 rounded-xl bg-[#f4c95d] text-[#064e3b] grid place-items-center"><VocabPanelIcon name="example" className="w-[18px] h-[18px]"/></span>英文例句</span>
+                    <span className="flex items-center gap-3 text-base font-extrabold text-gray-800"><span className="w-8 h-8 rounded-xl bg-[#f4c95d] text-[#064e3b] grid place-items-center"><VocabPanelIcon name="example" className="w-[18px] h-[18px]"/></span>英文释义</span>
                     <svg className={`w-3.5 h-3.5 text-gray-400 transition-transform ${openHints.has('english') ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
                   </div>
                   {openHints.has('english') && (
-                    <div className="px-4 py-4 text-sm text-gray-600 leading-relaxed border-t border-gray-100 bg-gray-50/60">{current.sentence || current.english}</div>
+                    <div className="px-4 py-4 text-sm text-gray-600 leading-relaxed border-t border-gray-100 bg-gray-50/60">{current.english}</div>
                   )}
                 </button>
               )}
@@ -1127,9 +1273,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                 </div>
                 <p className="text-xs text-gray-400 mt-2">更改后下次开始生效</p>
               </div>
-                <button onClick={requestBackToCenter} className="mt-3 w-full py-2.5 text-xs text-[#064e3b] font-semibold border border-emerald-200 rounded-xl hover:bg-emerald-50 transition-colors">
-                  返回词汇中心
-                </button>
+                <VocabCenterButton onClick={requestBackToCenter} className="mt-3 w-full text-xs" />
               </div>
             </div>
           )}
@@ -1140,10 +1284,10 @@ function WordsPractice({ level, vocabChoice, onBack }) {
       <AnimatePresence>
         {showLeaveConfirm && <motion.div className="fixed inset-0 z-[120] bg-[#061c17]/55 backdrop-blur-sm grid place-items-center p-5" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onClick={()=>setShowLeaveConfirm(false)}>
           <motion.div className="w-full max-w-md bg-white rounded-[24px] p-6 shadow-2xl" initial={{scale:.96,y:12}} animate={{scale:1,y:0}} exit={{scale:.96,y:12}} onClick={e=>e.stopPropagation()}>
-            <div className="text-[10px] font-extrabold tracking-[.16em] text-emerald-700">返回词汇中心</div>
+            <div className="text-[10px] font-extrabold tracking-[.16em] text-emerald-700">返回我的词汇中心</div>
             <h3 className="mt-3 text-xl font-extrabold text-gray-950">要结束本次练习吗？</h3>
             <p className="mt-2 text-sm text-gray-500 leading-relaxed">已经完成的 {results.length} 个词会保存在浏览器中，尚未回答的词不会计入进度。</p>
-            <div className="mt-6 grid grid-cols-2 gap-3"><button onClick={()=>setShowLeaveConfirm(false)} className="py-3 rounded-xl border border-gray-200 font-bold text-gray-600">继续练习</button><button onClick={onBack} className="py-3 rounded-xl bg-[#064e3b] text-white font-bold">返回词汇中心</button></div>
+            <div className="mt-6 grid grid-cols-2 gap-3"><button onClick={()=>setShowLeaveConfirm(false)} className="py-3 rounded-xl border border-gray-200 font-bold text-gray-600">继续练习</button><VocabCenterButton onClick={onBack} className="w-full" /></div>
           </motion.div>
         </motion.div>}
       </AnimatePresence>
