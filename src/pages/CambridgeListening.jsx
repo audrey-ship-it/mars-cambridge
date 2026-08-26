@@ -2,6 +2,10 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { KET_LISTENING_DATA } from "../data/ketListeningData";
+import {
+  OFFICIAL_LISTENING_SETS,
+  officialListeningAudio,
+} from "../data/officialListeningManifest";
 import { CambridgeLayout } from "./CambridgeApp";
 
 const PART_COLORS = {
@@ -113,7 +117,11 @@ function useTTS(maxPlays = 2) {
 ══════════════════════════════ */
 const PLAYER_SPEEDS = [0.75, 1, 1.25, 1.5];
 
-function SpeedAudioPlayer({ src, title = "整组练习音频", eyebrow = "LISTENING" }) {
+function SpeedAudioPlayer({
+  src,
+  title = "整组练习音频",
+  eyebrow = "LISTENING",
+}) {
   const audioRef = useRef(null);
   const [rate, setRate] = useState(1);
 
@@ -126,19 +134,34 @@ function SpeedAudioPlayer({ src, title = "整组练习音频", eyebrow = "LISTEN
     <section className="sticky top-3 z-40 rounded-[22px] bg-[#075741] p-4 text-white shadow-xl md:p-5">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
         <div className="min-w-[180px]">
-          <div className="text-[11px] font-extrabold tracking-[.14em] text-[#f7cd60]">{eyebrow}</div>
+          <div className="text-[11px] font-extrabold tracking-[.14em] text-[#f7cd60]">
+            {eyebrow}
+          </div>
           <strong className="mt-1 block text-xl">{title}</strong>
         </div>
-        <audio ref={audioRef} controls preload="metadata" className="h-12 w-full flex-1" src={src} />
+        <audio
+          ref={audioRef}
+          controls
+          preload="metadata"
+          className="h-12 w-full flex-1"
+          src={src}
+        />
         <div className="flex shrink-0 gap-2">
-          {[0.75, 1, 1.25].map(value => (
-            <button key={value} type="button" onClick={() => changeRate(value)} className={`rounded-xl px-4 py-3 text-sm font-extrabold transition ${rate === value ? "bg-[#f7cd60] text-[#4c3a00]" : "bg-white/10 text-white hover:bg-white/20"}`}>
+          {[0.75, 1, 1.25].map((value) => (
+            <button
+              key={value}
+              type="button"
+              onClick={() => changeRate(value)}
+              className={`rounded-xl px-4 py-3 text-sm font-extrabold transition ${rate === value ? "bg-[#f7cd60] text-[#4c3a00]" : "bg-white/10 text-white hover:bg-white/20"}`}
+            >
               {value}×
             </button>
           ))}
         </div>
       </div>
-      <div className="mt-4 border-t border-white/15 pt-3 text-sm text-white/60">随页面固定 · 可随时暂停、拖动进度或调整播放速度</div>
+      <div className="mt-4 border-t border-white/15 pt-3 text-sm text-white/60">
+        随页面固定 · 可随时暂停、拖动进度或调整播放速度
+      </div>
     </section>
   );
 }
@@ -833,6 +856,688 @@ const LISTENING_ENTRIES = [
   },
 ];
 
+const KET3_TEST1_PART1 = [
+  {
+    question: "What will they have for lunch?",
+    image: "/images/listening/ket3-test1-part1/q1.jpg",
+    answer: 0,
+    explanation: "对话最后同意了妈妈提出的 barbecue，因此选择 A。",
+  },
+  {
+    question: "Which sport is the girl going to play this term?",
+    image: "/images/listening/ket3-test1-part1/q2.jpg",
+    answer: 1,
+    explanation: "女孩说老师已经把她列入 hockey 名单，因此选择 B。",
+  },
+  {
+    question: "Where will the friends go first?",
+    image: "/images/listening/ket3-test1-part1/q3.jpg",
+    answer: 0,
+    explanation: "录音最终确认先去眼镜店，因此选择 A。",
+  },
+  {
+    question: "How does the girl get to school now?",
+    image: "/images/listening/ket3-test1-part1/q4.jpg",
+    answer: 2,
+    explanation: "录音说明她现在步行上学，因此选择 C。",
+  },
+  {
+    question: "What do they decide to buy for their mother?",
+    image: "/images/listening/ket3-test1-part1/q5.jpg",
+    answer: 1,
+    explanation: "两人最后决定购买耳环，因此选择 B。",
+  },
+];
+
+const OFFICIAL_PART1_SETS = {
+  9: KET3_TEST1_PART1,
+  10: [
+    { question: "How much did the girl pay for her trainers?", image: "/images/listening/set-10-part1/q1.jpg", answer: 0, explanation: "女孩实际支付了 £47.99，因此选择 A。" },
+    { question: "Which picture does the boy choose for his grandmother?", image: "/images/listening/set-10-part1/q2.jpg", answer: 0, explanation: "男孩选择了祖母喜欢的花朵照片，因此选择 A。" },
+    { question: "What are they going to do first this afternoon?", image: "/images/listening/set-10-part1/q3.jpg", answer: 2, explanation: "两人决定先骑自行车，因此选择 C。" },
+    { question: "What did the girl put on the pizza yesterday?", image: "/images/listening/set-10-part1/q4.jpg", answer: 2, explanation: "女孩在披萨上放了洋葱和西红柿，因此选择 C。" },
+    { question: "Which girl is the boy’s sister?", image: "/images/listening/set-10-part1/q5.jpg", answer: 1, explanation: "男孩的姐姐是黑发并戴眼镜的女孩，因此选择 B。" },
+  ],
+  11: [
+    { question: "What has the girl lost?", image: "/images/listening/set-11-part1/q1.jpg", answer: 1, explanation: "女孩找不到自己的围巾，因此选择 B。" },
+    { question: "What can the boy see from his bedroom window?", image: "/images/listening/set-11-part1/q2.jpg", answer: 1, explanation: "男孩卧室的窗户可以看到一个大型停车场，因此选择 B。" },
+    { question: "What do they decide to eat?", image: "/images/listening/set-11-part1/q3.jpg", answer: 0, explanation: "两人最后决定吃披萨，因此选择 A。" },
+    { question: "Where will Calum’s birthday party be?", image: "/images/listening/set-11-part1/q4.jpg", answer: 0, explanation: "生日聚会将在带烧烤架的家中举行，因此选择 A。" },
+    { question: "Where will the friends meet tomorrow?", image: "/images/listening/set-11-part1/q5.jpg", answer: 2, explanation: "朋友们约在电车站见面，因此选择 C。" },
+  ],
+  12: [
+    { question: "What did the girl buy today?", image: "/images/listening/set-12-part1/q1.jpg", answer: 2, explanation: "女孩今天买了一条很酷的连衣裙，因此选择 C。" },
+    { question: "What will the weather be like this afternoon?", image: "/images/listening/set-12-part1/q2.jpg", answer: 1, explanation: "对话说明下午会刮很大的风，因此选择 B。" },
+    { question: "Where did the girl stay on her holiday?", image: "/images/listening/set-12-part1/q3.jpg", answer: 0, explanation: "他们最后预订了带花园的家庭旅馆，因此选择 A。" },
+    { question: "Which homework has the boy finished?", image: "/images/listening/set-12-part1/q4.jpg", answer: 2, explanation: "男孩已经完成了历史作业，因此选择 C。" },
+    { question: "What did the girl do at the weekend?", image: "/images/listening/set-12-part1/q5.jpg", answer: 0, explanation: "女孩周末和姐姐打羽毛球并赢了比赛，因此选择 A。" },
+  ],
+};
+
+function ListeningSetTabs({ part, activeSet }) {
+  return (
+    <section className="mt-6 rounded-[22px] border border-gray-200 bg-white p-4">
+      <div className="mb-3 flex items-center justify-between gap-4">
+        <strong className="text-sm text-gray-800">选择练习</strong>
+        <span className="text-xs text-gray-400">
+          共 12 套 · 当前为练习{activeSet}
+        </span>
+      </div>
+      <div className="grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-12">
+        {OFFICIAL_LISTENING_SETS.map((set) => {
+          const active = set.id === activeSet;
+          const ready = set.status === "ready";
+          return (
+            <Link
+              key={set.id}
+              to={`/cambridge/listening?part=${part}&set=${set.id}`}
+              className={`relative rounded-xl border px-2 py-3 text-center text-sm font-extrabold transition ${active ? "border-[#d9a921] bg-[#f7cd60] text-[#4c3a00] shadow-sm" : ready ? "border-emerald-200 bg-emerald-50 text-emerald-800 hover:border-emerald-400" : "border-gray-200 bg-gray-50 text-gray-500 hover:border-[#e7c65f] hover:bg-[#fff9e9]"}`}
+            >
+              {set.label.replace("练习", "")}
+              {!ready && (
+                <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-gray-300" />
+              )}
+            </Link>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+function ListeningPartNav({ activePart, setId }) {
+  const parts = [
+    activePart,
+    ...[1, 2, 3, 4, 5].filter((part) => part !== activePart),
+  ];
+  return (
+    <nav className="border-b border-gray-100 bg-white px-6 py-4">
+      <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-2.5">
+        <Link
+          to="/cambridge/listening"
+          className="mr-1 rounded-xl border border-[#e7c65f] bg-[#fff8e7] px-4 py-2.5 text-sm font-extrabold text-[#735500]"
+        >
+          ← 我的听力中心
+        </Link>
+        <span className="mr-1 text-gray-300">›</span>
+        {parts.map((part) => (
+          <Link
+            key={part}
+            to={`/cambridge/listening?part=${part}&set=${setId}`}
+            aria-current={part === activePart ? "page" : undefined}
+            className={`rounded-xl border px-4 py-2.5 text-sm font-extrabold transition ${part === activePart ? "border-[#d9a921] bg-[#f7cd60] text-[#4c3a00] shadow-sm" : "border-gray-200 bg-white text-gray-500 hover:border-emerald-300 hover:text-emerald-800"}`}
+          >
+            Part {part}
+          </Link>
+        ))}
+      </div>
+    </nav>
+  );
+}
+
+function ListeningSetChecking({ part, setId, level, setLevel }) {
+  return (
+    <CambridgeLayout activeModule="listening" level={level} setLevel={setLevel}>
+      <ListeningPartNav activePart={part} setId={setId} />
+      <main className="mx-auto max-w-6xl px-6 py-7">
+        <h1 className="text-4xl font-extrabold">
+          Part {part} · 练习{setId}
+        </h1>
+        <ListeningSetTabs part={part} activeSet={setId} />
+        <section className="mt-6 rounded-[26px] border border-[#ead58f] bg-[#fff9e9] px-7 py-12 text-center">
+          <div className="text-4xl">✓</div>
+          <h2 className="mt-4 text-2xl font-extrabold text-gray-950">
+            正在逐题校对
+          </h2>
+          <p className="mx-auto mt-3 max-w-xl text-gray-600">
+            对应音频已经完成整理。题干、图片和答案会与原 PDF
+            逐项核对后开放，避免使用不准确的自动识别结果。
+          </p>
+        </section>
+      </main>
+    </CambridgeLayout>
+  );
+}
+
+function OfficialPartOneSample({ level, setLevel, setId = 9 }) {
+  const questions = OFFICIAL_PART1_SETS[setId] || KET3_TEST1_PART1;
+  const [answers, setAnswers] = useState(Array(5).fill(null));
+  const completed = answers.filter((value) => value !== null).length;
+  const correct = answers.reduce(
+    (total, value, index) =>
+      total + (value === questions[index].answer ? 1 : 0),
+    0,
+  );
+  return (
+    <CambridgeLayout activeModule="listening" level={level} setLevel={setLevel}>
+      <ListeningPartNav activePart={1} setId={setId} />
+      <main className="mx-auto max-w-6xl px-6 py-7">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <div className="text-[11px] font-extrabold tracking-[.18em] text-emerald-700">
+              INTERNAL REVIEW SAMPLE
+            </div>
+            <h1 className="mt-1 text-4xl font-extrabold">Part 1 图片选择题</h1>
+            <p className="mt-2 text-gray-500">
+              练习{setId} · 听五段短对话，从 A、B、C 三幅图片中选择正确答案。
+            </p>
+          </div>
+          <div className="rounded-2xl border border-[#e7c65f] bg-[#fff9e9] px-5 py-3 text-sm text-[#735500]">
+            <strong>内部原型素材</strong>
+            <div className="mt-1 text-xs">
+              用于页面结构与交互审核，不作为官方授权声明
+            </div>
+          </div>
+        </div>
+        <ListeningSetTabs part={1} activeSet={setId} />
+        <div className="mt-6">
+          <SpeedAudioPlayer
+            src={officialListeningAudio(setId, 1)}
+            title={`练习${setId} · Part 1 音频`}
+          />
+        </div>
+        <div className="mt-6 space-y-5">
+          {questions.map((item, index) => {
+            const selected = answers[index],
+              done = selected !== null,
+              right = selected === item.answer;
+            return (
+              <article
+                key={item.question}
+                className={`rounded-[24px] border bg-white p-5 md:p-7 ${done ? (right ? "border-emerald-400" : "border-rose-300") : "border-gray-200"}`}
+              >
+                <div className="flex items-start gap-4">
+                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[#f7cd60] font-extrabold text-[#4c3a00]">
+                    {index + 1}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <h2 className="text-xl font-extrabold text-gray-950">
+                      {item.question}
+                    </h2>
+                    <div className="relative mx-auto mt-5 max-w-[720px] overflow-hidden rounded-2xl border border-gray-200 bg-[#fafafa] p-2">
+                      <img
+                        src={item.image}
+                        alt={`Question ${index + 1} options A, B and C`}
+                        className="w-full"
+                      />
+                      <div className="absolute inset-0 grid grid-cols-3">
+                        {[0, 1, 2].map((option) => (
+                          <button
+                            key={option}
+                            type="button"
+                            aria-label={`选择 ${String.fromCharCode(65 + option)}`}
+                            onClick={() =>
+                              setAnswers((values) =>
+                                values.map((value, i) =>
+                                  i === index ? option : value,
+                                ),
+                              )
+                            }
+                            className={`m-1 rounded-xl border-2 transition ${selected === option ? (right ? "border-emerald-500 bg-emerald-400/10" : "border-rose-500 bg-rose-400/10") : "border-transparent hover:border-[#f7cd60]"}`}
+                          >
+                            <span
+                              className={`absolute mt-2 ml-2 grid h-8 w-8 place-items-center rounded-full text-sm font-extrabold ${selected === option ? "bg-[#064e3b] text-white" : "bg-white/90 text-gray-700 shadow"}`}
+                            >
+                              {String.fromCharCode(65 + option)}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    {done && (
+                      <div
+                        className={`mt-4 rounded-xl px-4 py-3 text-sm ${right ? "bg-emerald-50 text-emerald-800" : "bg-rose-50 text-rose-700"}`}
+                      >
+                        <strong>
+                          {right
+                            ? "✓ 回答正确！"
+                            : `再听一次。正确答案是 ${String.fromCharCode(65 + item.answer)}。`}
+                        </strong>
+                        <span className="ml-2">{item.explanation}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+        <section className="mt-6 rounded-[22px] bg-[#064e3b] p-5 text-white">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-sm text-white/60">完成进度</div>
+              <strong className="text-2xl">{completed} / 5</strong>
+            </div>
+            {completed === 5 && (
+              <div className="text-right">
+                <div className="text-sm text-white/60">本次正确</div>
+                <strong className="text-3xl text-[#f7cd60]">
+                  {correct} / 5
+                </strong>
+              </div>
+            )}
+          </div>
+          <div className="mt-4 h-2 rounded-full bg-white/10">
+            <div
+              className="h-full rounded-full bg-[#f7cd60] transition-all"
+              style={{ width: `${completed * 20}%` }}
+            />
+          </div>
+        </section>
+      </main>
+    </CambridgeLayout>
+  );
+}
+
+const OFFICIAL_TEST1_PARTS = {
+  2: {
+    title: "Part 2 信息填空题",
+    instruction: "听一段电话留言，在每个空格中填写一个单词、数字或时间。",
+    type: "blanks",
+    items: [
+      { q: "Take:", answer: ["kite"], show: "kite" },
+      { q: "Place for lunch:", answer: ["park"], show: "park" },
+      { q: "Sport we’ll play:", answer: ["volleyball"], show: "volleyball" },
+      {
+        q: "Cost of boat trip on Sunday: £ ___ each",
+        answer: [
+          "3.75",
+          "three pounds seventy five",
+          "three pounds seventy-five",
+        ],
+        show: "£3.75",
+      },
+      {
+        q: "Arrive at Mandy’s home at: ___ p.m.",
+        answer: ["6.30", "6:30", "18:30", "six thirty"],
+        show: "6:30 p.m.",
+      },
+    ],
+  },
+  3: {
+    title: "Part 3 长篇听力题",
+    instruction: "听 Ned 和 Aisha 谈论在新学校的第一周，选择正确答案。",
+    type: "mcq",
+    items: [
+      {
+        q: "When did they meet each other for the first time?",
+        opts: ["on the way to school", "in a lesson", "in the lunch break"],
+        answer: 1,
+      },
+      {
+        q: "How did Ned feel before he started the new school?",
+        opts: ["scared", "excited", "lucky"],
+        answer: 1,
+      },
+      {
+        q: "Ned and Aisha agree that",
+        opts: [
+          "the teachers are very kind.",
+          "their classmates are all very nice.",
+          "the school building is very attractive.",
+        ],
+        answer: 0,
+      },
+      {
+        q: "Which lesson doesn’t Aisha like much?",
+        opts: ["geography", "maths", "history"],
+        answer: 2,
+      },
+      {
+        q: "What do they both say about homework at the new school?",
+        opts: [
+          "They got less in their old schools.",
+          "It takes a long time to do.",
+          "Some of it is quite easy.",
+        ],
+        answer: 0,
+      },
+    ],
+  },
+  4: {
+    title: "Part 4 短篇听力题",
+    instruction: "听五段独立短对话，选择每段对话的重点信息。",
+    type: "mcq",
+    items: [
+      {
+        q: "How did the boy get the book?",
+        opts: [
+          "He borrowed it from a family member.",
+          "He won it in a sports event.",
+          "He bought it in a shop.",
+        ],
+        answer: 1,
+      },
+      {
+        q: "What type of lesson did the girl have?",
+        opts: ["a guitar lesson", "a tennis lesson", "a dance lesson"],
+        answer: 0,
+      },
+      {
+        q: "Where will the boy stay on holiday?",
+        opts: ["in a house", "in a hotel", "in a tent"],
+        answer: 2,
+      },
+      {
+        q: "What does the teacher want his class to do now?",
+        opts: [
+          "start some maths problems",
+          "talk about their new textbook",
+          "check an exercise in pairs",
+        ],
+        answer: 2,
+      },
+      {
+        q: "What are the friends going to do together on Saturday?",
+        opts: ["have a cycle ride", "cook some special food", "go for a walk"],
+        answer: 2,
+      },
+    ],
+  },
+  5: {
+    title: "Part 5 信息匹配题",
+    instruction: "听男孩介绍朋友们未来想做的工作，为每个人选择对应职业。",
+    type: "match",
+    options: [
+      "actor",
+      "chef",
+      "dentist",
+      "doctor",
+      "farmer",
+      "musician",
+      "teacher",
+      "tour guide",
+    ],
+    items: [
+      { q: "Sally", answer: 7 },
+      { q: "Peter", answer: 4 },
+      { q: "Amy", answer: 6 },
+      { q: "Tom", answer: 1 },
+      { q: "Jane", answer: 2 },
+    ],
+  },
+};
+
+function OfficialPartFiveBoard({ level, setLevel, setId = 9 }) {
+  const data = OFFICIAL_TEST1_PARTS[5];
+  const [answers, setAnswers] = useState(Array(5).fill(null));
+  const [active, setActive] = useState(0);
+  const used = new Set(answers.filter((value) => value !== null));
+  const completed = answers.filter((value) => value !== null).length;
+  const score = answers.reduce(
+    (sum, value, index) => sum + (value === data.items[index].answer ? 1 : 0),
+    0,
+  );
+  function choose(job) {
+    setAnswers((values) =>
+      values.map((value, index) => (index === active ? job : value)),
+    );
+    const next = answers.findIndex(
+      (value, index) => index > active && value === null,
+    );
+    if (next !== -1) setActive(next);
+  }
+  return (
+    <CambridgeLayout activeModule="listening" level={level} setLevel={setLevel}>
+      <ListeningPartNav activePart={5} setId={setId} />
+      <main className="mx-auto max-w-6xl px-6 py-7">
+        <div className="text-[11px] font-extrabold tracking-[.18em] text-emerald-700">
+          INTERNAL REVIEW SAMPLE
+        </div>
+        <h1 className="mt-1 text-4xl font-extrabold">Part 5 信息匹配题</h1>
+        <p className="mt-2 text-gray-500">
+          先选择人物，再从职业板中选择对应职业。已完成的匹配可以随时修改。
+        </p>
+        <ListeningSetTabs part={5} activeSet={setId} />
+        <div className="mt-6">
+          <SpeedAudioPlayer
+            src={officialListeningAudio(setId, 5)}
+            title={`练习${setId} · Part 5 音频`}
+          />
+        </div>
+        <div className="mt-6 grid gap-5 lg:grid-cols-[.9fr_1.1fr]">
+          <section className="rounded-[24px] border border-gray-200 bg-white p-5">
+            <div className="mb-4 text-xs font-extrabold tracking-[.14em] text-emerald-700">
+              第一步 · 选择人物
+            </div>
+            <div className="space-y-3">
+              {data.items.map((item, index) => {
+                const selected = active === index,
+                  value = answers[index],
+                  done = value !== null,
+                  right = value === item.answer;
+                return (
+                  <button
+                    key={item.q}
+                    onClick={() => setActive(index)}
+                    className={`flex w-full items-center gap-4 rounded-2xl border p-4 text-left transition ${selected ? "border-[#e1b33a] bg-[#fff9e9] shadow-sm" : done ? (right ? "border-emerald-300 bg-emerald-50" : "border-rose-200 bg-rose-50") : "border-gray-200 hover:border-emerald-300"}`}
+                  >
+                    <span
+                      className={`grid h-10 w-10 place-items-center rounded-full font-extrabold ${selected ? "bg-[#f7cd60]" : "bg-gray-100 text-gray-500"}`}
+                    >
+                      {index + 1}
+                    </span>
+                    <div className="flex-1">
+                      <strong className="text-lg">{item.q}</strong>
+                      <div
+                        className={`mt-1 text-sm ${done ? "font-bold text-gray-700" : "text-gray-400"}`}
+                      >
+                        {done
+                          ? `${String.fromCharCode(65 + value)}. ${data.options[value]}`
+                          : "等待匹配"}
+                      </div>
+                    </div>
+                    <span>
+                      {selected ? "→" : done ? (right ? "✓" : "!") : ""}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </section>
+          <section className="rounded-[24px] border border-gray-200 bg-[#f8faf9] p-5">
+            <div className="mb-2 text-xs font-extrabold tracking-[.14em] text-emerald-700">
+              第二步 · 选择职业
+            </div>
+            <p className="mb-4 text-sm text-gray-500">
+              正在为{" "}
+              <strong className="text-gray-900">{data.items[active].q}</strong>{" "}
+              匹配职业
+            </p>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {data.options.map((job, index) => {
+                const chosen = answers[active] === index,
+                  isUsed = used.has(index);
+                return (
+                  <button
+                    key={job}
+                    onClick={() => choose(index)}
+                    className={`flex min-h-[104px] items-center gap-3 rounded-2xl border p-5 text-left transition ${chosen ? "border-[#dfad2d] bg-[#fff3c9] text-[#5b4300]" : isUsed ? "border-gray-200 bg-gray-100 text-gray-400" : "border-gray-200 bg-white hover:-translate-y-0.5 hover:border-[#e1b33a] hover:shadow-sm"}`}
+                  >
+                    <span
+                      className={`grid h-9 w-9 place-items-center rounded-xl font-extrabold ${chosen ? "bg-[#f7cd60]" : "bg-emerald-50 text-emerald-700"}`}
+                    >
+                      {String.fromCharCode(65 + index)}
+                    </span>
+                    <strong>{job}</strong>
+                    {isUsed && !chosen && (
+                      <span className="ml-auto text-xs">已使用</span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </section>
+        </div>
+        <section className="mt-6 rounded-[22px] bg-[#064e3b] p-5 text-white">
+          <div className="flex justify-between">
+            <strong>完成 {completed} / 5</strong>
+            {completed === 5 && (
+              <strong className="text-2xl text-[#f7cd60]">
+                正确 {score} / 5
+              </strong>
+            )}
+          </div>
+          <div className="mt-3 h-2 rounded-full bg-white/10">
+            <div
+              className="h-full rounded-full bg-[#f7cd60]"
+              style={{ width: `${completed * 20}%` }}
+            />
+          </div>
+        </section>
+      </main>
+    </CambridgeLayout>
+  );
+}
+
+function OfficialListeningPartSample({ part, level, setLevel, setId = 9 }) {
+  const data = OFFICIAL_TEST1_PARTS[part];
+  const [answers, setAnswers] = useState(Array(data.items.length).fill(""));
+  const [checked, setChecked] = useState(Array(data.items.length).fill(false));
+  const normalise = (value) =>
+    String(value)
+      .toLowerCase()
+      .replace(/[£,\s-]/g, "");
+  const isRight = (item, value) =>
+    data.type === "blanks"
+      ? item.answer.some((answer) => normalise(answer) === normalise(value))
+      : Number(value) === item.answer;
+  const completed = checked.filter(Boolean).length;
+  const score = data.items.reduce(
+    (sum, item, index) =>
+      sum + (checked[index] && isRight(item, answers[index]) ? 1 : 0),
+    0,
+  );
+  return (
+    <CambridgeLayout activeModule="listening" level={level} setLevel={setLevel}>
+      <ListeningPartNav activePart={part} setId={setId} />
+      <main className="mx-auto max-w-5xl px-6 py-7">
+        <div className="text-[11px] font-extrabold tracking-[.18em] text-emerald-700">
+          INTERNAL REVIEW SAMPLE
+        </div>
+        <h1 className="mt-1 text-4xl font-extrabold">{data.title}</h1>
+        <p className="mt-2 text-gray-500">
+          练习{setId} · {data.instruction}
+        </p>
+        <ListeningSetTabs part={part} activeSet={setId} />
+        <div className="mt-6">
+          <SpeedAudioPlayer
+            src={officialListeningAudio(setId, part)}
+            title={`练习${setId} · Part ${part} 音频`}
+          />
+        </div>
+        <div className="mt-6 space-y-4">
+          {data.items.map((item, index) => {
+            const done = checked[index],
+              right = done && isRight(item, answers[index]);
+            return (
+              <article
+                key={item.q}
+                className={`rounded-[22px] border bg-white p-5 md:p-6 ${done ? (right ? "border-emerald-400" : "border-rose-300") : "border-gray-200"}`}
+              >
+                <div className="flex gap-4">
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#f7cd60] font-extrabold">
+                    {index + 1}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <h2 className="text-lg font-extrabold">{item.q}</h2>
+                    {data.type === "blanks" ? (
+                      <div className="mt-4 flex gap-3">
+                        <input
+                          value={answers[index]}
+                          onChange={(e) => {
+                            setAnswers((v) =>
+                              v.map((x, i) =>
+                                i === index ? e.target.value : x,
+                              ),
+                            );
+                            setChecked((v) =>
+                              v.map((x, i) => (i === index ? false : x)),
+                            );
+                          }}
+                          className="h-12 min-w-0 flex-1 rounded-xl border border-gray-200 px-4 text-lg font-bold outline-none focus:border-emerald-500"
+                          placeholder="输入听到的信息"
+                        />
+                        <button
+                          disabled={!answers[index].trim()}
+                          onClick={() =>
+                            setChecked((v) =>
+                              v.map((x, i) => (i === index ? true : x)),
+                            )
+                          }
+                          className="rounded-xl bg-[#064e3b] px-5 font-extrabold text-white disabled:bg-gray-200"
+                        >
+                          检查
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="mt-4 grid gap-2">
+                        {(data.type === "match" ? data.options : item.opts).map(
+                          (option, optionIndex) => (
+                            <button
+                              key={option}
+                              onClick={() => {
+                                setAnswers((v) =>
+                                  v.map((x, i) =>
+                                    i === index ? optionIndex : x,
+                                  ),
+                                );
+                                setChecked((v) =>
+                                  v.map((x, i) => (i === index ? true : x)),
+                                );
+                              }}
+                              className={`rounded-xl border px-4 py-3 text-left font-bold ${answers[index] === optionIndex ? (right ? "border-emerald-400 bg-emerald-50 text-emerald-800" : "border-rose-300 bg-rose-50 text-rose-700") : "border-gray-200 hover:border-[#f7cd60]"}`}
+                            >
+                              {String.fromCharCode(65 + optionIndex)}. {option}
+                            </button>
+                          ),
+                        )}
+                      </div>
+                    )}
+                    {done && (
+                      <div
+                        className={`mt-4 rounded-xl px-4 py-3 text-sm ${right ? "bg-emerald-50 text-emerald-800" : "bg-rose-50 text-rose-700"}`}
+                      >
+                        <strong>{right ? "✓ 回答正确！" : "再听一次。"}</strong>
+                        {!right && (
+                          <span className="ml-2">
+                            正确答案：
+                            {data.type === "blanks"
+                              ? item.show
+                              : data.type === "match"
+                                ? data.options[item.answer]
+                                : item.opts[item.answer]}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+        <section className="mt-6 rounded-[22px] bg-[#064e3b] p-5 text-white">
+          <div className="flex justify-between">
+            <strong>完成 {completed} / 5</strong>
+            {completed === 5 && (
+              <strong className="text-2xl text-[#f7cd60]">
+                正确 {score} / 5
+              </strong>
+            )}
+          </div>
+          <div className="mt-3 h-2 rounded-full bg-white/10">
+            <div
+              className="h-full rounded-full bg-[#f7cd60]"
+              style={{ width: `${completed * 20}%` }}
+            />
+          </div>
+        </section>
+      </main>
+    </CambridgeLayout>
+  );
+}
+
 function ListeningCentre({ level, setLevel }) {
   const navigate = useNavigate();
   function openEntry(id) {
@@ -1516,7 +2221,9 @@ function CommonPointPractice({ topic, level, setLevel }) {
         <p className="mt-1 text-sm text-gray-500">
           完成知识点后，播放整组录音并按顺序填写关键信息。
         </p>
-        <div className="mt-4"><SpeedAudioPlayer src={`/audio/listening-points/${data.audio}`} /></div>
+        <div className="mt-4">
+          <SpeedAudioPlayer src={`/audio/listening-points/${data.audio}`} />
+        </div>
         <div className="mt-5 space-y-3">
           {data.items.map((item, i) => {
             const done = checked[i],
@@ -1775,7 +2482,9 @@ function SpellingPointPractice({ level, setLevel }) {
         <p className="mt-1 text-sm text-gray-500">
           播放整组录音，先完成拼写判断，再填写听到的专用名词。
         </p>
-        <div className="mt-5"><SpeedAudioPlayer src="/audio/listening-points/spelling-practice.mp3" /></div>
+        <div className="mt-5">
+          <SpeedAudioPlayer src="/audio/listening-points/spelling-practice.mp3" />
+        </div>
         <h2 className="mt-6 text-2xl font-extrabold text-gray-950">
           第一部分 · 拼写判断
         </h2>
@@ -2083,6 +2792,37 @@ export default function CambridgeListening() {
   if (searchParams.get("view") === "common")
     return <ListeningCommonPoints level={level} setLevel={setLevel} />;
   const part = Number(searchParams.get("part"));
+  const requestedSet = Number(searchParams.get("set"));
+  const setId = OFFICIAL_LISTENING_SETS.some((set) => set.id === requestedSet)
+    ? requestedSet
+    : 9;
+  const selectedSet = OFFICIAL_LISTENING_SETS.find((set) => set.id === setId);
+  if (part >= 1 && part <= 5 && selectedSet?.status !== "ready")
+    return (
+      <ListeningSetChecking
+        part={part}
+        setId={setId}
+        level={level}
+        setLevel={setLevel}
+      />
+    );
+  if (part === 1)
+    return (
+      <OfficialPartOneSample level={level} setLevel={setLevel} setId={setId} />
+    );
+  if (part === 5)
+    return (
+      <OfficialPartFiveBoard level={level} setLevel={setLevel} setId={setId} />
+    );
+  if (part >= 2 && part <= 5)
+    return (
+      <OfficialListeningPartSample
+        part={part}
+        level={level}
+        setLevel={setLevel}
+        setId={setId}
+      />
+    );
   if (part >= 1 && part <= 5) return <ListeningPractice initialPart={part} />;
   return <ListeningCentre level={level} setLevel={setLevel} />;
 }
