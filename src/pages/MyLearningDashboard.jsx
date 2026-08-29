@@ -25,11 +25,13 @@ function readLearningSnapshot() {
   const records = []
 
   let listeningDone = 0
+  let listeningMistakeCount = 0
   for (let setId = 1; setId <= 12; setId += 1) {
     for (let part = 1; part <= 5; part += 1) {
       const item = safeJson(`mars_ket_listening_progress_v1:set-${setId}:part-${part}`, null)
       if (!item) continue
       if (item.completed) listeningDone += 1
+      listeningMistakeCount += Number(item.wrongCount || 0)
       records.push({
         title: `听力练习${setId} · Part ${part}`,
         detail: item.completed ? '已完成' : '进行中',
@@ -41,11 +43,13 @@ function readLearningSnapshot() {
   }
 
   let gapCompleted = 0
+  let gapMistakeCount = 0
   for (let exercise = 1; exercise <= 15; exercise += 1) {
     const item = safeJson(`mars_ket_gap_progress_v1:exercise-${exercise}`, null)
     const hasResponse = item && Object.values(item.responses || {}).some(value => String(value || '').trim())
     if (!item || (!item.completed && !hasResponse)) continue
     if (item.completed) gapCompleted += 1
+    gapMistakeCount += Number(item.wrongCount || 0)
     records.push({
       title: `听力挖空 · 练习${exercise}`,
       detail: item.completed ? '已完成' : '继续填写',
@@ -57,10 +61,12 @@ function readLearningSnapshot() {
 
   let readingUnits = 0
   let readingCompleted = 0
+  let readingMistakeCount = 0
   let writingDrafts = 0
   EXAM_IDS.forEach((examId, index) => {
     const reading = safeJson(`mars_ket_exam_progress_v1:${examId}:reading`, null)
     if (reading) {
+      readingMistakeCount += Object.values(reading.wrongCounts || {}).reduce((sum, value) => sum + Number(value || 0), 0)
       const partNumber = Math.min(5, (reading.partIndex || 0) + 1)
       readingUnits += reading.done ? 5 : Math.max(0, partNumber - 1)
       if (reading.done) readingCompleted += 1
@@ -136,9 +142,12 @@ function readLearningSnapshot() {
     modules,
     records,
     continueItem: records[0] || null,
-    mistakeCount: Object.keys(grammarMistakes).length + (Array.isArray(vocabMistakes) ? vocabMistakes.length : 0),
+    mistakeCount: Object.keys(grammarMistakes).length + (Array.isArray(vocabMistakes) ? vocabMistakes.length : 0) + readingMistakeCount + listeningMistakeCount + gapMistakeCount,
     grammarMistakeCount: Object.keys(grammarMistakes).length,
     vocabMistakeCount: Array.isArray(vocabMistakes) ? vocabMistakes.length : 0,
+    readingMistakeCount,
+    listeningMistakeCount,
+    gapMistakeCount,
     speakingRatings,
     weeklyValues,
     weeklyCount: weeklyValues.reduce((sum, value) => sum + value, 0),
@@ -440,7 +449,7 @@ export default function MyLearningDashboard() {
                   <div><div className="text-[10px] font-extrabold tracking-[.18em] text-amber-700">MISTAKE REVIEW</div><h2 className="mt-1 text-lg font-extrabold">错题学习</h2><p className="mt-1 text-xs text-gray-400">按类别集中复习答错的内容，掌握后自动移出错题本。</p></div>
                   <span className="text-xs font-bold text-amber-700">共 {learning.mistakeCount} 道待复习</span>
                 </div>
-                <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
                   <button onClick={() => navigate('/cambridge/words?mode=review')} className="group rounded-2xl border border-amber-200 bg-amber-50/60 p-4 text-left transition hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-sm">
                     <div className="flex items-center justify-between"><span className="grid h-10 w-10 place-items-center rounded-xl bg-[#f4c95d] text-lg">📖</span><span className="rounded-full bg-white px-3 py-1 text-xs font-extrabold text-amber-800">{learning.vocabMistakeCount} 词</span></div>
                     <h3 className="mt-4 font-extrabold text-gray-900">词汇错题</h3>
@@ -450,6 +459,18 @@ export default function MyLearningDashboard() {
                     <div className="flex items-center justify-between"><span className="grid h-10 w-10 place-items-center rounded-xl bg-emerald-600 text-lg">📐</span><span className="rounded-full bg-white px-3 py-1 text-xs font-extrabold text-emerald-800">{learning.grammarMistakeCount} 题</span></div>
                     <h3 className="mt-4 font-extrabold text-gray-900">语法错题</h3>
                     <div className="mt-1 flex items-end justify-between gap-3"><p className="text-xs leading-relaxed text-gray-500">分类复习选择题、挖空练习和改错题中的错误。</p><span className="shrink-0 font-extrabold text-emerald-800 transition group-hover:translate-x-1">进入 →</span></div>
+                  </button>
+                  <button onClick={() => navigate('/cambridge/reading')} className="group rounded-2xl border border-violet-200 bg-violet-50/60 p-4 text-left transition hover:-translate-y-0.5 hover:border-violet-300 hover:shadow-sm">
+                    <div className="flex items-center justify-between"><span className="grid h-10 w-10 place-items-center rounded-xl bg-violet-600 text-lg">📄</span><span className="rounded-full bg-white px-3 py-1 text-xs font-extrabold text-violet-800">{learning.readingMistakeCount} 题</span></div>
+                    <h3 className="mt-4 font-extrabold text-gray-900">阅读错题</h3><div className="mt-1 flex items-end justify-between gap-2"><p className="text-xs leading-relaxed text-gray-500">复习真题阅读中答错的题目。</p><span className="shrink-0 font-extrabold text-violet-800 transition group-hover:translate-x-1">进入 →</span></div>
+                  </button>
+                  <button onClick={() => navigate('/cambridge/listening')} className="group rounded-2xl border border-cyan-200 bg-cyan-50/60 p-4 text-left transition hover:-translate-y-0.5 hover:border-cyan-300 hover:shadow-sm">
+                    <div className="flex items-center justify-between"><span className="grid h-10 w-10 place-items-center rounded-xl bg-cyan-600 text-lg">🎧</span><span className="rounded-full bg-white px-3 py-1 text-xs font-extrabold text-cyan-800">{learning.listeningMistakeCount} 题</span></div>
+                    <h3 className="mt-4 font-extrabold text-gray-900">听力错题</h3><div className="mt-1 flex items-end justify-between gap-2"><p className="text-xs leading-relaxed text-gray-500">回顾各 Part 中听辨错误的题目。</p><span className="shrink-0 font-extrabold text-cyan-800 transition group-hover:translate-x-1">进入 →</span></div>
+                  </button>
+                  <button onClick={() => navigate('/cambridge/dictation')} className="group rounded-2xl border border-rose-200 bg-rose-50/60 p-4 text-left transition hover:-translate-y-0.5 hover:border-rose-300 hover:shadow-sm">
+                    <div className="flex items-center justify-between"><span className="grid h-10 w-10 place-items-center rounded-xl bg-rose-500 text-lg">⌨️</span><span className="rounded-full bg-white px-3 py-1 text-xs font-extrabold text-rose-800">{learning.gapMistakeCount} 处</span></div>
+                    <h3 className="mt-4 font-extrabold text-gray-900">听写错题</h3><div className="mt-1 flex items-end justify-between gap-2"><p className="text-xs leading-relaxed text-gray-500">重听并改正漏填、拼写错误。</p><span className="shrink-0 font-extrabold text-rose-800 transition group-hover:translate-x-1">进入 →</span></div>
                   </button>
                 </div>
               </section>

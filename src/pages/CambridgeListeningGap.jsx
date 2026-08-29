@@ -56,6 +56,7 @@ export default function CambridgeListeningGap() {
         responses: clozeResponses,
         submitted: clozeSubmitted,
         completed: clozeSubmitted,
+        wrongCount: clozeSubmitted ? clozeAnswers.reduce((count, item) => count + (clozeIsCorrect(item) ? 0 : 1), 0) : 0,
         updatedAt: new Date().toISOString(),
       }))
     } catch { /* storage may be unavailable */ }

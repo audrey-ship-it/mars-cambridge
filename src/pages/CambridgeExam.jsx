@@ -771,6 +771,19 @@ function ListeningFinalResult({ exam, allAnswers }) {
    READING EXAM
 ══════════════════════════════════════════════════════════ */
 
+function countReadingMistakes(part, answers = []) {
+  if (['text_mcq', 'multiple_matching', 'article_mcq', 'gap_fill_mcq'].includes(part.type)) {
+    return part.questions.reduce((count, question, index) => count + (answers[index] !== question.ans ? 1 : 0), 0)
+  }
+  if (part.type === 'open_gap_fill') {
+    return part.questions.reduce((count, question, index) => {
+      const value = String(answers[index] || '').trim().toLowerCase()
+      return count + ((question.ans || []).some(answer => answer.trim().toLowerCase() === value) ? 0 : 1)
+    }, 0)
+  }
+  return 0
+}
+
 function ReadingExam({ exam, section, onSection }) {
   const parts = exam.reading.parts
   const progressKey = `mars_ket_exam_progress_v1:${exam.id}:reading`
@@ -804,14 +817,15 @@ function ReadingExam({ exam, section, onSection }) {
 
   function handlePartDone(answers) {
     const updated = { ...allAnswers, [partIndex]: answers }
+    const wrongCounts = Object.fromEntries(Object.entries(updated).map(([index, values]) => [index, countReadingMistakes(parts[Number(index)], values)]))
     setAllAnswers(updated)
     if (partIndex + 1 >= parts.length) {
       setDone(true)
-      saveProgress({ partIndex, allAnswers: updated, done: true })
+      saveProgress({ partIndex, allAnswers: updated, wrongCounts, done: true })
     } else {
       const nextPartIndex = partIndex + 1
       setPartIndex(nextPartIndex)
-      saveProgress({ partIndex: nextPartIndex, allAnswers: updated, done: false })
+      saveProgress({ partIndex: nextPartIndex, allAnswers: updated, wrongCounts, done: false })
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
   }

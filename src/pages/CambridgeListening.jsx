@@ -1118,6 +1118,7 @@ function OfficialPartOneSample({ level, setLevel, setId = 9 }) {
     saveListeningProgress(setId, 1, {
       answers,
       completed: answers.every((value) => value !== null),
+      wrongCount: answers.reduce((count, value, index) => count + (value !== null && value !== questions[index].answer ? 1 : 0), 0),
     });
   }, [answers, setId]);
   function resetProgress() {
@@ -1965,6 +1966,7 @@ function OfficialPartFiveBoard({ level, setLevel, setId = 9 }) {
       answers,
       active,
       completed: answers.every((value) => value !== null),
+      wrongCount: answers.reduce((count, value, index) => count + (value !== null && value !== data.items[index].answer ? 1 : 0), 0),
     });
   }, [active, answers, setId]);
   const used = new Set(answers.filter((value) => value !== null));
@@ -2127,6 +2129,7 @@ function OfficialListeningPartSample({ part, level, setLevel, setId = 9 }) {
       answers,
       checked,
       completed: checked.every(Boolean),
+      wrongCount: data.items.reduce((count, item, index) => count + (checked[index] && !isRight(item, answers[index]) ? 1 : 0), 0),
     });
   }, [answers, checked, part, setId]);
   const normalise = (value) =>
