@@ -6,6 +6,77 @@ import { KET_EXAMS } from '../data/ketExamData'
 /* ══════════════════════════════
    Exam List Page  /cambridge/exams
 ══════════════════════════════ */
+function readExamListProgress(exam) {
+  const officialSetId = ['ket-3-test1', 'ket-3-test2', 'ket-3-test3', 'ket-3-test4'].indexOf(exam.id) + 9
+  const listeningParts = officialSetId >= 9 ? 5 : 0
+  const readingParts = exam.reading?.parts?.length || 0
+  const writingParts = exam.reading?.writing?.length || 0
+  const speakingTopics = exam.speaking?.parts?.flatMap(part => part.topics || []) || []
+  const total = listeningParts + readingParts + writingParts + speakingTopics.length
+  let completed = 0
+  let started = false
+  let latest = null
+  let continuePath = `/cambridge/exams/${exam.id}?tab=reading`
+
+  try {
+    if (listeningParts) {
+      for (let part = 1; part <= listeningParts; part += 1) {
+        const listening = JSON.parse(localStorage.getItem(`mars_ket_listening_progress_v1:set-${officialSetId}:part-${part}`) || 'null')
+        if (!listening) continue
+        started = true
+        if (listening.completed) completed += 1
+        if (!latest || String(listening.updatedAt) > String(latest)) {
+          latest = listening.updatedAt
+          continuePath = `/cambridge/listening?part=${part}&set=${officialSetId}`
+        }
+      }
+    }
+
+    const reading = JSON.parse(localStorage.getItem(`mars_ket_exam_progress_v1:${exam.id}:reading`) || 'null')
+    if (reading) {
+      started = true
+      const finishedParts = reading.done ? readingParts : Math.max(0, Math.min(readingParts, reading.partIndex || 0))
+      completed += finishedParts
+      latest = reading.savedAt || latest
+      continuePath = `/cambridge/exams/${exam.id}?tab=reading`
+    }
+
+    let writingStarted = false
+    exam.reading?.writing?.forEach(part => {
+      const draft = localStorage.getItem(`mars_ket_exam_progress_v1:${exam.id}:writing:part${part.part}:draft`) || ''
+      if (draft.trim()) {
+        writingStarted = true
+        completed += 1
+      }
+    })
+    if (writingStarted) {
+      started = true
+      const lastPart = Number(localStorage.getItem(`mars_ket_exam_progress_v1:${exam.id}:writing:lastPart`)) || 0
+      continuePath = `/cambridge/exams/${exam.id}?tab=writing&part=${exam.reading.writing[lastPart]?.part || 6}`
+    }
+
+    speakingTopics.forEach(topic => {
+      const rating = JSON.parse(localStorage.getItem(`mars_ket_speaking_progress_v1:${exam.id}:${topic.id}`) || 'null')
+      if (!rating) return
+      started = true
+      completed += 1
+      if (!latest || String(rating.updatedAt) > String(latest)) {
+        latest = rating.updatedAt
+        continuePath = `/cambridge/exams/${exam.id}?tab=speaking`
+      }
+    })
+  } catch { /* storage may be unavailable */ }
+
+  const percent = total ? Math.min(100, Math.round(completed / total * 100)) : 0
+  return {
+    percent,
+    status: percent === 100 ? '已完成' : started ? '进行中' : '未开始',
+    continuePath,
+    completed,
+    total,
+  }
+}
+
 export function ExamList() {
   const sectionSummary = (exam) => [
     exam.listening && '听力 25题',
@@ -37,8 +108,10 @@ export function ExamList() {
         </div>
 
         <div className="space-y-3">
-          {KET_EXAMS.map(exam => (
-            <Link key={exam.id} to={`/cambridge/exams/${exam.id}`}
+          {KET_EXAMS.map(exam => {
+            const progress = readExamListProgress(exam)
+            return (
+            <Link key={exam.id} to={progress.continuePath}
               className="block bg-white rounded-2xl border border-gray-100 shadow-sm px-6 py-5 hover:shadow-md hover:border-[#064e3b]/20 transition-all group">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-xl bg-[#064e3b] flex items-center justify-center flex-shrink-0">
@@ -47,14 +120,20 @@ export function ExamList() {
                 <div className="flex-1">
                   <div className="font-bold text-gray-900 group-hover:text-[#064e3b] transition-colors">{exam.title}</div>
                   <div className="text-xs text-gray-400 mt-0.5">{exam.label} · {sectionSummary(exam)}</div>
+                  <div className="mt-3 flex items-center gap-3">
+                    <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-gray-100">
+                      <div className="h-full rounded-full bg-[#0d7656]" style={{ width: `${progress.percent}%` }} />
+                    </div>
+                    <span className="whitespace-nowrap text-[11px] font-bold text-gray-500">{progress.completed} / {progress.total} 项</span>
+                  </div>
                 </div>
                 <div className="flex flex-col items-end gap-1.5">
-                  <span className="text-xs font-bold bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">已上线</span>
-                  <span className="text-xs text-gray-400">{exam.year}</span>
+                  <span className={`rounded-full px-2.5 py-1 text-xs font-bold ${progress.status === '已完成' ? 'bg-emerald-100 text-emerald-700' : progress.status === '进行中' ? 'bg-amber-100 text-amber-800' : 'bg-gray-100 text-gray-500'}`}>{progress.status}</span>
+                  <span className="text-xs font-bold text-[#0d7656]">{progress.status === '未开始' ? '开始练习 →' : '继续练习 →'}</span>
                 </div>
               </div>
             </Link>
-          ))}
+          )})}
 
         </div>
       </div>
