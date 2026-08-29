@@ -16,6 +16,57 @@ const PART_COLORS = {
   5: "bg-rose-500",
 };
 
+const LISTENING_PROGRESS_PREFIX = "mars_ket_listening_progress_v1";
+const LISTENING_LAST_KEY = `${LISTENING_PROGRESS_PREFIX}:last`;
+
+function listeningProgressKey(setId, part) {
+  return `${LISTENING_PROGRESS_PREFIX}:set-${setId}:part-${part}`;
+}
+
+function readListeningProgress(setId, part) {
+  try {
+    return JSON.parse(localStorage.getItem(listeningProgressKey(setId, part)) || "null");
+  } catch {
+    return null;
+  }
+}
+
+function saveListeningProgress(setId, part, payload) {
+  try {
+    const updatedAt = new Date().toISOString();
+    localStorage.setItem(
+      listeningProgressKey(setId, part),
+      JSON.stringify({ ...payload, updatedAt }),
+    );
+    localStorage.setItem(
+      LISTENING_LAST_KEY,
+      JSON.stringify({ setId, part, updatedAt }),
+    );
+  } catch {
+    // Learning can continue when storage is unavailable.
+  }
+}
+
+function clearListeningProgress(setId, part) {
+  try {
+    localStorage.removeItem(listeningProgressKey(setId, part));
+  } catch {
+    // Ignore storage failures.
+  }
+}
+
+function ResetListeningButton({ onReset }) {
+  return (
+    <button
+      type="button"
+      onClick={onReset}
+      className="rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-extrabold text-gray-500 transition hover:border-rose-200 hover:text-rose-600"
+    >
+      重新开始本练习
+    </button>
+  );
+}
+
 /* ══════════════════════════════
    TTS hook
 ══════════════════════════════ */
@@ -1057,7 +1108,22 @@ function ListeningSetChecking({ part, setId, level, setLevel }) {
 
 function OfficialPartOneSample({ level, setLevel, setId = 9 }) {
   const questions = OFFICIAL_PART1_SETS[setId] || KET3_TEST1_PART1;
-  const [answers, setAnswers] = useState(Array(5).fill(null));
+  const saved = readListeningProgress(setId, 1);
+  const [answers, setAnswers] = useState(() =>
+    saved?.answers?.length === questions.length
+      ? saved.answers
+      : Array(questions.length).fill(null),
+  );
+  useEffect(() => {
+    saveListeningProgress(setId, 1, {
+      answers,
+      completed: answers.every((value) => value !== null),
+    });
+  }, [answers, setId]);
+  function resetProgress() {
+    clearListeningProgress(setId, 1);
+    setAnswers(Array(questions.length).fill(null));
+  }
   const completed = answers.filter((value) => value !== null).length;
   const correct = answers.reduce(
     (total, value, index) =>
@@ -1085,7 +1151,12 @@ function OfficialPartOneSample({ level, setLevel, setId = 9 }) {
             </div>
           </div>
         </div>
-        <ListeningSetTabs part={1} activeSet={setId} />
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+          <div className="min-w-0 flex-1">
+            <ListeningSetTabs part={1} activeSet={setId} />
+          </div>
+          <ResetListeningButton onReset={resetProgress} />
+        </div>
         <div className="mt-6">
           <SpeedAudioPlayer
             src={officialListeningAudio(setId, 1)}
@@ -1880,8 +1951,22 @@ const OFFICIAL_PART5_SETS = {
 
 function OfficialPartFiveBoard({ level, setLevel, setId = 9 }) {
   const data = OFFICIAL_PART5_SETS[setId] || OFFICIAL_TEST1_PARTS[5];
-  const [answers, setAnswers] = useState(Array(5).fill(null));
-  const [active, setActive] = useState(0);
+  const saved = readListeningProgress(setId, 5);
+  const [answers, setAnswers] = useState(() =>
+    saved?.answers?.length === data.items.length
+      ? saved.answers
+      : Array(data.items.length).fill(null),
+  );
+  const [active, setActive] = useState(() =>
+    Number.isInteger(saved?.active) ? saved.active : 0,
+  );
+  useEffect(() => {
+    saveListeningProgress(setId, 5, {
+      answers,
+      active,
+      completed: answers.every((value) => value !== null),
+    });
+  }, [active, answers, setId]);
   const used = new Set(answers.filter((value) => value !== null));
   const completed = answers.filter((value) => value !== null).length;
   const score = answers.reduce(
@@ -1897,6 +1982,11 @@ function OfficialPartFiveBoard({ level, setLevel, setId = 9 }) {
     );
     if (next !== -1) setActive(next);
   }
+  function resetProgress() {
+    clearListeningProgress(setId, 5);
+    setAnswers(Array(data.items.length).fill(null));
+    setActive(0);
+  }
   return (
     <CambridgeLayout activeModule="listening" level={level} setLevel={setLevel}>
       <ListeningPartNav activePart={5} setId={setId} />
@@ -1908,7 +1998,12 @@ function OfficialPartFiveBoard({ level, setLevel, setId = 9 }) {
         <p className="mt-2 text-gray-500">
           先选择人物，再从职业板中选择对应职业。已完成的匹配可以随时修改。
         </p>
-        <ListeningSetTabs part={5} activeSet={setId} />
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+          <div className="min-w-0 flex-1">
+            <ListeningSetTabs part={5} activeSet={setId} />
+          </div>
+          <ResetListeningButton onReset={resetProgress} />
+        </div>
         <div className="mt-6">
           <SpeedAudioPlayer
             src={officialListeningAudio(setId, 5)}
@@ -2016,8 +2111,24 @@ function OfficialListeningPartSample({ part, level, setLevel, setId = 9 }) {
     (part === 3 && OFFICIAL_PART3_SETS[setId]) ||
     (part === 4 && OFFICIAL_PART4_SETS[setId]) ||
     OFFICIAL_TEST1_PARTS[part];
-  const [answers, setAnswers] = useState(Array(data.items.length).fill(""));
-  const [checked, setChecked] = useState(Array(data.items.length).fill(false));
+  const saved = readListeningProgress(setId, part);
+  const [answers, setAnswers] = useState(() =>
+    saved?.answers?.length === data.items.length
+      ? saved.answers
+      : Array(data.items.length).fill(""),
+  );
+  const [checked, setChecked] = useState(() =>
+    saved?.checked?.length === data.items.length
+      ? saved.checked
+      : Array(data.items.length).fill(false),
+  );
+  useEffect(() => {
+    saveListeningProgress(setId, part, {
+      answers,
+      checked,
+      completed: checked.every(Boolean),
+    });
+  }, [answers, checked, part, setId]);
   const normalise = (value) =>
     String(value)
       .toLowerCase()
@@ -2032,6 +2143,11 @@ function OfficialListeningPartSample({ part, level, setLevel, setId = 9 }) {
       sum + (checked[index] && isRight(item, answers[index]) ? 1 : 0),
     0,
   );
+  function resetProgress() {
+    clearListeningProgress(setId, part);
+    setAnswers(Array(data.items.length).fill(""));
+    setChecked(Array(data.items.length).fill(false));
+  }
   return (
     <CambridgeLayout activeModule="listening" level={level} setLevel={setLevel}>
       <ListeningPartNav activePart={part} setId={setId} />
@@ -2043,7 +2159,12 @@ function OfficialListeningPartSample({ part, level, setLevel, setId = 9 }) {
         <p className="mt-2 text-gray-500">
           练习{setId} · {data.instruction}
         </p>
-        <ListeningSetTabs part={part} activeSet={setId} />
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+          <div className="min-w-0 flex-1">
+            <ListeningSetTabs part={part} activeSet={setId} />
+          </div>
+          <ResetListeningButton onReset={resetProgress} />
+        </div>
         <div className="mt-6">
           <SpeedAudioPlayer
             src={officialListeningAudio(setId, part)}
@@ -2167,6 +2288,13 @@ function OfficialListeningPartSample({ part, level, setLevel, setId = 9 }) {
 
 function ListeningCentre({ level, setLevel }) {
   const navigate = useNavigate();
+  const [lastPractice] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem(LISTENING_LAST_KEY) || "null");
+    } catch {
+      return null;
+    }
+  });
   function openEntry(id) {
     if (id === "dictation") navigate("/cambridge/dictation");
     else if (id === "common") navigate("/cambridge/listening?view=common");
@@ -2200,6 +2328,25 @@ function ListeningCentre({ level, setLevel }) {
             </div>
           </div>
         </div>
+        {lastPractice?.setId && lastPractice?.part && (
+          <button
+            type="button"
+            onClick={() =>
+              navigate(`/cambridge/listening?part=${lastPractice.part}&set=${lastPractice.setId}`)
+            }
+            className="mt-5 flex w-full items-center justify-between rounded-[20px] border border-[#e1b33a] bg-[#fff8df] px-5 py-4 text-left transition hover:-translate-y-0.5 hover:shadow-sm"
+          >
+            <span>
+              <span className="block text-xs font-extrabold tracking-[.12em] text-[#9a7308]">
+                继续上次练习
+              </span>
+              <strong className="mt-1 block text-lg text-gray-950">
+                练习{lastPractice.setId} · Part {lastPractice.part}
+              </strong>
+            </span>
+            <span className="font-extrabold text-[#735500]">继续学习 →</span>
+          </button>
+        )}
         <div className="mt-6 grid gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
           {LISTENING_ENTRIES.map((item, index) => (
             <motion.button
@@ -3435,15 +3582,16 @@ export default function CambridgeListening() {
     );
   if (part === 1)
     return (
-      <OfficialPartOneSample level={level} setLevel={setLevel} setId={setId} />
+      <OfficialPartOneSample key={`set-${setId}-part-1`} level={level} setLevel={setLevel} setId={setId} />
     );
   if (part === 5)
     return (
-      <OfficialPartFiveBoard level={level} setLevel={setLevel} setId={setId} />
+      <OfficialPartFiveBoard key={`set-${setId}-part-5`} level={level} setLevel={setLevel} setId={setId} />
     );
   if (part >= 2 && part <= 5)
     return (
       <OfficialListeningPartSample
+        key={`set-${setId}-part-${part}`}
         part={part}
         level={level}
         setLevel={setLevel}
