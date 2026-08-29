@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { EXAM_CONFIGS, getExamGrade } from '../data/cambridgeScoreTables'
 import MyLearningDashboard from './MyLearningDashboard'
@@ -612,8 +612,16 @@ function CollocationsContent({ onBack }) {
 }
 
 function WordsContent({ level }) {
-  const [view, setView] = useState('choose') // 'choose' | 'words' | 'collocation'
-  const [vocabChoice, setVocabChoice] = useState(null)
+  const [searchParams] = useSearchParams()
+  const reviewChoice = (() => {
+    if (searchParams.get('mode') !== 'review') return null
+    try {
+      const words = JSON.parse(localStorage.getItem('mars_vocab_review_queue_v1') || '[]')
+      return Array.isArray(words) && words.length ? { mode: 'review', words } : null
+    } catch { return null }
+  })()
+  const [view, setView] = useState(reviewChoice ? 'words' : 'choose') // 'choose' | 'words' | 'collocation'
+  const [vocabChoice, setVocabChoice] = useState(reviewChoice)
 
   if (view === 'collocation') {
     return <CollocationsContent onBack={() => setView('choose')} />

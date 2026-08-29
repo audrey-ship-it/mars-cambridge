@@ -435,6 +435,25 @@ export default function MyLearningDashboard() {
                 </div>
               </section>
 
+              <section className="rounded-3xl border border-gray-200/80 bg-white p-5 shadow-sm sm:p-6">
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                  <div><div className="text-[10px] font-extrabold tracking-[.18em] text-amber-700">MISTAKE REVIEW</div><h2 className="mt-1 text-lg font-extrabold">错题学习</h2><p className="mt-1 text-xs text-gray-400">按类别集中复习答错的内容，掌握后自动移出错题本。</p></div>
+                  <span className="text-xs font-bold text-amber-700">共 {learning.mistakeCount} 道待复习</span>
+                </div>
+                <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                  <button onClick={() => navigate('/cambridge/words?mode=review')} className="group rounded-2xl border border-amber-200 bg-amber-50/60 p-4 text-left transition hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-sm">
+                    <div className="flex items-center justify-between"><span className="grid h-10 w-10 place-items-center rounded-xl bg-[#f4c95d] text-lg">📖</span><span className="rounded-full bg-white px-3 py-1 text-xs font-extrabold text-amber-800">{learning.vocabMistakeCount} 词</span></div>
+                    <h3 className="mt-4 font-extrabold text-gray-900">词汇错题</h3>
+                    <div className="mt-1 flex items-end justify-between gap-3"><p className="text-xs leading-relaxed text-gray-500">复习拼错或跳过的单词，答对后移出错词列表。</p><span className="shrink-0 font-extrabold text-amber-800 transition group-hover:translate-x-1">进入 →</span></div>
+                  </button>
+                  <button onClick={() => navigate('/cambridge/grammar/mistakes')} className="group rounded-2xl border border-emerald-200 bg-emerald-50/60 p-4 text-left transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-sm">
+                    <div className="flex items-center justify-between"><span className="grid h-10 w-10 place-items-center rounded-xl bg-emerald-600 text-lg">📐</span><span className="rounded-full bg-white px-3 py-1 text-xs font-extrabold text-emerald-800">{learning.grammarMistakeCount} 题</span></div>
+                    <h3 className="mt-4 font-extrabold text-gray-900">语法错题</h3>
+                    <div className="mt-1 flex items-end justify-between gap-3"><p className="text-xs leading-relaxed text-gray-500">分类复习选择题、挖空练习和改错题中的错误。</p><span className="shrink-0 font-extrabold text-emerald-800 transition group-hover:translate-x-1">进入 →</span></div>
+                  </button>
+                </div>
+              </section>
+
               <section className="grid md:grid-cols-2 gap-4">
                 <div className="bg-white border border-gray-200 rounded-3xl p-5"><div className="flex items-center justify-between"><div><h2 className="font-extrabold">最近练习</h2><p className="text-xs text-gray-400 mt-1">来自当前设备的真实记录</p></div><button onClick={() => setPanel('history')} className="text-xs font-bold text-emerald-700">全部记录 →</button></div><div className="mt-4 space-y-3">{learning.records.length ? learning.records.slice(0, 3).map(record => <button onClick={() => navigate(record.path)} key={`${record.title}-${record.time}`} className="flex w-full items-center gap-3 py-2 border-b last:border-0 border-gray-100 text-left"><span className="w-2 h-2 rounded-full bg-emerald-500" /><span className="text-sm font-bold flex-1">{record.title}</span><span className="text-xs font-extrabold text-emerald-700">{record.detail}</span></button>) : <p className="py-7 text-center text-sm text-gray-400">完成一次练习后，这里会显示记录。</p>}</div></div>
                 <div className="bg-white border border-gray-200 rounded-3xl p-5"><div className="flex items-center justify-between"><div><h2 className="font-extrabold">本周学习</h2><p className="text-xs text-gray-400 mt-1">共记录 {learning.weeklyCount} 次练习</p></div><span className="text-xs font-bold text-emerald-700">{learning.weeklyCount ? '保持节奏' : '等待第一次练习'}</span></div><MiniBars values={learning.weeklyValues} /></div>
