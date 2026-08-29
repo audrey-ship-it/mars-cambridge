@@ -47,6 +47,11 @@ export default function CambridgeListeningGap() {
   useEffect(() => {
     if (!hydratedRef.current) return
     try {
+      const hasResponse = Object.values(clozeResponses).some(value => String(value || '').trim())
+      if (!hasResponse && !clozeSubmitted) {
+        localStorage.removeItem(`mars_ket_gap_progress_v1:exercise-${exerciseNumber}`)
+        return
+      }
       localStorage.setItem(`mars_ket_gap_progress_v1:exercise-${exerciseNumber}`, JSON.stringify({
         responses: clozeResponses,
         submitted: clozeSubmitted,
@@ -81,6 +86,7 @@ export default function CambridgeListeningGap() {
   }
 
   function resetExercise() {
+    hydratedRef.current = false
     try { localStorage.removeItem(`mars_ket_gap_progress_v1:exercise-${exerciseNumber}`) } catch { /* storage may be unavailable */ }
     setClozeResponses({})
     setClozeSubmitted(false)
@@ -89,6 +95,7 @@ export default function CambridgeListeningGap() {
       next.delete(exerciseNumber)
       return next
     })
+    window.setTimeout(() => { hydratedRef.current = true }, 0)
   }
 
   function nextTask() {

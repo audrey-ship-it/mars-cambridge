@@ -43,7 +43,8 @@ function readLearningSnapshot() {
   let gapCompleted = 0
   for (let exercise = 1; exercise <= 15; exercise += 1) {
     const item = safeJson(`mars_ket_gap_progress_v1:exercise-${exercise}`, null)
-    if (!item) continue
+    const hasResponse = item && Object.values(item.responses || {}).some(value => String(value || '').trim())
+    if (!item || (!item.completed && !hasResponse)) continue
     if (item.completed) gapCompleted += 1
     records.push({
       title: `听力挖空 · 练习${exercise}`,
@@ -187,6 +188,18 @@ function readTasks() {
   } catch { return initialTasks }
 }
 
+function readStudyPlan() {
+  try {
+    return JSON.parse(localStorage.getItem('mars_ket_study_plan_v1') || 'null') || {
+      examDate: '',
+      daysPerWeek: 5,
+      minutesPerDay: 30,
+    }
+  } catch {
+    return { examDate: '', daysPerWeek: 5, minutesPerDay: 30 }
+  }
+}
+
 function ProgressRing({ value }) {
   const circumference = 2 * Math.PI * 38
   return (
@@ -226,6 +239,7 @@ export default function MyLearningDashboard() {
   const [tasks, setTasks] = useState(readTasks)
   const [panel, setPanel] = useState(null)
   const [toast, setToast] = useState('')
+  const [studyPlan, setStudyPlan] = useState(readStudyPlan)
   const completed = tasks.filter(t => t.done).length
   const todayProgress = Math.round(completed / tasks.length * 100)
   const [learning] = useState(readLearningSnapshot)
@@ -252,6 +266,20 @@ export default function MyLearningDashboard() {
     setToast(message)
     window.setTimeout(() => setToast(''), 2200)
   }
+
+  function saveStudyPlan() {
+    if (!studyPlan.examDate) {
+      notify('请先选择模拟考日期')
+      return
+    }
+    try { localStorage.setItem('mars_ket_study_plan_v1', JSON.stringify({ ...studyPlan, savedAt: new Date().toISOString() })) } catch { /* storage may be unavailable */ }
+    setPanel(null)
+    notify('学习计划已保存')
+  }
+
+  const planDaysLeft = studyPlan.examDate
+    ? Math.max(0, Math.ceil((new Date(`${studyPlan.examDate}T23:59:59`) - new Date()) / 86400000))
+    : null
 
   return (
     <div className="min-h-screen bg-[#f5f7f4] text-gray-900 flex">
@@ -310,7 +338,7 @@ export default function MyLearningDashboard() {
                   <h2 className="text-xl font-extrabold">学习计划</h2>
                 </div>
                 <p className="mt-2 text-sm text-white/55">根据模拟考试日期安排每周任务，进入学习中心后马上明确今天要完成什么。</p>
-                <div className="mt-4 text-sm font-bold text-white/75">尚未设置专属学习计划</div>
+                <div className="mt-4 text-sm font-bold text-white/75">{studyPlan.examDate ? `距离模拟考还有 ${planDaysLeft} 天 · 每周学习 ${studyPlan.daysPerWeek} 天 · 每天 ${studyPlan.minutesPerDay} 分钟` : '尚未设置专属学习计划'}</div>
               </div>
               <button onClick={() => setPanel('plan')} className="shrink-0 rounded-xl bg-[#f4c95d] px-6 py-3 text-sm font-extrabold text-[#083f32] shadow-lg transition hover:bg-amber-300">设置学习计划 →</button>
             </div>
@@ -383,8 +411,18 @@ export default function MyLearningDashboard() {
         {panel && <motion.div className="fixed inset-0 z-50 bg-black/35 backdrop-blur-sm flex items-center justify-center p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setPanel(null)}>
           <motion.div initial={{ scale: .96, y: 12 }} animate={{ scale: 1, y: 0 }} exit={{ scale: .96, y: 12 }} onClick={e => e.stopPropagation()} className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6">
             <div className="flex justify-between items-start"><div><span className="text-xs font-bold text-emerald-700">学习管理</span><h2 className="text-xl font-extrabold mt-1">{panel === 'mistakes' ? '错题本' : panel === 'plan' ? '学习计划' : '历史成绩'}</h2></div><button onClick={() => setPanel(null)} className="w-8 h-8 rounded-full bg-gray-100 text-gray-500">×</button></div>
-            <div className="mt-5 rounded-2xl bg-gray-50 border border-gray-100 p-5 text-sm text-gray-600 leading-relaxed">{panel === 'mistakes' ? '当前有 12 道错题待复习，主要集中在阅读 Part 3 和听力 Part 2。后续阶段会把已有错词数据和各题型错题统一到这里。' : panel === 'plan' ? '你正在进行“KET 8 周稳步提升计划”，当前是第 3 周。本周重点是阅读长文、听力配对和邮件写作。' : '最近三次练习表现稳步上升。阅读 82%、词汇听写 90%、听力 72%。所有结果均为学习模拟数据，不代表官方考试评分。'}</div>
-            <button onClick={() => setPanel(null)} className="mt-5 w-full py-3 rounded-xl bg-[#0d7656] text-white font-bold">知道了</button>
+            {panel === 'plan' ? (
+              <div className="mt-5 space-y-4">
+                <label className="block"><span className="mb-1.5 block text-sm font-bold text-gray-700">模拟考日期</span><input type="date" min={new Date().toISOString().slice(0, 10)} value={studyPlan.examDate} onChange={event => setStudyPlan(value => ({ ...value, examDate: event.target.value }))} className="h-12 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 font-bold text-gray-800 outline-none focus:border-emerald-500" /></label>
+                <label className="block"><span className="mb-1.5 block text-sm font-bold text-gray-700">每周学习天数</span><select value={studyPlan.daysPerWeek} onChange={event => setStudyPlan(value => ({ ...value, daysPerWeek: Number(event.target.value) }))} className="h-12 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 font-bold text-gray-800 outline-none focus:border-emerald-500">{[3,4,5,6,7].map(value => <option key={value} value={value}>每周 {value} 天</option>)}</select></label>
+                <label className="block"><span className="mb-1.5 block text-sm font-bold text-gray-700">每天学习时长</span><select value={studyPlan.minutesPerDay} onChange={event => setStudyPlan(value => ({ ...value, minutesPerDay: Number(event.target.value) }))} className="h-12 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 font-bold text-gray-800 outline-none focus:border-emerald-500">{[20,30,45,60,90].map(value => <option key={value} value={value}>每天 {value} 分钟</option>)}</select></label>
+                <button onClick={saveStudyPlan} className="w-full rounded-xl bg-[#0d7656] py-3 font-bold text-white">保存并生成计划</button>
+              </div>
+            ) : panel === 'mistakes' ? (
+              <div className="mt-5"><div className="rounded-2xl border border-gray-100 bg-gray-50 p-5 text-sm text-gray-600">当前共有 <strong className="text-gray-900">{learning.mistakeCount}</strong> 道待复习错题，其中词汇 {learning.vocabMistakeCount} 道、语法 {learning.grammarMistakeCount} 道。</div><button onClick={() => { setPanel(null); navigate(learning.grammarMistakeCount ? '/cambridge/grammar/mistakes' : '/cambridge/words') }} disabled={!learning.mistakeCount} className="mt-4 w-full rounded-xl bg-[#0d7656] py-3 font-bold text-white disabled:bg-gray-200">{learning.mistakeCount ? '进入错题复习' : '暂时没有错题'}</button></div>
+            ) : (
+              <div className="mt-5"><div className="rounded-2xl border border-gray-100 bg-gray-50 p-5 text-sm text-gray-600">{learning.records.length ? `当前设备已保存 ${learning.records.length} 条练习记录。` : '当前还没有练习记录，完成练习后会自动显示。'}</div><button onClick={() => setPanel(null)} className="mt-4 w-full rounded-xl bg-[#0d7656] py-3 font-bold text-white">关闭</button></div>
+            )}
           </motion.div>
         </motion.div>}
       </AnimatePresence>
