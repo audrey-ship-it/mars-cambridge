@@ -124,6 +124,28 @@ export function CambridgeLayout({ children, activeModule, level, setLevel }) {
 
 import { cambridgeWordsByLevel, LEVEL_WORD_COUNTS } from '../data/cambridgeWords'
 import { VOCAB_SETS, MUST_SPELL_TOPICS, mustSpell500, READING_FREQ_288, irregularVerbWords } from '../data/ketVocabSets'
+
+const VOCAB_PHONETIC_OVERRIDES = {
+  play: '/pleɪ/', 'pop music': '/ˈpɒp ˌmjuːzɪk/', cafe: '/ˈkæfeɪ/', yogurt: '/ˈjɒɡət/',
+  'sports center': '/ˈspɔːts ˌsentə/', windsurfing: '/ˈwɪndsɜːfɪŋ/', striped: '/straɪpt/',
+  address: '/əˈdres/', 'city center': '/ˌsɪti ˈsentə/', favorite: '/ˈfeɪvərɪt/',
+  'pick up': '/ˌpɪk ˈʌp/', pound: '/paʊnd/', service: '/ˈsɜːvɪs/',
+  monday: '/ˈmʌndeɪ/', tuesday: '/ˈtjuːzdeɪ/', wednesday: '/ˈwenzdeɪ/',
+  thursday: '/ˈθɜːzdeɪ/', friday: '/ˈfraɪdeɪ/', saturday: '/ˈsætədeɪ/', sunday: '/ˈsʌndeɪ/',
+  january: '/ˈdʒænjuəri/', february: '/ˈfebruəri/', march: '/mɑːtʃ/', april: '/ˈeɪprəl/',
+  june: '/dʒuːn/', july: '/dʒuˈlaɪ/', august: '/ˈɔːɡəst/', september: '/sepˈtembə/',
+  october: '/ɒkˈtəʊbə/', november: '/nəʊˈvembə/', december: '/dɪˈsembə/',
+  'as soon as': '/əz ˈsuːn əz/', 'e-mail': '/ˈiːmeɪl/', laptop: '/ˈlæptɒp/',
+  mobile: '/ˈməʊbaɪl/', robot: '/ˈrəʊbɒt/', 'at least': '/ət ˈliːst/', awesome: '/ˈɔːsəm/',
+  fabulous: '/ˈfæbjələs/', relaxing: '/rɪˈlæksɪŋ/', spotted: '/ˈspɒtɪd/',
+}
+
+const VOCAB_PHONETIC_LOOKUP = new Map((cambridgeWordsByLevel.PET || []).filter(item => item.word && item.phonetic).map(item => [item.word.toLowerCase(), item.phonetic]))
+
+function getVocabPhonetic(word, fallback = '') {
+  const key = String(word || '').trim().toLowerCase()
+  return fallback || VOCAB_PHONETIC_LOOKUP.get(key) || VOCAB_PHONETIC_OVERRIDES[key] || ''
+}
 import { COLLOCATION_BATCHES } from '../data/ketCollocations'
 import { getKetEnglishDefinition } from '../data/ketEnglishDefinitions'
 
@@ -643,13 +665,14 @@ function WordsPractice({ level, vocabChoice, onBack }) {
     if (vocabChoice.mode === 'review') {
       return vocabChoice.words.map(w => ({
         ...w,
+        phonetic: getVocabPhonetic(w.word, w.phonetic),
         english: getKetEnglishDefinition(w.word, w.english),
       }))
     }
     if (vocabChoice.mode === 'must500') {
       return mustSpell500.map(w => ({
         word: w.word, part: w.part, chinese: w.chinese,
-        phonetic: '', english: getKetEnglishDefinition(w.word), sentence: w.sentence,
+        phonetic: getVocabPhonetic(w.word), english: getKetEnglishDefinition(w.word), sentence: w.sentence,
         topic: w.topicTitleZh,
       }))
     }
@@ -664,7 +687,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
       const t = vocabChoice.topic
       return t.words.map(w => ({
         word: w.word, part: w.part, chinese: w.chinese,
-        phonetic: '', english: getKetEnglishDefinition(w.word), sentence: w.sentence,
+        phonetic: getVocabPhonetic(w.word), english: getKetEnglishDefinition(w.word), sentence: w.sentence,
         topic: t.titleZh,
       }))
     }
