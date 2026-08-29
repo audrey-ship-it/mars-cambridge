@@ -128,18 +128,7 @@ function readLearningSnapshot() {
     cursor.setDate(cursor.getDate() - 1)
   }
 
-  const modules = [
-    { id: 'words', icon: '📖', title: '词汇', progress: clampPercent(masteredWords / 1500 * 100), note: `已掌握 ${masteredWords} / 1,500 词`, path: '/cambridge/words', tone: 'emerald' },
-    { id: 'grammar', icon: '📐', title: '语法', progress: clampPercent(grammarDone / 55 * 100), note: `已完成 ${grammarDone} / 55 单元`, path: '/cambridge/grammar', tone: 'blue' },
-    { id: 'reading', icon: '📄', title: '阅读', progress: clampPercent(readingUnits / 20 * 100), note: readingCompleted ? `已完成 ${readingCompleted} 套真题` : '尚未完成整套阅读', path: '/cambridge/reading', tone: 'violet' },
-    { id: 'listening', icon: '🎧', title: '听力', progress: clampPercent(listeningDone / 60 * 100), note: `已完成 ${listeningDone} / 60 个 Part`, path: '/cambridge/listening', tone: 'cyan' },
-    { id: 'dictation', icon: '⌨️', title: '听写', progress: clampPercent(gapCompleted / 15 * 100), note: `已完成 ${gapCompleted} / 15 套练习`, path: '/cambridge/dictation', tone: 'amber' },
-    { id: 'writing', icon: '✍️', title: '写作', progress: clampPercent(writingDrafts / 8 * 100), note: `已保存 ${writingDrafts} / 8 篇草稿`, path: '/cambridge/exams/ket-3-test1?tab=writing&part=6', tone: 'rose' },
-    { id: 'speaking', icon: '🎙️', title: '口语', progress: clampPercent(speakingRatings / 24 * 100), note: `已自评 ${speakingRatings} 道口语题`, path: '/cambridge/exams/ket-3-test1?tab=speaking', tone: 'orange' },
-  ]
-
   return {
-    modules,
     records,
     continueItem: records[0] || null,
     mistakeCount: Object.keys(grammarMistakes).length + (Array.isArray(vocabMistakes) ? vocabMistakes.length : 0) + readingMistakeCount + listeningMistakeCount + gapMistakeCount,
@@ -153,16 +142,6 @@ function readLearningSnapshot() {
     weeklyCount: weeklyValues.reduce((sum, value) => sum + value, 0),
     streak,
   }
-}
-
-const tones = {
-  emerald: 'bg-emerald-50 text-emerald-700 border-emerald-100',
-  blue: 'bg-blue-50 text-blue-700 border-blue-100',
-  violet: 'bg-violet-50 text-violet-700 border-violet-100',
-  cyan: 'bg-cyan-50 text-cyan-700 border-cyan-100',
-  amber: 'bg-amber-50 text-amber-700 border-amber-100',
-  rose: 'bg-rose-50 text-rose-700 border-rose-100',
-  orange: 'bg-orange-50 text-orange-700 border-orange-100',
 }
 
 const navGroups = [
@@ -260,23 +239,6 @@ function ProgressRing({ value }) {
   )
 }
 
-function MiniBars({ values }) {
-  const labels = ['一', '二', '三', '四', '五', '六', '日']
-  const maxValue = Math.max(1, ...values)
-  return (
-    <div className="flex items-end justify-between gap-2 h-28 pt-3">
-      {values.map((v, i) => (
-        <div key={labels[i]} className="flex-1 h-full flex flex-col justify-end items-center gap-2">
-          <div className="w-full max-w-7 bg-emerald-100 rounded-t-md relative overflow-hidden" style={{ height: `${v ? Math.max(18, v / maxValue * 100) : 4}%` }}>
-            <div className="absolute inset-0 bg-[#0d7656] rounded-t-md" />
-          </div>
-          <span className={`text-[10px] ${i === 6 ? 'font-bold text-emerald-700' : 'text-gray-400'}`}>{labels[i]}</span>
-        </div>
-      ))}
-    </div>
-  )
-}
-
 export default function MyLearningDashboard() {
   const navigate = useNavigate()
   const [tasks, setTasks] = useState(readTasks)
@@ -287,7 +249,6 @@ export default function MyLearningDashboard() {
   const completed = tasks.filter(t => t.done).length
   const todayProgress = Math.round(completed / tasks.length * 100)
   const [learning] = useState(readLearningSnapshot)
-  const modules = learning.modules
   const continueItem = learning.continueItem
 
   const greeting = useMemo(() => {
@@ -413,8 +374,7 @@ export default function MyLearningDashboard() {
             </div>
           </section>
 
-          <div className="grid xl:grid-cols-[minmax(0,1fr)_320px] gap-6">
-            <div className="space-y-6 min-w-0">
+          <div className="space-y-6 min-w-0">
               <section className="rounded-3xl bg-white border border-gray-200/80 shadow-sm overflow-hidden">
                 <div className="p-5 sm:p-6 flex flex-col md:flex-row gap-6 md:items-center">
                   <ProgressRing value={todayProgress} />
@@ -475,34 +435,6 @@ export default function MyLearningDashboard() {
                 </div>
               </section>
 
-              <section className="grid md:grid-cols-2 gap-4">
-                <div className="bg-white border border-gray-200 rounded-3xl p-5"><div className="flex items-center justify-between"><div><h2 className="font-extrabold">最近练习</h2><p className="text-xs text-gray-400 mt-1">来自当前设备的真实记录</p></div><button onClick={() => setPanel('history')} className="text-xs font-bold text-emerald-700">全部记录 →</button></div><div className="mt-4 space-y-3">{learning.records.length ? learning.records.slice(0, 3).map(record => <button onClick={() => navigate(record.path)} key={`${record.title}-${record.time}`} className="flex w-full items-center gap-3 py-2 border-b last:border-0 border-gray-100 text-left"><span className="w-2 h-2 rounded-full bg-emerald-500" /><span className="text-sm font-bold flex-1">{record.title}</span><span className="text-xs font-extrabold text-emerald-700">{record.detail}</span></button>) : <p className="py-7 text-center text-sm text-gray-400">完成一次练习后，这里会显示记录。</p>}</div></div>
-                <div className="bg-white border border-gray-200 rounded-3xl p-5"><div className="flex items-center justify-between"><div><h2 className="font-extrabold">本周学习</h2><p className="text-xs text-gray-400 mt-1">共记录 {learning.weeklyCount} 次练习</p></div><span className="text-xs font-bold text-emerald-700">{learning.weeklyCount ? '保持节奏' : '等待第一次练习'}</span></div><MiniBars values={learning.weeklyValues} /></div>
-              </section>
-
-              <section>
-                <div className="flex items-end justify-between mb-4"><div><h2 className="text-lg font-extrabold">KET 专项学习</h2><p className="text-xs text-gray-400 mt-1">按自己的节奏稳步提升每项能力</p></div></div>
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {modules.map(module => (
-                    <motion.button key={module.id} whileHover={{ y: -3 }} onClick={() => navigate(module.path)} className="text-left bg-white border border-gray-200/80 rounded-2xl p-4 hover:shadow-md hover:border-gray-300 transition-all">
-                      <div className="flex items-start justify-between mb-4"><span className={`w-10 h-10 rounded-xl border grid place-items-center text-lg ${tones[module.tone]}`}>{module.icon}</span>{module.ai && <span className="text-[9px] font-extrabold px-2 py-1 rounded-full bg-amber-100 text-amber-800">AI 体验版</span>}</div>
-                      <div className="flex items-center justify-between"><h3 className="font-extrabold">{module.title}</h3><span className="text-xs font-bold text-gray-500">{module.progress}%</span></div>
-                      <p className="text-[11px] text-gray-400 mt-1 mb-3">{module.note}</p>
-                      <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden"><div className="h-full rounded-full bg-[#0d7656]" style={{ width: `${module.progress}%` }} /></div>
-                    </motion.button>
-                  ))}
-                  <motion.button whileHover={{ y: -3 }} onClick={() => navigate('/cambridge/exams')} className="text-left bg-[#fffaf0] border border-amber-200 rounded-2xl p-4 hover:shadow-md transition-all sm:col-span-2 lg:col-span-2">
-                    <div className="flex items-center gap-4"><span className="w-12 h-12 rounded-2xl bg-amber-100 grid place-items-center text-2xl">📝</span><div className="flex-1"><div className="flex items-center gap-2"><h3 className="font-extrabold">KET 模拟考试</h3><span className="text-[9px] font-extrabold text-amber-800 bg-amber-200/70 rounded px-2 py-0.5">模拟训练</span></div><p className="text-xs text-gray-500 mt-1">Reading & Writing · Listening · Speaking</p></div><span className="text-amber-700 font-extrabold">→</span></div>
-                  </motion.button>
-                </div>
-              </section>
-
-            </div>
-
-            <aside className="space-y-4">
-              <section className="bg-white border border-gray-200 rounded-3xl p-5"><div className="flex items-center justify-between"><h2 className="font-extrabold">推荐下一步</h2><span className="text-lg">🎯</span></div><div className="mt-4 rounded-2xl bg-[#fff7ed] border border-orange-200 p-4"><span className="inline-flex items-center gap-1.5 text-[10px] font-extrabold tracking-wider text-orange-700"><span className="w-1.5 h-1.5 rounded-full bg-orange-500" />{learning.mistakeCount ? '优先复习' : '建议起点'}</span><h3 className="font-extrabold mt-1">{learning.grammarMistakeCount ? '语法错题复习' : learning.vocabMistakeCount ? '词汇错题复习' : 'KET 必默词汇'}</h3><p className="text-xs leading-relaxed text-gray-500 mt-2">{learning.mistakeCount ? `当前有 ${learning.mistakeCount} 道错题，建议先完成针对复习。` : '目前没有错题记录，可以先从核心必默词汇建立学习基础。'}</p><button onClick={() => navigate(learning.grammarMistakeCount ? '/cambridge/grammar/mistakes' : '/cambridge/words')} className="mt-4 w-full py-2.5 bg-[#e97824] text-white rounded-xl font-bold text-sm hover:bg-[#cf6117] shadow-sm shadow-orange-200">{learning.mistakeCount ? '开始错题复习' : '开始词汇学习'}</button></div></section>
-              <section className="bg-white border border-gray-200 rounded-3xl p-5"><div className="flex items-center justify-between"><h2 className="font-extrabold">错题提醒</h2><button onClick={() => setPanel('mistakes')} className="text-xs font-bold text-emerald-700">查看错题本</button></div><div className="mt-4 flex items-center gap-4"><div className="w-14 h-14 rounded-2xl bg-amber-50 text-amber-700 grid place-items-center text-2xl font-extrabold">{learning.mistakeCount}</div><div><div className="text-sm font-bold">{learning.mistakeCount ? `${learning.mistakeCount} 道错题待复习` : '目前没有待复习错题'}</div><p className="text-[11px] text-gray-400 mt-1">词汇 {learning.vocabMistakeCount} · 语法 {learning.grammarMistakeCount}</p></div></div><button onClick={() => learning.grammarMistakeCount ? navigate('/cambridge/grammar/mistakes') : learning.vocabMistakeCount ? navigate('/cambridge/words') : notify('完成练习后，错题会自动收集到这里')} className="mt-4 w-full py-2.5 border border-amber-200 text-amber-800 bg-amber-50 rounded-xl text-sm font-bold">{learning.mistakeCount ? '复习今日错题' : '去完成练习'}</button></section>
-            </aside>
           </div>
         </div>
       </main>
