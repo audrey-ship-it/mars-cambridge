@@ -71,4 +71,33 @@ export const KET_EXAM_TEST_2 = {
       {part:7,type:'story_writing',title:'Part 7 · 看图写故事',prompt:'Look at the three pictures. Write the story shown in the pictures. Write 35 words or more.',imageSrc:'/images/ket/test2/writing/part7_story.svg',imageDesc:'四名学生参加自行车比赛；比赛途中一名选手逐渐领先；最后领先的选手冲过终点，大家为他欢呼。',modelAnswer:'One sunny day, four friends entered a bicycle race. When the race started, they all cycled as fast as they could. After a while, one boy moved into the lead. Finally, he crossed the finish line first while the crowd cheered. He was tired but very happy to win.',tips:['使用一般过去时','按三幅图的顺序叙述','使用 after a while、finally 等连接词','至少35词']},
     ],
   },
+  speaking: {
+    parts: [
+      {
+        part: 1,
+        title: 'Part 1 · 个人问答',
+        duration: '3–4 分钟',
+        description: '先回答姓名、年龄和居住地，再围绕“一天中的不同时间”和“购物”回答问题。使用完整句子，并补充原因或例子。',
+        topics: [
+          {id:'t2-s1-1',question:"What's your name? How old are you, and where do you live?",chineseHint:'介绍姓名、年龄以及居住地',modelAnswer:"My name is Leo Zhang. I'm thirteen years old and I live in Shanghai with my parents. It's a large and exciting city, and I like living there because there are lots of things to do.",phrases:["My name is…","I'm … years old","I live in… with…","I like living there because…"]},
+          {id:'t2-s1-2',question:'What time do you usually get up?',chineseHint:'说明通常几点起床，并补充起床后的活动',modelAnswer:"I usually get up at seven o'clock on school days. I wash, get dressed and have breakfast before I leave home at about half past seven. At weekends, I normally get up a little later.",phrases:['I usually get up at…','On school days…','At weekends…']},
+          {id:'t2-s1-3',question:'How often do you have lunch with your friends?',chineseHint:'说明和朋友一起吃午饭的频率',modelAnswer:"I have lunch with my friends every school day. We eat in the school dining hall and usually talk about our lessons or our plans for the weekend.",phrases:['every school day','We usually…','while we have lunch']},
+          {id:'t2-s1-4',question:'Where do you like going after school?',chineseHint:'说出放学后喜欢去的地方和原因',modelAnswer:"After school, I like going to the sports centre near my home. I often play badminton there with my best friend because it helps me relax after a busy day.",phrases:['After school, I like going to…','I often… there','because it helps me…']},
+          {id:'t2-s1-5',question:'Who do you usually talk to in the evening?',chineseHint:'说明晚上通常和谁交谈以及谈什么',modelAnswer:"I usually talk to my parents in the evening. We have dinner together and tell each other about our day. I also sometimes call my friends to discuss our homework.",phrases:['I usually talk to…','We tell each other about…','I sometimes call…']},
+          {id:'t2-s1-6',question:'Tell me something about a morning you spent outdoors.',chineseHint:'描述一次在户外度过的早晨',modelAnswer:"Last Sunday morning, I went hiking with my family in a country park. The weather was sunny and cool. We walked beside a lake, took lots of photos and had a picnic. I really enjoyed the fresh air.",phrases:['Last … morning…','The weather was…','We walked… and…','I really enjoyed…']},
+          {id:'t2-s1-7',question:'What type of shops do you go to, and who do you usually go shopping with?',chineseHint:'谈谈常去的商店和购物同伴',modelAnswer:"I often go to bookshops and sports shops. I usually go shopping with my mum at weekends, but I sometimes visit the shopping centre with my friends when I need new clothes.",phrases:['I often go to…','I usually go shopping with…','when I need…']},
+          {id:'t2-s1-8',question:'Tell me about a day when you bought a present for someone.',chineseHint:'描述一次为别人购买礼物的经历',modelAnswer:"Last month, I bought a birthday present for my sister. I chose a small blue bag because blue is her favourite colour. She was very surprised when she opened it and said she loved it.",phrases:['I bought a present for…','I chose… because…','When … opened it…']},
+        ],
+      },
+      {
+        part: 2,
+        title: 'Part 2 · 图片讨论',
+        duration: '5–6 分钟',
+        description: '观察公共汽车、火车、汽车、步行和滑板车五种上学方式，与同伴讨论是否喜欢，并说明理由。',
+        topics: [
+          {id:'t2-s2-1',theme:'Ways of getting to school',themeZh:'不同的上学方式',cardPrompts:['Do you like getting to school by bus? Why or why not?','Do you think taking the train to school is expensive?','Is travelling to school by car comfortable?','Is walking to school fun?','Is going to school by scooter dangerous?','Which way of getting to school do you like best?','Do you usually travel to school on your own or with friends?'],modelAnswer:"I think going by bus is convenient, although it can be crowded. The train is fast but it may be expensive. Travelling by car is comfortable, while walking is healthy and gives you time to talk to friends. A scooter can be fun, but you need a helmet and must be careful. I like walking best because my school is close to my home. I usually walk there with two friends.",phrases:['I think … is convenient because…','It can be…, although…','I prefer… because…','In my opinion…','What do you think?']},
+        ],
+      },
+    ],
+  },
 };
