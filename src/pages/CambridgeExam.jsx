@@ -1609,6 +1609,7 @@ function SpeakingExam({ exam, section, onSection }) {
           <motion.div key={partIndex} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="space-y-3">
             {part.topics.map((topic) => (
               <SpeakingTopicCard key={topic.id} topic={topic} part={part.part}
+                examId={exam.id}
                 isSpeaking={speaking === topic.id}
                 onSpeak={() => speak(topic.id, topic.modelAnswer)}
               />
@@ -1621,7 +1622,7 @@ function SpeakingExam({ exam, section, onSection }) {
   )
 }
 
-function SpeakingTopicCard({ topic, part, isSpeaking, onSpeak }) {
+function SpeakingTopicCard({ topic, part, examId, isSpeaking, onSpeak }) {
   const [showAnswer, setShowAnswer] = useState(false)
 
   return (
@@ -1701,8 +1702,156 @@ function SpeakingTopicCard({ topic, part, isSpeaking, onSpeak }) {
             ))}
           </div>
         )}
+
+        <SpeakingRecordingPractice examId={examId} topic={topic} />
       </div>
     </motion.div>
+  )
+}
+
+function SpeakingRecordingPractice({ examId, topic }) {
+  const recorderRef = useRef(null)
+  const streamRef = useRef(null)
+  const chunksRef = useRef([])
+  const audioUrlRef = useRef(null)
+  const [recording, setRecording] = useState(false)
+  const [seconds, setSeconds] = useState(0)
+  const [audioUrl, setAudioUrl] = useState(null)
+  const [message, setMessage] = useState('')
+  const assessmentKey = `mars_ket_speaking_progress_v1:${examId}:${topic.id}`
+  const [assessment, setAssessment] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem(assessmentKey) || 'null') || {
+        fluency: 0,
+        pronunciation: 0,
+        content: 0,
+      }
+    } catch {
+      return { fluency: 0, pronunciation: 0, content: 0 }
+    }
+  })
+
+  useEffect(() => {
+    if (!recording) return undefined
+    const timer = window.setInterval(() => setSeconds(value => value + 1), 1000)
+    return () => window.clearInterval(timer)
+  }, [recording])
+
+  useEffect(() => () => {
+    if (audioUrlRef.current) URL.revokeObjectURL(audioUrlRef.current)
+    streamRef.current?.getTracks().forEach(track => track.stop())
+  }, [])
+
+  async function startRecording() {
+    if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) {
+      setMessage('当前浏览器不支持录音，请使用最新版 Chrome 或 Safari。')
+      return
+    }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      const recorder = new MediaRecorder(stream)
+      streamRef.current = stream
+      recorderRef.current = recorder
+      chunksRef.current = []
+      setSeconds(0)
+      setMessage('')
+      if (audioUrlRef.current) {
+        URL.revokeObjectURL(audioUrlRef.current)
+        audioUrlRef.current = null
+        setAudioUrl(null)
+      }
+      recorder.ondataavailable = event => {
+        if (event.data.size > 0) chunksRef.current.push(event.data)
+      }
+      recorder.onstop = () => {
+        const blob = new Blob(chunksRef.current, { type: recorder.mimeType || 'audio/webm' })
+        const nextAudioUrl = URL.createObjectURL(blob)
+        audioUrlRef.current = nextAudioUrl
+        setAudioUrl(nextAudioUrl)
+        stream.getTracks().forEach(track => track.stop())
+        streamRef.current = null
+      }
+      recorder.start()
+      setRecording(true)
+    } catch {
+      setMessage('没有获得麦克风权限。请允许使用麦克风后再试一次。')
+    }
+  }
+
+  function stopRecording() {
+    if (recorderRef.current?.state === 'recording') recorderRef.current.stop()
+    setRecording(false)
+  }
+
+  function updateAssessment(key, value) {
+    const next = { ...assessment, [key]: value, updatedAt: new Date().toISOString() }
+    setAssessment(next)
+    try {
+      localStorage.setItem(assessmentKey, JSON.stringify(next))
+    } catch {
+      // Self-assessment remains usable if storage is unavailable.
+    }
+  }
+
+  const assessmentItems = [
+    ['fluency', '流利度'],
+    ['pronunciation', '发音清晰度'],
+    ['content', '内容完整度'],
+  ]
+
+  return (
+    <section className="mt-4 rounded-2xl border border-[#ead58f] bg-[#fffaf0] p-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <div className="text-xs font-extrabold tracking-wide text-[#8a6500]">轮到你回答</div>
+          <p className="mt-1 text-sm text-gray-600">先独立作答并录音，再回放检查。录音只保留在当前页面。</p>
+        </div>
+        <button
+          type="button"
+          onClick={recording ? stopRecording : startRecording}
+          className={`min-w-[138px] rounded-xl px-4 py-3 text-sm font-extrabold text-white transition ${recording ? 'bg-rose-500 hover:bg-rose-600' : 'bg-[#064e3b] hover:bg-[#065f46]'}`}
+        >
+          {recording ? `■ 停止录音 ${seconds}s` : '● 开始录音'}
+        </button>
+      </div>
+
+      {message && <p className="mt-3 rounded-xl bg-rose-50 px-3 py-2 text-sm text-rose-700">{message}</p>}
+
+      {audioUrl && (
+        <div className="mt-3 rounded-xl border border-gray-200 bg-white p-3">
+          <div className="mb-2 flex items-center justify-between text-xs font-bold text-gray-500">
+            <span>回放我的回答</span>
+            <span>{seconds} 秒</span>
+          </div>
+          <audio controls src={audioUrl} className="h-10 w-full" />
+        </div>
+      )}
+
+      <div className="mt-4 border-t border-[#ead58f] pt-4">
+        <div className="mb-3 text-xs font-extrabold text-gray-700">完成回放后自评</div>
+        <div className="grid gap-3 sm:grid-cols-3">
+          {assessmentItems.map(([key, label]) => (
+            <div key={key} className="rounded-xl bg-white p-3">
+              <div className="text-xs font-bold text-gray-600">{label}</div>
+              <div className="mt-2 flex gap-1.5">
+                {[1, 2, 3].map(value => (
+                  <button
+                    key={value}
+                    type="button"
+                    onClick={() => updateAssessment(key, value)}
+                    aria-label={`${label} ${value}分`}
+                    className={`grid h-9 flex-1 place-items-center rounded-lg text-sm font-extrabold transition ${assessment[key] === value ? 'bg-[#f7cd60] text-[#4c3a00]' : 'bg-gray-100 text-gray-400 hover:bg-gray-200'}`}
+                  >
+                    {value}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+        <p className="mt-2 text-xs text-gray-400">1＝需要加强　2＝基本完成　3＝表现良好</p>
+      </div>
+    </section>
   )
 }
 
