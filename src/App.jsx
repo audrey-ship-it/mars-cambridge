@@ -15,6 +15,7 @@ export default function App() {
     <Routes>
       <Route path="/" element={<PublicHome />} />
       <Route path="/cambridge" element={<CambridgeApp />} />
+      <Route path="/cambridge/reading" element={<CambridgeReading />} />
       <Route path="/cambridge/:module" element={<CambridgeApp />} />
       <Route path="/cambridge/:module/:part" element={<CambridgeApp />} />
       <Route path="/cambridge-reading" element={<CambridgeReading />} />

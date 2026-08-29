@@ -7,6 +7,13 @@ import { KET_EXAMS } from '../data/ketExamData'
    Exam List Page  /cambridge/exams
 ══════════════════════════════ */
 export function ExamList() {
+  const sectionSummary = (exam) => [
+    exam.listening && '听力 25题',
+    exam.reading && '阅读 30题',
+    exam.reading?.writing?.length && '写作 2题',
+    exam.speaking && '口语 2部分',
+  ].filter(Boolean).join(' · ')
+
   return (
     <div className="min-h-screen bg-[#f8f9fc]">
       <header className="bg-white border-b border-gray-100 sticky top-0 z-30 shadow-sm">
@@ -26,7 +33,7 @@ export function ExamList() {
         <div className="mb-6">
           <span className="text-xs font-bold bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">A2 KET</span>
           <h1 className="text-2xl font-bold text-gray-900 mt-2 mb-1">KET 官方真题</h1>
-          <p className="text-sm text-gray-500">含听力（真实录音）· 阅读与写作，完整模拟考试体验</p>
+          <p className="text-sm text-gray-500">阅读、写作与口语真题训练；完整听力套题请前往“我的听力中心”</p>
         </div>
 
         <div className="space-y-3">
@@ -39,7 +46,7 @@ export function ExamList() {
                 </div>
                 <div className="flex-1">
                   <div className="font-bold text-gray-900 group-hover:text-[#064e3b] transition-colors">{exam.title}</div>
-                  <div className="text-xs text-gray-400 mt-0.5">{exam.label} · 听力 25题 · 阅读 30题 · 写作 2题</div>
+                  <div className="text-xs text-gray-400 mt-0.5">{exam.label} · {sectionSummary(exam)}</div>
                 </div>
                 <div className="flex flex-col items-end gap-1.5">
                   <span className="text-xs font-bold bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">已上线</span>
