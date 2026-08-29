@@ -2,15 +2,134 @@ import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 
-const modules = [
-  { id: 'words', icon: '📖', title: '词汇', progress: 68, note: '已掌握 1,020 / 1,500 词', path: '/cambridge/words', tone: 'emerald' },
-  { id: 'grammar', icon: '📐', title: '语法', progress: 42, note: '已完成 23 / 55 单元', path: '/cambridge/grammar', tone: 'blue' },
-  { id: 'reading', icon: '📄', title: '阅读', progress: 54, note: '最近正确率 76%', path: '/cambridge-reading', tone: 'violet' },
-  { id: 'listening', icon: '🎧', title: '听力', progress: 36, note: '最近正确率 68%', path: '/cambridge/listening', tone: 'cyan' },
-  { id: 'dictation', icon: '⌨️', title: '听写', progress: 61, note: '本周完成 4 次', path: '/cambridge/dictation', tone: 'amber' },
-  { id: 'writing', icon: '✍️', title: '写作', progress: 25, note: 'Part 6 邮件写作', path: '/cambridge/exams/ket-3-test1?tab=writing&part=6', tone: 'rose', ai: true },
-  { id: 'speaking', icon: '🎙️', title: '口语', progress: 18, note: 'Part 1 个人问答', path: '/cambridge/exams/ket-3-test1?tab=speaking', tone: 'orange', ai: true },
-]
+const EXAM_IDS = ['ket-3-test1', 'ket-3-test2', 'ket-3-test3', 'ket-3-test4']
+
+function safeJson(key, fallback) {
+  try {
+    const value = JSON.parse(localStorage.getItem(key) || 'null')
+    return value ?? fallback
+  } catch { return fallback }
+}
+
+function clampPercent(value) {
+  return Math.max(0, Math.min(100, Math.round(value || 0)))
+}
+
+function readLearningSnapshot() {
+  const mastery = safeJson('mars_vocab_mastery_v1', {})
+  const masteredWords = Object.values(mastery).filter(record => record && !record.needsReview).length
+  const grammarProgress = safeJson('mars_grammar_progress_v1', {})
+  const grammarDone = Object.values(grammarProgress).filter(Boolean).length
+  const grammarMistakes = safeJson('mars_grammar_mistakes_v1', {})
+  const vocabMistakes = safeJson('mars_vocab_review_queue_v1', [])
+  const records = []
+
+  let listeningDone = 0
+  for (let setId = 1; setId <= 12; setId += 1) {
+    for (let part = 1; part <= 5; part += 1) {
+      const item = safeJson(`mars_ket_listening_progress_v1:set-${setId}:part-${part}`, null)
+      if (!item) continue
+      if (item.completed) listeningDone += 1
+      records.push({
+        title: `听力练习${setId} · Part ${part}`,
+        detail: item.completed ? '已完成' : '进行中',
+        time: item.updatedAt,
+        path: `/cambridge/listening?part=${part}&set=${setId}`,
+        progress: item.completed ? 100 : 40,
+      })
+    }
+  }
+
+  let readingUnits = 0
+  let readingCompleted = 0
+  let writingDrafts = 0
+  EXAM_IDS.forEach((examId, index) => {
+    const reading = safeJson(`mars_ket_exam_progress_v1:${examId}:reading`, null)
+    if (reading) {
+      const partNumber = Math.min(5, (reading.partIndex || 0) + 1)
+      readingUnits += reading.done ? 5 : Math.max(0, partNumber - 1)
+      if (reading.done) readingCompleted += 1
+      records.push({
+        title: `阅读第${index + 1}套 · Part ${partNumber}`,
+        detail: reading.done ? '整套已完成' : '继续答题',
+        time: reading.savedAt,
+        path: `/cambridge/exams/${examId}?tab=reading`,
+        progress: reading.done ? 100 : clampPercent((partNumber - 1) / 5 * 100),
+      })
+    }
+    ;[6, 7].forEach(part => {
+      try {
+        const draft = localStorage.getItem(`mars_ket_exam_progress_v1:${examId}:writing:part${part}:draft`) || ''
+        if (draft.trim()) writingDrafts += 1
+      } catch { /* storage may be unavailable */ }
+    })
+  })
+
+  let speakingRatings = 0
+  let latestSpeaking = null
+  try {
+    for (let index = 0; index < localStorage.length; index += 1) {
+      const key = localStorage.key(index)
+      if (!key?.startsWith('mars_ket_speaking_progress_v1:')) continue
+      const value = safeJson(key, null)
+      if (!value) continue
+      speakingRatings += 1
+      if (!latestSpeaking || String(value.updatedAt) > String(latestSpeaking.updatedAt)) latestSpeaking = value
+    }
+  } catch { /* storage may be unavailable */ }
+
+  const lastListening = safeJson('mars_ket_listening_progress_v1:last', null)
+  if (lastListening && !records.some(record => record.time === lastListening.updatedAt)) {
+    records.push({
+      title: `听力练习${lastListening.setId} · Part ${lastListening.part}`,
+      detail: '继续练习',
+      time: lastListening.updatedAt,
+      path: `/cambridge/listening?part=${lastListening.part}&set=${lastListening.setId}`,
+      progress: 0,
+    })
+  }
+  records.sort((a, b) => String(b.time || '').localeCompare(String(a.time || '')))
+  const today = new Date()
+  const dayKeys = Array.from({ length: 7 }, (_, offset) => {
+    const date = new Date(today)
+    date.setHours(0, 0, 0, 0)
+    date.setDate(date.getDate() - (6 - offset))
+    return date.toISOString().slice(0, 10)
+  })
+  const recordDays = records.map(record => String(record.time || '').slice(0, 10)).filter(Boolean)
+  const weeklyValues = dayKeys.map(day => recordDays.filter(value => value === day).length)
+  const activeDays = new Set(recordDays)
+  let streak = 0
+  const cursor = new Date(today)
+  cursor.setHours(0, 0, 0, 0)
+  while (activeDays.has(cursor.toISOString().slice(0, 10))) {
+    streak += 1
+    cursor.setDate(cursor.getDate() - 1)
+  }
+
+  const modules = [
+    { id: 'words', icon: '📖', title: '词汇', progress: clampPercent(masteredWords / 1500 * 100), note: `已掌握 ${masteredWords} / 1,500 词`, path: '/cambridge/words', tone: 'emerald' },
+    { id: 'grammar', icon: '📐', title: '语法', progress: clampPercent(grammarDone / 55 * 100), note: `已完成 ${grammarDone} / 55 单元`, path: '/cambridge/grammar', tone: 'blue' },
+    { id: 'reading', icon: '📄', title: '阅读', progress: clampPercent(readingUnits / 20 * 100), note: readingCompleted ? `已完成 ${readingCompleted} 套真题` : '尚未完成整套阅读', path: '/cambridge/reading', tone: 'violet' },
+    { id: 'listening', icon: '🎧', title: '听力', progress: clampPercent(listeningDone / 60 * 100), note: `已完成 ${listeningDone} / 60 个 Part`, path: '/cambridge/listening', tone: 'cyan' },
+    { id: 'dictation', icon: '⌨️', title: '听写', progress: 0, note: '完成记录将在练习后显示', path: '/cambridge/dictation', tone: 'amber' },
+    { id: 'writing', icon: '✍️', title: '写作', progress: clampPercent(writingDrafts / 8 * 100), note: `已保存 ${writingDrafts} / 8 篇草稿`, path: '/cambridge/exams/ket-3-test1?tab=writing&part=6', tone: 'rose' },
+    { id: 'speaking', icon: '🎙️', title: '口语', progress: clampPercent(speakingRatings / 24 * 100), note: `已自评 ${speakingRatings} 道口语题`, path: '/cambridge/exams/ket-3-test1?tab=speaking', tone: 'orange' },
+  ]
+
+  return {
+    modules,
+    records,
+    continueItem: records[0] || null,
+    mistakeCount: Object.keys(grammarMistakes).length + (Array.isArray(vocabMistakes) ? vocabMistakes.length : 0),
+    grammarMistakeCount: Object.keys(grammarMistakes).length,
+    vocabMistakeCount: Array.isArray(vocabMistakes) ? vocabMistakes.length : 0,
+    speakingRatings,
+    weeklyValues,
+    weeklyCount: weeklyValues.reduce((sum, value) => sum + value, 0),
+    streak,
+  }
+}
 
 const tones = {
   emerald: 'bg-emerald-50 text-emerald-700 border-emerald-100',
@@ -42,7 +161,7 @@ const navGroups = [
 ]
 
 const initialTasks = [
-  { id: 1, title: '复习高频词汇', detail: '20 词 · 预计 8 分钟', path: '/cambridge/words', color: 'bg-emerald-500', done: true },
+  { id: 1, title: '复习高频词汇', detail: '20 词 · 预计 8 分钟', path: '/cambridge/words', color: 'bg-emerald-500', done: false },
   { id: 2, title: '阅读 Part 3', detail: '1 组练习 · 预计 12 分钟', path: '/cambridge-reading', color: 'bg-violet-500', done: false },
   { id: 3, title: '听力 Part 2', detail: '1 组练习 · 预计 10 分钟', path: '/cambridge/listening', color: 'bg-cyan-500', done: false },
 ]
@@ -71,15 +190,15 @@ function ProgressRing({ value }) {
   )
 }
 
-function MiniBars() {
-  const values = [42, 68, 35, 82, 56, 90, 64]
+function MiniBars({ values }) {
   const labels = ['一', '二', '三', '四', '五', '六', '日']
+  const maxValue = Math.max(1, ...values)
   return (
     <div className="flex items-end justify-between gap-2 h-28 pt-3">
       {values.map((v, i) => (
         <div key={labels[i]} className="flex-1 h-full flex flex-col justify-end items-center gap-2">
-          <div className="w-full max-w-7 bg-emerald-100 rounded-t-md relative overflow-hidden" style={{ height: `${v}%` }}>
-            <div className="absolute inset-x-0 bottom-0 bg-[#0d7656] rounded-t-md" style={{ height: `${Math.max(30, v - 12)}%` }} />
+          <div className="w-full max-w-7 bg-emerald-100 rounded-t-md relative overflow-hidden" style={{ height: `${v ? Math.max(18, v / maxValue * 100) : 4}%` }}>
+            <div className="absolute inset-0 bg-[#0d7656] rounded-t-md" />
           </div>
           <span className={`text-[10px] ${i === 6 ? 'font-bold text-emerald-700' : 'text-gray-400'}`}>{labels[i]}</span>
         </div>
@@ -95,7 +214,9 @@ export default function MyLearningDashboard() {
   const [toast, setToast] = useState('')
   const completed = tasks.filter(t => t.done).length
   const todayProgress = Math.round(completed / tasks.length * 100)
-  const examDays = 46
+  const [learning] = useState(readLearningSnapshot)
+  const modules = learning.modules
+  const continueItem = learning.continueItem
 
   const greeting = useMemo(() => {
     const hour = new Date().getHours()
@@ -143,8 +264,8 @@ export default function MyLearningDashboard() {
         </nav>
         <div className="p-4 border-t border-white/10">
           <div className="rounded-2xl bg-white/8 p-3 flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-[#f4c95d] text-[#083f32] grid place-items-center font-extrabold">王</div>
-            <div className="min-w-0"><div className="text-sm font-bold">王同学</div><div className="text-[10px] text-white/45">A2 Key 备考中</div></div>
+            <div className="w-9 h-9 rounded-full bg-[#f4c95d] text-[#083f32] grid place-items-center font-extrabold">学</div>
+            <div className="min-w-0"><div className="text-sm font-bold">学习者</div><div className="text-[10px] text-white/45">A2 Key 备考中</div></div>
           </div>
         </div>
       </aside>
@@ -155,15 +276,15 @@ export default function MyLearningDashboard() {
           <div><div className="font-extrabold text-base">我的学习</div><div className="text-[11px] text-gray-400 hidden sm:block">专注 KET，每天进步一点点</div></div>
           <div className="ml-auto flex items-center gap-2 sm:gap-4">
             <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold"><span className="w-2 h-2 rounded-full bg-emerald-500" />A2 Key (KET)</div>
-            <div className="flex items-center gap-1.5 text-xs text-gray-500"><span>🔥</span><strong className="text-gray-900">7</strong> 天连续</div>
-            <div className="w-9 h-9 rounded-full bg-amber-100 text-amber-800 grid place-items-center font-extrabold text-sm">王</div>
+            <div className="flex items-center gap-1.5 text-xs text-gray-500"><span>🔥</span><strong className="text-gray-900">{learning.streak}</strong> 天连续</div>
+            <div className="w-9 h-9 rounded-full bg-amber-100 text-amber-800 grid place-items-center font-extrabold text-sm">学</div>
           </div>
         </header>
 
         <div className="max-w-[1280px] mx-auto p-4 sm:p-7">
           <section className="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
-            <div><p className="text-sm text-emerald-700 font-bold mb-1">{greeting}，王同学 👋</p><h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">今天也继续向 KET 目标前进</h1></div>
-            <div className="flex items-center gap-2 text-xs text-gray-500 bg-white border border-gray-200 rounded-xl px-3 py-2"><span>📅</span>距离模拟考还有 <strong className="text-rose-600 text-base">{examDays}</strong> 天</div>
+            <div><p className="text-sm text-emerald-700 font-bold mb-1">{greeting}，同学 👋</p><h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">今天也继续向 KET 目标前进</h1></div>
+            <button onClick={() => setPanel('plan')} className="flex items-center gap-2 text-xs text-gray-500 bg-white border border-gray-200 rounded-xl px-3 py-2"><span>📅</span>设置模拟考日期与学习计划</button>
           </section>
 
           <div className="grid xl:grid-cols-[minmax(0,1fr)_320px] gap-6">
@@ -173,7 +294,7 @@ export default function MyLearningDashboard() {
                   <ProgressRing value={todayProgress} />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-1"><h2 className="text-lg font-extrabold">今日学习任务</h2><span className="text-xs text-gray-400">已完成 {completed}/{tasks.length}</span></div>
-                    <p className="text-sm text-gray-500 mb-4">大约还需 22 分钟，完成后今日计划就达标了。</p>
+                    <p className="text-sm text-gray-500 mb-4">完成三项推荐练习，保持稳定的学习节奏。</p>
                     <div className="grid md:grid-cols-3 gap-3">
                       {tasks.map(task => (
                         <div key={task.id} className={`rounded-2xl border p-3.5 transition-all ${task.done ? 'bg-gray-50 border-gray-100' : 'bg-white border-gray-200 hover:border-emerald-300 hover:shadow-sm'}`}>
@@ -192,16 +313,14 @@ export default function MyLearningDashboard() {
               <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0c5e48] to-[#083f32] text-white p-6 sm:p-7 shadow-lg shadow-emerald-950/10">
                 <div className="absolute -right-10 -top-16 w-64 h-64 rounded-full border-[42px] border-white/5" />
                 <div className="relative grid md:grid-cols-[1fr_auto] items-center gap-5">
-                  <div><div className="inline-flex items-center gap-1.5 text-[10px] font-extrabold tracking-widest uppercase bg-white/10 rounded-full px-2.5 py-1 mb-3">继续上次学习</div><h2 className="text-xl sm:text-2xl font-extrabold mb-2">阅读 Part 3 · 长文理解</h2><p className="text-white/60 text-sm">上次做到第 4 题，还剩 3 题，预计 6 分钟完成。</p><div className="mt-4 max-w-md"><div className="flex justify-between text-[10px] text-white/50 mb-1.5"><span>学习进度</span><span>4 / 7</span></div><div className="h-2 rounded-full bg-white/10 overflow-hidden"><div className="h-full w-[57%] bg-[#f4c95d] rounded-full" /></div></div></div>
-                  <button onClick={() => navigate('/cambridge-reading')} className="relative px-5 py-3 rounded-xl bg-[#f4c95d] text-[#083f32] font-extrabold text-sm hover:bg-amber-300 shadow-lg">继续学习 →</button>
+                  <div><div className="inline-flex items-center gap-1.5 text-[10px] font-extrabold tracking-widest uppercase bg-white/10 rounded-full px-2.5 py-1 mb-3">{continueItem ? '继续上次学习' : '开始第一次练习'}</div><h2 className="text-xl sm:text-2xl font-extrabold mb-2">{continueItem?.title || '选择一个 KET 专项开始学习'}</h2><p className="text-white/60 text-sm">{continueItem?.detail || '完成练习后，这里会自动显示最近的学习位置。'}</p>{continueItem && <div className="mt-4 max-w-md"><div className="flex justify-between text-[10px] text-white/50 mb-1.5"><span>学习进度</span><span>{continueItem.progress}%</span></div><div className="h-2 rounded-full bg-white/10 overflow-hidden"><div className="h-full bg-[#f4c95d] rounded-full" style={{ width: `${continueItem.progress}%` }} /></div></div>}</div>
+                  <button onClick={() => navigate(continueItem?.path || '/cambridge/words')} className="relative px-5 py-3 rounded-xl bg-[#f4c95d] text-[#083f32] font-extrabold text-sm hover:bg-amber-300 shadow-lg">{continueItem ? '继续学习 →' : '开始学习 →'}</button>
                 </div>
               </section>
 
               <section className="grid md:grid-cols-2 gap-4">
-                <div className="bg-white border border-gray-200 rounded-3xl p-5"><div className="flex items-center justify-between"><div><h2 className="font-extrabold">最近练习</h2><p className="text-xs text-gray-400 mt-1">看看最近的状态</p></div><button onClick={() => setPanel('history')} className="text-xs font-bold text-emerald-700">全部记录 →</button></div><div className="mt-4 space-y-3">{[
-                  ['阅读 Part 2', '82%', '昨天'], ['词汇听写', '18/20', '8月5日'], ['听力 Part 1', '72%', '8月4日']
-                ].map(row => <div key={row[0]} className="flex items-center gap-3 py-2 border-b last:border-0 border-gray-100"><span className="w-2 h-2 rounded-full bg-emerald-500" /><span className="text-sm font-bold flex-1">{row[0]}</span><span className="text-sm font-extrabold text-emerald-700">{row[1]}</span><span className="text-[10px] text-gray-400 w-12 text-right">{row[2]}</span></div>)}</div></div>
-                <div className="bg-white border border-gray-200 rounded-3xl p-5"><div className="flex items-center justify-between"><div><h2 className="font-extrabold">本周学习</h2><p className="text-xs text-gray-400 mt-1">3.8 小时 · 12 个任务</p></div><span className="text-xs font-bold text-emerald-700">比上周 +18%</span></div><MiniBars /></div>
+                <div className="bg-white border border-gray-200 rounded-3xl p-5"><div className="flex items-center justify-between"><div><h2 className="font-extrabold">最近练习</h2><p className="text-xs text-gray-400 mt-1">来自当前设备的真实记录</p></div><button onClick={() => setPanel('history')} className="text-xs font-bold text-emerald-700">全部记录 →</button></div><div className="mt-4 space-y-3">{learning.records.length ? learning.records.slice(0, 3).map(record => <button onClick={() => navigate(record.path)} key={`${record.title}-${record.time}`} className="flex w-full items-center gap-3 py-2 border-b last:border-0 border-gray-100 text-left"><span className="w-2 h-2 rounded-full bg-emerald-500" /><span className="text-sm font-bold flex-1">{record.title}</span><span className="text-xs font-extrabold text-emerald-700">{record.detail}</span></button>) : <p className="py-7 text-center text-sm text-gray-400">完成一次练习后，这里会显示记录。</p>}</div></div>
+                <div className="bg-white border border-gray-200 rounded-3xl p-5"><div className="flex items-center justify-between"><div><h2 className="font-extrabold">本周学习</h2><p className="text-xs text-gray-400 mt-1">共记录 {learning.weeklyCount} 次练习</p></div><span className="text-xs font-bold text-emerald-700">{learning.weeklyCount ? '保持节奏' : '等待第一次练习'}</span></div><MiniBars values={learning.weeklyValues} /></div>
               </section>
 
               <section>
@@ -224,9 +343,9 @@ export default function MyLearningDashboard() {
             </div>
 
             <aside className="space-y-4">
-              <section className="bg-white border border-gray-200 rounded-3xl p-5"><div className="flex items-center justify-between"><h2 className="font-extrabold">推荐下一步</h2><span className="text-lg">🎯</span></div><div className="mt-4 rounded-2xl bg-[#fff7ed] border border-orange-200 p-4"><span className="inline-flex items-center gap-1.5 text-[10px] font-extrabold tracking-wider text-orange-700"><span className="w-1.5 h-1.5 rounded-full bg-orange-500" />需要加强</span><h3 className="font-extrabold mt-1">听力 Part 2 配对题</h3><p className="text-xs leading-relaxed text-gray-500 mt-2">最近正确率 58%，人名和地点信息容易混淆。建议完成 10 分钟专项练习。</p><button onClick={() => navigate('/cambridge/listening')} className="mt-4 w-full py-2.5 bg-[#e97824] text-white rounded-xl font-bold text-sm hover:bg-[#cf6117] shadow-sm shadow-orange-200">开始针对练习</button></div></section>
-              <section className="bg-white border border-gray-200 rounded-3xl p-5"><div className="flex items-center justify-between"><h2 className="font-extrabold">错题提醒</h2><button onClick={() => setPanel('mistakes')} className="text-xs font-bold text-emerald-700">查看错题本</button></div><div className="mt-4 flex items-center gap-4"><div className="w-14 h-14 rounded-2xl bg-amber-50 text-amber-700 grid place-items-center text-2xl font-extrabold">12</div><div><div className="text-sm font-bold">12 道错题待复习</div><p className="text-[11px] text-gray-400 mt-1">其中 5 道已经错过两次</p></div></div><button onClick={() => notify('已生成 8 道错题复习任务')} className="mt-4 w-full py-2.5 border border-amber-200 text-amber-800 bg-amber-50 rounded-xl text-sm font-bold">复习今日错题</button></section>
-              <section className="bg-[#162b25] text-white rounded-3xl p-5 overflow-hidden relative"><div className="absolute -right-8 -bottom-10 w-32 h-32 rounded-full bg-white/5" /><div className="relative"><div className="flex items-center justify-between"><h2 className="font-extrabold">学习计划</h2><span>🗓️</span></div><p className="text-xs text-white/50 mt-1">KET 8 周稳步提升计划</p><div className="mt-4 flex justify-between text-xs"><span>第 3 周</span><span className="font-bold">12 / 18 任务</span></div><div className="mt-2 h-2 rounded-full bg-white/10 overflow-hidden"><div className="w-2/3 h-full rounded-full bg-[#f4c95d]" /></div><button onClick={() => setPanel('plan')} className="mt-4 text-xs font-bold text-[#f4c95d]">查看本周计划 →</button></div></section>
+              <section className="bg-white border border-gray-200 rounded-3xl p-5"><div className="flex items-center justify-between"><h2 className="font-extrabold">推荐下一步</h2><span className="text-lg">🎯</span></div><div className="mt-4 rounded-2xl bg-[#fff7ed] border border-orange-200 p-4"><span className="inline-flex items-center gap-1.5 text-[10px] font-extrabold tracking-wider text-orange-700"><span className="w-1.5 h-1.5 rounded-full bg-orange-500" />{learning.mistakeCount ? '优先复习' : '建议起点'}</span><h3 className="font-extrabold mt-1">{learning.grammarMistakeCount ? '语法错题复习' : learning.vocabMistakeCount ? '词汇错题复习' : 'KET 必默词汇'}</h3><p className="text-xs leading-relaxed text-gray-500 mt-2">{learning.mistakeCount ? `当前有 ${learning.mistakeCount} 道错题，建议先完成针对复习。` : '目前没有错题记录，可以先从核心必默词汇建立学习基础。'}</p><button onClick={() => navigate(learning.grammarMistakeCount ? '/cambridge/grammar/mistakes' : '/cambridge/words')} className="mt-4 w-full py-2.5 bg-[#e97824] text-white rounded-xl font-bold text-sm hover:bg-[#cf6117] shadow-sm shadow-orange-200">{learning.mistakeCount ? '开始错题复习' : '开始词汇学习'}</button></div></section>
+              <section className="bg-white border border-gray-200 rounded-3xl p-5"><div className="flex items-center justify-between"><h2 className="font-extrabold">错题提醒</h2><button onClick={() => setPanel('mistakes')} className="text-xs font-bold text-emerald-700">查看错题本</button></div><div className="mt-4 flex items-center gap-4"><div className="w-14 h-14 rounded-2xl bg-amber-50 text-amber-700 grid place-items-center text-2xl font-extrabold">{learning.mistakeCount}</div><div><div className="text-sm font-bold">{learning.mistakeCount ? `${learning.mistakeCount} 道错题待复习` : '目前没有待复习错题'}</div><p className="text-[11px] text-gray-400 mt-1">词汇 {learning.vocabMistakeCount} · 语法 {learning.grammarMistakeCount}</p></div></div><button onClick={() => learning.grammarMistakeCount ? navigate('/cambridge/grammar/mistakes') : learning.vocabMistakeCount ? navigate('/cambridge/words') : notify('完成练习后，错题会自动收集到这里')} className="mt-4 w-full py-2.5 border border-amber-200 text-amber-800 bg-amber-50 rounded-xl text-sm font-bold">{learning.mistakeCount ? '复习今日错题' : '去完成练习'}</button></section>
+              <section className="bg-[#162b25] text-white rounded-3xl p-5 overflow-hidden relative"><div className="absolute -right-8 -bottom-10 w-32 h-32 rounded-full bg-white/5" /><div className="relative"><div className="flex items-center justify-between"><h2 className="font-extrabold">学习计划</h2><span>🗓️</span></div><p className="text-xs text-white/50 mt-1">根据考试日期安排每周任务</p><div className="mt-4 text-sm text-white/70">尚未设置专属学习计划</div><button onClick={() => setPanel('plan')} className="mt-4 text-xs font-bold text-[#f4c95d]">设置学习计划 →</button></div></section>
             </aside>
           </div>
         </div>
