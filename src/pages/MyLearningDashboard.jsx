@@ -40,6 +40,20 @@ function readLearningSnapshot() {
     }
   }
 
+  let gapCompleted = 0
+  for (let exercise = 1; exercise <= 15; exercise += 1) {
+    const item = safeJson(`mars_ket_gap_progress_v1:exercise-${exercise}`, null)
+    if (!item) continue
+    if (item.completed) gapCompleted += 1
+    records.push({
+      title: `听力挖空 · 练习${exercise}`,
+      detail: item.completed ? '已完成' : '继续填写',
+      time: item.updatedAt,
+      path: '/cambridge/dictation',
+      progress: item.completed ? 100 : 40,
+    })
+  }
+
   let readingUnits = 0
   let readingCompleted = 0
   let writingDrafts = 0
@@ -112,7 +126,7 @@ function readLearningSnapshot() {
     { id: 'grammar', icon: '📐', title: '语法', progress: clampPercent(grammarDone / 55 * 100), note: `已完成 ${grammarDone} / 55 单元`, path: '/cambridge/grammar', tone: 'blue' },
     { id: 'reading', icon: '📄', title: '阅读', progress: clampPercent(readingUnits / 20 * 100), note: readingCompleted ? `已完成 ${readingCompleted} 套真题` : '尚未完成整套阅读', path: '/cambridge/reading', tone: 'violet' },
     { id: 'listening', icon: '🎧', title: '听力', progress: clampPercent(listeningDone / 60 * 100), note: `已完成 ${listeningDone} / 60 个 Part`, path: '/cambridge/listening', tone: 'cyan' },
-    { id: 'dictation', icon: '⌨️', title: '听写', progress: 0, note: '完成记录将在练习后显示', path: '/cambridge/dictation', tone: 'amber' },
+    { id: 'dictation', icon: '⌨️', title: '听写', progress: clampPercent(gapCompleted / 15 * 100), note: `已完成 ${gapCompleted} / 15 套练习`, path: '/cambridge/dictation', tone: 'amber' },
     { id: 'writing', icon: '✍️', title: '写作', progress: clampPercent(writingDrafts / 8 * 100), note: `已保存 ${writingDrafts} / 8 篇草稿`, path: '/cambridge/exams/ket-3-test1?tab=writing&part=6', tone: 'rose' },
     { id: 'speaking', icon: '🎙️', title: '口语', progress: clampPercent(speakingRatings / 24 * 100), note: `已自评 ${speakingRatings} 道口语题`, path: '/cambridge/exams/ket-3-test1?tab=speaking', tone: 'orange' },
   ]
