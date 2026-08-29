@@ -200,6 +200,40 @@ function readStudyPlan() {
   }
 }
 
+const weeklyTaskTemplates = [
+  { title: '高频词汇复习', path: '/cambridge/words', color: 'bg-emerald-500', focus: '核心词汇' },
+  { title: '语法专项练习', path: '/cambridge/grammar', color: 'bg-blue-500', focus: '1 个语法单元' },
+  { title: '听力真题训练', path: '/cambridge/listening', color: 'bg-cyan-500', focus: '1 个听力 Part' },
+  { title: '阅读真题训练', path: '/cambridge/reading', color: 'bg-violet-500', focus: '1 个阅读 Part' },
+  { title: '写作输出练习', path: '/cambridge/exams/ket-3-test1?tab=writing&part=6', color: 'bg-rose-500', focus: '1 篇短写作' },
+  { title: '口语表达练习', path: '/cambridge/exams/ket-3-test1?tab=speaking', color: 'bg-orange-500', focus: '录音与自评' },
+  { title: '错题集中复习', path: '/cambridge/grammar/mistakes', color: 'bg-amber-500', focus: '本周错题' },
+]
+
+function generateWeeklyPlan(plan) {
+  const taskMinutes = Math.max(10, Math.round(Number(plan.minutesPerDay || 30) / 2))
+  return weeklyTaskTemplates.slice(0, Number(plan.daysPerWeek || 5)).map((task, index) => ({
+    ...task,
+    id: index + 1,
+    day: `第 ${index + 1} 天`,
+    detail: `${task.focus} · 约 ${taskMinutes} 分钟`,
+    done: false,
+  }))
+}
+
+function readWeeklyPlan(studyPlan) {
+  try {
+    const saved = JSON.parse(localStorage.getItem('mars_ket_weekly_plan_v1') || 'null')
+    if (Array.isArray(saved) && saved.length) return saved
+  } catch { /* storage may be unavailable */ }
+  return studyPlan.examDate ? generateWeeklyPlan(studyPlan) : []
+}
+
+function formatExamDate(value) {
+  if (!value) return ''
+  return new Intl.DateTimeFormat('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' }).format(new Date(`${value}T12:00:00`))
+}
+
 function ProgressRing({ value }) {
   const circumference = 2 * Math.PI * 38
   return (
@@ -240,6 +274,7 @@ export default function MyLearningDashboard() {
   const [panel, setPanel] = useState(null)
   const [toast, setToast] = useState('')
   const [studyPlan, setStudyPlan] = useState(readStudyPlan)
+  const [weeklyPlan, setWeeklyPlan] = useState(() => readWeeklyPlan(readStudyPlan()))
   const completed = tasks.filter(t => t.done).length
   const todayProgress = Math.round(completed / tasks.length * 100)
   const [learning] = useState(readLearningSnapshot)
@@ -272,9 +307,19 @@ export default function MyLearningDashboard() {
       notify('请先选择模拟考日期')
       return
     }
-    try { localStorage.setItem('mars_ket_study_plan_v1', JSON.stringify({ ...studyPlan, savedAt: new Date().toISOString() })) } catch { /* storage may be unavailable */ }
+    const nextPlan = { ...studyPlan, savedAt: new Date().toISOString() }
+    const nextWeeklyPlan = generateWeeklyPlan(nextPlan)
+    const nextTodayTasks = nextWeeklyPlan.slice(0, Math.min(3, nextWeeklyPlan.length))
+    try {
+      localStorage.setItem('mars_ket_study_plan_v1', JSON.stringify(nextPlan))
+      localStorage.setItem('mars_ket_weekly_plan_v1', JSON.stringify(nextWeeklyPlan))
+      localStorage.setItem('mars_today_tasks', JSON.stringify(nextTodayTasks))
+    } catch { /* storage may be unavailable */ }
+    setStudyPlan(nextPlan)
+    setWeeklyPlan(nextWeeklyPlan)
+    setTasks(nextTodayTasks)
     setPanel(null)
-    notify('学习计划已保存')
+    notify('学习计划已保存，本周任务已生成')
   }
 
   const planDaysLeft = studyPlan.examDate
@@ -331,16 +376,31 @@ export default function MyLearningDashboard() {
 
           <section className="relative mb-6 overflow-hidden rounded-3xl border border-emerald-200 bg-emerald-50/80 p-5 text-gray-900 shadow-sm sm:p-6">
             <div className="absolute -bottom-16 -right-10 h-48 w-48 rounded-full bg-emerald-200/35" />
-            <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-              <div>
+            <div className="relative">
+              <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+              <div className="min-w-0">
                 <div className="flex items-center gap-2">
                   <span className="text-xl">🗓️</span>
                   <h2 className="text-xl font-extrabold">学习计划</h2>
                 </div>
-                <p className="mt-2 text-sm text-gray-500">根据模拟考试日期安排每周任务，进入学习中心后马上明确今天要完成什么。</p>
-                <div className="mt-4 text-sm font-bold text-emerald-800">{studyPlan.examDate ? `距离模拟考还有 ${planDaysLeft} 天 · 每周学习 ${studyPlan.daysPerWeek} 天 · 每天 ${studyPlan.minutesPerDay} 分钟` : '尚未设置专属学习计划'}</div>
+                <p className="mt-2 text-sm text-gray-500">{studyPlan.examDate ? `模拟考日期：${formatExamDate(studyPlan.examDate)}` : '设置模拟考日期和学习节奏，系统会自动生成本周任务。'}</p>
+                {studyPlan.examDate ? <div className="mt-4 grid grid-cols-3 gap-2 sm:gap-3">
+                  <div className="rounded-2xl border border-emerald-200 bg-white/75 px-3 py-3"><strong className="block text-lg text-emerald-800">{planDaysLeft}</strong><span className="text-[11px] text-gray-500">剩余天数</span></div>
+                  <div className="rounded-2xl border border-emerald-200 bg-white/75 px-3 py-3"><strong className="block text-lg text-emerald-800">{studyPlan.daysPerWeek} 天</strong><span className="text-[11px] text-gray-500">每周学习</span></div>
+                  <div className="rounded-2xl border border-emerald-200 bg-white/75 px-3 py-3"><strong className="block text-lg text-emerald-800">{studyPlan.minutesPerDay} 分钟</strong><span className="text-[11px] text-gray-500">每天学习</span></div>
+                </div> : <div className="mt-4 text-sm font-bold text-emerald-800">尚未设置专属学习计划</div>}
               </div>
-              <button onClick={() => setPanel('plan')} className="shrink-0 rounded-xl bg-[#f4c95d] px-6 py-3 text-sm font-extrabold text-[#083f32] shadow-md transition hover:bg-amber-300">设置学习计划 →</button>
+              <button onClick={() => setPanel('plan')} className="shrink-0 rounded-xl bg-[#f4c95d] px-6 py-3 text-sm font-extrabold text-[#083f32] shadow-md transition hover:bg-amber-300">{studyPlan.examDate ? '调整计划 →' : '设置学习计划 →'}</button>
+              </div>
+              {weeklyPlan.length > 0 && <div className="mt-5 border-t border-emerald-200/80 pt-4">
+                <div className="mb-3 flex items-center justify-between"><h3 className="text-sm font-extrabold text-emerald-900">本周安排</h3><span className="text-[11px] text-gray-500">按顺序完成即可</span></div>
+                <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
+                  {weeklyPlan.map(task => <button key={task.id} onClick={() => navigate(task.path)} className="rounded-xl border border-emerald-100 bg-white/80 p-3 text-left transition hover:border-emerald-300 hover:bg-white">
+                    <span className="text-[10px] font-bold text-emerald-600">{task.day}</span>
+                    <strong className="mt-1 block text-xs text-gray-800">{task.title}</strong>
+                  </button>)}
+                </div>
+              </div>}
             </div>
           </section>
 
@@ -416,7 +476,8 @@ export default function MyLearningDashboard() {
                 <label className="block"><span className="mb-1.5 block text-sm font-bold text-gray-700">模拟考日期</span><input type="date" min={new Date().toISOString().slice(0, 10)} value={studyPlan.examDate} onChange={event => setStudyPlan(value => ({ ...value, examDate: event.target.value }))} className="h-12 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 font-bold text-gray-800 outline-none focus:border-emerald-500" /></label>
                 <label className="block"><span className="mb-1.5 block text-sm font-bold text-gray-700">每周学习天数</span><select value={studyPlan.daysPerWeek} onChange={event => setStudyPlan(value => ({ ...value, daysPerWeek: Number(event.target.value) }))} className="h-12 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 font-bold text-gray-800 outline-none focus:border-emerald-500">{[3,4,5,6,7].map(value => <option key={value} value={value}>每周 {value} 天</option>)}</select></label>
                 <label className="block"><span className="mb-1.5 block text-sm font-bold text-gray-700">每天学习时长</span><select value={studyPlan.minutesPerDay} onChange={event => setStudyPlan(value => ({ ...value, minutesPerDay: Number(event.target.value) }))} className="h-12 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 font-bold text-gray-800 outline-none focus:border-emerald-500">{[20,30,45,60,90].map(value => <option key={value} value={value}>每天 {value} 分钟</option>)}</select></label>
-                <button onClick={saveStudyPlan} className="w-full rounded-xl bg-[#0d7656] py-3 font-bold text-white">保存并生成计划</button>
+                <p className="rounded-xl bg-emerald-50 px-4 py-3 text-xs leading-relaxed text-emerald-800">保存后会根据学习天数生成本周安排，并同步更新首页的今日任务。</p>
+                <button onClick={saveStudyPlan} className="w-full rounded-xl bg-[#0d7656] py-3 font-bold text-white">保存计划</button>
               </div>
             ) : panel === 'mistakes' ? (
               <div className="mt-5"><div className="rounded-2xl border border-gray-100 bg-gray-50 p-5 text-sm text-gray-600">当前共有 <strong className="text-gray-900">{learning.mistakeCount}</strong> 道待复习错题，其中词汇 {learning.vocabMistakeCount} 道、语法 {learning.grammarMistakeCount} 道。</div><button onClick={() => { setPanel(null); navigate(learning.grammarMistakeCount ? '/cambridge/grammar/mistakes' : '/cambridge/words') }} disabled={!learning.mistakeCount} className="mt-4 w-full rounded-xl bg-[#0d7656] py-3 font-bold text-white disabled:bg-gray-200">{learning.mistakeCount ? '进入错题复习' : '暂时没有错题'}</button></div>
