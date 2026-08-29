@@ -166,7 +166,7 @@ function ListeningExam({ exam, section, onSection }) {
 /* ══════════════════════════════
    Shared Exam Shell (listening or reading)
 ══════════════════════════════ */
-function ExamShell({ exam, section, onSection, parts, partIndex, allAnswers, isDone, children }) {
+function ExamShell({ exam, section, onSection, parts, partIndex, allAnswers, isDone, onReset, children }) {
   return (
     <div className="min-h-screen bg-[#f8f9fc]">
       <header className="bg-white border-b border-gray-100 sticky top-0 z-30 shadow-sm">
@@ -210,6 +210,11 @@ function ExamShell({ exam, section, onSection, parts, partIndex, allAnswers, isD
               </div>
             ))}
           </div>
+          {onReset && !isDone && Object.keys(allAnswers).length > 0 && (
+            <div className="mt-1.5 text-right">
+              <button onClick={onReset} className="text-[10px] font-semibold text-gray-400 hover:text-red-500 transition-colors">重新开始本套</button>
+            </div>
+          )}
         </div>
       </header>
       <div className="max-w-2xl mx-auto px-6 py-6">{children}</div>
@@ -689,17 +694,45 @@ function ListeningFinalResult({ exam, allAnswers }) {
 
 function ReadingExam({ exam, section, onSection }) {
   const parts = exam.reading.parts
-  const [partIndex, setPartIndex] = useState(0)
-  const [allAnswers, setAllAnswers] = useState({})
-  const [done, setDone] = useState(false)
+  const progressKey = `mars_ket_exam_progress_v1:${exam.id}:reading`
+  const [savedProgress] = useState(() => {
+    try {
+      const value = JSON.parse(localStorage.getItem(progressKey) || 'null')
+      return value && typeof value === 'object' ? value : {}
+    } catch { return {} }
+  })
+  const [partIndex, setPartIndex] = useState(() => Math.min(savedProgress.partIndex || 0, parts.length - 1))
+  const [allAnswers, setAllAnswers] = useState(() => savedProgress.allAnswers || {})
+  const [done, setDone] = useState(() => savedProgress.done === true)
+
+  function saveProgress(next) {
+    try {
+      localStorage.setItem(progressKey, JSON.stringify({ ...next, savedAt: new Date().toISOString() }))
+    } catch { /* local storage may be unavailable */ }
+  }
+
+  function restartReading() {
+    try { localStorage.removeItem(progressKey) } catch { /* local storage may be unavailable */ }
+  }
+
+  function resetReading() {
+    restartReading()
+    setPartIndex(0)
+    setAllAnswers({})
+    setDone(false)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   function handlePartDone(answers) {
     const updated = { ...allAnswers, [partIndex]: answers }
     setAllAnswers(updated)
     if (partIndex + 1 >= parts.length) {
       setDone(true)
+      saveProgress({ partIndex, allAnswers: updated, done: true })
     } else {
-      setPartIndex(i => i + 1)
+      const nextPartIndex = partIndex + 1
+      setPartIndex(nextPartIndex)
+      saveProgress({ partIndex: nextPartIndex, allAnswers: updated, done: false })
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
   }
@@ -707,14 +740,14 @@ function ReadingExam({ exam, section, onSection }) {
   if (done) return (
     <ExamShell exam={exam} section={section} onSection={onSection}
       parts={parts} partIndex={partIndex} allAnswers={allAnswers} isDone>
-      <ReadingFinalResult exam={exam} allAnswers={allAnswers} />
+      <ReadingFinalResult exam={exam} allAnswers={allAnswers} onRestart={restartReading} />
     </ExamShell>
   )
 
   const part = parts[partIndex]
   return (
     <ExamShell exam={exam} section={section} onSection={onSection}
-      parts={parts} partIndex={partIndex} allAnswers={allAnswers}>
+      parts={parts} partIndex={partIndex} allAnswers={allAnswers} onReset={resetReading}>
       <AnimatePresence mode="wait">
         <motion.div key={partIndex}
           initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
@@ -1109,10 +1142,18 @@ function ScoreDots({ n, max = 5 }) {
   )
 }
 
-function WritingCard({ w, wi }) {
-  const [text, setText] = useState('')
+function WritingCard({ w, wi, storageKey }) {
+  const [text, setText] = useState(() => {
+    if (!storageKey) return ''
+    try { return localStorage.getItem(storageKey) || '' } catch { return '' }
+  })
   const [graded, setGraded] = useState(null)
   const [showModel, setShowModel] = useState(false)
+
+  useEffect(() => {
+    if (!storageKey) return
+    try { localStorage.setItem(storageKey, text) } catch { /* local storage may be unavailable */ }
+  }, [storageKey, text])
 
   const words = text.trim().split(/\s+/).filter(Boolean).length
   const minWords = w.type === 'story_writing' ? 35 : 25
@@ -1167,6 +1208,7 @@ function WritingCard({ w, wi }) {
           <span className="text-xs text-gray-400">
             {text.split(/[.!?]+/).filter(s => s.trim().length > 3).length} 句
           </span>
+          {storageKey && <span className="text-[10px] text-emerald-600 font-semibold">已自动保存</span>}
         </div>
       </div>
 
@@ -1236,7 +1278,7 @@ function WritingCard({ w, wi }) {
   )
 }
 
-function ReadingFinalResult({ exam, allAnswers }) {
+function ReadingFinalResult({ exam, allAnswers, onRestart }) {
   const parts    = exam.reading.parts
   const writings = exam.reading.writing
 
@@ -1387,7 +1429,7 @@ function ReadingFinalResult({ exam, allAnswers }) {
 
       {/* Action buttons */}
       <div className="flex gap-3 pb-4">
-        <Link to={`/cambridge/exams/${exam.id}`} onClick={() => window.location.reload()}
+        <Link to={`/cambridge/exams/${exam.id}?tab=reading`} onClick={onRestart}
           className="flex-1 py-3.5 bg-[#064e3b] text-white font-bold rounded-2xl hover:bg-[#065f46] text-sm text-center transition-colors">
           重新测试 →
         </Link>
@@ -1406,9 +1448,18 @@ function ReadingFinalResult({ exam, allAnswers }) {
 function WritingExam({ exam, section, onSection }) {
   const writings = exam.reading.writing
   const [searchParams] = useSearchParams()
-  const initialPart = searchParams.get('part') === '7' ? 1 : 0
+  const writingBaseKey = `mars_ket_exam_progress_v1:${exam.id}:writing`
+  const requestedPart = searchParams.get('part')
+  const initialPart = requestedPart === '7' ? 1 : requestedPart === '6' ? 0 : (() => {
+    try { return Number(localStorage.getItem(`${writingBaseKey}:lastPart`)) || 0 } catch { return 0 }
+  })()
   const [partIndex, setPartIndex] = useState(initialPart)
   const w = writings[partIndex]
+
+  function selectWritingPart(index) {
+    setPartIndex(index)
+    try { localStorage.setItem(`${writingBaseKey}:lastPart`, String(index)) } catch { /* local storage may be unavailable */ }
+  }
 
   return (
     <div className="min-h-screen bg-[#f8f9fc]">
@@ -1431,7 +1482,7 @@ function WritingExam({ exam, section, onSection }) {
         {/* Part switcher */}
         <div className="flex gap-2">
           {writings.map((wt, i) => (
-            <button key={i} onClick={() => setPartIndex(i)}
+            <button key={i} onClick={() => selectWritingPart(i)}
               className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${
                 partIndex === i
                   ? 'bg-[#064e3b] text-white shadow-sm'
@@ -1458,7 +1509,7 @@ function WritingExam({ exam, section, onSection }) {
         {/* Writing card */}
         <AnimatePresence mode="wait">
           <motion.div key={partIndex} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
-            <WritingCard w={w} wi={partIndex} />
+            <WritingCard w={w} wi={partIndex} storageKey={`${writingBaseKey}:part${w.part}:draft`} />
           </motion.div>
         </AnimatePresence>
 
