@@ -126,7 +126,7 @@ import { cambridgeWordsByLevel, LEVEL_WORD_COUNTS } from '../data/cambridgeWords
 import { VOCAB_SETS, MUST_SPELL_TOPICS, mustSpell500, READING_FREQ_288, irregularVerbWords } from '../data/ketVocabSets'
 
 const VOCAB_PHONETIC_OVERRIDES = {
-  play: '/pleɪ/', 'pop music': '/ˈpɒp ˌmjuːzɪk/', cafe: '/ˈkæfeɪ/', yogurt: '/ˈjɒɡət/',
+  aunt: '/ɑːnt/', play: '/pleɪ/', 'pop music': '/ˈpɒp ˌmjuːzɪk/', cafe: '/ˈkæfeɪ/', yogurt: '/ˈjɒɡət/',
   'sports center': '/ˈspɔːts ˌsentə/', windsurfing: '/ˈwɪndsɜːfɪŋ/', striped: '/straɪpt/',
   address: '/əˈdres/', 'city center': '/ˌsɪti ˈsentə/', favorite: '/ˈfeɪvərɪt/',
   'pick up': '/ˌpɪk ˈʌp/', pound: '/paʊnd/', service: '/ˈsɜːvɪs/',
@@ -144,7 +144,7 @@ const VOCAB_PHONETIC_LOOKUP = new Map((cambridgeWordsByLevel.PET || []).filter(i
 
 function getVocabPhonetic(word, fallback = '') {
   const key = String(word || '').trim().toLowerCase()
-  return fallback || VOCAB_PHONETIC_LOOKUP.get(key) || VOCAB_PHONETIC_OVERRIDES[key] || ''
+  return fallback || VOCAB_PHONETIC_OVERRIDES[key] || VOCAB_PHONETIC_LOOKUP.get(key) || ''
 }
 import { COLLOCATION_BATCHES } from '../data/ketCollocations'
 import { getKetEnglishDefinition } from '../data/ketEnglishDefinitions'
