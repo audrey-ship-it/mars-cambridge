@@ -301,6 +301,21 @@ export default function MyLearningDashboard() {
             <button onClick={() => setPanel('plan')} className="flex items-center gap-2 text-xs text-gray-500 bg-white border border-gray-200 rounded-xl px-3 py-2"><span>📅</span>设置模拟考日期与学习计划</button>
           </section>
 
+          <section className="relative mb-6 overflow-hidden rounded-3xl bg-[#162b25] p-5 text-white shadow-lg shadow-emerald-950/10 sm:p-6">
+            <div className="absolute -bottom-16 -right-10 h-48 w-48 rounded-full bg-white/5" />
+            <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xl">🗓️</span>
+                  <h2 className="text-xl font-extrabold">学习计划</h2>
+                </div>
+                <p className="mt-2 text-sm text-white/55">根据模拟考试日期安排每周任务，进入学习中心后马上明确今天要完成什么。</p>
+                <div className="mt-4 text-sm font-bold text-white/75">尚未设置专属学习计划</div>
+              </div>
+              <button onClick={() => setPanel('plan')} className="shrink-0 rounded-xl bg-[#f4c95d] px-6 py-3 text-sm font-extrabold text-[#083f32] shadow-lg transition hover:bg-amber-300">设置学习计划 →</button>
+            </div>
+          </section>
+
           <div className="grid xl:grid-cols-[minmax(0,1fr)_320px] gap-6">
             <div className="space-y-6 min-w-0">
               <section className="rounded-3xl bg-white border border-gray-200/80 shadow-sm overflow-hidden">
@@ -359,7 +374,6 @@ export default function MyLearningDashboard() {
             <aside className="space-y-4">
               <section className="bg-white border border-gray-200 rounded-3xl p-5"><div className="flex items-center justify-between"><h2 className="font-extrabold">推荐下一步</h2><span className="text-lg">🎯</span></div><div className="mt-4 rounded-2xl bg-[#fff7ed] border border-orange-200 p-4"><span className="inline-flex items-center gap-1.5 text-[10px] font-extrabold tracking-wider text-orange-700"><span className="w-1.5 h-1.5 rounded-full bg-orange-500" />{learning.mistakeCount ? '优先复习' : '建议起点'}</span><h3 className="font-extrabold mt-1">{learning.grammarMistakeCount ? '语法错题复习' : learning.vocabMistakeCount ? '词汇错题复习' : 'KET 必默词汇'}</h3><p className="text-xs leading-relaxed text-gray-500 mt-2">{learning.mistakeCount ? `当前有 ${learning.mistakeCount} 道错题，建议先完成针对复习。` : '目前没有错题记录，可以先从核心必默词汇建立学习基础。'}</p><button onClick={() => navigate(learning.grammarMistakeCount ? '/cambridge/grammar/mistakes' : '/cambridge/words')} className="mt-4 w-full py-2.5 bg-[#e97824] text-white rounded-xl font-bold text-sm hover:bg-[#cf6117] shadow-sm shadow-orange-200">{learning.mistakeCount ? '开始错题复习' : '开始词汇学习'}</button></div></section>
               <section className="bg-white border border-gray-200 rounded-3xl p-5"><div className="flex items-center justify-between"><h2 className="font-extrabold">错题提醒</h2><button onClick={() => setPanel('mistakes')} className="text-xs font-bold text-emerald-700">查看错题本</button></div><div className="mt-4 flex items-center gap-4"><div className="w-14 h-14 rounded-2xl bg-amber-50 text-amber-700 grid place-items-center text-2xl font-extrabold">{learning.mistakeCount}</div><div><div className="text-sm font-bold">{learning.mistakeCount ? `${learning.mistakeCount} 道错题待复习` : '目前没有待复习错题'}</div><p className="text-[11px] text-gray-400 mt-1">词汇 {learning.vocabMistakeCount} · 语法 {learning.grammarMistakeCount}</p></div></div><button onClick={() => learning.grammarMistakeCount ? navigate('/cambridge/grammar/mistakes') : learning.vocabMistakeCount ? navigate('/cambridge/words') : notify('完成练习后，错题会自动收集到这里')} className="mt-4 w-full py-2.5 border border-amber-200 text-amber-800 bg-amber-50 rounded-xl text-sm font-bold">{learning.mistakeCount ? '复习今日错题' : '去完成练习'}</button></section>
-              <section className="bg-[#162b25] text-white rounded-3xl p-5 overflow-hidden relative"><div className="absolute -right-8 -bottom-10 w-32 h-32 rounded-full bg-white/5" /><div className="relative"><div className="flex items-center justify-between"><h2 className="font-extrabold">学习计划</h2><span>🗓️</span></div><p className="text-xs text-white/50 mt-1">根据考试日期安排每周任务</p><div className="mt-4 text-sm text-white/70">尚未设置专属学习计划</div><button onClick={() => setPanel('plan')} className="mt-4 text-xs font-bold text-[#f4c95d]">设置学习计划 →</button></div></section>
             </aside>
           </div>
         </div>
