@@ -199,7 +199,7 @@ const weeklyTaskTemplates = [
 ]
 
 function generateWeeklyPlan(plan) {
-  const taskMinutes = Math.max(10, Math.round(Number(plan.minutesPerDay || 30) / 2))
+  const taskMinutes = Number(plan.minutesPerDay || 30)
   return weeklyTaskTemplates.slice(0, Number(plan.daysPerWeek || 5)).map((task, index) => ({
     ...task,
     id: index + 1,
@@ -243,6 +243,7 @@ export default function MyLearningDashboard() {
   const navigate = useNavigate()
   const [tasks, setTasks] = useState(readTasks)
   const [panel, setPanel] = useState(null)
+  const [mobileNavOpen, setMobileNavOpen] = useState(false)
   const [toast, setToast] = useState('')
   const [studyPlan, setStudyPlan] = useState(readStudyPlan)
   const [weeklyPlan, setWeeklyPlan] = useState(() => readWeeklyPlan(readStudyPlan()))
@@ -279,7 +280,8 @@ export default function MyLearningDashboard() {
     }
     const nextPlan = { ...studyPlan, savedAt: new Date().toISOString() }
     const nextWeeklyPlan = generateWeeklyPlan(nextPlan)
-    const nextTodayTasks = nextWeeklyPlan.slice(0, Math.min(3, nextWeeklyPlan.length))
+    const todayMinutes = Math.max(5, Math.round(Number(nextPlan.minutesPerDay || 30) / 3))
+    const nextTodayTasks = nextWeeklyPlan.slice(0, Math.min(3, nextWeeklyPlan.length)).map(task => ({ ...task, detail: `${task.focus} · 约 ${todayMinutes} 分钟` }))
     try {
       localStorage.setItem('mars_ket_study_plan_v1', JSON.stringify(nextPlan))
       localStorage.setItem('mars_ket_weekly_plan_v1', JSON.stringify(nextWeeklyPlan))
@@ -335,13 +337,13 @@ export default function MyLearningDashboard() {
             <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold"><span className="w-2 h-2 rounded-full bg-emerald-500" />A2 Key (KET)</div>
             <div className="flex items-center gap-1.5 text-xs text-gray-500"><span>🔥</span><strong className="text-gray-900">{learning.streak}</strong> 天连续</div>
             <div className="w-9 h-9 rounded-full bg-amber-100 text-amber-800 grid place-items-center font-extrabold text-sm">学</div>
+            <button aria-label="打开学习导航" onClick={() => setMobileNavOpen(true)} className="lg:hidden h-9 w-9 rounded-xl border border-gray-200 bg-white text-lg text-gray-700">☰</button>
           </div>
         </header>
 
         <div className="max-w-[1280px] mx-auto p-4 sm:p-7">
           <section className="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
             <div><p className="text-sm text-emerald-700 font-bold mb-1">{greeting}，同学 👋</p><h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">今天也继续向 KET 目标前进</h1></div>
-            <button onClick={() => setPanel('plan')} className="flex items-center gap-2 text-xs text-gray-500 bg-white border border-gray-200 rounded-xl px-3 py-2"><span>📅</span>设置模拟考日期与学习计划</button>
           </section>
 
           <section className="relative mb-6 overflow-hidden rounded-3xl border border-emerald-200 bg-emerald-50/80 p-5 text-gray-900 shadow-sm sm:p-6">
@@ -379,8 +381,8 @@ export default function MyLearningDashboard() {
                 <div className="p-5 sm:p-6 flex flex-col md:flex-row gap-6 md:items-center">
                   <ProgressRing value={todayProgress} />
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between mb-1"><h2 className="text-lg font-extrabold">今日学习任务</h2><span className="text-xs text-gray-400">已完成 {completed}/{tasks.length}</span></div>
-                    <p className="text-sm text-gray-500 mb-4">完成三项推荐练习，保持稳定的学习节奏。</p>
+                    <div className="flex items-center justify-between mb-1"><h2 className="text-lg font-extrabold">{studyPlan.examDate ? '今日学习任务' : '今日推荐练习'}</h2><span className="text-xs text-gray-400">已完成 {completed}/{tasks.length}</span></div>
+                    <p className="text-sm text-gray-500 mb-4">{studyPlan.examDate ? `预计共 ${studyPlan.minutesPerDay} 分钟，按顺序完成今天的计划。` : '任选一项开始练习；设置学习计划后会按目标自动安排。'}</p>
                     <div className="grid md:grid-cols-3 gap-3">
                       {tasks.map(task => (
                         <div key={task.id} className={`rounded-2xl border p-3.5 transition-all ${task.done ? 'bg-gray-50 border-gray-100' : 'bg-white border-gray-200 hover:border-emerald-300 hover:shadow-sm'}`}>
@@ -407,30 +409,30 @@ export default function MyLearningDashboard() {
               <section className="rounded-3xl border border-gray-200/80 bg-white p-5 shadow-sm sm:p-6">
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
                   <div><div className="text-[10px] font-extrabold tracking-[.18em] text-amber-700">MISTAKE REVIEW</div><h2 className="mt-1 text-lg font-extrabold">错题学习</h2><p className="mt-1 text-xs text-gray-400">按类别集中复习答错的内容，掌握后自动移出错题本。</p></div>
-                  <span className="text-xs font-bold text-amber-700">共 {learning.mistakeCount} 道待复习</span>
+                  <span className="text-xs font-bold text-amber-700">共 {learning.mistakeCount} 项待复习</span>
                 </div>
                 <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
                   <button onClick={() => navigate('/cambridge/words?mode=review')} className="group rounded-2xl border border-amber-200 bg-amber-50/60 p-4 text-left transition hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-sm">
                     <div className="flex items-center justify-between"><span className="grid h-10 w-10 place-items-center rounded-xl bg-[#f4c95d] text-lg">📖</span><span className="rounded-full bg-white px-3 py-1 text-xs font-extrabold text-amber-800">{learning.vocabMistakeCount} 词</span></div>
                     <h3 className="mt-4 font-extrabold text-gray-900">词汇错题</h3>
-                    <div className="mt-1 flex items-end justify-between gap-3"><p className="text-xs leading-relaxed text-gray-500">复习拼错或跳过的单词，答对后移出错词列表。</p><span className="shrink-0 font-extrabold text-amber-800 transition group-hover:translate-x-1">进入 →</span></div>
+                    <div className="mt-1 flex items-end justify-between gap-3"><p className="text-xs leading-relaxed text-gray-500">复习拼错或跳过的单词，答对后移出错词列表。</p><span className="shrink-0 font-extrabold text-amber-800 transition group-hover:translate-x-1">{learning.vocabMistakeCount ? '开始复习 →' : '暂无错题'}</span></div>
                   </button>
                   <button onClick={() => navigate('/cambridge/grammar/mistakes')} className="group rounded-2xl border border-emerald-200 bg-emerald-50/60 p-4 text-left transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-sm">
                     <div className="flex items-center justify-between"><span className="grid h-10 w-10 place-items-center rounded-xl bg-emerald-600 text-lg">📐</span><span className="rounded-full bg-white px-3 py-1 text-xs font-extrabold text-emerald-800">{learning.grammarMistakeCount} 题</span></div>
                     <h3 className="mt-4 font-extrabold text-gray-900">语法错题</h3>
-                    <div className="mt-1 flex items-end justify-between gap-3"><p className="text-xs leading-relaxed text-gray-500">分类复习选择题、挖空练习和改错题中的错误。</p><span className="shrink-0 font-extrabold text-emerald-800 transition group-hover:translate-x-1">进入 →</span></div>
+                    <div className="mt-1 flex items-end justify-between gap-3"><p className="text-xs leading-relaxed text-gray-500">分类复习选择题、挖空练习和改错题中的错误。</p><span className="shrink-0 font-extrabold text-emerald-800 transition group-hover:translate-x-1">{learning.grammarMistakeCount ? '开始复习 →' : '暂无错题'}</span></div>
                   </button>
                   <button onClick={() => navigate('/cambridge/reading')} className="group rounded-2xl border border-violet-200 bg-violet-50/60 p-4 text-left transition hover:-translate-y-0.5 hover:border-violet-300 hover:shadow-sm">
                     <div className="flex items-center justify-between"><span className="grid h-10 w-10 place-items-center rounded-xl bg-violet-600 text-lg">📄</span><span className="rounded-full bg-white px-3 py-1 text-xs font-extrabold text-violet-800">{learning.readingMistakeCount} 题</span></div>
-                    <h3 className="mt-4 font-extrabold text-gray-900">阅读错题</h3><div className="mt-1 flex items-end justify-between gap-2"><p className="text-xs leading-relaxed text-gray-500">复习真题阅读中答错的题目。</p><span className="shrink-0 font-extrabold text-violet-800 transition group-hover:translate-x-1">进入 →</span></div>
+                    <h3 className="mt-4 font-extrabold text-gray-900">阅读错题</h3><div className="mt-1 flex items-end justify-between gap-2"><p className="text-xs leading-relaxed text-gray-500">复习真题阅读中答错的题目。</p><span className="shrink-0 font-extrabold text-violet-800 transition group-hover:translate-x-1">{learning.readingMistakeCount ? '开始复习 →' : '暂无错题'}</span></div>
                   </button>
                   <button onClick={() => navigate('/cambridge/listening')} className="group rounded-2xl border border-cyan-200 bg-cyan-50/60 p-4 text-left transition hover:-translate-y-0.5 hover:border-cyan-300 hover:shadow-sm">
                     <div className="flex items-center justify-between"><span className="grid h-10 w-10 place-items-center rounded-xl bg-cyan-600 text-lg">🎧</span><span className="rounded-full bg-white px-3 py-1 text-xs font-extrabold text-cyan-800">{learning.listeningMistakeCount} 题</span></div>
-                    <h3 className="mt-4 font-extrabold text-gray-900">听力错题</h3><div className="mt-1 flex items-end justify-between gap-2"><p className="text-xs leading-relaxed text-gray-500">回顾各 Part 中听辨错误的题目。</p><span className="shrink-0 font-extrabold text-cyan-800 transition group-hover:translate-x-1">进入 →</span></div>
+                    <h3 className="mt-4 font-extrabold text-gray-900">听力错题</h3><div className="mt-1 flex items-end justify-between gap-2"><p className="text-xs leading-relaxed text-gray-500">回顾各 Part 中听辨错误的题目。</p><span className="shrink-0 font-extrabold text-cyan-800 transition group-hover:translate-x-1">{learning.listeningMistakeCount ? '开始复习 →' : '暂无错题'}</span></div>
                   </button>
                   <button onClick={() => navigate('/cambridge/dictation')} className="group rounded-2xl border border-rose-200 bg-rose-50/60 p-4 text-left transition hover:-translate-y-0.5 hover:border-rose-300 hover:shadow-sm">
                     <div className="flex items-center justify-between"><span className="grid h-10 w-10 place-items-center rounded-xl bg-rose-500 text-lg">⌨️</span><span className="rounded-full bg-white px-3 py-1 text-xs font-extrabold text-rose-800">{learning.gapMistakeCount} 处</span></div>
-                    <h3 className="mt-4 font-extrabold text-gray-900">听写错题</h3><div className="mt-1 flex items-end justify-between gap-2"><p className="text-xs leading-relaxed text-gray-500">重听并改正漏填、拼写错误。</p><span className="shrink-0 font-extrabold text-rose-800 transition group-hover:translate-x-1">进入 →</span></div>
+                    <h3 className="mt-4 font-extrabold text-gray-900">听写错题</h3><div className="mt-1 flex items-end justify-between gap-2"><p className="text-xs leading-relaxed text-gray-500">重听并改正漏填、拼写错误。</p><span className="shrink-0 font-extrabold text-rose-800 transition group-hover:translate-x-1">{learning.gapMistakeCount ? '开始复习 →' : '暂无错题'}</span></div>
                   </button>
                 </div>
               </section>
@@ -438,6 +440,15 @@ export default function MyLearningDashboard() {
           </div>
         </div>
       </main>
+
+      <AnimatePresence>
+        {mobileNavOpen && <motion.div className="fixed inset-0 z-50 bg-black/35 backdrop-blur-sm lg:hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setMobileNavOpen(false)}>
+          <motion.aside initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }} transition={{ type: 'spring', damping: 28, stiffness: 260 }} onClick={event => event.stopPropagation()} className="ml-auto flex h-full w-[min(86vw,360px)] flex-col bg-white p-5 shadow-2xl">
+            <div className="flex items-center justify-between"><div><span className="text-xs font-bold text-emerald-700">KET LEARNING</span><h2 className="mt-1 text-xl font-extrabold">学习导航</h2></div><button aria-label="关闭学习导航" onClick={() => setMobileNavOpen(false)} className="h-9 w-9 rounded-full bg-gray-100 text-xl text-gray-500">×</button></div>
+            <nav className="mt-6 flex-1 overflow-y-auto space-y-5">{navGroups.slice(1).map((group, index) => <div key={index}><div className="mb-2 text-[10px] font-extrabold uppercase tracking-[.18em] text-gray-400">{group.label}</div><div className="grid grid-cols-2 gap-2">{group.items.map(item => <button key={item.id} onClick={() => { setMobileNavOpen(false); handleNav(item) }} className="flex items-center gap-2 rounded-xl border border-gray-200 bg-gray-50 px-3 py-3 text-left text-sm font-bold text-gray-700"><span>{item.icon}</span><span>{item.label}</span>{item.badge && <span className="ml-auto rounded bg-amber-200 px-1 text-[8px]">{item.badge}</span>}</button>)}</div></div>)}</nav>
+          </motion.aside>
+        </motion.div>}
+      </AnimatePresence>
 
       <AnimatePresence>
         {panel && <motion.div className="fixed inset-0 z-50 bg-black/35 backdrop-blur-sm flex items-center justify-center p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setPanel(null)}>
