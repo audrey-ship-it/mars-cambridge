@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Navigate, Routes, Route } from 'react-router-dom'
 import PublicHome from './pages/PublicHome'
 import CambridgeApp from './pages/CambridgeApp'
 import CambridgeReading from './pages/CambridgeReading'
@@ -25,6 +25,8 @@ export default function App() {
       <Route path="/cambridge/grammar/:unit" element={<CambridgeGrammarUnit />} />
       <Route path="/cambridge/listening" element={<CambridgeListening />} />
       <Route path="/cambridge/dictation" element={<CambridgeListeningGap />} />
+      <Route path="/cambridge/writing" element={<Navigate to="/cambridge/exams/ket-3-test1?tab=writing" replace />} />
+      <Route path="/cambridge/speaking" element={<Navigate to="/cambridge/exams/ket-3-test1?tab=speaking" replace />} />
       <Route path="/cambridge/exams" element={<ExamList />} />
       <Route path="/cambridge/exams/:id" element={<CambridgeExam />} />
     </Routes>
