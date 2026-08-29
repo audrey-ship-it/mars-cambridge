@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 320" role="img" aria-labelledby="title desc">
+  <title id="title">A boy looks for a book and calls his friend</title>
+  <desc id="desc">Three panels show a boy looking through his bookshelf, calling a friend, and receiving a book at his front door.</desc>
+  <rect width="1080" height="320" fill="#fff"/>
+  <g fill="none" stroke="#1f2937" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="8" y="8" width="338" height="304" rx="3"/>
+    <rect x="371" y="8" width="338" height="304" rx="3"/>
+    <rect x="734" y="8" width="338" height="304" rx="3"/>
+    <!-- panel 1: bedroom and bookshelf -->
+    <path d="M25 225h105v65H25zm0 0v-70h38v70M93 225v-50h37v50"/>
+    <path d="M245 55h78v230h-78zm0 48h78m-78 48h78m-78 48h78m-78 48h78"/>
+    <path d="M252 63v34m13-34v34m17-34v34m18-34v34M252 110v35m15-35v35m20-35v35m15-35v35M252 158v35m16-35v35m18-35v35m17-35v35M252 207v34m16-34v34m18-34v34m17-34v34"/>
+    <circle cx="201" cy="135" r="22"/>
+    <path d="M184 133q17-28 39-4M193 158l-29 43 30 15 31-42m-31 42-30 64m31-63 23 63m-1-91 30-14"/>
+    <path d="M73 286h45m-33-13h45m-42-13h42"/>
+    <!-- panel 2: phone call -->
+    <path d="M382 8v304" opacity=".2"/>
+    <path d="M397 35h118v112H397zm15 15h18v82m20-82v82m20-82v82m20-82v82"/>
+    <circle cx="470" cy="193" r="26"/>
+    <path d="M450 191q18-32 42-6m-33 33-32 72m43-72 28 72m-42-66 31 17"/>
+    <path d="M488 159l14 27m-17-31 13-7 11 31"/>
+    <path d="M548 158q28-38 62-2m-34 25-28 104m39-104 35 104"/>
+    <circle cx="582" cy="132" r="24"/>
+    <path d="M561 129q17-28 43-5m-43 24-13 27 19 12"/>
+    <path d="M515 155q12-14 24 0m-22 15q12-14 25 0" stroke-dasharray="3 10"/>
+    <!-- panel 3: front door and book delivery -->
+    <path d="M751 34h137v255H751zm15 22h105v95H766zm0 116h105v91H766"/>
+    <circle cx="872" cy="165" r="5" fill="#1f2937"/>
+    <circle cx="958" cy="105" r="22"/>
+    <path d="M938 103q17-28 41-5m-32 30-35 55 23 14 27-35m-15 80-18 48m33-48 22 48"/>
+    <path d="M916 175h-54l-24-13 55-13z" fill="#f6c957"/>
+    <circle cx="807" cy="196" r="22"/>
+    <path d="M787 194q17-28 41-5m-31 29-21 72m32-72 27 72m-24-69 32-47"/>
+    <path d="M835 174l28 0"/>
+    <path d="M978 232q38 7 63-14m-53-2 20 29m-35 4h68"/>
+    <circle cx="989" cy="258" r="18"/><circle cx="1036" cy="258" r="18"/>
+  </g>
+</svg>

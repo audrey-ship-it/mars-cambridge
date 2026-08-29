@@ -890,6 +890,62 @@ const KET3_TEST1_PART1 = [
 ];
 
 const OFFICIAL_PART1_SETS = {
+  1: [
+    { question: "How did Stan and his dad get home from the concert?", image: "/images/listening/set-01-part1/q1.jpg", answer: 2, explanation: "火车已经错过，出租车又太贵；两人最后乘公交车回家，因此选择 C。" },
+    { question: "What’s the girl forgotten?", image: "/images/listening/set-01-part1/q2.jpg", answer: 2, explanation: "女孩去游泳时带了毛巾，却忘了带 swimming costume（游泳衣），因此选择 C。" },
+    { question: "What will the boy do first after he gets home from school?", image: "/images/listening/set-01-part1/q3.jpg", answer: 2, explanation: "男孩说一回家就要帮忙做旅途用的三明治，因此选择 C。" },
+    { question: "Where did the girl find her phone?", image: "/images/listening/set-01-part1/q4.jpg", answer: 0, explanation: "她最后在爸爸汽车的后座找到了手机，因此选择 A。" },
+    { question: "Where are the two friends going to go first today?", image: "/images/listening/set-01-part1/q5.jpg", answer: 2, explanation: "他们决定先参观博物馆，之后再使用剧院票，因此选择 C。" },
+  ],
+  2: [
+    { question: "Which photo is the boy showing his mother?", image: "/images/listening/set-02-part1/q1.jpg", answer: 1, explanation: "男孩拍到了月光下、覆盖着雪的树；兔子跑掉了没有拍到，因此选择 B。" },
+    { question: "Where does the girl’s mother work?", image: "/images/listening/set-02-part1/q2.jpg", answer: 1, explanation: "她妈妈已经换工作，现在在一家大酒店做接待员，因此选择 B。" },
+    { question: "What did Helena’s class do in their history lesson?", image: "/images/listening/set-02-part1/q3.jpg", answer: 2, explanation: "历史课上他们看了一部关于城堡生活的电影，画画是在美术课，因此选择 C。" },
+    { question: "Which new sport is the girl going to do today?", image: "/images/listening/set-02-part1/q4.jpg", answer: 0, explanation: "女孩说今天第一次尝试滑雪；冲浪只是她想学但不能借哥哥的板，因此选择 A。" },
+    { question: "What did the boy eat for breakfast?", image: "/images/listening/set-02-part1/q5.jpg", answer: 2, explanation: "男孩早饭已经吃了最后一块甜瓜，午餐可以带梨或葡萄，因此选择 C。" },
+  ],
+  3: [
+    { question: "What does the boy’s mother need to buy for him?", image: "/images/listening/set-03-part1/q1.jpg", answer: 0, explanation: "男孩说裤子够穿、外套也没问题，只有鞋子太小，因此选择 A。" },
+    { question: "What’s the girl trying to make?", image: "/images/listening/set-03-part1/q2.jpg", answer: 0, explanation: "女孩说模型的脖子太长，看起来更像骆驼而不是绵羊，因此选择 A。" },
+    { question: "What was the weather like at the weekend?", image: "/images/listening/set-03-part1/q3.jpg", answer: 1, explanation: "根据录音中的天气描述，正确图片为 B。" },
+    { question: "What will the boy have for lunch?", image: "/images/listening/set-03-part1/q4.jpg", answer: 0, explanation: "根据录音中的最终安排，正确图片为 A。" },
+    { question: "Which subject won’t they study next year?", image: "/images/listening/set-03-part1/q5.jpg", answer: 2, explanation: "根据录音中的课程安排，明年不再学习的科目对应图片 C。" },
+  ],
+  4: [
+    { question: "Who is the boy’s sister?", image: "/images/listening/set-04-part1/q1.jpg", answer: 1, explanation: "录音中描述的是长黑发女孩，因此选择 B。" },
+    { question: "Why didn’t the girl go to the school dance?", image: "/images/listening/set-04-part1/q2.jpg", answer: 1, explanation: "妈妈开车送她去学校时发动机突然熄火，无法再启动，因此选择 B。" },
+    { question: "Where’s the girl going first?", image: "/images/listening/set-04-part1/q3.jpg", answer: 1, explanation: "她们会先去镇上吃汉堡，然后再去电影院，因此选择 B。" },
+    { question: "Which programme will the two friends watch together?", image: "/images/listening/set-04-part1/q4.jpg", answer: 0, explanation: "两人决定看烘焙节目；女孩已看过熊的节目，也不想看音乐频道，因此选择 A。" },
+    { question: "Where will the girl go tomorrow?", image: "/images/listening/set-04-part1/q5.jpg", answer: 0, explanation: "她明天要为生物作业收集不同种类的树叶，地点是公园，因此选择 A。" },
+  ],
+  5: [
+    { question: "When is the party?", image: "/images/listening/set-05-part1/q1.jpg", answer: 2, explanation: "男孩原本想在 16 日举办，生日实际在 20 日；但爸爸出差，所以最后改在下周六 23 日，因此选择 C。" },
+    { question: "What time does the football match begin?", image: "/images/listening/set-05-part1/q2.jpg", answer: 2, explanation: "两点半是现在的时间，三点一刻是老师能到的时间；比赛开始时间是三点半，因此选择 C。" },
+    { question: "Which T-shirt would the boy like?", image: "/images/listening/set-05-part1/q3.jpg", answer: 1, explanation: "男孩不是要狮子图案，而是指带滑板的那件；月亮图案只是用来说明位置，因此选择 B。" },
+    { question: "How much has the girl paid for each ticket?", image: "/images/listening/set-05-part1/q4.jpg", answer: 1, explanation: "女孩的爸爸提前在网上订票，每张票是 £6.50；演出当天购买才是 £8.75，因此选择 B。" },
+    { question: "Who did they have dinner with yesterday evening?", image: "/images/listening/set-05-part1/q5.jpg", answer: 2, explanation: "他们和同学 Ben 一起吃晚饭；之后来接 Ben 的是他的爷爷，不是一起用餐的人，因此选择 C。" },
+  ],
+  6: [
+    { question: "What’s the subject of the girl’s geography project?", image: "/images/listening/set-06-part1/q1.jpg", answer: 1, explanation: "女孩起初想研究海洋，后来决定研究世界上一些最大的沙漠，因此选择 B。" },
+    { question: "Where do the two friends decide to go first?", image: "/images/listening/set-06-part1/q2.jpg", answer: 0, explanation: "Nathan 先提到餐厅，之后才有化学课；但 Janine 要先去图书馆拿书，因此选择 A。" },
+    { question: "Why has the girl come home late?", image: "/images/listening/set-06-part1/q3.jpg", answer: 2, explanation: "篮球训练是明天；女孩今天放学后留下来向老师请教历史作业，因此选择 C。" },
+    { question: "Where has the boy already found some useful information about elephants?", image: "/images/listening/set-06-part1/q4.jpg", answer: 0, explanation: "他正在网上找但还没有找到可用资料，书也还没查；爷爷给的杂志文章已经提供了一些资料，因此选择 A。" },
+    { question: "What will the girl do for her friend’s birthday party?", image: "/images/listening/set-06-part1/q5.jpg", answer: 0, explanation: "别人会做蛋糕和弹吉他，女孩负责为博客拍所有人的照片，因此选择 A。" },
+  ],
+  7: [
+    { question: "How did the girl get to school this morning?", image: "/images/listening/set-07-part1/q1.jpg", answer: 0, explanation: "公交车晚点只是常见问题，汽车又无法发动；女孩最后坐哥哥的摩托车到学校，因此选择 A。" },
+    { question: "What time will the friends meet tomorrow?", image: "/images/listening/set-07-part1/q2.jpg", answer: 0, explanation: "男孩提议最后一节课后，也就是一点十分见面；三点零五是他要赶的公交车时间，因此选择 A。" },
+    { question: "What did the boy enjoy most at the meal last night?", image: "/images/listening/set-07-part1/q3.jpg", answer: 2, explanation: "没有面包，甜点又太甜；男孩说披萨很好吃，因此选择 C。" },
+    { question: "What does the girl need to buy?", image: "/images/listening/set-07-part1/q4.jpg", answer: 2, explanation: "她已经收好了牙刷，却没有足够的肥皂；梳子只是她去商店时忘记买的东西，因此选择 C。" },
+    { question: "Where’s the girl now?", image: "/images/listening/set-07-part1/q5.jpg", answer: 0, explanation: "女孩提前放学后和朋友走到公交站，并乘上了公交车；她不是在车里或步行路上，因此选择 A。" },
+  ],
+  8: [
+    { question: "What do they want to buy in the department store?", image: "/images/listening/set-08-part1/q1.jpg", answer: 1, explanation: "数学书准备在网上买，学校鞋已买好；女孩还需要一件外套，因此选择 B。" },
+    { question: "Where did the boy go this morning?", image: "/images/listening/set-08-part1/q2.jpg", answer: 1, explanation: "他通常去公园踢球，但朋友这周有别的安排，所以改去游泳池；电影院是之后的计划，因此选择 B。" },
+    { question: "Who is the girl going to meet?", image: "/images/listening/set-08-part1/q3.jpg", answer: 0, explanation: "Amelia 是长发、深色头发且不戴眼镜的女孩，因此选择 A。" },
+    { question: "How will the boy help his mum?", image: "/images/listening/set-08-part1/q4.jpg", answer: 2, explanation: "妈妈要去超市，蔬菜已切好；她请男孩把刀叉等摆到桌上，因此选择 C。" },
+    { question: "Where did the girl spend the day with her family?", image: "/images/listening/set-08-part1/q5.jpg", answer: 1, explanation: "他们常去海边小村庄，但这次想换个地方，最后去了山里，因此选择 B。" },
+  ],
   9: KET3_TEST1_PART1,
   10: [
     { question: "How much did the girl pay for her trainers?", image: "/images/listening/set-10-part1/q1.jpg", answer: 0, explanation: "女孩实际支付了 £47.99，因此选择 A。" },
@@ -926,7 +982,7 @@ function ListeningSetTabs({ part, activeSet }) {
       <div className="grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-12">
         {OFFICIAL_LISTENING_SETS.map((set) => {
           const active = set.id === activeSet;
-          const ready = set.status === "ready";
+          const ready = set.readyParts?.includes(part);
           return (
             <Link
               key={set.id}
@@ -1256,10 +1312,574 @@ const OFFICIAL_TEST1_PARTS = {
       { q: "Jane", answer: 2 },
     ],
   },
+  3: {
+    title: "Part 3 长篇听力题",
+    instruction: "听 Teresa 和 Daniel 讨论学校写作比赛，选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "What has Teresa decided to write about?", opts: ["a place she visited", "a film she watched", "a person she knows"], answer: 2 },
+      { q: "How many words do students have to write for the competition?", opts: ["500 or less", "between 500 and 1000", "as many as they want"], answer: 0 },
+      { q: "How did Daniel feel after he finished his writing?", opts: ["worried", "excited", "tired"], answer: 0 },
+      { q: "What’s the prize for winning the competition?", opts: ["a laptop", "a tablet", "some books"], answer: 1 },
+      { q: "Teresa thinks she is good at", opts: ["spelling.", "writing stories.", "describing places."], answer: 1 },
+    ],
+  },
+  4: {
+    title: "Part 3 长篇听力题",
+    instruction: "听 Maria 和 Alex 讨论参观科学博物馆，选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "Maria went to the museum", opts: ["on Sunday.", "on Monday.", "on Tuesday."], answer: 1 },
+      { q: "Alex usually goes to the museum with his", opts: ["class.", "friends.", "family."], answer: 2 },
+      { q: "Alex usually travels to the museum", opts: ["by bike.", "by bus.", "on foot."], answer: 0 },
+      { q: "What did Maria prefer at the museum?", opts: ["talking to the guide", "watching a video", "making a model"], answer: 1 },
+      { q: "In the café, Maria had", opts: ["a cake.", "an ice cream.", "a drink."], answer: 2 },
+    ],
+  },
+  3: {
+    title: "Part 4 短篇听力题",
+    instruction: "听五段独立短对话，选择每段对话的重点信息。",
+    type: "mcq",
+    items: [
+      { q: "Who is the boy meeting?", opts: ["his brother", "his uncle", "his cousin"], answer: 2 },
+      { q: "What’s the girl surprised about?", opts: ["how warm the weather is", "what the boy is wearing", "how kind her teachers were"], answer: 0 },
+      { q: "What does she want Adam to do?", opts: ["lend her something", "explain something to her", "give someone a message"], answer: 1 },
+      { q: "What activity are they going to do?", opts: ["walking", "fishing", "cycling"], answer: 2 },
+      { q: "What did the girl think about the film?", opts: ["The music was too loud.", "The story was difficult to understand.", "The actors didn’t speak clearly enough."], answer: 0 },
+    ],
+  },
+  4: {
+    title: "Part 4 短篇听力题",
+    instruction: "听五段独立短对话，选择每段对话的重点信息。",
+    type: "mcq",
+    items: [
+      { q: "What does the teacher tell them?", opts: ["They’ve got less work to do.", "They should do more exercise.", "They’ve got more time to study."], answer: 2 },
+      { q: "What’s Emily’s mum doing?", opts: ["making a shopping list", "explaining how to cook a dish", "deciding what they’re going to eat"], answer: 2 },
+      { q: "What job does Dan’s mum do?", opts: ["She’s a guide.", "She’s a receptionist.", "She’s a shop assistant."], answer: 0 },
+      { q: "What will they do today?", opts: ["visit the hospital", "go to the train station", "buy some stamps"], answer: 2 },
+      { q: "What did they do together?", opts: ["visit the countryside", "do a sport", "have a meal"], answer: 1 },
+    ],
+  },
+  3: {
+    options: ["basketball", "cycling", "golf", "hockey", "snowboarding", "swimming", "tennis", "volleyball"],
+    items: [
+      { q: "Vicky", answer: 5 },
+      { q: "Oliver", answer: 2 },
+      { q: "Karen", answer: 7 },
+      { q: "Mike", answer: 6 },
+      { q: "Ellie", answer: 4 },
+    ],
+  },
+  4: {
+    options: ["backpack", "basketball", "book", "bracelet", "poster", "scarf", "tablet", "tent"],
+    items: [
+      { q: "mum", answer: 7 },
+      { q: "brother", answer: 4 },
+      { q: "grandma", answer: 0 },
+      { q: "sister", answer: 5 },
+      { q: "uncle", answer: 3 },
+    ],
+  },
+};
+
+const OFFICIAL_PART2_SETS = {
+  1: {
+    title: "Part 2 信息填空题",
+    instruction: "听一段关于青少年广播营的介绍，填写一个单词、数字、日期或时间。",
+    type: "blanks",
+    items: [
+      { q: "Date first course starts:", answer: ["25 June", "June 25", "25th June", "June 25th"], show: "25 June" },
+      { q: "Learn to write:", answer: ["plays", "play"], show: "plays" },
+      { q: "Meet world famous:", answer: ["band", "a band"], show: "band" },
+      { q: "Each person receives:", answer: ["T-shirt", "t shirt", "tshirt"], show: "T-shirt" },
+      { q: "Discount price: $", answer: ["238", "$238"], show: "238" },
+    ],
+  },
+  2: {
+    title: "Part 2 信息填空题",
+    instruction: "听老师布置家庭作业，填写一个单词或数字。",
+    type: "blanks",
+    items: [
+      { q: "Find out about:", answer: ["bees", "bee"], show: "bees" },
+      { q: "Textbook page:", answer: ["67"], show: "67" },
+      { q: "Website address: www. ______ .com", answer: ["nature"], show: "nature" },
+      { q: "Number of words to write:", answer: ["275"], show: "275" },
+      { q: "Include:", answer: ["drawing", "a drawing"], show: "drawing" },
+    ],
+  },
+  3: {
+    title: "Part 2 信息填空题",
+    instruction: "听学校测验的通知，填写一个单词、数字、姓名或时间。",
+    type: "blanks",
+    items: [
+      { q: "Questions about:", answer: ["history"], show: "history" },
+      { q: "Number of people in each team:", answer: ["5", "five"], show: "5" },
+      { q: "Prize:", answer: ["cup", "a cup"], show: "cup" },
+      { q: "Give names to:", answer: ["Hartley", "Mr Hartley"], show: "Mr Hartley" },
+      { q: "Time to arrive:", answer: ["6.10", "6:10", "ten past six"], show: "6:10" },
+    ],
+  },
+  4: {
+    title: "Part 2 信息填空题",
+    instruction: "听 Sophia 留给朋友的度假留言，填写一个单词或电话号码。",
+    type: "blanks",
+    items: [
+      { q: "Name of hotel: The", answer: ["Stafford"], show: "The Stafford" },
+      { q: "Not available at hotel:", answer: ["bikes", "bike"], show: "bikes" },
+      { q: "For journey, bring:", answer: ["book", "a book"], show: "book" },
+      { q: "Weather will be:", answer: ["clouds", "cloudy"], show: "cloudy" },
+      { q: "Sophia’s sister’s phone number:", answer: ["0776 3214", "07763214"], show: "0776 3214" },
+    ],
+  },
+  5: {
+    title: "Part 2 信息填空题",
+    instruction: "听老师介绍学校自然之旅，填写一个单词、数字、日期或时间。",
+    type: "blanks",
+    items: [
+      { q: "School nature trip — Nature trip to:", answer: ["forest", "the forest"], show: "forest" },
+      { q: "School nature trip — Time to arrive at school by: ___ a.m.", answer: ["8:35", "8.35", "eight thirty-five", "eight thirty five"], show: "8:35" },
+      { q: "School nature trip — Should wear:", answer: ["coat", "a coat"], show: "coat" },
+      { q: "School nature trip — Name of guide: Dan ___", answer: ["Pilsey"], show: "Pilsey" },
+      { q: "School nature trip — Animal to look for:", answer: ["horse", "horses"], show: "horse(s)" },
+    ],
+  },
+  6: {
+    title: "Part 2 信息填空题",
+    instruction: "听老师介绍体育场参观活动，填写一个单词、数字、日期或时间。",
+    type: "blanks",
+    items: [
+      { q: "Stadium tour — Name of tour guide: Jacob ___", answer: ["Jackster"], show: "Jackster" },
+      { q: "Stadium tour — Colour of guide’s T-shirt:", answer: ["yellow"], show: "yellow" },
+      { q: "Stadium tour — Length of tour: ___ minutes", answer: ["45", "forty-five", "forty five"], show: "45" },
+      { q: "Stadium tour — Free gift:", answer: ["scarf", "a scarf"], show: "scarf" },
+      { q: "Stadium tour — Type of art at exhibition:", answer: ["drawings", "drawing"], show: "drawings" },
+    ],
+  },
+  7: {
+    title: "Part 2 信息填空题",
+    instruction: "听老师介绍国家公园徒步活动，填写一个单词、数字、日期或时间。",
+    type: "blanks",
+    items: [
+      { q: "School walking trip — Time to be at school: ___ a.m.", answer: ["7:45", "7.45", "seven forty-five", "seven forty five", "a quarter to eight"], show: "7:45" },
+      { q: "School walking trip — Bring:", answer: ["sandwiches", "sandwich", "some sandwiches"], show: "sandwiches" },
+      { q: "At the National Park, students receive:", answer: ["map", "a map"], show: "map" },
+      { q: "School walking trip — Should wear:", answer: ["T-shirt", "t shirt", "tshirt", "a T-shirt", "a t shirt"], show: "T-shirt" },
+      { q: "School walking trip — Total cost: £", answer: ["6.30", "6:30", "six pounds thirty", "six thirty"], show: "6.30" },
+    ],
+  },
+  8: {
+    title: "Part 2 信息填空题",
+    instruction: "听老师介绍学校图书馆的新变化，填写一个单词、数字、日期或时间。",
+    type: "blanks",
+    items: [
+      { q: "School library — Get library cards from: ___ desk", answer: ["front", "the front"], show: "front" },
+      { q: "School library — On Tuesdays, library closes at: ___ p.m.", answer: ["7:45", "7.45", "seven forty-five", "seven forty five", "a quarter to eight"], show: "7:45" },
+      { q: "School library — Name of library manager: Mrs ___", answer: ["Carter"], show: "Carter" },
+      { q: "School library — Can use own:", answer: ["tablet", "tablets", "a tablet"], show: "tablet" },
+      { q: "School library — Subject of first exhibition:", answer: ["fashion"], show: "fashion" },
+    ],
+  },
+  9: {
+    title: "Part 2 信息填空题",
+    instruction: "听 Mandy 留给朋友的语音留言，填写一个单词、数字、日期或时间。",
+    type: "blanks",
+    items: [
+      { q: "Sunday at the beach — Take:", answer: ["kite", "a kite"], show: "kite" },
+      { q: "Sunday at the beach — Place for lunch:", answer: ["park", "a park", "the park"], show: "park" },
+      { q: "Sunday at the beach — Sport we'll play:", answer: ["volleyball"], show: "volleyball" },
+      { q: "Sunday at the beach — Cost of boat trip on Sunday: £ ___ each", answer: ["3.75", "3.75p", "three seventy-five", "three seventy five"], show: "3.75" },
+      { q: "Sunday at the beach — Arrive at Mandy's home at: ___ p.m.", answer: ["6.30", "6:30", "six thirty", "half past six"], show: "6.30" },
+    ],
+  },
+  10: {
+    title: "Part 2 信息填空题",
+    instruction: "听 Jake 留给朋友的语音留言，填写一个单词、数字、日期或时间。",
+    type: "blanks",
+    items: [
+      { q: "Computer game afternoon at Jake's house — Jake's address: 51 ___ Street", answer: ["Sherby"], show: "Sherby" },
+      { q: "Computer game afternoon at Jake's house — Travel to Jake's house by:", answer: ["tram", "the tram"], show: "tram" },
+      { q: "Computer game afternoon at Jake's house — Time to arrive: ___ p.m.", answer: ["1.45", "1:45", "quarter to two", "a quarter to two"], show: "1.45" },
+      { q: "Computer game afternoon at Jake's house — Bring: Jake's ___", answer: ["gloves", "glove"], show: "gloves" },
+      { q: "Computer game afternoon at Jake's house — Jake's mum's phone number:", answer: ["05568129437", "05568 129437"], show: "05568 129437" },
+    ],
+  },
+  11: {
+    title: "Part 2 信息填空题",
+    instruction: "听老师介绍艺术比赛，填写一个单词、数字、日期或时间。",
+    type: "blanks",
+    items: [
+      { q: "Art Competition — Title of painting:", answer: ["Buildings", "building"], show: "Buildings" },
+      { q: "Art Competition — Final date to enter competition:", answer: ["18 May", "May 18", "18th May", "May 18th"], show: "18 May" },
+      { q: "Art Competition — Person who will choose the winner: Jacob ___", answer: ["Fossley"], show: "Fossley" },
+      { q: "Art Competition — Jacob's job:", answer: ["photographer", "a photographer"], show: "photographer" },
+      { q: "Art Competition — Prize:", answer: ["skateboard", "a skateboard"], show: "skateboard" },
+    ],
+  },
+  12: {
+    title: "Part 2 信息填空题",
+    instruction: "听老师介绍参观玻璃工厂的活动，填写一个单词、数字、日期或时间。",
+    type: "blanks",
+    items: [
+      { q: "Glass Factory Trip — Factory famous for: ___ made of glass", answer: ["bowls", "bowl"], show: "bowls" },
+      { q: "Glass Factory Trip — Factory advert shows drawing of:", answer: ["dolphin", "a dolphin"], show: "dolphin" },
+      { q: "Glass Factory Trip — Leave school at: ___ a.m.", answer: ["8.30", "8:30", "eight thirty", "half past eight"], show: "8.30" },
+      { q: "Glass Factory Trip — Take:", answer: ["notebooks", "notebook", "your notebooks"], show: "notebooks" },
+      { q: "Glass Factory Trip — Surname of teacher to contact:", answer: ["Stapely"], show: "Stapely" },
+    ],
+  },
+};
+
+const OFFICIAL_PART3_SETS = {
+  12: {
+    title: "Part 3 长篇听力题",
+    instruction: "听 Mark 和 Jessica 谈论他们参加的音乐节，选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "How did they get to the festival?", opts: ["by coach", "by car", "by train"], answer: 1, explanation: "他们很高兴妈妈能开车送他们去；火车站距离很远、公交车很慢。" },
+      { q: "Where did they stay at the festival?", opts: ["on a campsite", "in a small hotel", "in a family member's home"], answer: 2, explanation: "Mark 提过下次想带帐篷露营，但这次他们住在 Uncle Jim 的公寓里。" },
+      { q: "What didn't Mark like about the festival?", opts: ["There were too many people.", "It was very expensive.", "The weather was bad."], answer: 0, explanation: "天气很好，费用也比大多数音乐节低；Mark 唯一觉得不好的是现场过于拥挤。" },
+      { q: "What do they agree about the singer called Amelia?", opts: ["Her songs were unusual.", "She looked wonderful.", "She was their favourite musician."], answer: 1, explanation: "两人都认为 Amelia 很漂亮；Jessica 最喜欢她，而 Mark 最喜欢最后那个乐队，所以不能选 C。" },
+      { q: "What did Jessica buy from the festival shop?", opts: ["something to eat", "something to read", "something to wear"], answer: 2, explanation: "Jessica 也买了一条围巾，是可以穿戴的物品；巧克力是 Mark 买给妈妈的。" },
+    ],
+  },
+  11: {
+    title: "Part 3 长篇听力题",
+    instruction: "听 Martha 和 Dan 谈论他们参加的班级旅行，选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "Where did Dan and Martha go on their school trip this year?", opts: ["a river", "the sea", "a lake"], answer: 2, explanation: "Dan 明确说今年的学校旅行去了 lake；海边是去年的地点，河边是另一班去的地方。" },
+      { q: "Which activity did Martha enjoy the most?", opts: ["cycling", "horse riding", "windsurfing"], answer: 0, explanation: "Martha 虽然想将来学习帆板，但这次最喜欢的是在小路上骑自行车。" },
+      { q: "What was hard for Dan during the sailing lesson?", opts: ["remembering the instructions", "working with his classmates", "understanding the teacher"], answer: 0, explanation: "老师讲得很清楚、同学也互相帮助；Dan 困难的是不断忘记下一步该做什么。" },
+      { q: "Why didn't Martha go swimming?", opts: ["She doesn't like deep water.", "The weather wasn't warm enough.", "She didn't take a swimsuit with her."], answer: 1, explanation: "Martha 带了游泳用品，也不怕深水；她认为当天太冷。" },
+      { q: "What do Martha and Dan agree about the barbecue?", opts: ["It was in a good place.", "It finished too soon.", "It was quite boring."], answer: 1, explanation: "Martha 说他们不得不很早离开，Dan 也表示同意；两人都不认为活动无聊。" },
+    ],
+  },
+  10: {
+    title: "Part 3 长篇听力题",
+    instruction: "听 Emma 和 Jamie 计划去市场，选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "Who can take Emma and Jamie to the market?", opts: ["Emma's mum", "Emma's neighbour", "Emma's cousin"], answer: 1, explanation: "Emma 的妈妈要去看表姐；住在隔壁的 Annie 可以带他们去市场。" },
+      { q: "When will they pick Jamie up?", opts: ["10.15", "10.30", "10.45"], answer: 2, explanation: "Emma 说会在 quarter to eleven 到 Jamie 家，即 10:45。" },
+      { q: "What does Emma want to buy?", opts: ["jewellery", "clothes", "toys"], answer: 0, explanation: "Emma 已借到连衣裙，需要买项链和耳环搭配，所以选 jewellery。" },
+      { q: "Why does Jamie like the computer games on the market?", opts: ["They're cheap.", "They're new.", "They're unusual."], answer: 2, explanation: "Jamie 说这些游戏在其他地方买不到，新游戏到处都有，因此它们很特别。" },
+      { q: "Emma and Jamie agree that the Moon Café", opts: ["has friendly staff.", "serves great food.", "is very noisy."], answer: 1, explanation: "两人都认可那里的汉堡很好吃；对服务员和音乐的看法并不完全一致。" },
+    ],
+  },
+  9: {
+    title: "Part 3 长篇听力题",
+    instruction: "听 Ned 和 Aisha 谈论他们在新学校的第一周，选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "When did they meet each other for the first time?", opts: ["on the way to school", "in a lesson", "in the lunch break"], answer: 1, explanation: "两人说在第一节课时坐在一起，因此是在一节课上第一次见面。" },
+      { q: "How did Ned feel before he started the new school?", opts: ["scared", "excited", "lucky"], answer: 1, explanation: "Ned 说自己一点也不害怕，并同意 Aisha 说的 excited。" },
+      { q: "Ned and Aisha agree that", opts: ["the teachers are very kind.", "their classmates are all very nice.", "the school building is very attractive."], answer: 0, explanation: "两人都认为老师很乐于帮助他们；同学并非每一个都很好，校舍也不漂亮。" },
+      { q: "Which lesson doesn't Aisha like much?", opts: ["geography", "maths", "history"], answer: 2, explanation: "Aisha 说 geography 现在是她最喜欢的科目，而 history 是她唯一不太喜欢的科目。" },
+      { q: "What do they both say about homework at the new school?", opts: ["They got less in their old schools.", "It takes a long time to do.", "Some of it is quite easy."], answer: 0, explanation: "两人都说旧学校的作业没有这么多，因此选 A。" },
+    ],
+  },
+  1: {
+    title: "Part 3 长篇听力题",
+    instruction: "听 Edward 和 Michaela 谈论舞蹈课，选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "Where does Edward go for his dance classes?", opts: ["a college", "a dance school", "a sports centre"], answer: 0 },
+      { q: "Michaela started going to classes", opts: ["one week ago.", "four weeks ago.", "eight weeks ago."], answer: 1 },
+      { q: "Why does Edward like his teacher?", opts: ["She’s very funny.", "She gives students presents.", "She explains things clearly."], answer: 1 },
+      { q: "What does Michaela wear to her dance classes?", opts: ["trousers and a shirt", "shorts and a T-shirt", "trainers and a sweater"], answer: 0 },
+      { q: "What does Edward enjoy most about the classes?", opts: ["learning new dances", "listening to the music", "meeting his friends"], answer: 2 },
+    ],
+  },
+  2: {
+    title: "Part 3 长篇听力题",
+    instruction: "听 Connie 和 Tom 讨论学校假期活动俱乐部，选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "Connie thinks that the club is best for children aged", opts: ["over 13.", "from 11 to 13.", "as young as 9."], answer: 1 },
+      { q: "What does Connie say about the club?", opts: ["All the coaches are friendly.", "The activities can be hard.", "She knows everyone there."], answer: 1 },
+      { q: "Which activity is Tom interested in trying?", opts: ["swimming", "playing football", "sailing"], answer: 2 },
+      { q: "Connie says Tom needs to take", opts: ["some money.", "a towel.", "his own lunch."], answer: 1 },
+      { q: "The shop that sells sports clothes is opposite", opts: ["the cinema.", "the hospital.", "the bank."], answer: 0 },
+    ],
+  },
+  5: {
+    title: "Part 3 长篇听力题",
+    instruction: "听两位朋友谈论他们的国际象棋俱乐部，选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "How did the boy find out about the chess club?", opts: ["His father told him about it.", "He saw an advert in a magazine.", "A teacher gave him information about it."], answer: 0, explanation: "爸爸在杂志上看到广告后告诉了男孩；男孩是从爸爸那里得知的。" },
+      { q: "What do they both like most about the club?", opts: ["playing in club competitions", "learning from the club’s coach", "being with club members"], answer: 2, explanation: "教练和比赛都被提到，但两人都认同和其他成员在一起最好。" },
+      { q: "Why didn’t the girl go to the club last week?", opts: ["She had too much homework.", "She had to visit someone.", "She had a headache."], answer: 1, explanation: "头痛的是她的奶奶；女孩上周是去医院探望奶奶。" },
+      { q: "How did the boy feel at the club last week?", opts: ["sorry that he couldn’t take photos", "angry because he lost a match", "tired because he walked there"], answer: 0, explanation: "男孩输了比赛却觉得比赛不错；他遗憾的是忘带手机，没能拍队伍照片。" },
+      { q: "What do they decide to do together after the club next week?", opts: ["go to the cinema", "have a snack", "go shopping"], answer: 1, explanation: "女孩要去看电影，男孩那时要踢足球；他们约好之前在购物中心的咖啡馆吃三明治。" },
+    ],
+  },
+  6: {
+    title: "Part 3 长篇听力题",
+    instruction: "听 Miriam 询问爵士舞课程的信息，选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "When can Miriam join a class?", opts: ["during the holiday", "next term", "at the weekend"], answer: 0, explanation: "学期即将结束，周末课程已满；她能参加的是从 15 日周一开始的假期课程。" },
+      { q: "What kind of dance has Miriam done a lot of before?", opts: ["hip hop", "modern", "disco"], answer: 1, explanation: "Miriam 是现代舞高级水平；嘻哈只略有经验，迪斯科是她曾想学但没找到班。" },
+      { q: "What shouldn’t Miriam wear for classes?", opts: ["trainers", "jewellery", "a sweater"], answer: 1, explanation: "运动鞋可以穿，入学会收到毛衣；耳环和手镯有危险，应留在家里。" },
+      { q: "What will Miriam do in class?", opts: ["choose music to dance to", "watch videos of famous dancers", "work with a partner"], answer: 0, explanation: "有时会拍摄学生帮助进步，但不是观看视频；学生会决定使用哪些歌曲跳舞。" },
+      { q: "Why does Miriam want to learn jazz dance?", opts: ["to become a teacher", "to do competitions", "to be in shows"], answer: 2, explanation: "她明确说对比赛不感兴趣，想参加学校演出。" },
+    ],
+  },
+  7: {
+    title: "Part 3 长篇听力题",
+    instruction: "听 Zac 和 Kirsty 谈论参加羽毛球比赛的出行安排，选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "Where will they catch the bus?", opts: ["in front of the school", "near some shops", "at the petrol station"], answer: 1, explanation: "他们不在学校门口，而在加油站对面、购物中心外乘车，因此是商店附近。" },
+      { q: "What can Kirsty get for Zac?", opts: ["some trainers", "a T-shirt", "some shorts"], answer: 0, explanation: "两人的 T 恤和短裤都需要白色；Zac 的黑色运动鞋可借 Kirsty 哥哥的，因此是运动鞋。" },
+      { q: "Zac and Kirsty agree that their new sports teacher is", opts: ["nicer than some teachers.", "easy to understand.", "fun to be with."], answer: 1, explanation: "Zac 说新老师不如其他老师有趣，但他的指示总是清楚，Kirsty 同意。" },
+      { q: "What does Zac tell Kirsty to take on the bus?", opts: ["something to listen to", "something to drink", "something to eat"], answer: 1, explanation: "Zac 自己会带音乐，但提醒 Kirsty 车上很热，要带水。" },
+      { q: "How does Zac feel about the match?", opts: ["worried his team will play badly", "happy everyone is friendly", "surprised he’s in the team"], answer: 2, explanation: "他认为队伍很强、会赢；令他意外的是自己原本并不觉得够资格参赛。" },
+    ],
+  },
+  8: {
+    title: "Part 3 长篇听力题",
+    instruction: "听 Johnny 和 Lily 谈论学校博物馆参观，选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "How did Lily feel when she was at the museum?", opts: ["tired", "bored", "hungry"], answer: 2, explanation: "她原以为科学博物馆可能无聊，但觉得还可以；因为起晚没吃早餐，她一直想着食物。" },
+      { q: "The friends travelled to the museum", opts: ["by bus", "by train", "on foot"], answer: 0, explanation: "老师为这次参观订了公交车；Johnny 姐姐的班级才是从火车站一路步行。" },
+      { q: "What did Lily enjoy learning about most at the museum?", opts: ["the sky", "electricity", "health"], answer: 2, explanation: "月亮和星星很有趣，电学她已经知道；她最喜欢的是医生如何帮助人们保持健康。" },
+      { q: "What did Johnny buy in the museum shop?", opts: ["a book", "a game", "a picture"], answer: 1, explanation: "他觉得图片不错但钱不够；原本看的书也没买，最后选择了游戏。" },
+      { q: "What does Lily want to visit on the next school trip?", opts: ["an art exhibition", "a castle", "a farm"], answer: 2, explanation: "Lily 对艺术不感兴趣，也觉得城堡不如乡村有趣；她想了解食物如何种植、动物如何被照顾。" },
+    ],
+  },
+};
+
+const OFFICIAL_PART4_SETS = {
+  12: {
+    title: "Part 4 短篇听力题",
+    instruction: "听五段简短对话或独白，选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "What is the visitor's job?", opts: ["a tour guide", "a musician", "a photographer"], answer: 0, explanation: "说话者提到摄影师和小提琴手都是干扰信息；来访者的工作是带不同的人参观有趣的地方，因此是导游。" },
+      { q: "What is the girl reading about?", opts: ["an unusual animal", "a famous musician", "an exciting journey"], answer: 2, explanation: "书讲的是一位少女骑摩托车穿越非洲的经历；狮子和歌曲都只是故事中的细节。" },
+      { q: "What does the teacher want them to do?", opts: ["tidy the classroom", "copy something into their books", "get ready to go home"], answer: 1, explanation: "整理书本、笔和纸张只是开始写作文前的安排；老师要大家坐下开始写作，所以选 B。" },
+      { q: "How does the girl feel about her homework?", opts: ["pleased with the information she got", "worried that she hasn't written enough", "sure that her teacher will like it"], answer: 0, explanation: "女孩说她从网上视频中找到了有用信息；她只是希望老师会喜欢，并没有确定，也没有担心篇幅不够。" },
+      { q: "Why is he talking to his class about the book?", opts: ["One of them has lost it.", "They're going to read it together.", "The writer is someone they probably know."], answer: 2, explanation: "书并不属于任何学生，也不是全班共读；作者 Mrs Lam 曾在学校任教，学生可能认识她。" },
+    ],
+  },
+  11: {
+    title: "Part 4 短篇听力题",
+    instruction: "听五段独立短对话，选择每段对话的重点信息。",
+    type: "mcq",
+    items: [
+      { q: "What kind of present does she decide to buy?", opts: ["clothes", "food", "jewellery"], answer: 2, explanation: "巧克力和 T 恤都只是被提到；女孩最后决定买耳环，因此是 jewellery。" },
+      { q: "What does he want her to do for him?", opts: ["buy something", "repair something", "return something"], answer: 2, explanation: "男孩自行车爆胎，来不及步行去图书馆；他请妈妈帮忙归还图书。" },
+      { q: "What did he enjoy most?", opts: ["taking part in a sports event", "watching a film", "playing music"], answer: 0, explanation: "历史纪录片让他觉得有点无聊，下午也没带吉他；午间乒乓球比赛才是他最喜欢的部分。" },
+      { q: "What kind of club do they both enjoy going to?", opts: ["a sports club", "an art club", "a music club"], answer: 0, explanation: "两人都参加篮球活动；绘画、合唱和爵士乐团只有其中一人参加或已停止。" },
+      { q: "What didn't they like about the film?", opts: ["its length", "one of its stars", "the way it ended"], answer: 1, explanation: "他们认为电影不长、结局也有趣；两人不喜欢的是男主角。" },
+    ],
+  },
+  10: {
+    title: "Part 4 短篇听力题",
+    instruction: "听五段独立短对话，选择每段对话的重点信息。",
+    type: "mcq",
+    items: [
+      { q: "Why couldn't the girl go to the party?", opts: ["She was feeling ill.", "She needed to do her homework.", "She had to look after her sister."], answer: 2, explanation: "女孩缺席不是因为生病或作业，而是妈妈加班，她必须照顾妹妹 Annie。" },
+      { q: "What does he want Danielle to do?", opts: ["make her project longer than it is", "try to finish her project earlier", "change the subject of her project"], answer: 2, explanation: "老师认为她选的主题没有足够内容可写，希望她换一个主题。" },
+      { q: "Why does he like his new bag?", opts: ["It's made of leather.", "It's a good size.", "It's a bright colour."], answer: 1, explanation: "新书包的大小更适合放笔记本电脑；颜色很亮但不是他喜欢它的原因。" },
+      { q: "Why is he phoning his daughter?", opts: ["to offer her a lift", "to explain a problem to her", "to ask her about some directions"], answer: 1, explanation: "爸爸需要去接走错火车的弟弟，因此不能接女儿，打电话是说明这个问题。" },
+      { q: "How is she feeling about it?", opts: ["upset that the weather might be bad", "worried she won't be very good", "sorry that her friend can't go"], answer: 1, explanation: "她不担心天气，朋友不来她也不介意；她担心其他人会比自己好，自己会尴尬。" },
+    ],
+  },
+  9: {
+    title: "Part 4 短篇听力题",
+    instruction: "听五段独立短对话，选择每段对话的重点信息。",
+    type: "mcq",
+    items: [
+      { q: "How did the boy get the book?", opts: ["He borrowed it from a family member.", "He won it in a sports event.", "He bought it in a shop."], answer: 1, explanation: "男孩原本在书店看见它但钱不够，后来因跑步比赛第一名而得到这本书作为奖品。" },
+      { q: "What type of lesson did she have?", opts: ["a guitar lesson", "a tennis lesson", "a dance lesson"], answer: 0, explanation: "女孩谈到手指的位置会影响声音，这说明她上的是吉他课。" },
+      { q: "Where will the boy stay on holiday?", opts: ["in a house", "in a hotel", "in a tent"], answer: 2, explanation: "祖母有房子，但来访的人太多，男孩说自己得在她花园里露营。" },
+      { q: "What does he want his class to do now?", opts: ["start some maths problems", "talk about their new textbook", "check an exercise in pairs"], answer: 2, explanation: "数学题已完成；老师要求大家两人合作比较答案，因此选 C。" },
+      { q: "What are they going to do together on Saturday?", opts: ["have a cycle ride", "cook some special food", "go for a walk"], answer: 2, explanation: "女孩骑车过去只是为了会合；他们一起进行的活动是在森林里散步。" },
+    ],
+  },
+  1: {
+    title: "Part 4 短篇听力题",
+    instruction: "听五段独立短对话，选择每段对话的重点信息。",
+    type: "mcq",
+    items: [
+      { q: "Why did the girl choose the bag?", opts: ["It was the right price.", "It was the right size.", "It will be very useful."], answer: 2 },
+      { q: "Why doesn’t he buy the computer game now?", opts: ["He’s played it before.", "He thinks it’s too expensive.", "He can borrow it from his friend."], answer: 1 },
+      { q: "Where are they?", opts: ["at a farm", "in a forest", "on a mountain"], answer: 2 },
+      { q: "What’s Kate’s father going to do?", opts: ["book a holiday", "enter a competition", "buy a magazine"], answer: 1 },
+      { q: "What did the boy do?", opts: ["He went shopping.", "He stayed at home.", "He visited a classmate."], answer: 1 },
+    ],
+  },
+  2: {
+    title: "Part 4 短篇听力题",
+    instruction: "听五段独立短对话，选择每段对话的重点信息。",
+    type: "mcq",
+    items: [
+      { q: "Why doesn’t the girl want to go swimming?", opts: ["She’s too busy.", "She feels ill.", "She’s got no money."], answer: 1 },
+      { q: "Where are they going to go on the school trip?", opts: ["to a farm", "to a museum", "to a stadium"], answer: 0 },
+      { q: "What’s the teacher talking to them about?", opts: ["changes to their timetable", "a new teacher at the school", "a problem with a classroom"], answer: 0 },
+      { q: "How does Oscar feel now?", opts: ["tired", "bored", "worried"], answer: 0 },
+      { q: "Why didn’t Alex buy the blue and white T-shirt?", opts: ["It was the wrong size.", "It was too expensive.", "It was the wrong colour."], answer: 1 },
+    ],
+  },
+  5: {
+    title: "Part 4 短篇听力题",
+    instruction: "听五段独立短对话，选择每段对话的重点信息。",
+    type: "mcq",
+    items: [
+      { q: "What does the girl want the boy to do?", opts: ["make a phone call", "get her something to drink", "help her with her homework"], answer: 1, explanation: "女孩不需要帮忙做作业，也自己拿了电话；她最后委婉地表示想喝果汁。" },
+      { q: "What should the girl try to do in the future?", opts: ["always complete her homework", "work more quickly", "say more in class"], answer: 1, explanation: "女孩的作业总是准时完成、课上也经常发言；老师指出的是她完成练习花的时间太长。" },
+      { q: "Why did she choose this bag?", opts: ["for the colour", "for the size", "for the price"], answer: 2, explanation: "她觉得颜色还不错、包也有点小；真正的原因是折扣很好。" },
+      { q: "Why does the girl want to give her jacket to her cousin?", opts: ["It isn’t big enough.", "There aren’t enough pockets.", "She doesn’t like the colour."], answer: 0, explanation: "小口袋和颜色都被提到，但女孩说自己长高了，外套很快会像借妹妹的一样小。" },
+      { q: "What did he enjoy most about the lesson?", opts: ["watching a video", "drawing a map", "using the internet"], answer: 1, explanation: "看视频只是“还可以”，上网的是其他同学；男孩自己画的地图很好看，因此最喜欢画地图。" },
+    ],
+  },
+  6: {
+    title: "Part 4 短篇听力题",
+    instruction: "听五段独立短对话，选择每段对话的重点信息。",
+    type: "mcq",
+    items: [
+      { q: "What does the girl hope to do this summer?", opts: ["visit a new country", "stay with a family member", "learn a new sport"], answer: 2, explanation: "她会再次去西班牙，并没有去新国家；她一直梦想学习骑马，因此答案是学习一项新运动。" },
+      { q: "Where does she want them to go now?", opts: ["the school café", "the library", "the park"], answer: 2, explanation: "老师原本计划去图书馆，后来因为天气好改为去公园；咖啡馆是在返回教室前再去。" },
+      { q: "What is the problem with their food?", opts: ["It cost more than they expected.", "It’s not what they asked for.", "It’s badly cooked."], answer: 2, explanation: "披萨很干，男孩认为店员忘了及时从烤箱拿出来；它并不贵。" },
+      { q: "Why is she going to be late?", opts: ["She has to meet a neighbour.", "She has to meet a classmate.", "She has to meet a family member."], answer: 0, explanation: "妈妈让她帮助住在隔壁、丢了钥匙的女士进门；这是邻居，不是家人或同学。" },
+      { q: "What do they still need to do?", opts: ["buy some food", "find some sports equipment", "get some drinks"], answer: 1, explanation: "食物和气泡水都已准备好；他们还需要找排球网和球。" },
+    ],
+  },
+  7: {
+    title: "Part 4 短篇听力题",
+    instruction: "听五段独立短对话，选择每段对话的重点信息。",
+    type: "mcq",
+    items: [
+      { q: "What’s she doing?", opts: ["giving them some homework", "telling them about a school trip", "asking them to do a classroom activity"], answer: 2, explanation: "老师让学生立刻两人一组制作博物馆海报，并说不需要带回家完成。" },
+      { q: "What does the boy say about the book he’s just read?", opts: ["It’s funny.", "It’s long.", "It’s useful."], answer: 2, explanation: "书页不多，也不是小丑故事；它能让人了解许多音乐知识。" },
+      { q: "What was the worst problem with the boy’s holiday?", opts: ["the bad weather", "the length of the holiday", "the noise on the campsite"], answer: 1, explanation: "下雨和营地噪音都提到，但他最讨厌的是脚受伤后不得不很早结束假期。" },
+      { q: "How did he prepare for the match?", opts: ["He ate a lot.", "He slept a lot.", "He practised a lot."], answer: 1, explanation: "他没有特别注意饮食，也没增加练习；为有精力比赛，他上周每晚都早睡。" },
+      { q: "Why did Louisa miss the game?", opts: ["She arrived too late.", "She wasn’t feeling well.", "She didn’t know about the game."], answer: 2, explanation: "她没有生病；手机没电，看到朋友的短信时已经太晚，因此此前并不知道比赛。" },
+    ],
+  },
+  8: {
+    title: "Part 4 短篇听力题",
+    instruction: "听五段独立短对话，选择每段对话的重点信息。",
+    type: "mcq",
+    items: [
+      { q: "Why can’t Gemma play hockey today?", opts: ["She has hurt herself.", "She has a dentist’s appointment.", "She has forgotten her sports kit."], answer: 0, explanation: "她看完牙医后下车时，曲棍球杆从包里掉出来砸到脚，疼得无法跑步。" },
+      { q: "What did he do at school last week?", opts: ["He won a race.", "He wrote a story.", "He acted in a play."], answer: 1, explanation: "他赢得了英文写作比赛，作品是一篇 500 词的故事；跑步比赛只是故事内容。" },
+      { q: "Why do they like going there?", opts: ["They meet friends there.", "The prices are low.", "It has nice things to eat."], answer: 2, explanation: "这家咖啡馆适合做作业且有桌位，但价格有点贵；他们特别喜欢那里的饼干和蛋糕。" },
+      { q: "What was the weather like on her holiday?", opts: ["It snowed every day.", "It was cloudy most of the time.", "It was cold and sunny."], answer: 2, explanation: "整个星期都很晴朗、需要戴太阳镜；最后两晚才下很多雪，所以总体是寒冷且晴朗。" },
+      { q: "What are they deciding?", opts: ["when to meet", "which shops to visit", "how to get home afterwards"], answer: 0, explanation: "他们已经约在电影院外购物，也谈到想去的店；最后确定的是 quarter past 的见面时间。" },
+    ],
+  },
+};
+
+const OFFICIAL_PART5_SETS = {
+  12: {
+    options: ["beautiful", "big", "cold", "comfortable", "dark", "modern", "tidy", "unusual"],
+    items: [
+      { q: "Sophie's bedroom", answer: 6 },
+      { q: "Leo's bedroom", answer: 1 },
+      { q: "kitchen", answer: 2 },
+      { q: "living room", answer: 3 },
+      { q: "bathroom", answer: 7 },
+    ],
+  },
+  11: {
+    options: ["be the photographer", "do the make-up", "make clothes", "make posters", "prepare the room", "sell tickets", "serve drinks", "tidy up afterwards"],
+    items: [
+      { q: "Jake", answer: 7 },
+      { q: "Suzy", answer: 1 },
+      { q: "Dan", answer: 0 },
+      { q: "Lauren", answer: 3 },
+      { q: "George", answer: 4 },
+    ],
+  },
+  10: {
+    options: ["baseball", "basketball", "cycling", "football", "hockey", "swimming", "tennis", "volleyball"],
+    items: [
+      { q: "Sofia", answer: 1 },
+      { q: "Aidan", answer: 6 },
+      { q: "Tina", answer: 5 },
+      { q: "Nick", answer: 7 },
+      { q: "Katrina", answer: 2 },
+    ],
+  },
+  9: {
+    options: ["actor", "chef", "dentist", "doctor", "farmer", "musician", "teacher", "tour guide"],
+    items: [
+      { q: "Sally", answer: 7 },
+      { q: "Peter", answer: 4 },
+      { q: "Amy", answer: 6 },
+      { q: "Tom", answer: 1 },
+      { q: "Jane", answer: 2 },
+    ],
+  },
+  1: {
+    options: ["board game", "camera", "drum", "guitar", "pencils and paints", "picnic bag", "quiz", "sports equipment"],
+    items: [
+      { q: "Edward", answer: 5 },
+      { q: "Beth", answer: 2 },
+      { q: "Dan", answer: 7 },
+      { q: "Yolanda", answer: 4 },
+      { q: "Gordon", answer: 6 },
+    ],
+  },
+  2: {
+    options: ["apartment building", "café", "large store", "library", "museum", "post office", "sports centre", "station"],
+    items: [
+      { q: "Claire", answer: 5 },
+      { q: "Paul", answer: 6 },
+      { q: "James", answer: 2 },
+      { q: "Joe", answer: 3 },
+      { q: "Karen", answer: 0 },
+    ],
+  },
+  5: {
+    options: ["cooking", "doing school work", "going to see an old building", "playing a board game", "playing music", "shopping", "swimming", "visiting grandparents"],
+    items: [
+      { q: "Angela", answer: 4 },
+      { q: "Marvin", answer: 7 },
+      { q: "Diane", answer: 5 },
+      { q: "Gavin", answer: 2 },
+      { q: "Lucy", answer: 3 },
+    ],
+  },
+  6: {
+    options: ["camera", "computer", "drinks", "magazines", "paints", "paper", "scissors", "snacks"],
+    items: [
+      { q: "Paul", answer: 4 },
+      { q: "Anna", answer: 3 },
+      { q: "Tom", answer: 1 },
+      { q: "Jenny", answer: 2 },
+      { q: "Sara", answer: 6 },
+    ],
+  },
+  7: {
+    options: ["boring", "crowded", "exciting", "expensive", "funny", "noisy", "scary", "useful"],
+    items: [
+      { q: "restaurant", answer: 3 },
+      { q: "museum", answer: 7 },
+      { q: "swimming pool", answer: 5 },
+      { q: "forest", answer: 2 },
+      { q: "market", answer: 4 },
+    ],
+  },
+  8: {
+    options: ["baseball", "football", "hockey", "rugby", "running", "swimming", "tennis", "volleyball"],
+    items: [
+      { q: "Alex", answer: 1 },
+      { q: "John", answer: 2 },
+      { q: "Sally", answer: 5 },
+      { q: "Ben", answer: 4 },
+      { q: "Mary", answer: 6 },
+    ],
+  },
 };
 
 function OfficialPartFiveBoard({ level, setLevel, setId = 9 }) {
-  const data = OFFICIAL_TEST1_PARTS[5];
+  const data = OFFICIAL_PART5_SETS[setId] || OFFICIAL_TEST1_PARTS[5];
   const [answers, setAnswers] = useState(Array(5).fill(null));
   const [active, setActive] = useState(0);
   const used = new Set(answers.filter((value) => value !== null));
@@ -1391,7 +2011,11 @@ function OfficialPartFiveBoard({ level, setLevel, setId = 9 }) {
 }
 
 function OfficialListeningPartSample({ part, level, setLevel, setId = 9 }) {
-  const data = OFFICIAL_TEST1_PARTS[part];
+  const data =
+    (part === 2 && OFFICIAL_PART2_SETS[setId]) ||
+    (part === 3 && OFFICIAL_PART3_SETS[setId]) ||
+    (part === 4 && OFFICIAL_PART4_SETS[setId]) ||
+    OFFICIAL_TEST1_PARTS[part];
   const [answers, setAnswers] = useState(Array(data.items.length).fill(""));
   const [checked, setChecked] = useState(Array(data.items.length).fill(false));
   const normalise = (value) =>
@@ -1508,6 +2132,9 @@ function OfficialListeningPartSample({ part, level, setLevel, setId = 9 }) {
                                 ? data.options[item.answer]
                                 : item.opts[item.answer]}
                           </span>
+                        )}
+                        {item.explanation && (
+                          <p className="mt-2 leading-6">{item.explanation}</p>
                         )}
                       </div>
                     )}
@@ -2797,7 +3424,7 @@ export default function CambridgeListening() {
     ? requestedSet
     : 9;
   const selectedSet = OFFICIAL_LISTENING_SETS.find((set) => set.id === setId);
-  if (part >= 1 && part <= 5 && selectedSet?.status !== "ready")
+  if (part >= 1 && part <= 5 && !selectedSet?.readyParts?.includes(part))
     return (
       <ListeningSetChecking
         part={part}

@@ -1,4 +1,8 @@
-// KET 真题数据 — KET for Schools 3, Test 1
+import { KET_EXAM_TEST_2 } from './ketExamTest2.js'
+import { KET_EXAM_TEST_3 } from './ketExamTest3.js'
+import { KET_EXAM_TEST_4 } from './ketExamTest4.js'
+
+// KET 真题数据 — KET for Schools 3
 // 音频文件路径：/audio/ket/test1/KfS3_PT_audio_track_0X.mp3
 
 export const KET_EXAMS = [
@@ -557,4 +561,7 @@ export const KET_EXAMS = [
       ],
     },
   },
+  KET_EXAM_TEST_2,
+  KET_EXAM_TEST_3,
+  KET_EXAM_TEST_4,
 ]

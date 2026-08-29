@@ -49,19 +49,6 @@ export function ExamList() {
             </Link>
           ))}
 
-          {[2, 3].map(n => (
-            <div key={n} className="bg-white rounded-2xl border border-gray-100 shadow-sm px-6 py-5 opacity-50">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center flex-shrink-0">
-                  <span className="text-gray-400 text-xl">🔒</span>
-                </div>
-                <div className="flex-1">
-                  <div className="font-bold text-gray-500">KET for Schools 3 · Test {n}</div>
-                  <div className="text-xs text-gray-400 mt-0.5">即将上线</div>
-                </div>
-              </div>
-            </div>
-          ))}
         </div>
       </div>
     </div>
@@ -75,7 +62,8 @@ export default function CambridgeExam() {
   const { id } = useParams()
   const [searchParams] = useSearchParams()
   const exam = KET_EXAMS.find(e => e.id === id)
-  const initialTab = searchParams.get('tab') || 'listening'
+  const requestedTab = searchParams.get('tab')
+  const initialTab = requestedTab || (exam?.listening ? 'listening' : 'reading')
   const [section, setSection] = useState(initialTab)
 
   if (!exam) return (
@@ -97,10 +85,16 @@ export default function CambridgeExam() {
 /* ══════════════════════════════
    Shared Section Tabs
 ══════════════════════════════ */
-function SectionTabs({ section, onSection }) {
+function SectionTabs({ exam, section, onSection }) {
+  const tabs = [
+    exam?.listening && ['listening','🎧 听力'],
+    exam?.reading && ['reading','📖 阅读'],
+    exam?.reading?.writing?.length && ['writing','✍️ 写作'],
+    exam?.speaking && ['speaking','🎤 口语'],
+  ].filter(Boolean)
   return (
     <div className="flex gap-1 px-4 py-2">
-      {[['listening','🎧 听力'],['reading','📖 阅读'],['writing','✍️ 写作'],['speaking','🎤 口语']].map(([key,label]) => (
+      {tabs.map(([key,label]) => (
         <button key={key} onClick={() => onSection(key)}
           className={`flex-1 py-1.5 rounded-xl text-xs font-bold transition-all ${
             section === key
@@ -184,7 +178,7 @@ function ExamShell({ exam, section, onSection, parts, partIndex, allAnswers, isD
 
         {/* Section tabs */}
         <div className="max-w-2xl mx-auto">
-          <SectionTabs section={section} onSection={onSection} />
+          <SectionTabs exam={exam} section={section} onSection={onSection} />
         </div>
 
         {/* Part progress */}
@@ -1422,7 +1416,7 @@ function WritingExam({ exam, section, onSection }) {
           <span className="font-bold text-gray-900 text-sm">{exam.label}</span>
           <div className="w-16" />
         </div>
-        <SectionTabs section={section} onSection={onSection} />
+        <SectionTabs exam={exam} section={section} onSection={onSection} />
       </header>
 
       <div className="max-w-2xl mx-auto px-4 py-6 space-y-4">
@@ -1519,7 +1513,7 @@ function SpeakingExam({ exam, section, onSection }) {
           <span className="font-bold text-gray-900 text-sm">{exam.label}</span>
           <div className="w-16" />
         </div>
-        <SectionTabs section={section} onSection={s => { stop(); onSection(s) }} />
+        <SectionTabs exam={exam} section={section} onSection={s => { stop(); onSection(s) }} />
       </header>
 
       <div className="max-w-2xl mx-auto px-4 py-6 space-y-4">
