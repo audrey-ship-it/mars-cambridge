@@ -329,18 +329,18 @@ export default function MyLearningDashboard() {
             <button onClick={() => setPanel('plan')} className="flex items-center gap-2 text-xs text-gray-500 bg-white border border-gray-200 rounded-xl px-3 py-2"><span>📅</span>设置模拟考日期与学习计划</button>
           </section>
 
-          <section className="relative mb-6 overflow-hidden rounded-3xl bg-[#162b25] p-5 text-white shadow-lg shadow-emerald-950/10 sm:p-6">
-            <div className="absolute -bottom-16 -right-10 h-48 w-48 rounded-full bg-white/5" />
+          <section className="relative mb-6 overflow-hidden rounded-3xl border border-emerald-200 bg-emerald-50/80 p-5 text-gray-900 shadow-sm sm:p-6">
+            <div className="absolute -bottom-16 -right-10 h-48 w-48 rounded-full bg-emerald-200/35" />
             <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <div className="flex items-center gap-2">
                   <span className="text-xl">🗓️</span>
                   <h2 className="text-xl font-extrabold">学习计划</h2>
                 </div>
-                <p className="mt-2 text-sm text-white/55">根据模拟考试日期安排每周任务，进入学习中心后马上明确今天要完成什么。</p>
-                <div className="mt-4 text-sm font-bold text-white/75">{studyPlan.examDate ? `距离模拟考还有 ${planDaysLeft} 天 · 每周学习 ${studyPlan.daysPerWeek} 天 · 每天 ${studyPlan.minutesPerDay} 分钟` : '尚未设置专属学习计划'}</div>
+                <p className="mt-2 text-sm text-gray-500">根据模拟考试日期安排每周任务，进入学习中心后马上明确今天要完成什么。</p>
+                <div className="mt-4 text-sm font-bold text-emerald-800">{studyPlan.examDate ? `距离模拟考还有 ${planDaysLeft} 天 · 每周学习 ${studyPlan.daysPerWeek} 天 · 每天 ${studyPlan.minutesPerDay} 分钟` : '尚未设置专属学习计划'}</div>
               </div>
-              <button onClick={() => setPanel('plan')} className="shrink-0 rounded-xl bg-[#f4c95d] px-6 py-3 text-sm font-extrabold text-[#083f32] shadow-lg transition hover:bg-amber-300">设置学习计划 →</button>
+              <button onClick={() => setPanel('plan')} className="shrink-0 rounded-xl bg-[#f4c95d] px-6 py-3 text-sm font-extrabold text-[#083f32] shadow-md transition hover:bg-amber-300">设置学习计划 →</button>
             </div>
           </section>
 
