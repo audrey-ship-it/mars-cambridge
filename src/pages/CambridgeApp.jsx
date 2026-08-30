@@ -701,9 +701,18 @@ function WordsPractice({ level, vocabChoice, onBack }) {
   }
 
   const allWords = buildWordList()
+  const practiceIdentity = vocabChoice.mode === 'topic' ? `topic-${vocabChoice.topic.id}` : vocabChoice.mode
+  const batchProgressKey = `mars_vocab_batch_v1:${practiceIdentity}`
 
   const [dailyCount, setDailyCount] = useState(() => {
     try { return parseInt(localStorage.getItem('cambridge_daily') || '20') } catch { return 20 }
+  })
+  const [batchStart, setBatchStart] = useState(() => {
+    if (vocabChoice.mode === 'review') return 0
+    try {
+      const saved = Number(localStorage.getItem(batchProgressKey)) || 0
+      return saved >= 0 && saved < allWords.length ? saved : 0
+    } catch { return 0 }
   })
   const [index, setIndex]         = useState(0)
   const [answer, setAnswer]       = useState('')
@@ -720,7 +729,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
   const inputRef = useRef(null)
   const startRef = useRef(Date.now())
 
-  const words   = allWords.slice(0, dailyCount)
+  const words   = allWords.slice(batchStart, batchStart + dailyCount)
   const current = words[index]
   const progress = (index / words.length) * 100
   const levelInfo = LEVELS.find(l => l.abbr === level) || LEVELS[0]
@@ -839,12 +848,23 @@ function WordsPractice({ level, vocabChoice, onBack }) {
     startRef.current = Date.now()
   }
 
+  function continueCategory() {
+    const nextStart = batchStart + words.length
+    const targetStart = nextStart < allWords.length ? nextStart : 0
+    setBatchStart(targetStart)
+    try { localStorage.setItem(batchProgressKey, String(targetStart)) } catch { /* storage may be unavailable */ }
+    setIndex(0); setAnswer(''); setChecked(false); setCorrect(false)
+    setResults([]); setShowResult(false); setActivePanel('tips'); setOpenHints(new Set())
+    startRef.current = Date.now()
+  }
+
   function reviewWrongWords() {
     const wrongKeys = new Set(results.filter(r => !r.correct).map(r => r.word.toLowerCase()))
     const reviewItems = allWords.filter(w => wrongKeys.has(w.word.toLowerCase()))
     if (!reviewItems.length) return
     vocabChoice.mode = 'review'
     vocabChoice.words = reviewItems
+    setBatchStart(0)
     setIndex(0); setAnswer(''); setChecked(false); setCorrect(false)
     setResults([]); setShowResult(false); setActivePanel('tips'); setOpenHints(new Set())
     startRef.current = Date.now()
@@ -860,6 +880,8 @@ function WordsPractice({ level, vocabChoice, onBack }) {
     const score = results.filter(r => r.correct).length
     const pct   = Math.round((score / results.length) * 100)
     const wrong = results.filter(r => !r.correct)
+    const remainingWords = Math.max(0, allWords.length - batchStart - words.length)
+    const hasMoreInCategory = vocabChoice.mode !== 'review' && remainingWords > 0
     return (
       <div className="max-w-xl mx-auto px-6 py-10">
         {/* Score header */}
@@ -878,6 +900,9 @@ function WordsPractice({ level, vocabChoice, onBack }) {
             vocabChoice.mode === 'reading288' ? '阅读高频词' :
             vocabChoice.mode === 'irregular' ? '不规则动词' : 'A2 综合词表'
           } · {words.length} 词</div>
+          {vocabChoice.mode !== 'review' && <div className={`mt-4 rounded-xl px-4 py-3 text-sm font-bold ${hasMoreInCategory ? 'bg-amber-50 text-amber-800' : 'bg-emerald-50 text-emerald-800'}`}>
+            {hasMoreInCategory ? `本轮已完成 ${words.length} 词，本分类还有 ${remainingWords} 词未练习。` : `本分类 ${allWords.length} 个词已全部完成一轮。`}
+          </div>}
         </div>
 
         {/* Wrong words */}
@@ -900,17 +925,25 @@ function WordsPractice({ level, vocabChoice, onBack }) {
           </div>
         )}
 
+        {hasMoreInCategory && <button onClick={continueCategory}
+          className="w-full py-4 bg-[#064e3b] text-white font-bold rounded-2xl hover:bg-[#065f46] transition-colors text-base mb-2">
+          继续本分类下一组（{Math.min(dailyCount, remainingWords)} 词）→
+        </button>}
+        {!hasMoreInCategory && vocabChoice.mode !== 'review' && <button onClick={continueCategory}
+          className="w-full py-4 bg-[#064e3b] text-white font-bold rounded-2xl hover:bg-[#065f46] transition-colors text-base mb-2">
+          重新学习本分类 →
+        </button>}
         {wrong.length > 0 ? (
           <button onClick={reviewWrongWords}
-            className="w-full py-4 bg-[#064e3b] text-white font-bold rounded-2xl hover:bg-[#065f46] transition-colors text-base mb-2">
+            className="w-full py-4 border border-amber-300 bg-amber-50 text-amber-900 font-bold rounded-2xl hover:bg-amber-100 transition-colors text-base mb-2">
             复习本轮错词（{wrong.length}）→
           </button>
-        ) : (
+        ) : vocabChoice.mode === 'review' ? (
           <button onClick={restart}
             className="w-full py-4 bg-[#064e3b] text-white font-bold rounded-2xl hover:bg-[#065f46] transition-colors text-base mb-2">
             再练一次 →
           </button>
-        )}
+        ) : null}
         <VocabCenterButton onClick={onBack} className="w-full" />
         <p className="text-center text-xs text-gray-400 mt-3">或切换左侧其他模块继续练习</p>
       </div>
@@ -969,7 +1002,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
               {/* 题号 + set badge + back */}
               <div className="flex items-center justify-between mb-5">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-bold text-gray-400">{index + 1} / {words.length}</span>
+                  <span className="text-sm font-bold text-gray-400">本分类 {batchStart + index + 1} / {allWords.length} · 本轮 {index + 1} / {words.length}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <button onClick={() => speak(current.word)}
