@@ -733,3 +733,46 @@ export const GRAMMAR_QUESTIONS = {
   ...GRAMMAR_ADVANCED_QUESTIONS,
   ...GRAMMAR_PAST_FORM_QUESTIONS,
 }
+
+// Every fill-in question needs a visible scope. Prefer the choices already
+// written for the matching multiple-choice item; otherwise use the accepted
+// answer and the paired common error as a short contrast set.
+const displayHint = value => {
+  const text = String(value ?? '').trim()
+  return text || '— (no article)'
+}
+
+const addHintBeforePunctuation = (sentence, options) => {
+  const hint = options.map(displayHint).join(' / ')
+  const text = String(sentence)
+  return /[.?!]$/.test(text)
+    ? text.replace(/([.?!])$/, ` (${hint})$1`)
+    : `${text} (${hint})`
+}
+
+Object.values(GRAMMAR_QUESTIONS).forEach(unit => {
+  unit.blanks = (unit.blanks || []).map((blank, index) => {
+    if (/[（(][^）)]*[）)]/.test(blank.sentence || '')) return blank
+
+    const matchingQuestion = (unit.questions || []).find(question =>
+      question.q === blank.sentence && Array.isArray(question.opts)
+    )
+    const correction = (unit.corrections || [])[index]
+    const candidates = [
+      ...(matchingQuestion?.opts || []),
+      ...(Array.isArray(blank.ans) ? blank.ans : [blank.ans]),
+      correction?.error,
+      correction?.correct,
+    ]
+      .filter(value => value !== undefined && value !== null)
+      .filter((value, candidateIndex, list) =>
+        list.findIndex(item => displayHint(item).toLowerCase() === displayHint(value).toLowerCase()) === candidateIndex
+      )
+      .slice(0, 4)
+
+    return {
+      ...blank,
+      sentence: addHintBeforePunctuation(blank.sentence, candidates),
+    }
+  })
+})
