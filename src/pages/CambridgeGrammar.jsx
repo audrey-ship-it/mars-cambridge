@@ -110,7 +110,7 @@ export const GRAMMAR_POINTS = [
     id: 11, title: '复合句', color: 'bg-lime-600', light: 'bg-lime-50 text-lime-700 border-lime-200',
     units: [
       { n: 50, title: '并列连词',                available: true },
-      { n: 57, title: '名词性从句',              available: true },
+      { n: 57, title: '主语从句和表语从句',        available: true },
       { n: 51, title: '宾语从句',                available: true },
       { n: 52, title: '定语从句',                available: true },
       { n: 53, title: 'if 引导的真实条件状语从句', available: true },
@@ -135,7 +135,7 @@ export const GRAMMAR_GROUPS = [
   { id: 'tenses', number: '01', title: '高频时态', desc: '六大 KET 高频时态及过去式变化，辨清用途、结构和时间标志词', unitNums: [29, 30, 37, 35, 31, 36, 32, 33, 34], icon: 'T', featured: true },
   { id: 'word-grammar', number: '02', title: '核心词法', desc: '名词、冠词、代词、介词、连词和数词', unitNums: [...Array.from({ length: 28 }, (_, i) => i + 1), 50, 54, 55], icon: 'Aa' },
   { id: 'sentence-patterns', number: '03', title: '常用句型', desc: 'There be、疑问句、祈使句和常用表达结构', unitNums: [43, 44, 45, 46, 47, 48, 56], icon: 'S' },
-  { id: 'clauses', number: '04', title: '从句', desc: '名词性从句、宾语从句、定语从句和条件状语从句', unitNums: [57, 51, 52, 53], icon: 'if' },
+  { id: 'clauses', number: '04', title: '从句', desc: '主语从句、表语从句、宾语从句、定语从句和条件状语从句', unitNums: [57, 51, 52, 53], icon: 'if' },
   { id: 'passive-review', number: '05', title: '被动语态与综合语法', desc: '被动语态、情态动词、非谓语和综合巩固', unitNums: [38, 39, 40, 41, 42, 49], icon: '↻' },
 ]
 
