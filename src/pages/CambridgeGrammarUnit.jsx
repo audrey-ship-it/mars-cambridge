@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { GRAMMAR_QUESTIONS } from '../data/grammarQuestions'
 import { CambridgeLayout } from './CambridgeApp'
 import { GRAMMAR_GROUPS } from './CambridgeGrammar'
 import { grammarMistakeId, markGrammarMistakeCorrect, recordGrammarMistake } from '../utils/grammarMistakes'
+import { markGrammarModeCompleted, markGrammarModeStarted } from '../utils/grammarProgress'
 
 const LABELS = ['A', 'B', 'C', 'D']
 
@@ -38,6 +39,10 @@ export default function CambridgeGrammarUnit() {
   const requestedMode = searchParams.get('mode')
   const [mode, setMode] = useState(MODES.some(item => item.id === requestedMode) ? requestedMode : 'questions')
   const group = GRAMMAR_GROUPS.find(item => item.unitNums.includes(unitNum))
+
+  useEffect(() => {
+    if (data) markGrammarModeStarted(unitNum, mode)
+  }, [data, mode, unitNum])
 
   if (!data) {
     return (
@@ -214,6 +219,10 @@ function MCQSection({ data, unitNum }) {
 
   const completed = feedback.filter(value => value === 'correct').length
 
+  useEffect(() => {
+    if (completed === questions.length) markGrammarModeCompleted(unitNum, 'questions')
+  }, [completed, questions.length, unitNum])
+
   return (
     <div className="max-w-4xl mx-auto px-6 pb-12">
       <div className="mb-4 flex items-end justify-between gap-4">
@@ -276,6 +285,7 @@ function BlanksSection({ data, unitNum }) {
       else recordGrammarMistake({ id, unitNum, unitTitle: data.title, type: 'blanks', index, prompt: item.sentence, promptZh: questionChinese(item, 'blanks'), correctAnswer: item.ans[0], explanation: chineseExplanation(item, item.ans[0]) })
     })
     setSubmitted(true)
+    markGrammarModeCompleted(unitNum, 'blanks')
   }
 
   function restart() {
@@ -503,7 +513,7 @@ function CorrectionsSection({ data, unitNum }) {
           )
         })}
       </div>
-      {!submitted && <button onClick={() => setSubmitted(true)} disabled={completed !== corrections.length} className="mt-5 w-full rounded-2xl bg-[#064e3b] py-4 text-base font-bold text-white hover:bg-[#065f46] disabled:opacity-30">完成练习</button>}
+      {!submitted && <button onClick={() => { setSubmitted(true); markGrammarModeCompleted(unitNum, 'corrections') }} disabled={completed !== corrections.length} className="mt-5 w-full rounded-2xl bg-[#064e3b] py-4 text-base font-bold text-white hover:bg-[#065f46] disabled:opacity-30">完成练习</button>}
     </div>
   )
 }

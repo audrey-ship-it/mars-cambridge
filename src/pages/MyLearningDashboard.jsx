@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
+import { grammarUnitStatus } from '../utils/grammarProgress'
 
 const EXAM_IDS = ['ket-3-test1', 'ket-3-test2', 'ket-3-test3', 'ket-3-test4']
 
@@ -19,7 +20,7 @@ function readLearningSnapshot() {
   const mastery = safeJson('mars_vocab_mastery_v1', {})
   const masteredWords = Object.values(mastery).filter(record => record && !record.needsReview).length
   const grammarProgress = safeJson('mars_grammar_progress_v1', {})
-  const grammarDone = Object.values(grammarProgress).filter(Boolean).length
+  const grammarDone = Object.keys(grammarProgress).filter(unitNum => grammarUnitStatus(grammarProgress, unitNum).complete).length
   const grammarMistakes = safeJson('mars_grammar_mistakes_v1', {})
   const vocabMistakes = safeJson('mars_vocab_review_queue_v1', [])
   const records = []

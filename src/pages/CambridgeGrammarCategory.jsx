@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { CambridgeLayout } from './CambridgeApp'
 import { GRAMMAR_GROUPS, GRAMMAR_POINTS, isGrammarUnitReady } from './CambridgeGrammar'
+import { grammarUnitStatus, readGrammarProgress } from '../utils/grammarProgress'
 
 export default function CambridgeGrammarCategory() {
   const { category } = useParams()
@@ -17,6 +18,7 @@ export default function CambridgeGrammarCategory() {
   const allUnits = GRAMMAR_POINTS.flatMap(point => point.units)
   const units = group.unitNums.map(unitNum => allUnits.find(unit => unit.n === unitNum)).filter(Boolean)
   const available = units.filter(isGrammarUnitReady).length
+  const progress = readGrammarProgress()
 
   return (
     <CambridgeLayout activeModule="grammar" level={level} setLevel={setLevel}>
@@ -55,15 +57,23 @@ export default function CambridgeGrammarCategory() {
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {units.map(unit => {
                   const ready = isGrammarUnitReady(unit)
+                  const status = grammarUnitStatus(progress, unit.n)
+                  const cardStyle = status.complete
+                    ? 'border-emerald-300 bg-emerald-50 hover:-translate-y-0.5 hover:border-emerald-500 hover:shadow-sm'
+                    : status.started
+                      ? 'border-amber-300 bg-amber-50/70 hover:-translate-y-0.5 hover:border-amber-400 hover:shadow-sm'
+                      : ready ? 'border-gray-200 bg-white hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-sm' : 'border-gray-100 bg-gray-50 cursor-default'
                   return (
                   <button key={unit.n} onClick={() => ready && navigate(`/cambridge/grammar/${unit.n}`)} disabled={!ready}
-                    className={`min-h-[112px] rounded-2xl border p-4 text-left transition-all ${ready ? 'border-emerald-200 bg-emerald-50/40 hover:-translate-y-0.5 hover:border-emerald-400 hover:shadow-sm' : 'border-gray-100 bg-gray-50 cursor-default'}`}>
+                    className={`min-h-[112px] rounded-2xl border p-4 text-left transition-all ${cardStyle}`}>
                     <div className="flex items-start justify-between gap-3">
                       <span className="text-xs font-extrabold text-gray-400">U{unit.n}</span>
-                      <span className={`rounded-full px-2 py-1 text-[10px] font-extrabold ${ready ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-400'}`}>{ready ? '可学习' : '待完善'}</span>
+                      {status.complete ? <span className="rounded-full bg-emerald-600 px-2.5 py-1 text-[10px] font-extrabold text-white">✓ 已完成</span>
+                        : status.started ? <span className="rounded-full bg-amber-200 px-2.5 py-1 text-[10px] font-extrabold text-amber-900">进行中 · {status.completedCount}/3</span>
+                          : !ready ? <span className="rounded-full bg-gray-100 px-2 py-1 text-[10px] font-extrabold text-gray-400">待完善</span> : null}
                     </div>
                     <h3 className={`mt-3 text-base font-extrabold leading-snug ${ready ? 'text-gray-950' : 'text-gray-400'}`}>{unit.title}</h3>
-                    {ready && <div className="mt-3 text-sm font-extrabold text-emerald-700">开始学习 →</div>}
+                    {ready && <div className={`mt-3 text-sm font-extrabold ${status.started && !status.complete ? 'text-amber-800' : 'text-emerald-700'}`}>{status.complete ? '复习 →' : status.started ? '继续学习 →' : '开始学习 →'}</div>}
                   </button>
                   )
                 })}

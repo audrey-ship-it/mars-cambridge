@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { readGrammarMistakes } from '../utils/grammarMistakes'
+import { grammarUnitStatus, readGrammarProgress } from '../utils/grammarProgress'
 import { CambridgeLayout } from './CambridgeApp'
 import { GRAMMAR_QUESTIONS } from '../data/grammarQuestions'
 
@@ -166,10 +167,8 @@ export default function CambridgeGrammar() {
   const [level, setLevel] = useState(() => { try { return localStorage.getItem('cambridge_level') || 'KET' } catch { return 'KET' } })
 
   const totalUnits    = GRAMMAR_POINTS.reduce((s, p) => s + p.units.length, 0)
-  const storedProgress = (() => {
-    try { return JSON.parse(localStorage.getItem('mars_grammar_progress_v1') || '{}') } catch { return {} }
-  })()
-  const completedUnits = Object.values(storedProgress).filter(Boolean).length
+  const storedProgress = readGrammarProgress()
+  const completedUnits = GRAMMAR_POINTS.flatMap(point => point.units).filter(unit => grammarUnitStatus(storedProgress, unit.n).complete).length
   const lastAccuracy = (() => {
     try { return JSON.parse(localStorage.getItem('mars_grammar_last_result') || 'null')?.accuracy ?? null } catch { return null }
   })()
