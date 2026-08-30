@@ -329,9 +329,60 @@ function CorrectionsSection({ data, unitNum }) {
     return String(value).trim().toLowerCase().replace(/[’‘]/g, "'").replace(/\s+/g, ' ')
   }
 
+  function comparableWord(value) {
+    return String(value).replace(/[’‘]/g, "'").replace(/^["“‘]|[.,!?;:"”’]$/g, '')
+  }
+
+  function changedSegment(item) {
+    const errorWords = String(item.error).trim().split(/\s+/).filter(Boolean)
+    const correctWords = String(item.correct).trim().split(/\s+/).filter(Boolean)
+    let prefix = 0
+    while (prefix < errorWords.length && prefix < correctWords.length && comparableWord(errorWords[prefix]) === comparableWord(correctWords[prefix])) prefix += 1
+    let suffix = 0
+    while (
+      suffix < errorWords.length - prefix &&
+      suffix < correctWords.length - prefix &&
+      comparableWord(errorWords[errorWords.length - 1 - suffix]) === comparableWord(correctWords[correctWords.length - 1 - suffix])
+    ) suffix += 1
+    const errorEnd = errorWords.length - suffix
+    const correctEnd = correctWords.length - suffix
+    return {
+      errorStart: prefix,
+      errorEnd: errorEnd > prefix ? errorEnd : Math.min(prefix + 1, errorWords.length),
+      errorText: errorWords.slice(prefix, errorEnd).join(' ') || errorWords[0] || item.error,
+      correctText: correctWords.slice(prefix, correctEnd).join(' ') || '删除',
+    }
+  }
+
+  function expectedCorrection(item) {
+    return unitNum === 6 ? String(item.correct) : changedSegment(item).correctText
+  }
+
+  function correctionLabel(item) {
+    if (unitNum === 6) return `${item.error} → ${item.correct}`
+    const changed = changedSegment(item)
+    return `${changed.errorText} → ${changed.correctText}`
+  }
+
   function partsFor(item) {
     const errorStart = item.sentence.indexOf(item.error)
     if (errorStart < 0) return [...item.sentence.matchAll(/\S+/g)].map((match, index) => ({ text: match[0], index, isError: false }))
+    if (unitNum !== 6) {
+      const errorEnd = errorStart + item.error.length
+      const changed = changedSegment(item)
+      let errorWordIndex = 0
+      return [...item.sentence.matchAll(/\S+/g)].map((match, index) => {
+        const tokenStart = match.index
+        const tokenEnd = tokenStart + match[0].length
+        const insideErrorPhrase = tokenStart < errorEnd && tokenEnd > errorStart
+        const currentErrorWordIndex = insideErrorPhrase ? errorWordIndex++ : -1
+        return {
+          text: match[0],
+          index,
+          isError: insideErrorPhrase && currentErrorWordIndex >= changed.errorStart && currentErrorWordIndex < changed.errorEnd,
+        }
+      })
+    }
     const before = item.sentence.slice(0, errorStart).trim().split(/\s+/).filter(Boolean)
     const after = item.sentence.slice(errorStart + item.error.length).trim().split(/\s+/).filter(Boolean)
     return [
@@ -343,7 +394,7 @@ function CorrectionsSection({ data, unitNum }) {
 
   function resultFor(item, index) {
     const foundError = selectionFeedback[index] === 'correct'
-    const correctedPart = normalize(answers[index]) === normalize(item.correct)
+    const correctedPart = [expectedCorrection(item), item.correct].some(value => normalize(answers[index]) === normalize(value))
     return { foundError, correctedPart, correct: foundError && correctedPart }
   }
 
@@ -359,7 +410,7 @@ function CorrectionsSection({ data, unitNum }) {
 
   function checkCorrection(item, itemIndex) {
     if (!answers[itemIndex].trim()) return
-    const correct = normalize(answers[itemIndex]) === normalize(item.correct)
+    const correct = [expectedCorrection(item), item.correct].some(value => normalize(answers[itemIndex]) === normalize(value))
     const id = grammarMistakeId(unitNum, 'corrections', itemIndex)
     if (correct) markGrammarMistakeCorrect(id)
     else saveCorrectionMistake(item, itemIndex)
@@ -368,15 +419,17 @@ function CorrectionsSection({ data, unitNum }) {
 
   function saveCorrectionMistake(item, index) {
     const id = grammarMistakeId(unitNum, 'corrections', index)
-    recordGrammarMistake({ id, unitNum, unitTitle: data.title, type: 'corrections', index, prompt: item.sentence, promptZh: questionChinese(item, 'corrections'), correctAnswer: `${item.error} → ${item.correct}`, explanation: chineseExplanation(item, `${item.error} → ${item.correct}`) })
+    recordGrammarMistake({ id, unitNum, unitTitle: data.title, type: 'corrections', index, prompt: item.sentence, promptZh: questionChinese(item, 'corrections'), correctAnswer: correctionLabel(item), explanation: chineseExplanation(item, correctionLabel(item)) })
   }
 
   function correctionHint(item) {
-    const lower = item.correct.toLowerCase()
+    const expected = expectedCorrection(item)
+    const lower = expected.toLowerCase()
     if (/^(do|does|don’t|doesn’t|don't|doesn't)$/.test(lower)) return '想一想：这个主语是第三人称单数，还是I、you或复数主语？'
     if (/^(do|does)\s/.test(lower)) return '想一想：一般现在时疑问句需要哪个助动词？助动词后使用动词原形。'
     if (lower.split(' ').length > 1) return `提示：正确部分包含 ${lower.split(' ').length} 个单词，请检查助动词和动词形式。`
-    return `提示：正确答案以“${item.correct.charAt(0)}”开头，请检查主语和动词的搭配。`
+    if (expected === '删除') return '提示：这个词是多余的，请输入“删除”。'
+    return `提示：正确答案以“${expected.charAt(0)}”开头，请检查主语和动词的搭配。`
   }
 
   function restart() {
@@ -421,14 +474,14 @@ function CorrectionsSection({ data, unitNum }) {
                   {selectionFeedback[index] === 'correct' && <p className="mt-3 text-sm font-bold text-emerald-700">✓ 找对了！请在下方输入改正后的部分。</p>}
                   {selectionFeedback[index] === 'correct' && (
                     <div className="mt-3 flex gap-2">
-                      <input disabled={submitted || answerFeedback[index] === 'correct'} value={answers[index]} onChange={event => { setAnswers(current => current.map((value, itemIndex) => itemIndex === index ? event.target.value : value)); setAnswerFeedback(current => current.map((value, itemIndex) => itemIndex === index ? null : value)) }} onKeyDown={event => { if (event.key === 'Enter') checkCorrection(item, index) }} placeholder="输入改正后的部分" className="min-w-0 flex-1 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm font-medium text-gray-800 outline-none focus:border-emerald-500 focus:bg-white disabled:opacity-70" />
+                      <input disabled={submitted || answerFeedback[index] === 'correct'} value={answers[index]} onChange={event => { setAnswers(current => current.map((value, itemIndex) => itemIndex === index ? event.target.value : value)); setAnswerFeedback(current => current.map((value, itemIndex) => itemIndex === index ? null : value)) }} onKeyDown={event => { if (event.key === 'Enter') checkCorrection(item, index) }} placeholder={expectedCorrection(item) === '删除' ? '输入“删除”' : '输入改正后的单词'} className="min-w-0 flex-1 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm font-medium text-gray-800 outline-none focus:border-emerald-500 focus:bg-white disabled:opacity-70" />
                       {answerFeedback[index] !== 'correct' && <button onClick={() => checkCorrection(item, index)} disabled={!answers[index].trim()} className="shrink-0 rounded-xl bg-[#064e3b] px-5 py-3 text-sm font-extrabold text-white disabled:opacity-30">检查答案</button>}
                     </div>
                   )}
                   {answerFeedback[index] === 'correct' && (
                     <div className="mt-3 rounded-xl border border-emerald-100 bg-emerald-50 px-4 py-3 text-sm leading-relaxed text-emerald-800">
                       <p className="font-extrabold">✓ 太棒了，修改正确！</p>
-                      <p className="mt-1">{chineseExplanation(item, `${item.error} → ${item.correct}`)}</p>
+                      <p className="mt-1">{chineseExplanation(item, correctionLabel(item))}</p>
                     </div>
                   )}
                   {answerFeedback[index] === 'wrong' && (
@@ -439,9 +492,9 @@ function CorrectionsSection({ data, unitNum }) {
                   )}
                   {submitted && (
                     <div className="mt-3 space-y-1 text-sm">
-                      <p className={result.foundError ? 'text-emerald-700' : 'text-red-600'}>{result.foundError ? '✓ 已找对错误位置' : `✗ 错误位置应为：${item.error}`}</p>
-                      <p className={result.correctedPart ? 'text-emerald-700' : 'text-red-600'}>{result.correctedPart ? '✓ 改正后的部分填写正确' : `✗ 正确答案：${item.correct}`}</p>
-                      <p className="pt-1 leading-relaxed text-gray-500">{chineseExplanation(item, `${item.error} → ${item.correct}`)}</p>
+                      <p className={result.foundError ? 'text-emerald-700' : 'text-red-600'}>{result.foundError ? '✓ 已找对错误位置' : `✗ 错误位置应为：${unitNum === 6 ? item.error : changedSegment(item).errorText}`}</p>
+                      <p className={result.correctedPart ? 'text-emerald-700' : 'text-red-600'}>{result.correctedPart ? '✓ 改正后的部分填写正确' : `✗ 正确答案：${expectedCorrection(item)}`}</p>
+                      <p className="pt-1 leading-relaxed text-gray-500">{chineseExplanation(item, correctionLabel(item))}</p>
                     </div>
                   )}
                 </div>
