@@ -67,8 +67,9 @@ export default function CambridgeGrammarUnit() {
         </Link>
         <span className="text-gray-300" aria-hidden="true">›</span>
         {group ? (
-          <Link to={`/cambridge/grammar/category/${group.id}`} className="font-extrabold text-gray-700 hover:text-emerald-800 transition-colors">
-            {group.title}
+          <Link to={`/cambridge/grammar/category/${group.id}`} aria-label={`返回${group.title}`}
+            className="inline-flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2.5 font-extrabold text-emerald-800 shadow-sm transition-all hover:-translate-y-0.5 hover:border-emerald-400 hover:bg-emerald-100 hover:shadow-md">
+            <span aria-hidden="true">↩</span><span>{group.title}</span><span className="hidden text-[10px] font-bold text-emerald-600 sm:inline">返回上一级</span>
           </Link>
         ) : (
           <span className="font-extrabold text-gray-700">语法单元</span>
