@@ -293,7 +293,7 @@ function BlanksSection({ data, unitNum }) {
   return (
     <div className="max-w-4xl mx-auto px-6 pb-12">
       <div className="mb-4 flex items-end justify-between gap-4">
-        <div><h2 className="text-xl font-extrabold text-gray-950">{data.title}填空</h2><p className="mt-1 text-sm text-gray-500">完成全部 {blanks.length} 题后统一提交。（用括号里的单词适当形式填空）</p></div>
+        <div><h2 className="text-xl font-extrabold text-gray-950">{data.title}填空</h2><p className="mt-1 text-sm text-gray-500">完成全部 {blanks.length} 题后统一提交。（根据句意及括号提示填写正确答案）</p></div>
         <span className="text-sm font-bold text-emerald-700">{inputs.filter(value => value.trim()).length}/{blanks.length} 已填写</span>
       </div>
       <div className="overflow-hidden rounded-[22px] border border-gray-200 bg-white shadow-sm">

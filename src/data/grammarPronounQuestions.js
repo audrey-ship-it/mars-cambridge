@@ -1,4 +1,4 @@
-const makeUnit = ({ title, intro, guide, conceptQuestions, examples }) => ({
+const makeUnit = ({ title, intro, guide, conceptQuestions, examples, showBlankOptions = false }) => ({
   title,
   intro,
   guide,
@@ -13,7 +13,9 @@ const makeUnit = ({ title, intro, guide, conceptQuestions, examples }) => ({
     })),
   ],
   blanks: examples.map(item => ({
-    sentence: item.blank,
+    sentence: showBlankOptions
+      ? item.blank.replace(/([.?!])$/, ` (${item.opts.join(' / ')})$1`)
+      : item.blank,
     sentenceZh: item.qZh,
     ans: Array.isArray(item.answer) ? item.answer : [item.answer],
     expZh: item.expZh,
@@ -152,7 +154,7 @@ export const GRAMMAR_PRONOUN_QUESTIONS = {
       {q:'Which words are used with uncountable nouns?',qZh:'哪些词可修饰不可数名词？（多选）',opts:['much','little','many','few'],ans:[0,1],expZh:'much和little修饰不可数名词；many和few修饰复数可数名词。'},
       {q:'What does “neither” mean?',qZh:'neither表示什么？',opts:['两者都','两者中的任一个','两者都不','三个以上全部'],ans:2,expZh:'neither表示两者都不。'},
       {q:'Which words refer to two people or things?',qZh:'哪些词专门用于两者？（多选）',opts:['both','either','neither','every'],ans:[0,1,2],expZh:'both、either、neither都用于两者。'},
-    ], examples: indefiniteExamples,
+    ], examples: indefiniteExamples, showBlankOptions: true,
   }),
   15: makeUnit({
     title:'复合不定代词', intro:'someone、anything、nobody、everywhere等由some/any/no/every与-one、-body、-thing、-where构成。',
@@ -161,6 +163,6 @@ export const GRAMMAR_PRONOUN_QUESTIONS = {
       {q:'Which words refer to people?',qZh:'哪些复合不定代词指人？（多选）',opts:['someone','anybody','nothing','everywhere'],ans:[0,1],expZh:'someone和anybody指人；nothing指事物，everywhere指地点。'},
       {q:'How is “everyone” treated in a sentence?',qZh:'everyone在句中通常按什么数处理？',opts:['单数','复数','只能作宾语','没有谓语'],ans:0,expZh:'everyone语义上包含多人，但语法上通常视为单数。'},
       {q:'Which sentence avoids a double negative?',qZh:'哪个句子避免了双重否定？',opts:["I don't know nobody.","I don't know anybody.",'Nobody does not know.','There is not nothing.'],ans:1,expZh:'已有not时使用anybody；no-系列不能再与not叠加。'},
-    ], examples: compoundExamples,
+    ], examples: compoundExamples, showBlankOptions: true,
   }),
 }
