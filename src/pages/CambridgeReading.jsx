@@ -187,7 +187,7 @@ export default function CambridgeReading() {
           } flex items-center justify-center font-bold text-sm ${right ? 'text-emerald-600' : wrong ? 'text-red-500' : 'text-sky-600'}`}>
             {(right || (selected && !effChk)) ? label : ''}
           </span>
-          <span className="text-[27px] leading-snug text-[#30284d]">{opt}</span>
+          <span className="text-[21px] leading-snug text-[#30284d]">{opt}</span>
         </button>
       )
     }
@@ -499,8 +499,7 @@ export default function CambridgeReading() {
                                 : answers[q._key] ? 'bg-sky-500 text-white' : 'bg-sky-100 text-sky-700'
                             }`}>{qi + 1 + batchIdx * 6}</span>
                           </div>
-                          <div className="relative flex-1 border-2 border-red-500 p-5 bg-white flex flex-col justify-center shadow-[0_1px_0_rgba(15,23,42,.04)]">
-                            <span className="absolute -top-12 -left-2 bg-red-600 text-white px-3 py-1.5 text-xl font-medium">Click to enlarge</span>
+                          <div className="flex-1 border-2 border-slate-300 p-5 bg-white flex flex-col justify-center shadow-[0_1px_0_rgba(15,23,42,.04)]">
                             {(q.from || q.title) && (
                               <div className="flex flex-wrap gap-x-3 mb-2 text-xs text-gray-500 font-medium">
                                 {q.from && <span>{TYPE_ICON[q.type]||'📄'} From: <span className="text-gray-800 font-bold">{q.from}</span></span>}
@@ -508,14 +507,14 @@ export default function CambridgeReading() {
                                 {!q.from && q.title && <span className="font-bold text-gray-800">{TYPE_ICON[q.type]||'📄'} {q.title}</span>}
                               </div>
                             )}
-                            <p className={`text-[19px] text-slate-900 whitespace-pre-line leading-8 text-center ${q.type === 'notice' || q.type === 'ad' ? 'bg-[#dbc6ff] px-5 py-8' : ''}`}>{q.content}</p>
+                            <p className={`text-[16px] text-slate-900 whitespace-pre-line leading-7 text-center ${q.type === 'notice' || q.type === 'ad' ? 'bg-[#dbc6ff] px-5 py-7' : ''}`}>{q.content}</p>
                             {q.question && <p className="mt-3 text-sm font-semibold text-gray-800 border-t border-gray-200 pt-3">{q.question}</p>}
                           </div>
                         </div>
 
                         {/* Right: options + wrong actions */}
                         <div className="min-w-0 flex flex-col justify-center space-y-4">
-                          <h3 className="text-[29px] font-extrabold text-[#30284d]">{q.question || 'Choose the correct answer.'}</h3>
+                          <h3 className="text-[22px] font-extrabold text-[#30284d]">{q.question || 'Choose the correct answer.'}</h3>
                           {Object.entries(q.options).map(([label, opt]) => (
                             <MCOption key={label} q={q} opt={opt} label={label} exam />
                           ))}
