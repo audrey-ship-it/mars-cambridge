@@ -158,8 +158,8 @@ export default function CambridgeReading() {
     const right    = effChk && label === q.answer
     const wrong    = effChk && selected && label !== q.answer
 
-    let cls = 'border-gray-200 bg-white hover:border-violet-300 hover:bg-violet-50'
-    if (selected && !effChk) cls = 'border-violet-500 bg-violet-50'
+    let cls = 'border-slate-200 bg-white hover:border-sky-400 hover:bg-sky-50'
+    if (selected && !effChk) cls = 'border-sky-500 bg-sky-50'
     if (effChk) {
       if (right)        cls = 'border-emerald-500 bg-emerald-50'
       else if (wrong)   cls = 'border-red-400 bg-red-50'
@@ -181,11 +181,11 @@ export default function CambridgeReading() {
         onClick={handleClick}
         className={`flex items-center gap-3 w-full text-left px-4 py-2.5 rounded-xl border-2 transition-all ${cls}`}
       >
-        <span className={`font-bold text-sm w-5 flex-shrink-0 ${
-          right ? 'text-emerald-600' : wrong ? 'text-red-500' : selected ? 'text-violet-600' : 'text-gray-400'
+        <span className={`font-bold text-sm w-7 h-7 rounded-full border flex items-center justify-center flex-shrink-0 ${
+          right ? 'text-emerald-600 border-emerald-300 bg-emerald-50' : wrong ? 'text-red-500 border-red-300 bg-red-50' : selected ? 'text-sky-600 border-sky-300 bg-sky-50' : 'text-slate-400 border-slate-200'
         }`}>{label}</span>
         {wrong && <span className="text-red-500 text-sm flex-shrink-0">✕</span>}
-        <span className="text-sm text-gray-700 leading-snug">{opt}</span>
+        <span className="text-[15px] text-slate-700 leading-snug">{opt}</span>
       </button>
     )
   }
@@ -274,28 +274,28 @@ export default function CambridgeReading() {
   // ── Render ─────────────────────────────────────────────
   return (
     <CambridgeLayout activeModule="reading" level={level} setLevel={setLevel}>
-      <div className="max-w-5xl mx-auto px-4 py-5 flex gap-4">
+      <div className="max-w-[1440px] mx-auto px-5 py-8 flex gap-7">
 
         {/* Sidebar */}
-        <aside className="w-44 flex-shrink-0 space-y-3">
+        <aside className="w-52 flex-shrink-0 space-y-4">
 
           {/* Part selector */}
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
-            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3">题型</p>
+          <div className="bg-white rounded-[22px] border border-slate-200 shadow-sm p-4">
+            <p className="text-[11px] font-bold text-slate-400 tracking-widest mb-3">阅读题型</p>
             <div className="space-y-1">
               {[1,2,3,4,5].map(pid => (
                 <button key={pid} onClick={() => { setPartId(pid); setBatchIdx(0) }}
                   className={`w-full text-left px-3 py-2.5 rounded-xl text-xs transition-all flex items-center gap-2 ${
                     partId === pid
-                      ? 'bg-violet-50 text-violet-700 font-bold ring-1 ring-violet-200'
-                      : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'
+                      ? 'bg-sky-50 text-sky-600 font-bold ring-1 ring-sky-200'
+                      : 'text-slate-500 hover:bg-slate-50 hover:text-slate-700'
                   }`}
                 >
-                  <span>{PART_ICONS[pid]}</span>
+                    <span className="text-base">{PART_ICONS[pid]}</span>
                   <div>
                     <div className="font-bold">{PART_LABELS[pid]}</div>
                     <div className={`text-[10px] ${partId === pid ? 'text-violet-400' : 'text-gray-400'}`}>
-                      {pid === 5 ? '39套专项' : PART_DESC[pid]}
+                      {pid === 5 ? '语法填词' : PART_DESC[pid]}
                     </div>
                   </div>
                 </button>
@@ -304,12 +304,12 @@ export default function CambridgeReading() {
           </div>
 
           {/* Timer */}
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-3">
-            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">计时器</p>
+          <div className="bg-white rounded-[22px] border border-slate-200 shadow-sm p-4">
+            <p className="text-[11px] font-bold text-slate-400 tracking-widest mb-2">计时器</p>
             <button onClick={() => setTimerOn(t => !t)}
               className={`w-full flex items-center justify-center gap-1.5 py-2 rounded-xl font-mono font-bold text-sm transition-all ${
-                timerOn ? timer < 300 ? 'bg-red-100 text-red-600' : 'bg-violet-100 text-violet-600'
-                        : 'bg-gray-50 text-gray-500 hover:bg-violet-50 hover:text-violet-600'
+                timerOn ? timer < 300 ? 'bg-red-100 text-red-600' : 'bg-sky-100 text-sky-700'
+                        : 'bg-slate-50 text-slate-500 hover:bg-sky-50 hover:text-sky-700'
               }`}>
               ⏱ {fmtTime(timer)}
             </button>
@@ -320,7 +320,7 @@ export default function CambridgeReading() {
                   <span>{batchAnswered}/{batchQs.length}</span>
                 </div>
                 <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-violet-500 rounded-full transition-all"
+                  <div className="h-full bg-sky-500 rounded-full transition-all"
                     style={{ width: batchQs.length ? `${batchAnswered/batchQs.length*100}%` : '0%' }} />
                 </div>
               </div>
@@ -329,15 +329,15 @@ export default function CambridgeReading() {
 
           {/* Batch navigator (Parts 1-4) */}
           {!isPart5 && batches.length > 1 && (
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-3">
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">批次</p>
+            <div className="bg-white rounded-[22px] border border-slate-200 shadow-sm p-4">
+              <p className="text-[11px] font-bold text-slate-400 tracking-widest mb-2">练习批次</p>
               <div className="flex flex-wrap gap-1">
                 {batches.map((_, i) => (
                   <button key={i} onClick={() => setBatchIdx(i)}
                     className={`w-8 h-8 rounded-lg text-xs font-bold transition-all ${
                       batchIdx === i
-                        ? 'bg-violet-600 text-white shadow-sm'
-                        : 'bg-gray-50 text-gray-500 hover:bg-violet-50 hover:text-violet-600'
+                        ? 'bg-sky-500 text-white shadow-sm'
+                        : 'bg-slate-50 text-slate-500 hover:bg-sky-50 hover:text-sky-700'
                     }`}
                   >{i + 1}</button>
                 ))}
@@ -426,25 +426,25 @@ export default function CambridgeReading() {
             <motion.div key={isPart5 ? `p5-${part5Id}` : `${partId}-${batchIdx}`}
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.18 }}
-              className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden"
+              className="bg-white rounded-[24px] border border-slate-200 shadow-sm overflow-hidden"
             >
               {/* Card header */}
-              <div className="px-6 py-4 border-b border-gray-50 flex items-start justify-between">
+              <div className="px-8 py-6 border-b-2 border-slate-800 flex items-start justify-between">
                 <div>
                   <div className="flex items-center gap-2 mb-0.5">
                     <span className="text-lg">{PART_ICONS[partId]}</span>
-                    <h2 className="font-extrabold text-gray-900 text-lg">
+                    <h2 className="font-extrabold text-slate-900 text-[26px] tracking-tight">
                       {isPart5
                         ? <>{p5Set?.source} <span className="text-violet-600">· Part 5</span></>
-                        : <>{PART_LABELS[partId]} <span className="text-violet-600">· 第 {batchIdx + 1}/{batches.length} 批</span></>
+                        : <>{PART_LABELS[partId]} <span className="text-sky-500">· 练习 {batchIdx + 1}/{batches.length}</span></>
                       }
                     </h2>
-                    <span className="text-xs text-gray-400 font-medium bg-gray-50 px-2 py-0.5 rounded-full">
+                    <span className="text-xs text-slate-500 font-medium bg-sky-50 px-2.5 py-1 rounded-full">
                       {PART_DESC[partId]}
                     </span>
                   </div>
                   {!isPart5 && currentBatch?.instructions && (
-                    <p className="text-xs text-gray-400 leading-relaxed max-w-lg">{currentBatch.instructions}</p>
+                    <p className="text-sm text-slate-500 leading-relaxed max-w-lg mt-1">{currentBatch.instructions}</p>
                   )}
                   {isPart5 && p5Part?.instructions && (
                     <p className="text-xs text-gray-400 leading-relaxed max-w-lg">{p5Part.instructions}</p>
@@ -459,27 +459,27 @@ export default function CambridgeReading() {
               </div>
 
               {/* Part content */}
-              <div className="p-6">
+              <div className="p-8">
 
                 {/* ── PART 1 ── */}
                 {partId === 1 && currentBatch && (
-                  <div className="space-y-6">
+                  <div className="space-y-0">
                     {currentBatch.questions.map((q, qi) => (
                       <motion.div key={q._key}
                         initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: qi * 0.04 }}
-                        className="flex items-stretch gap-4"
+                        className="grid grid-cols-[42%_1fr] gap-8 py-7 border-b border-slate-200 last:border-b-0"
                       >
                         {/* Left: numbered stimulus box */}
-                        <div className="w-64 flex-shrink-0 flex flex-col">
+                        <div className="min-w-0 flex flex-col">
                           <div className="flex items-center gap-2 mb-2">
                             <span className={`w-7 h-7 flex-shrink-0 rounded-full flex items-center justify-center text-xs font-extrabold transition-colors ${
                               batchChecked && !retrying[q._key]
                                 ? isCorrect14(q) ? 'bg-emerald-500 text-white' : 'bg-red-400 text-white'
-                                : answers[q._key] ? 'bg-violet-600 text-white' : 'bg-violet-100 text-violet-600'
+                                : answers[q._key] ? 'bg-sky-500 text-white' : 'bg-sky-100 text-sky-700'
                             }`}>{qi + 1 + batchIdx * 6}</span>
                           </div>
-                          <div className="flex-1 border-2 border-gray-300 rounded-xl p-4 bg-white flex flex-col justify-center">
+                          <div className="flex-1 border-2 border-slate-300 rounded-xl p-5 bg-white flex flex-col justify-center shadow-[0_1px_0_rgba(15,23,42,.04)]">
                             {(q.from || q.title) && (
                               <div className="flex flex-wrap gap-x-3 mb-2 text-xs text-gray-500 font-medium">
                                 {q.from && <span>{TYPE_ICON[q.type]||'📄'} From: <span className="text-gray-800 font-bold">{q.from}</span></span>}
@@ -487,13 +487,13 @@ export default function CambridgeReading() {
                                 {!q.from && q.title && <span className="font-bold text-gray-800">{TYPE_ICON[q.type]||'📄'} {q.title}</span>}
                               </div>
                             )}
-                            <p className="text-sm text-gray-800 whitespace-pre-line leading-relaxed">{q.content}</p>
+                            <p className="text-[15px] text-slate-800 whitespace-pre-line leading-7">{q.content}</p>
                             {q.question && <p className="mt-3 text-sm font-semibold text-gray-800 border-t border-gray-200 pt-3">{q.question}</p>}
                           </div>
                         </div>
 
                         {/* Right: options + wrong actions */}
-                        <div className="flex-1 flex flex-col justify-center space-y-2">
+                        <div className="min-w-0 flex flex-col justify-center space-y-3">
                           {Object.entries(q.options).map(([label, opt]) => (
                             <MCOption key={label} q={q} opt={opt} label={label} />
                           ))}
