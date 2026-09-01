@@ -187,7 +187,7 @@ export default function CambridgeReading() {
           } flex items-center justify-center font-bold text-sm ${right ? 'text-emerald-600' : wrong ? 'text-red-500' : 'text-sky-600'}`}>
             {(right || (selected && !effChk)) ? label : ''}
           </span>
-          <span className="text-[21px] leading-snug text-[#30284d]">{opt}</span>
+          <span className="text-[18px] leading-snug text-[#30284d]">{opt}</span>
         </button>
       )
     }
@@ -507,14 +507,14 @@ export default function CambridgeReading() {
                                 {!q.from && q.title && <span className="font-bold text-gray-800">{TYPE_ICON[q.type]||'📄'} {q.title}</span>}
                               </div>
                             )}
-                            <p className={`text-[16px] text-slate-900 whitespace-pre-line leading-7 text-center ${q.type === 'notice' || q.type === 'ad' ? 'bg-[#dbc6ff] px-5 py-7' : ''}`}>{q.content}</p>
+                            <p className={`text-[18px] text-slate-900 whitespace-pre-line leading-8 text-center ${q.type === 'notice' || q.type === 'ad' ? 'bg-[#dbc6ff] px-5 py-7' : ''}`}>{q.content}</p>
                             {q.question && <p className="mt-3 text-sm font-semibold text-gray-800 border-t border-gray-200 pt-3">{q.question}</p>}
                           </div>
                         </div>
 
                         {/* Right: options + wrong actions */}
                         <div className="min-w-0 flex flex-col justify-center space-y-4">
-                          <h3 className="text-[22px] font-extrabold text-[#30284d]">{q.question || 'Choose the correct answer.'}</h3>
+                          <h3 className="text-[20px] font-extrabold text-[#30284d]">{q.question || 'Choose the correct answer.'}</h3>
                           {Object.entries(q.options).map(([label, opt]) => (
                             <MCOption key={label} q={q} opt={opt} label={label} exam />
                           ))}
