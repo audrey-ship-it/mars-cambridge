@@ -16,8 +16,8 @@ function buildBatches(partId) {
       (t.part1?.questions || []).map(q => ({ ...q, _key: `${ti}_${q.id}` }))
     )
     const batches = []
-    for (let i = 0; i < allQ.length; i += 6)
-      batches.push({ questions: allQ.slice(i, i + 6) })
+    for (let i = 0; i < allQ.length; i += 3)
+      batches.push({ questions: allQ.slice(i, i + 3) })
     return batches
   }
   // Parts 2/3/4: one batch per test (context-dependent)
@@ -37,6 +37,7 @@ export default function CambridgeReading() {
   const [batchChecked, setBatchChecked] = useState(false)
   const [retrying,     setRetrying]     = useState({})  // _key → true
   const [showAns,      setShowAns]      = useState({})  // _key → true
+  const [openQuestion, setOpenQuestion] = useState(null)
   // Part 5 only
   const [p5Checked,    setP5Checked]    = useState(false)
   const [p5Score,      setP5Score]      = useState(null)
@@ -75,6 +76,7 @@ export default function CambridgeReading() {
     setBatchChecked(false)
     setRetrying({})
     setShowAns({})
+    setOpenQuestion(null)
   }, [partId, batchIdx])
 
   useEffect(() => {
@@ -277,7 +279,7 @@ export default function CambridgeReading() {
       <div className="max-w-[1440px] mx-auto px-5 py-8 flex gap-7">
 
         {/* Sidebar */}
-        <aside className="w-52 flex-shrink-0 space-y-4">
+        <aside className="hidden w-52 flex-shrink-0 space-y-4">
 
           {/* Part selector */}
           <div className="bg-white rounded-[22px] border border-slate-200 shadow-sm p-4">
@@ -421,15 +423,56 @@ export default function CambridgeReading() {
         </aside>
 
         {/* Main Content */}
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 max-w-none">
+          {!isPart5 && (
+            <div className="mb-8">
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-2">
+                  <span className="text-[34px] font-extrabold tracking-tight text-slate-950">Reading:</span>
+                  <select
+                    value={partId}
+                    onChange={e => { setPartId(Number(e.target.value)); setBatchIdx(0) }}
+                    className="appearance-none bg-transparent text-[34px] font-extrabold tracking-tight text-sky-500 pr-9 focus:outline-none cursor-pointer"
+                    aria-label="选择阅读题型"
+                  >
+                    {[1, 2, 3, 4, 5].map(pid => <option key={pid} value={pid}>{PART_LABELS[pid]}</option>)}
+                  </select>
+                  <span className="-ml-8 pointer-events-none text-slate-900 text-2xl">⌄</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => setBatchIdx(i => Math.max(0, i - 1))}
+                    disabled={batchIdx === 0}
+                    aria-label="上一套"
+                    className="w-14 h-14 rounded-full bg-slate-100 text-white text-4xl leading-none disabled:opacity-70 hover:bg-slate-200 transition-colors"
+                  >‹</button>
+                  <button
+                    onClick={() => setBatchIdx(i => Math.min(batches.length - 1, i + 1))}
+                    disabled={batchIdx === batches.length - 1}
+                    aria-label="下一套"
+                    className="w-14 h-14 rounded-full bg-sky-500 text-white text-4xl leading-none disabled:opacity-35 hover:bg-sky-600 shadow-md shadow-sky-200 transition-colors"
+                  >›</button>
+                </div>
+              </div>
+              <div className="mt-14 flex items-center justify-between border-b-[3px] border-slate-900 pb-5">
+                <h1 className="text-[29px] font-extrabold text-slate-900">{partId === 1 ? `Part 1 · 第 ${batchIdx + 1}/${batches.length} 页` : `Test ${batchIdx + 1} / ${batches.length}`}</h1>
+                <span className="text-sm font-semibold text-slate-400">{batchAnswered}/{batchQs.length} 已作答</span>
+              </div>
+              {partId === 1 && (
+                <div className="mt-10 bg-sky-50 px-7 py-6 text-[22px] leading-relaxed text-slate-800 rounded-md">
+                  <span className="mr-4">💡</span>For each question, <strong>choose the correct answer.</strong> What does the notice say?
+                </div>
+              )}
+            </div>
+          )}
           <AnimatePresence mode="wait">
             <motion.div key={isPart5 ? `p5-${part5Id}` : `${partId}-${batchIdx}`}
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.18 }}
-              className="bg-white rounded-[24px] border border-slate-200 shadow-sm overflow-hidden"
+              className={`${isPart5 ? 'bg-white rounded-[24px] border border-slate-200 shadow-sm' : 'bg-transparent'} overflow-hidden`}
             >
               {/* Card header */}
-              <div className="px-8 py-6 border-b-2 border-slate-800 flex items-start justify-between">
+              <div className={`${!isPart5 ? 'hidden' : ''} px-8 py-6 border-b-2 border-slate-800 flex items-start justify-between`}>
                 <div>
                   <div className="flex items-center gap-2 mb-0.5">
                     <span className="text-lg">{PART_ICONS[partId]}</span>
@@ -462,7 +505,7 @@ export default function CambridgeReading() {
               </div>
 
               {/* Part content */}
-              <div className="p-8">
+              <div className={`${!isPart5 ? 'px-0 py-0' : 'p-8'}`}>
 
                 {/* ── PART 1 ── */}
                 {partId === 1 && currentBatch && (
@@ -471,7 +514,7 @@ export default function CambridgeReading() {
                       <motion.div key={q._key}
                         initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: qi * 0.04 }}
-                        className="grid grid-cols-[42%_1fr] gap-8 py-7 border-b border-slate-200 last:border-b-0"
+                        className="grid grid-cols-[340px_1fr] gap-14 py-12 border-b border-slate-300 last:border-b-0"
                       >
                         {/* Left: numbered stimulus box */}
                         <div className="min-w-0 flex flex-col">
@@ -482,7 +525,7 @@ export default function CambridgeReading() {
                                 : answers[q._key] ? 'bg-sky-500 text-white' : 'bg-sky-100 text-sky-700'
                             }`}>{qi + 1 + batchIdx * 6}</span>
                           </div>
-                          <div className="flex-1 border-2 border-slate-300 rounded-xl p-5 bg-white flex flex-col justify-center shadow-[0_1px_0_rgba(15,23,42,.04)]">
+                          <div className="flex-1 border-2 border-slate-300 rounded-none p-5 bg-white flex flex-col justify-center shadow-[0_1px_0_rgba(15,23,42,.04)]">
                             {(q.from || q.title) && (
                               <div className="flex flex-wrap gap-x-3 mb-2 text-xs text-gray-500 font-medium">
                                 {q.from && <span>{TYPE_ICON[q.type]||'📄'} From: <span className="text-gray-800 font-bold">{q.from}</span></span>}
@@ -496,11 +539,23 @@ export default function CambridgeReading() {
                         </div>
 
                         {/* Right: options + wrong actions */}
-                        <div className="min-w-0 flex flex-col justify-center space-y-3">
-                          {Object.entries(q.options).map(([label, opt]) => (
-                            <MCOption key={label} q={q} opt={opt} label={label} />
-                          ))}
-                          <WrongActions q={q} />
+                        <div className="min-w-0 self-center">
+                          <button
+                            onClick={() => setOpenQuestion(openQuestion === q._key ? null : q._key)}
+                            className="w-full flex items-center justify-between text-left pb-5 text-[26px] font-extrabold text-[#30284d]"
+                            aria-expanded={openQuestion === q._key || (openQuestion === null && qi === 0)}
+                          >
+                            <span>{q.question || 'Choose the correct answer.'}</span>
+                            <span className={`text-4xl font-normal transition-transform ${openQuestion === q._key || (openQuestion === null && qi === 0) ? 'rotate-180' : ''}`}>⌄</span>
+                          </button>
+                          {(openQuestion === q._key || (openQuestion === null && qi === 0)) && (
+                            <div className="space-y-4 pb-2">
+                              {Object.entries(q.options).map(([label, opt]) => (
+                                <MCOption key={label} q={q} opt={opt} label={label} />
+                              ))}
+                              <WrongActions q={q} />
+                            </div>
+                          )}
                         </div>
                       </motion.div>
                     ))}
