@@ -436,15 +436,18 @@ export default function CambridgeReading() {
                     <h2 className="font-extrabold text-slate-900 text-[26px] tracking-tight">
                       {isPart5
                         ? <>{p5Set?.source} <span className="text-violet-600">· Part 5</span></>
-                        : <>{PART_LABELS[partId]} <span className="text-sky-500">· 练习 {batchIdx + 1}/{batches.length}</span></>
+                        : <><span className="text-slate-900">Reading:</span> <span className="text-sky-500">{PART_LABELS[partId]}</span></>
                       }
                     </h2>
                     <span className="text-xs text-slate-500 font-medium bg-sky-50 px-2.5 py-1 rounded-full">
                       {PART_DESC[partId]}
                     </span>
+                    {!isPart5 && (
+                      <span className="text-xs font-bold text-slate-500 ml-1">练习 {batchIdx + 1} / {batches.length}</span>
+                    )}
                   </div>
                   {!isPart5 && currentBatch?.instructions && (
-                    <p className="text-sm text-slate-500 leading-relaxed max-w-lg mt-1">{currentBatch.instructions}</p>
+                    <p className="text-sm text-slate-600 leading-relaxed max-w-2xl mt-4 bg-sky-50 border border-sky-100 px-4 py-3 rounded-xl">💡 {currentBatch.instructions}</p>
                   )}
                   {isPart5 && p5Part?.instructions && (
                     <p className="text-xs text-gray-400 leading-relaxed max-w-lg">{p5Part.instructions}</p>
