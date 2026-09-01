@@ -734,7 +734,7 @@ export default function CambridgeReading() {
                     <div className="bg-gray-50 rounded-xl border border-gray-100 p-6 leading-9 text-[18px] text-gray-700">
                       {renderPart4Passage(currentBatch)}
                     </div>
-                    <div className="space-y-3 max-h-[70vh] overflow-y-auto pr-1">
+                    <div className="space-y-3 pr-1">
                       {currentBatch.questions.map((q, qi) => (
                         <motion.div key={q._key}
                           initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
