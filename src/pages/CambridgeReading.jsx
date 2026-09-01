@@ -348,14 +348,15 @@ export default function CambridgeReading() {
   }
 
   function renderPart4Passage(batch) {
-    return (batch.passage_segments || []).map((seg, i) => {
-      if (i % 2 === 0) return <span key={i} style={{ whiteSpace: 'pre-wrap' }}>{seg}</span>
-      const q  = batch.questions[Math.floor(i / 2)]
+    return (batch.passage_segments || []).flatMap((seg, i) => {
+      const q = batch.questions[i]
+      const text = <span key={`text-${i}`} style={{ whiteSpace: 'pre-wrap' }}>{seg}</span>
+      if (!q) return [text]
       const ua = answers[q?._key] || ''
       const ok = batchChecked ? isCorrect14(q) : null
-      return (
-        <span key={i} className="inline-block mx-1 align-baseline">
-          <span className="font-bold text-violet-600 text-sm">({q?.id})</span>
+      const gap = (
+        <span key={`gap-${i}`} className="inline-block mx-1.5 align-baseline">
+          <span className="font-bold text-violet-600 text-base">({q.id})</span>
           {batchChecked && (
             <span className={`ml-1 px-1.5 py-0.5 rounded text-xs font-medium ${
               ok ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-600'
@@ -366,6 +367,7 @@ export default function CambridgeReading() {
           )}
         </span>
       )
+      return [text, gap]
     })
   }
 
