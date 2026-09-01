@@ -674,13 +674,13 @@ export default function CambridgeReading() {
 
                 {/* ── PART 3 ── */}
                 {partId === 3 && currentBatch && (
-                  <div className="flex gap-5">
-                    <div className="flex-1 bg-gray-50 rounded-xl border border-gray-100 p-5 overflow-y-auto"
+                  <div className="grid grid-cols-2 gap-5">
+                    <div className="min-w-0 bg-gray-50 rounded-xl border border-gray-100 p-5 overflow-y-auto"
                       style={{ maxHeight: '70vh' }}>
                       <HighlightableText text={currentBatch.passage} storageKey={`part3-${batchIdx}`}
                         className="text-[19px] text-gray-700 leading-9 whitespace-pre-line" />
                     </div>
-                    <div className="w-72 flex-shrink-0 space-y-4 overflow-y-auto" style={{ maxHeight: '70vh' }}>
+                    <div className="min-w-0 space-y-4 overflow-y-auto" style={{ maxHeight: '70vh' }}>
                       {currentBatch.questions.map((q, qi) => (
                         <motion.div key={q._key}
                           initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }}
