@@ -540,9 +540,6 @@ export default function CambridgeReading() {
                       ))}
                     </div>
                     <div className="space-y-3 sticky top-5">
-                      <div className="bg-sky-50 border border-sky-100 rounded-2xl px-5 py-4 text-[17px] leading-relaxed text-slate-600">
-                        💡 For each question, choose the correct person.
-                      </div>
                       {currentBatch.questions.map((q, qi) => (
                         <motion.div key={q._key}
                           initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
