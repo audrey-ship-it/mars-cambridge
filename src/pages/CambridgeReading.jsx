@@ -527,31 +527,35 @@ export default function CambridgeReading() {
 
                 {/* ── PART 2 ── */}
                 {partId === 2 && currentBatch && (
-                  <div className="space-y-6">
-                    <div className="grid grid-cols-3 gap-3">
+                  <div className="grid grid-cols-[minmax(0,1.25fr)_minmax(400px,.75fr)] gap-8 items-start">
+                    <div className="space-y-4">
                       {(currentBatch.people || []).map(p => (
-                        <div key={p.name} className="bg-gray-50 rounded-xl border border-gray-100 p-3.5">
-                          <div className="flex items-center gap-2 mb-2.5">
-                            <span className="w-6 h-6 bg-violet-600 text-white text-xs font-extrabold rounded-full flex items-center justify-center flex-shrink-0">{p.label}</span>
-                            <span className="font-bold text-gray-800 text-sm">{p.name}</span>
+                        <div key={p.name} className="bg-slate-50 rounded-2xl border border-slate-200 p-6">
+                          <div className="flex items-center gap-3 mb-3">
+                            <span className="w-9 h-9 bg-violet-600 text-white text-base font-extrabold rounded-full flex items-center justify-center flex-shrink-0">{p.label}</span>
+                            <span className="font-bold text-slate-800 text-xl">{p.name}</span>
                           </div>
-                          <p className="text-xs text-gray-600 leading-relaxed">{p.text}</p>
+                          <p className="text-[17px] text-slate-700 leading-8">{p.text}</p>
                         </div>
                       ))}
                     </div>
-                    <div className="space-y-2">
+                    <div className="space-y-3 sticky top-5">
+                      <div className="pb-3 border-b-2 border-slate-800">
+                        <h3 className="text-xl font-extrabold text-slate-900">Choose the correct person.</h3>
+                        <p className="mt-1 text-sm text-slate-500">Read the descriptions on the left, then select A, B or C.</p>
+                      </div>
                       {currentBatch.questions.map((q, qi) => (
                         <motion.div key={q._key}
                           initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: qi * 0.03 }}
-                          className="border border-gray-100 rounded-xl px-4 py-3 flex items-center gap-3 hover:bg-gray-50/50 transition-colors"
+                          className="border border-slate-200 rounded-xl px-5 py-4 flex items-center gap-4 hover:bg-slate-50/70 transition-colors"
                         >
                           <span className={`w-7 h-7 flex-shrink-0 rounded-full flex items-center justify-center text-xs font-extrabold transition-colors ${
                             batchChecked && !retrying[q._key]
                               ? isCorrect14(q) ? 'bg-emerald-500 text-white' : 'bg-red-400 text-white'
                               : answers[q._key] ? 'bg-violet-600 text-white' : 'bg-violet-100 text-violet-600'
                           }`}>{q.id}</span>
-                          <p className="flex-1 text-sm text-gray-700">{q.text}</p>
+                          <p className="flex-1 text-[16px] leading-6 text-slate-700">{q.text}</p>
                           <div className="flex gap-1.5 flex-shrink-0">
                             {(currentBatch.people || []).map(p => {
                               const sel = answers[q._key] === p.label
