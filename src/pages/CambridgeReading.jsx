@@ -150,7 +150,7 @@ export default function CambridgeReading() {
 
   // ── Components ─────────────────────────────────────────
 
-  function MCOption({ q, opt, label }) {
+  function MCOption({ q, opt, label, exam = false }) {
     const key      = q._key
     const isRetry  = retrying[key]
     const effChk   = batchChecked && !isRetry
@@ -173,6 +173,23 @@ export default function CambridgeReading() {
       } else if (!effChk) {
         setAnswers(a => ({ ...a, [key]: label }))
       }
+    }
+
+    if (exam) {
+      return (
+        <button
+          disabled={effChk && !isRetry}
+          onClick={handleClick}
+          className={`flex items-center gap-6 w-full text-left py-2 transition-all ${effChk && !right && !wrong ? 'opacity-45' : ''}`}
+        >
+          <span className={`w-11 h-11 flex-shrink-0 border-2 shadow-sm transition-colors ${
+            right ? 'border-emerald-500 bg-emerald-50' : wrong ? 'border-red-400 bg-red-50' : selected ? 'border-sky-500 bg-sky-50' : 'border-sky-500 bg-sky-50 hover:bg-sky-100'
+          } flex items-center justify-center font-bold text-sm ${right ? 'text-emerald-600' : wrong ? 'text-red-500' : 'text-sky-600'}`}>
+            {(right || (selected && !effChk)) ? label : ''}
+          </span>
+          <span className="text-[27px] leading-snug text-[#30284d]">{opt}</span>
+        </button>
+      )
     }
 
     return (
@@ -471,7 +488,7 @@ export default function CambridgeReading() {
                       <motion.div key={q._key}
                         initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: qi * 0.04 }}
-                        className="grid grid-cols-[42%_1fr] gap-8 py-7 border-b border-slate-200 last:border-b-0"
+                        className="grid grid-cols-[360px_1fr] gap-14 py-12 border-b border-slate-300 last:border-b-0"
                       >
                         {/* Left: numbered stimulus box */}
                         <div className="min-w-0 flex flex-col">
@@ -482,7 +499,8 @@ export default function CambridgeReading() {
                                 : answers[q._key] ? 'bg-sky-500 text-white' : 'bg-sky-100 text-sky-700'
                             }`}>{qi + 1 + batchIdx * 6}</span>
                           </div>
-                          <div className="flex-1 border-2 border-slate-300 rounded-xl p-5 bg-white flex flex-col justify-center shadow-[0_1px_0_rgba(15,23,42,.04)]">
+                          <div className="relative flex-1 border-2 border-red-500 p-5 bg-white flex flex-col justify-center shadow-[0_1px_0_rgba(15,23,42,.04)]">
+                            <span className="absolute -top-12 -left-2 bg-red-600 text-white px-3 py-1.5 text-xl font-medium">Click to enlarge</span>
                             {(q.from || q.title) && (
                               <div className="flex flex-wrap gap-x-3 mb-2 text-xs text-gray-500 font-medium">
                                 {q.from && <span>{TYPE_ICON[q.type]||'📄'} From: <span className="text-gray-800 font-bold">{q.from}</span></span>}
@@ -490,15 +508,16 @@ export default function CambridgeReading() {
                                 {!q.from && q.title && <span className="font-bold text-gray-800">{TYPE_ICON[q.type]||'📄'} {q.title}</span>}
                               </div>
                             )}
-                            <p className="text-[15px] text-slate-800 whitespace-pre-line leading-7">{q.content}</p>
+                            <p className={`text-[19px] text-slate-900 whitespace-pre-line leading-8 text-center ${q.type === 'notice' || q.type === 'ad' ? 'bg-[#dbc6ff] px-5 py-8' : ''}`}>{q.content}</p>
                             {q.question && <p className="mt-3 text-sm font-semibold text-gray-800 border-t border-gray-200 pt-3">{q.question}</p>}
                           </div>
                         </div>
 
                         {/* Right: options + wrong actions */}
-                        <div className="min-w-0 flex flex-col justify-center space-y-3">
+                        <div className="min-w-0 flex flex-col justify-center space-y-4">
+                          <h3 className="text-[29px] font-extrabold text-[#30284d]">{q.question || 'Choose the correct answer.'}</h3>
                           {Object.entries(q.options).map(([label, opt]) => (
-                            <MCOption key={label} q={q} opt={opt} label={label} />
+                            <MCOption key={label} q={q} opt={opt} label={label} exam />
                           ))}
                           <WrongActions q={q} />
                         </div>
