@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { grammarUnitStatus } from '../utils/grammarProgress'
@@ -210,6 +210,21 @@ function generateWeeklyPlan(plan) {
   }))
 }
 
+const dailyTaskTemplates = {
+  '高频词汇复习': [['核心词汇复习', '复习 20 个高频词 · 约 10 分钟', '/cambridge/words'], ['分类词汇巩固', '完成 1 组分类词汇 · 约 10 分钟', '/cambridge/words'], ['词汇错题复习', '回顾今天的易错词 · 约 10 分钟', '/cambridge/words?mode=review']],
+  '语法专项练习': [['学习语法要点', '阅读 1 个语法单元讲解 · 约 8 分钟', '/cambridge/grammar'], ['完成语法选择题', '完成 1 组选择练习 · 约 12 分钟', '/cambridge/grammar'], ['巩固语法错题', '复习本次易错题 · 约 10 分钟', '/cambridge/grammar/mistakes']],
+  '听力真题训练': [['听前预测', '浏览 1 个听力 Part 题目 · 约 5 分钟', '/cambridge/listening'], ['完成听力真题', '完成 1 个听力 Part · 约 15 分钟', '/cambridge/listening'], ['回顾听力错题', '查看答案与错题解析 · 约 10 分钟', '/cambridge/listening']],
+  '阅读真题训练': [['阅读词汇预热', '复习本篇关键表达 · 约 5 分钟', '/cambridge/reading'], ['完成阅读真题', '完成 1 个阅读 Part · 约 15 分钟', '/cambridge/reading'], ['回顾阅读错题', '查看答案与定位线索 · 约 10 分钟', '/cambridge/reading']],
+  '写作输出练习': [['分析写作任务', '确定题目、对象和写作要点 · 约 5 分钟', '/cambridge/exams/ket-3-test1?tab=writing&part=6'], ['完成一篇短写作', '完成邮件或短文草稿 · 约 18 分钟', '/cambridge/exams/ket-3-test1?tab=writing&part=6'], ['检查并修改', '核对内容、语法和拼写 · 约 7 分钟', '/cambridge/exams/ket-3-test1?tab=writing&part=6']],
+  '口语表达练习': [['准备表达素材', '整理本次主题词汇 · 约 8 分钟', '/cambridge/exams/ket-3-test1?tab=speaking'], ['录音回答题目', '完成 1 组口语回答 · 约 14 分钟', '/cambridge/exams/ket-3-test1?tab=speaking'], ['回听并自评', '记录一个可改进点 · 约 8 分钟', '/cambridge/exams/ket-3-test1?tab=speaking']],
+  '错题集中复习': [['复习词汇错题', '回顾待复习词汇 · 约 10 分钟', '/cambridge/words?mode=review'], ['复习语法错题', '完成语法错题练习 · 约 10 分钟', '/cambridge/grammar/mistakes'], ['复习阅读与听力错题', '回顾本周易错题 · 约 10 分钟', '/cambridge/reading']],
+}
+
+function createTodayTasks(weeklyTask) {
+  if (!weeklyTask) return initialTasks
+  return (dailyTaskTemplates[weeklyTask.title] || []).map(([title, detail, path], index) => ({ id: `${weeklyTask.id}-${index + 1}`, weekTaskId: weeklyTask.id, title, detail, path, color: weeklyTask.color, done: false }))
+}
+
 function readWeeklyPlan(studyPlan) {
   try {
     const saved = JSON.parse(localStorage.getItem('mars_ket_weekly_plan_v1') || 'null')
@@ -248,10 +263,18 @@ export default function MyLearningDashboard() {
   const [toast, setToast] = useState('')
   const [studyPlan, setStudyPlan] = useState(readStudyPlan)
   const [weeklyPlan, setWeeklyPlan] = useState(() => readWeeklyPlan(readStudyPlan()))
+  const currentWeeklyTask = weeklyPlan.find(task => !task.done) || null
   const completed = tasks.filter(t => t.done).length
   const todayProgress = Math.round(completed / tasks.length * 100)
   const [learning] = useState(readLearningSnapshot)
   const continueItem = learning.continueItem
+
+  useEffect(() => {
+    if (!studyPlan.examDate || !currentWeeklyTask || tasks[0]?.weekTaskId === currentWeeklyTask.id) return
+    const nextTasks = createTodayTasks(currentWeeklyTask)
+    setTasks(nextTasks)
+    try { localStorage.setItem('mars_today_tasks', JSON.stringify(nextTasks)) } catch { /* storage may be unavailable */ }
+  }, [studyPlan.examDate, currentWeeklyTask?.id])
 
   const greeting = useMemo(() => {
     const hour = new Date().getHours()
@@ -261,7 +284,21 @@ export default function MyLearningDashboard() {
   function toggleTask(id) {
     const next = tasks.map(task => task.id === id ? { ...task, done: !task.done } : task)
     setTasks(next)
-    localStorage.setItem('mars_today_tasks', JSON.stringify(next))
+    try { localStorage.setItem('mars_today_tasks', JSON.stringify(next)) } catch { /* storage may be unavailable */ }
+  }
+
+  function startNextStudyDay() {
+    if (!currentWeeklyTask || !tasks.length || !tasks.every(task => task.done)) return
+    const nextWeekly = weeklyPlan.map(task => task.id === currentWeeklyTask.id ? { ...task, done: true } : task)
+    const nextTask = nextWeekly.find(task => !task.done)
+    const nextTodayTasks = nextTask ? createTodayTasks(nextTask) : []
+    setWeeklyPlan(nextWeekly)
+    setTasks(nextTodayTasks)
+    try {
+      localStorage.setItem('mars_ket_weekly_plan_v1', JSON.stringify(nextWeekly))
+      localStorage.setItem('mars_today_tasks', JSON.stringify(nextTodayTasks))
+    } catch { /* storage may be unavailable */ }
+    notify(nextTask ? `已进入${nextTask.day}：${nextTask.title}` : '本周学习计划已全部完成')
   }
 
   function handleNav(item) {
@@ -281,8 +318,7 @@ export default function MyLearningDashboard() {
     }
     const nextPlan = { ...studyPlan, savedAt: new Date().toISOString() }
     const nextWeeklyPlan = generateWeeklyPlan(nextPlan)
-    const todayMinutes = Math.max(5, Math.round(Number(nextPlan.minutesPerDay || 30) / 3))
-    const nextTodayTasks = nextWeeklyPlan.slice(0, Math.min(3, nextWeeklyPlan.length)).map(task => ({ ...task, detail: `${task.focus} · 约 ${todayMinutes} 分钟` }))
+    const nextTodayTasks = createTodayTasks(nextWeeklyPlan[0])
     try {
       localStorage.setItem('mars_ket_study_plan_v1', JSON.stringify(nextPlan))
       localStorage.setItem('mars_ket_weekly_plan_v1', JSON.stringify(nextWeeklyPlan))
@@ -368,10 +404,13 @@ export default function MyLearningDashboard() {
               {weeklyPlan.length > 0 && <div className="mt-5 border-t border-emerald-200/80 pt-4">
                 <div className="mb-3 flex items-center justify-between"><h3 className="text-sm font-extrabold text-emerald-900">本周安排</h3><span className="text-[11px] text-gray-500">按顺序完成即可</span></div>
                 <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
-                  {weeklyPlan.map(task => <button key={task.id} onClick={() => navigate(task.path)} className="rounded-xl border border-emerald-100 bg-white/80 p-3 text-left transition hover:border-emerald-300 hover:bg-white">
-                    <span className="text-[10px] font-bold text-emerald-600">{task.day}</span>
-                    <strong className="mt-1 block text-xs text-gray-800">{task.title}</strong>
-                  </button>)}
+                  {weeklyPlan.map(task => {
+                    const current = task.id === currentWeeklyTask?.id
+                    return <button key={task.id} onClick={() => navigate(task.path)} className={`rounded-xl border p-3 text-left transition ${task.done ? 'border-emerald-200 bg-emerald-100/70' : current ? 'border-amber-300 bg-amber-50 ring-1 ring-amber-200' : 'border-emerald-100 bg-white/80 hover:border-emerald-300 hover:bg-white'}`}>
+                      <div className="flex items-center justify-between gap-2"><span className={`text-[10px] font-bold ${current ? 'text-amber-700' : 'text-emerald-600'}`}>{task.day}</span>{task.done && <span className="text-[10px] font-extrabold text-emerald-700">✓ 已完成</span>}{current && !task.done && <span className="text-[10px] font-extrabold text-amber-700">今日</span>}</div>
+                      <strong className="mt-1 block text-xs text-gray-800">{task.title}</strong>
+                    </button>
+                  })}
                 </div>
               </div>}
             </div>
@@ -382,8 +421,8 @@ export default function MyLearningDashboard() {
                 <div className="p-5 sm:p-6 flex flex-col md:flex-row gap-6 md:items-center">
                   <ProgressRing value={todayProgress} />
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between mb-1"><h2 className="text-lg font-extrabold">{studyPlan.examDate ? '今日学习任务' : '今日推荐练习'}</h2><span className="text-xs text-gray-400">已完成 {completed}/{tasks.length}</span></div>
-                    <p className="text-sm text-gray-500 mb-4">{studyPlan.examDate ? `预计共 ${studyPlan.minutesPerDay} 分钟，按顺序完成今天的计划。` : '任选一项开始练习；设置学习计划后会按目标自动安排。'}</p>
+                    <div className="flex items-center justify-between mb-1"><h2 className="text-lg font-extrabold">{studyPlan.examDate ? `${currentWeeklyTask?.day || '本周'} · ${currentWeeklyTask?.title || '今日学习任务'}` : '今日推荐练习'}</h2><span className="text-xs text-gray-400">已完成 {completed}/{tasks.length}</span></div>
+                    <p className="text-sm text-gray-500 mb-4">{studyPlan.examDate ? `预计共 ${studyPlan.minutesPerDay} 分钟，完成这 3 步后再进入下一天。` : '任选一项开始练习；设置学习计划后会按目标自动安排。'}</p>
                     <div className="grid md:grid-cols-3 gap-3">
                       {tasks.map(task => (
                         <div key={task.id} className={`rounded-2xl border p-3.5 transition-all ${task.done ? 'bg-gray-50 border-gray-100' : 'bg-white border-gray-200 hover:border-emerald-300 hover:shadow-sm'}`}>
@@ -395,6 +434,7 @@ export default function MyLearningDashboard() {
                         </div>
                       ))}
                     </div>
+                    {studyPlan.examDate && tasks.length > 0 && tasks.every(task => task.done) && <button onClick={startNextStudyDay} className="mt-4 w-full rounded-xl bg-[#f4c95d] py-3 text-sm font-extrabold text-[#083f32] transition hover:bg-amber-300">{currentWeeklyTask ? `完成${currentWeeklyTask.day}，进入下一天 →` : '本周计划已完成 ✓'}</button>}
                   </div>
                 </div>
               </section>
