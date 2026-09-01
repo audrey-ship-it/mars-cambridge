@@ -112,6 +112,7 @@ function buildBatches(partId) {
 export default function CambridgeReading() {
   const [level, setLevel] = useState(() => { try { return localStorage.getItem('cambridge_level') || 'KET' } catch { return 'KET' } })
   const [partId,       setPartId]       = useState(1)
+  const [part5Mode,    setPart5Mode]    = useState('official')
   const [part5Id,      setPart5Id]      = useState(1)
   const [batchIdx,     setBatchIdx]     = useState(0)
   const [answers,      setAnswers]      = useState({})
@@ -133,7 +134,11 @@ export default function CambridgeReading() {
   const currentBatch = batches[batchIdx] || null
 
   // ── Part 5 data ────────────────────────────────────────
-  const p5Set  = ketPart5Sets.find(s => s.id === part5Id)
+  const verifiedTests = ketTests.filter(test => test.source?.verified)
+  const officialP5Test = ketTests.find(test => test.id === part5Id && test.source?.verified)
+  const p5Set  = part5Mode === 'official'
+    ? (officialP5Test ? { ...officialP5Test.part5, source: officialP5Test.title } : null)
+    : ketPart5Sets.find(s => s.id === part5Id)
   const p5Part = p5Set ? {
     instructions: 'For each question, write the correct answer.\nWrite ONE word for each gap.',
     example: p5Set.example, passages: p5Set.passages, questions: p5Set.questions,
@@ -162,7 +167,7 @@ export default function CambridgeReading() {
     setP5Checked(false)
     setP5Score(null)
     setAnswers({})
-  }, [part5Id])
+  }, [part5Id, part5Mode])
 
   // ── Helpers ────────────────────────────────────────────
   function isCorrect14(q) {
@@ -449,14 +454,29 @@ export default function CambridgeReading() {
           {isPart5 && (
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-3 space-y-3 max-h-[50vh] overflow-y-auto">
               <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">选择套题</p>
+              <div>
+                <p className="text-[9px] font-bold text-emerald-600 uppercase mb-1 tracking-wider">已核验官方真题</p>
+                <div className="flex flex-wrap gap-1">
+                  {verifiedTests.map(test => (
+                    <button key={test.id} onClick={() => { setPart5Mode('official'); setPart5Id(test.id) }}
+                      className={`min-w-8 h-8 px-2 rounded-lg text-xs font-bold transition-all ${
+                        part5Mode === 'official' && part5Id === test.id
+                          ? 'bg-emerald-600 text-white shadow-sm'
+                          : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
+                      }`}
+                    >真题 {test.id}</button>
+                  ))}
+                </div>
+              </div>
+              <p className="border-t border-gray-100 pt-2 text-[9px] font-bold text-gray-400 uppercase tracking-wider">Part 5 专项题库</p>
               {PART5_GROUPS.map(grp => (
                 <div key={grp.label}>
                   <p className="text-[9px] font-bold text-gray-300 uppercase mb-1 tracking-wider truncate">{grp.label}</p>
                   <div className="flex flex-wrap gap-1">
                     {grp.ids.map(id => (
-                      <button key={id} onClick={() => setPart5Id(id)}
+                      <button key={id} onClick={() => { setPart5Mode('practice'); setPart5Id(id) }}
                         className={`w-8 h-8 rounded-lg text-xs font-bold transition-all ${
-                          part5Id === id
+                          part5Mode === 'practice' && part5Id === id
                             ? 'bg-violet-600 text-white shadow-sm'
                             : 'bg-gray-50 text-gray-500 hover:bg-violet-50 hover:text-violet-600'
                         }`}
@@ -523,7 +543,7 @@ export default function CambridgeReading() {
         {/* Main Content */}
         <div className="flex-1 min-w-0">
           <AnimatePresence mode="wait">
-            <motion.div key={isPart5 ? `p5-${part5Id}` : `${partId}-${batchIdx}`}
+            <motion.div key={isPart5 ? `p5-${part5Mode}-${part5Id}` : `${partId}-${batchIdx}`}
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.18 }}
               className="bg-white rounded-[24px] border border-slate-200 shadow-sm overflow-hidden"

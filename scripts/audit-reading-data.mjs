@@ -64,10 +64,9 @@ for (const test of ketTests) {
     }
   })
 
-  if (test.part5 && ketPart5Sets.length) {
-    warn(scope, '页面 Part 5 当前使用独立专项题库，不会显示本套 test.part5；整套真题被拆开')
-  }
 }
+
+if (ketPart5Sets.length) warn('Part 5', `保留 ${ketPart5Sets.length} 套专项题库；必须与“已核验官方真题”分区显示，不得混充整套原卷`)
 
 console.log(`阅读数据审计：${ketTests.length} 套整卷，${ketPart5Sets.length} 套 Part 5 专项`)
 if (warnings.length) {

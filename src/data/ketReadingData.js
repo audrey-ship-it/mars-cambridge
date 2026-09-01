@@ -1,161 +1,150 @@
 /* ── KET A2 官方真题阅读数据 (4套) ── */
 
 export const ketTests = [
-  // ─── TEST 1 ──────────────────────────────────────────────────────────
+  // ─── OFFICIAL BOOK 1 · TEST 1 (verified against source pages 8–15) ───
   {
     id: 1,
-    title: "Test 1",
+    title: "官方真题 1 · Test 1",
+    source: {
+      file: "KET青少版官方真题1.pdf",
+      collection: "KET青少版官方真题 1",
+      test: 1,
+      pages: "8–15",
+      answerPage: 84,
+      verified: true
+    },
     part1: {
       instructions: "For each question, choose the correct answer.",
       questions: [
         {
-          id: 1, type: "note",
-          from: "Chloe", to: "Susie",
-          content: "Can you take your work stuff out of the living room and put it in your room? My friends are coming over this evening and I need to tidy up.",
-          options: { A: "Chloe asks Susie to keep the living room tidy for her.", B: "Chloe wants Susie to leave the living room before her friends arrive.", C: "Chloe wants Susie to move her things out of the living room." },
-          answer: "C",
-          explanation: "关键词：\"take your stuff out of the living room and put it in your room\" = 把东西搬走。A错（Chloe自己要整理，不是让Susie保持整洁）；B错（Susie不需要离开，只需搬走东西）。"
+          id: 1, type: "notice",
+          content: "Found: blue sports bag\nCollect from school office\n(with student ID card)",
+          options: { A: "A student has found the wrong ID card in his sports bag.", B: "The person who lost his bag can get it from the school office.", C: "If you find a lost sports bag, please take it to the school office." },
+          answer: "B"
         },
         {
           id: 2, type: "notice",
-          content: "STUDENTS – please wash up and put things away after using the kitchen. The cleaner comes every Friday.",
-          options: { A: "Students must help the cleaner tidy the kitchen on Fridays.", B: "Students should tell the cleaner when the kitchen needs cleaning.", C: "Students must leave the kitchen before the cleaner arrives on Fridays." },
-          answer: "A",
-          explanation: "告示要求学生用完厨房后自行清洗收拾，清洁工只在周五来做大扫除，所以学生平时帮助保持厨房整洁。B和C均不在告示中。"
+          content: "Room 3.1\nMrs Gray's students\nThis room is closed for repairs. Lessons in room 4.2 until Friday",
+          options: { A: "Mrs Gray is not coming to the school until Friday.", B: "Mrs Gray's class is going to be on a different day this week.", C: "Mrs Gray isn't able to use her usual room at the moment." },
+          answer: "C"
         },
         {
-          id: 3, type: "text",
-          from: "Anna", to: "Pete",
-          content: "Pete – I think there'll be no taxis in town tonight. Could you get me from the train station later? I don't know exactly when I'll arrive. Anna",
-          options: { A: "Anna is asking Pete to book a taxi for her at the station.", B: "Anna wants Pete to reply when he's at the station.", C: "Anna would like Pete to pick her up from the station." },
-          answer: "C",
-          explanation: "关键词：\"Could you get me from the train station?\" = 请Pete去接她。A错（没提预订出租车）；B错（没要求Pete回复消息）。"
+          id: 3, type: "email", from: "Head teacher", to: "All students",
+          content: "The school kitchen will be closed for hot lunches Monday – Friday next week. We can still serve sandwiches and salads.",
+          options: { A: "Students have to bring their own food to school for lunch next week.", B: "The school is going to stop offering lunch to students after next week.", C: "Only a few types of food will be available for student lunches next week." },
+          answer: "C"
         },
         {
-          id: 4, type: "notice",
-          content: "NEW STUDENTS: Go to Reception to collect your course books before seeing your teacher.",
-          options: { A: "Students should ask a teacher for their books before going to Reception.", B: "Students need to get their books from Reception first.", C: "Teachers will meet new students at the Reception desk." },
-          answer: "B",
-          explanation: "关键词：\"Go to Reception BEFORE seeing your teacher\" = 先去前台取书，再见老师。A错（顺序与告示完全相反）；C错（告示没有提老师在前台迎接学生）。"
+          id: 4, type: "text", from: "Mark", to: "Suzy",
+          content: "Hi Suzy,\nI've finished our history project. Shall I bring it round later to show you before I give it to the teacher tomorrow?\nMark",
+          options: { A: "Mark is asking Suzy if he should visit her today.", B: "Mark wants Suzy to help him complete their project.", C: "Mark thinks Suzy should give the project to the teacher." },
+          answer: "A"
         },
         {
-          id: 5, type: "ad",
-          content: "Flat to rent\nJust been painted!\nNew kitchen.\nOne double bedroom.\n£800 per month",
-          options: { A: "The flat is in a new building.", B: "You can rent this flat.", C: "Two people cannot live in this flat." },
-          answer: "B",
-          explanation: "关键词：\"Flat to rent\" = 可以出租此公寓。A错（\"just been painted\"说的是刚粉刷，不是新楼）；C错（一间双人卧室完全可以两人居住）。"
+          id: 5, type: "email", from: "Ben", to: "Tom",
+          content: "Dad will pick us up after the school concert. There are some tickets left on the website if you know anyone who wants one.",
+          question: "What should Tom do?",
+          options: { A: "go online to check if there are still concert tickets available", B: "tell people that it is still possible for them to come to the concert", C: "ask if his father can collect them after the concert" },
+          answer: "B"
         },
         {
-          id: 6, type: "text",
-          from: "Gemma", to: "Simon",
-          content: "Simon – Don't forget to bring that book I lent you. I need to give it to my sister this week. Thanks! Gemma",
-          options: { A: "Gemma is asking Simon to tell her about the book.", B: "Gemma wants Simon to return her book.", C: "Gemma is offering to lend Simon a book." },
-          answer: "B",
-          explanation: "关键词：\"bring that book I lent you\" = 要Simon归还书。A错（没要求Simon介绍书的内容）；C错（书已借出给Simon，不是现在提出借阅）。"
+          id: 6, type: "email", from: "Mr Jones", to: "Photography club members",
+          content: "Some of you have asked to learn to use software to improve your pictures. If enough people are interested, we'll start next Tuesday.",
+          options: { A: "Mr Jones is offering to teach club members something new.", B: "Some people have told Mr Jones they want to leave the photography club.", C: "Mr Jones wants to find out more about photography software." },
+          answer: "A"
         }
       ]
     },
     part2: {
       instructions: "For each question, choose the correct answer.",
-      title: "Camping by the water",
+      title: "My favourite book",
       people: [
         {
-          name: "Sandy Bay", label: "A",
-          text: "This campsite is large and you won't be too near your neighbours. There's a small supermarket with long opening hours. Sandy Bay has a surfing school of its own, so campers can learn to surf. You can also learn to windsurf and sail there. The large outdoor pool has a wide area of grass around it. The shop in the nearby village has a good variety of food."
+          name: "Jian", label: "A",
+          text: "This well-known book was in a box of old books that a neighbour gave me. I wasn't sure about it when I picked it up because I saw the pictures and thought it was a book for little children. But I was bored, so I started reading. After a few pages I couldn't stop, and when I got to the last page, I was quite upset that there wasn't more. It's about two friends who play a game, and how it changes their lives. It's brilliant!"
         },
         {
-          name: "High Wood", label: "B",
-          text: "Not as large as some campsites, High Wood has a pool with a roof window which can open and close, so it's usable in all weather. It's not too far from the sea. Campers can fish or swim in the fantastic pool. For food shopping, campers go to the village nearby. There's lots to do in the evenings – watch films or dance under the stars to local bands."
+          name: "Max", label: "B",
+          text: "This was one of the first books I ever had, but it's still a favourite. Even before I could read, I loved looking at the drawings as my parents read the story to me. Now my little sister's got it, and she loves it too. The writer has become quite famous, but this is the first book she wrote, and not many people have heard of it. It's very different from the books she wrote later. I suppose what you write about changes as your life changes."
         },
         {
-          name: "Black Lake", label: "C",
-          text: "There's a lake where you can swim and plenty of things to do during the day – hiking, cycling. And don't forget to bring your mountain bike with you! There are beautiful mountains all around you. The shop in the next village has a good variety of food. Campers are reminded to bring their mountain bikes."
+          name: "Kojo", label: "C",
+          text: "I read this book for the first time when I was about eight. One of the reasons I liked it was that it was about people growing up in a place which I knew nothing about. My friend read it too, and our ideas for games often came from this book. I read it again recently, and I still think it's great, except the last few pages. What happens in them doesn't seem real."
         }
       ],
       questions: [
-        { id: 7, text: "Which place has an indoor swimming pool?", answer: "B" },
-        { id: 8, text: "Which place offers water sports lessons?", answer: "A" },
-        { id: 9, text: "Which place has beautiful scenery?", answer: "C" },
-        { id: 10, text: "Which place has its own food shop?", answer: "A" },
-        { id: 11, text: "Which place has evening activities?", answer: "B" },
-        { id: 12, text: "Which place has plenty of space between tents?", answer: "A" },
-        { id: 13, text: "Which place can lend you equipment for activities?", answer: "B" }
+        { id: 7, text: "Who does not like the way the book ends?", answer: "C" },
+        { id: 8, text: "Who enjoyed the pictures in the book?", answer: "B" },
+        { id: 9, text: "Who explains how he got the book?", answer: "A" },
+        { id: 10, text: "Who enjoyed learning about lives which are different from his own?", answer: "C" },
+        { id: 11, text: "Who says something about what happens in the story?", answer: "A" },
+        { id: 12, text: "Who says the book is not very well-known?", answer: "B" },
+        { id: 13, text: "Who felt sad when he finished the book?", answer: "A" }
       ]
     },
     part3: {
-      title: "Playing the violin",
-      author: "By Jack Calder",
-      passage: "I started learning the violin when I was nine. I didn't choose to learn it – my music teacher asked if anyone wanted to, and some girls and I put our hands up. It wasn't something I was really interested in at the time. My uncle said I could use his, so I didn't have to buy one.\n\nThe lessons were really hard at first, and I didn't enjoy it much. But then I bought an electric violin and added it to the things I liked about rock music. That was when I really started to love playing.\n\nA few years later, I joined a band called Ocean Blue. When the band became successful, some of the members thought it would change the way we were all friends. We'd always been a close group, even though the music was selling well.\n\nNow I feel very lucky to play the violin. I think it's the best thing in the world to do. A lot of people think it's an unusual career, but I disagree with them.\n\nSomeone has looked after these beautiful old instruments that are two or three hundred years old. I think that's amazing. I hope they'll be used and enjoyed for another two or three hundred years.",
+      title: "A young cheesemaker",
+      author: "",
+      passage: "16-year-old Pat Tulloch has an unusual hobby. She makes cheese on the family farm in Australia. She began by making yoghurt with her mother when she was little. Then she started watching her father's workers make cheese. When she was ten, she made some herself for the first time. 'It wasn't great,' she says, 'but the workers told me what I was doing wrong and that helped me to slowly get better.'\n\nPat always needs good milk for her cheese, but she doesn't have to buy it. Her mother and father keep 100 cows on their farm. Pat can just ask them when she needs more. Last year, Pat's neighbour gave her a young cow to keep and look after, but it doesn't produce milk to make cheese yet.\n\nPat and her family make several types of cheese. Recently they won a prize for one of them. 'It's been great for helping customers find out about us,' says Pat. 'Last month we started selling cheese in New Zealand. People there read about our prize in a food magazine. Soon we're going to do some advertisements, too.'\n\nPat's next idea is to post some online recipes for cooking with cheese. 'One of my favourites is cheese with eggs for breakfast. It's great! Our cheese is also lovely with pasta – I hope a restaurant might buy some one day.' But right now Pat is still at school. 'Making cheese is fun and winning a prize for it is great, but doing well in my studies matters more for now.'",
       questions: [
         {
-          id: 14, text: "How did Jack start learning the violin?",
-          options: { A: "A teacher chose him to learn.", B: "He didn't have to pay for one to use.", C: "He enjoyed listening to it being played." },
-          answer: "B"
+          id: 14, text: "Pat learned to make good cheese",
+          options: { A: "by listening to the advice she got.", B: "by seeing how her mother did it.", C: "by practising at home on her own." }, answer: "A"
         },
         {
-          id: 15, text: "What does Jack say about the second paragraph?",
-          options: { A: "He could play rock music easily on his violin.", B: "He learned from listening to other people's music.", C: "He got an electric violin and this changed how he felt." },
-          answer: "C"
+          id: 15, text: "Where does Pat get the milk for her cheese?",
+          options: { A: "from her neighbour's farm", B: "her father helps her to buy it", C: "her parents give it to her" }, answer: "C"
         },
         {
-          id: 16, text: "When Ocean Blue became successful, Jack says",
-          options: { A: "the band needed to travel to many places.", B: "all the band members liked different music.", C: "the band stayed friends with each other." },
-          answer: "C"
+          id: 16, text: "Pat says winning the prize means",
+          options: { A: "more people know about her family's cheese.", B: "she can be the star of the family's new advertisements.", C: "she was invited to visit another country." }, answer: "A"
         },
         {
-          id: 17, text: "Why does Jack feel lucky?",
-          options: { A: "He has met many people through his music.", B: "He earns a lot of money playing violin.", C: "He gets to do something he loves as his job." },
-          answer: "C"
+          id: 17, text: "What's the most important thing for Pat at the moment?",
+          options: { A: "writing a new cookbook", B: "being successful at school", C: "selling cheese to a restaurant" }, answer: "B"
         },
         {
-          id: 18, text: "What does Jack say in the last paragraph?",
-          options: { A: "He thinks it is wonderful that people have kept old instruments.", B: "He wants the internet to provide more opportunities for music.", C: "He thinks more people should learn to play instruments." },
-          answer: "A"
+          id: 18, text: "In this article, Pat is explaining",
+          options: { A: "why her family started making cheese.", B: "how to win a competition for making cheese.", C: "how she has become part of a cheese-making business." }, answer: "C"
         }
       ]
     },
     part4: {
-      title: "The London Marathon",
+      title: "Philo T. Farnsworth",
       passage_segments: [
-        "In 1979, two men called John Disley and Chris Brasher went to run the New York Marathon. They ",
-        " to organise a similar race in London after they ",
-        " at the event. A large ",
-        " of runners took part when the first London Marathon ",
-        " place in 1981. More than six thousand runners took part. The race has ",
-        " on television in nearly 200 countries, so it has been ",
-        " to people all over the world."
+        "Philo T. Farnsworth was born in the USA in 1906. As a child, he was very interested in science and electricity and spent a lot of time ",
+        " about it. He also won a national ",
+        " for young engineers when he was just 13.\n\nWhen he was 20, Farnsworth ",
+        " his own business. In 1927, he showed everyone his new idea: a ",
+        " of sending pictures using electricity. Many other people were working on ideas for a machine to do this, but Farnsworth's was the first that had no moving parts. In fact, it was the first true electronic TV.\n\nAfter many business problems, Farnsworth had success in 1938 when another company ",
+        " him $1 million for his idea. He is not very famous these ",
+        ", but, as the father of electronic television, Farnsworth changed the world."
       ],
       questions: [
-        { id: 19, options: { A: "thought", B: "kept", C: "decided" }, answer: "C" },
-        { id: 20, options: { A: "year", B: "day", C: "time" }, answer: "C" },
-        { id: 21, options: { A: "members", B: "crowds", C: "visitors" }, answer: "B" },
-        { id: 22, options: { A: "had", B: "answered", C: "fact" }, answer: "A" },
-        { id: 23, options: { A: "stayed", B: "took", C: "made" }, answer: "B" },
-        { id: 24, options: { A: "shown", B: "made", C: "held" }, answer: "A" }
+        { id: 19, options: { A: "learning", B: "studying", C: "understanding" }, answer: "A" },
+        { id: 20, options: { A: "game", B: "match", C: "competition" }, answer: "C" },
+        { id: 21, options: { A: "became", B: "turned", C: "started" }, answer: "C" },
+        { id: 22, options: { A: "plan", B: "way", C: "thing" }, answer: "B" },
+        { id: 23, options: { A: "offered", B: "took", C: "sold" }, answer: "A" },
+        { id: 24, options: { A: "times", B: "days", C: "years" }, answer: "B" }
       ]
     },
     part5: {
       instructions: "For each question, write the correct answer.\nWrite ONE word for each gap.",
-      example: { number: 0, answer: "in" },
+      example: { number: 0, answer: "from" },
       passages: [
         {
-          from: "Mark",
-          to: "Lucy",
-          content: "I grew up [0] in a small town, but I now live [25] the city centre. It only takes me ten minutes [26] get to my office from home. I have to travel to other countries [27] work – [28] example, last month I went to the USA. I like [29] travel, but I'm always happy when I get home!"
-        },
-        {
-          from: "Lucy",
-          to: "Mark",
-          content: "That sounds great! I think I would love living in a city centre [30] I'm not sure about all the travelling."
+          from: "Rachel", to: "Chris",
+          content: "We're back [0] from our family holiday in the US. It was amazing! It's [25] biggest country I've ever been to. We travelled from Los Angeles to Seattle [26] car. It's nearly 2000 km and the trip took us [27] very long time – nearly a week.\n\nMy family liked Los Angeles best, [28] I didn't agree – Seattle was my favourite place. It's smaller [29] Los Angeles, and the food was better. Seattle is near the sea and we ate lots of fish. The only problem was that [30] rained almost every day!\n\nLet's meet for a chat soon. I have a present for you!"
         }
       ],
       questions: [
-        { id: 25, answers: ["up"] },
-        { id: 26, answers: ["At"] },
-        { id: 27, answers: ["it"] },
-        { id: 28, answers: ["for"] },
-        { id: 29, answers: ["the"] },
-        { id: 30, answers: ["if"] }
+        { id: 25, answers: ["the"] },
+        { id: 26, answers: ["by"] },
+        { id: 27, answers: ["a"] },
+        { id: 28, answers: ["but", "although", "though", "however"] },
+        { id: 29, answers: ["than"] },
+        { id: 30, answers: ["it"] }
       ]
     }
   },
