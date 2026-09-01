@@ -630,16 +630,17 @@ export default function CambridgeReading() {
                         <motion.div key={q._key}
                           initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: qi * 0.03 }}
-                          className="border border-slate-200 rounded-xl px-5 py-4 flex items-center gap-4 hover:bg-slate-50/70 transition-colors"
+                          className="border border-slate-200 rounded-xl px-5 py-4 flex items-start gap-4 hover:bg-slate-50/70 transition-colors"
                         >
                           <span className={`w-7 h-7 flex-shrink-0 rounded-full flex items-center justify-center text-xs font-extrabold transition-colors ${
                             batchChecked && !retrying[q._key]
                               ? isCorrect14(q) ? 'bg-emerald-500 text-white' : 'bg-red-400 text-white'
                               : answers[q._key] ? 'bg-violet-600 text-white' : 'bg-violet-100 text-violet-600'
                           }`}>{q.id}</span>
-                          <p className="flex-1 text-[16px] leading-6 text-slate-700">{q.text}</p>
-                          <div className="flex gap-1.5 flex-shrink-0">
-                            {(currentBatch.people || []).map(p => {
+                          <div className="min-w-0 flex-1">
+                            <p className="text-[16px] leading-6 text-slate-700">{q.text}</p>
+                            <div className="mt-4 flex gap-2">
+                              {(currentBatch.people || []).map(p => {
                               const sel = answers[q._key] === p.label
                               const effChk = batchChecked && !retrying[q._key]
                               let cls = 'border-gray-200 text-gray-400 hover:border-violet-300 hover:text-violet-600 hover:bg-violet-50'
@@ -649,20 +650,21 @@ export default function CambridgeReading() {
                                 else if (sel)             cls = 'border-red-400 bg-red-50 text-red-600'
                                 else                      cls = 'border-gray-100 text-gray-300'
                               }
-                              return (
-                                <button key={p.label} disabled={effChk && !retrying[q._key]}
-                                  onClick={() => {
-                                    if (retrying[q._key]) {
-                                      setAnswers(a => ({ ...a, [q._key]: p.label }))
-                                      setRetrying(r => { const n = { ...r }; delete n[q._key]; return n })
-                                    } else if (!effChk) {
-                                      setAnswers(a => ({ ...a, [q._key]: p.label }))
-                                    }
-                                  }}
-                                  className={`w-8 h-8 rounded-lg border-2 font-bold text-sm transition-all ${cls}`}
-                                >{p.label}</button>
-                              )
-                            })}
+                                return (
+                                  <button key={p.label} disabled={effChk && !retrying[q._key]}
+                                    onClick={() => {
+                                      if (retrying[q._key]) {
+                                        setAnswers(a => ({ ...a, [q._key]: p.label }))
+                                        setRetrying(r => { const n = { ...r }; delete n[q._key]; return n })
+                                      } else if (!effChk) {
+                                        setAnswers(a => ({ ...a, [q._key]: p.label }))
+                                      }
+                                    }}
+                                    className={`w-10 h-10 rounded-lg border-2 font-bold text-base transition-all ${cls}`}
+                                  >{p.label}</button>
+                                )
+                              })}
+                            </div>
                           </div>
                         </motion.div>
                       ))}
