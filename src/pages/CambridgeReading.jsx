@@ -540,9 +540,8 @@ export default function CambridgeReading() {
                       ))}
                     </div>
                     <div className="space-y-3 sticky top-5">
-                      <div className="pb-3 border-b-2 border-slate-800">
-                        <h3 className="text-xl font-extrabold text-slate-900">Choose the correct person.</h3>
-                        <p className="mt-1 text-sm text-slate-500">Read the descriptions on the left, then select A, B or C.</p>
+                      <div className="bg-sky-50 border border-sky-100 rounded-2xl px-5 py-4 text-[17px] leading-relaxed text-slate-600">
+                        💡 For each question, choose the correct person.
                       </div>
                       {currentBatch.questions.map((q, qi) => (
                         <motion.div key={q._key}
