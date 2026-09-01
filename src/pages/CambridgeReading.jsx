@@ -9,6 +9,87 @@ const PART_LABELS = { 1: 'Part 1', 2: 'Part 2', 3: 'Part 3', 4: 'Part 4', 5: 'Pa
 const PART_DESC   = { 1: '短文选义', 2: '人物配对', 3: '长文阅读', 4: '选词填空', 5: '语法填词' }
 const PART_ICONS  = { 1: '📄', 2: '👥', 3: '📖', 4: '🔤', 5: '✏️' }
 
+function HighlightableText({ text, storageKey, className = '' }) {
+  const boxRef = useRef(null)
+  const [marks, setMarks] = useState([])
+  const [selection, setSelection] = useState(null)
+
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem(`ket_read_highlights_${storageKey}`) || '[]')
+      setMarks(Array.isArray(saved) ? saved : [])
+    } catch {
+      setMarks([])
+    }
+    setSelection(null)
+  }, [storageKey])
+
+  function save(next) {
+    setMarks(next)
+    try { localStorage.setItem(`ket_read_highlights_${storageKey}`, JSON.stringify(next)) } catch { /* storage unavailable */ }
+  }
+
+  function captureSelection() {
+    const selected = window.getSelection()
+    const container = boxRef.current
+    if (!selected || selected.rangeCount === 0 || !container) return
+    const range = selected.getRangeAt(0)
+    if (range.collapsed || !container.contains(range.commonAncestorContainer)) return
+
+    const before = range.cloneRange()
+    before.selectNodeContents(container)
+    before.setEnd(range.startContainer, range.startOffset)
+    const start = before.toString().length
+    const end = start + range.toString().length
+    if (end > start) setSelection({ start, end })
+  }
+
+  function addMark() {
+    if (!selection) return
+    const merged = [...marks, selection]
+      .sort((a, b) => a.start - b.start)
+      .reduce((list, mark) => {
+        const last = list[list.length - 1]
+        if (last && mark.start <= last.end) last.end = Math.max(last.end, mark.end)
+        else list.push({ ...mark })
+        return list
+      }, [])
+    save(merged)
+    setSelection(null)
+    window.getSelection()?.removeAllRanges()
+  }
+
+  function removeMark(index) {
+    save(marks.filter((_, i) => i !== index))
+  }
+
+  const pieces = []
+  let cursor = 0
+  marks.forEach((mark, index) => {
+    if (cursor < mark.start) pieces.push(<span key={`text-${cursor}`}>{text.slice(cursor, mark.start)}</span>)
+    pieces.push(
+      <mark key={`mark-${index}`} onClick={() => removeMark(index)} title="点击取消标黄"
+        className="cursor-pointer rounded-sm bg-yellow-200 px-0.5 text-inherit decoration-transparent hover:bg-yellow-300">
+        {text.slice(mark.start, mark.end)}
+      </mark>
+    )
+    cursor = mark.end
+  })
+  if (cursor < text.length) pieces.push(<span key={`text-${cursor}`}>{text.slice(cursor)}</span>)
+
+  return (
+    <div className="relative">
+      {selection && (
+        <button onMouseDown={e => e.preventDefault()} onClick={addMark}
+          className="absolute -top-10 right-0 z-10 rounded-lg bg-slate-800 px-3 py-1.5 text-xs font-bold text-white shadow-lg hover:bg-slate-700">
+          🖍 标黄
+        </button>
+      )}
+      <p ref={boxRef} onMouseUp={captureSelection} className={className}>{pieces}</p>
+    </div>
+  )
+}
+
 // Build batches for Parts 1-4: each question gets a unique _key
 function buildBatches(partId) {
   if (partId === 1) {
@@ -507,7 +588,11 @@ export default function CambridgeReading() {
                                 {!q.from && q.title && <span className="font-bold text-gray-800">{TYPE_ICON[q.type]||'📄'} {q.title}</span>}
                               </div>
                             )}
-                            <p className={`text-[18px] text-slate-900 whitespace-pre-line leading-8 text-center ${q.type === 'notice' || q.type === 'ad' ? 'bg-[#dbc6ff] px-5 py-7' : ''}`}>{q.content}</p>
+                            <HighlightableText
+                              text={q.content}
+                              storageKey={`part1-${q._key}`}
+                              className={`text-[18px] text-slate-900 whitespace-pre-line leading-8 text-center ${q.type === 'notice' || q.type === 'ad' ? 'bg-[#dbc6ff] px-5 py-7' : ''}`}
+                            />
                             {q.question && <p className="mt-3 text-sm font-semibold text-gray-800 border-t border-gray-200 pt-3">{q.question}</p>}
                           </div>
                         </div>
@@ -535,7 +620,8 @@ export default function CambridgeReading() {
                             <span className="w-9 h-9 bg-violet-600 text-white text-base font-extrabold rounded-full flex items-center justify-center flex-shrink-0">{p.label}</span>
                             <span className="font-bold text-slate-800 text-xl">{p.name}</span>
                           </div>
-                          <p className="text-[17px] text-slate-700 leading-8">{p.text}</p>
+                          <HighlightableText text={p.text} storageKey={`part2-${currentBatch.title}-${p.label}`}
+                            className="text-[17px] text-slate-700 leading-8" />
                         </div>
                       ))}
                     </div>
@@ -587,9 +673,10 @@ export default function CambridgeReading() {
                 {/* ── PART 3 ── */}
                 {partId === 3 && currentBatch && (
                   <div className="flex gap-5">
-                    <div className="flex-1 bg-gray-50 rounded-xl border border-gray-100 p-5 text-sm text-gray-700 leading-[1.9] whitespace-pre-line overflow-y-auto"
+                    <div className="flex-1 bg-gray-50 rounded-xl border border-gray-100 p-5 overflow-y-auto"
                       style={{ maxHeight: '70vh' }}>
-                      {currentBatch.passage}
+                      <HighlightableText text={currentBatch.passage} storageKey={`part3-${batchIdx}`}
+                        className="text-sm text-gray-700 leading-[1.9] whitespace-pre-line" />
                     </div>
                     <div className="w-72 flex-shrink-0 space-y-4 overflow-y-auto" style={{ maxHeight: '70vh' }}>
                       {currentBatch.questions.map((q, qi) => (
