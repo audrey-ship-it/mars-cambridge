@@ -678,7 +678,7 @@ export default function CambridgeReading() {
                     <div className="flex-1 bg-gray-50 rounded-xl border border-gray-100 p-5 overflow-y-auto"
                       style={{ maxHeight: '70vh' }}>
                       <HighlightableText text={currentBatch.passage} storageKey={`part3-${batchIdx}`}
-                        className="text-sm text-gray-700 leading-[1.9] whitespace-pre-line" />
+                        className="text-[19px] text-gray-700 leading-9 whitespace-pre-line" />
                     </div>
                     <div className="w-72 flex-shrink-0 space-y-4 overflow-y-auto" style={{ maxHeight: '70vh' }}>
                       {currentBatch.questions.map((q, qi) => (
