@@ -231,7 +231,7 @@ export default function CambridgeReading() {
 
   // ── Components ─────────────────────────────────────────
 
-  function MCOption({ q, opt, label, exam = false }) {
+  function MCOption({ q, opt, label, exam = false, large = false }) {
     const key      = q._key
     const isRetry  = retrying[key]
     const effChk   = batchChecked && !isRetry
@@ -283,7 +283,7 @@ export default function CambridgeReading() {
           right ? 'text-emerald-600 border-emerald-300 bg-emerald-50' : wrong ? 'text-red-500 border-red-300 bg-red-50' : selected ? 'text-sky-600 border-sky-300 bg-sky-50' : 'text-slate-400 border-slate-200'
         }`}>{label}</span>
         {wrong && <span className="text-red-500 text-sm flex-shrink-0">✕</span>}
-        <span className="text-[15px] text-slate-700 leading-snug">{opt}</span>
+        <span className={`${large ? 'text-[19px]' : 'text-[15px]'} text-slate-700 leading-snug`}>{opt}</span>
       </button>
     )
   }
@@ -692,11 +692,11 @@ export default function CambridgeReading() {
                                 ? isCorrect14(q) ? 'bg-emerald-500 text-white' : 'bg-red-400 text-white'
                                 : answers[q._key] ? 'bg-violet-600 text-white' : 'bg-violet-100 text-violet-600'
                             }`}>{q.id}</span>
-                            <p className="text-xs font-semibold text-gray-700 leading-relaxed">{q.text}</p>
+                            <p className="text-[19px] font-extrabold text-gray-700 leading-7">{q.text}</p>
                           </div>
                           <div className="pl-8 space-y-1.5">
                             {Object.entries(q.options).map(([label, opt]) => (
-                              <MCOption key={label} q={q} opt={opt} label={label} />
+                              <MCOption key={label} q={q} opt={opt} label={label} large />
                             ))}
                             <WrongActions q={q} />
                           </div>
