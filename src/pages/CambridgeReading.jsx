@@ -708,29 +708,29 @@ export default function CambridgeReading() {
 
                 {/* ── PART 4 ── */}
                 {partId === 4 && currentBatch && (
-                  <div className="space-y-6">
-                    <div className="bg-gray-50 rounded-xl border border-gray-100 p-5 leading-loose text-sm text-gray-700">
+                  <div className="grid grid-cols-2 gap-5">
+                    <div className="bg-gray-50 rounded-xl border border-gray-100 p-6 leading-9 text-[18px] text-gray-700">
                       {renderPart4Passage(currentBatch)}
                     </div>
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-3 max-h-[70vh] overflow-y-auto pr-1">
                       {currentBatch.questions.map((q, qi) => (
                         <motion.div key={q._key}
                           initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: qi * 0.04 }}
-                          className={`border rounded-xl p-3.5 transition-colors ${
+                          className={`border rounded-xl p-4 transition-colors ${
                             batchChecked && !retrying[q._key]
                               ? isCorrect14(q) ? 'border-emerald-200 bg-emerald-50/40' : 'border-red-200 bg-red-50/40'
                               : 'border-gray-100'
                           }`}
                         >
-                          <div className="flex items-center gap-2 mb-2">
-                            <span className={`text-xs font-extrabold ${
+                          <div className="flex items-center gap-2 mb-3">
+                            <span className={`text-sm font-extrabold ${
                               batchChecked && !retrying[q._key]
                                 ? isCorrect14(q) ? 'text-emerald-600' : 'text-red-500'
                                 : 'text-violet-600'
                             }`}>({q.id})</span>
                           </div>
-                          <div className="space-y-1.5">
+                          <div className="space-y-2">
                             {Object.entries(q.options).map(([label, opt]) => (
                               <MCOption key={label} q={q} opt={opt} label={label} />
                             ))}
