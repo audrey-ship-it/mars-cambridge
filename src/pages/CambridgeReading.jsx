@@ -434,28 +434,46 @@ export default function CambridgeReading() {
   return (
     <CambridgeLayout activeModule="reading" level={level} setLevel={setLevel}>
       <nav className="border-b border-slate-100 bg-white px-4 sm:px-6 py-4">
-        <div className="mx-auto flex max-w-[1440px] flex-wrap items-center gap-2.5">
-          <span className="mr-1 hidden text-sm font-extrabold text-slate-400 lg:inline">阅读题型</span>
-          {[1,2,3,4,5].map(pid => (
-            <button
-              key={pid}
-              onClick={() => { setPartId(pid); setBatchIdx(0) }}
-              aria-current={partId === pid ? 'page' : undefined}
-              className={`flex items-center gap-2 rounded-xl border px-4 py-2.5 text-left text-sm font-extrabold transition ${
-                partId === pid
-                  ? 'border-sky-400 bg-sky-100 text-sky-800 shadow-sm'
-                  : 'border-slate-200 bg-white text-slate-500 hover:border-sky-300 hover:bg-sky-50 hover:text-sky-700'
-              }`}
-            >
-              <span className="text-base">{PART_ICONS[pid]}</span>
-              <span>
-                <span className="block leading-none">{PART_LABELS[pid]}</span>
-                <span className={`mt-1 block text-[10px] font-medium leading-none ${partId === pid ? 'text-sky-600' : 'text-slate-400'}`}>
-                  {pid === 5 ? '语法填词' : PART_DESC[pid]}
+        <div className="mx-auto max-w-[1440px] space-y-3">
+          <div className="flex flex-wrap items-center gap-2.5">
+            <span className="mr-1 hidden text-sm font-extrabold text-slate-400 lg:inline">阅读题型</span>
+            {[1,2,3,4,5].map(pid => (
+              <button
+                key={pid}
+                onClick={() => { setPartId(pid); setBatchIdx(0) }}
+                aria-current={partId === pid ? 'page' : undefined}
+                className={`flex items-center gap-2 rounded-xl border px-4 py-2.5 text-left text-sm font-extrabold transition ${
+                  partId === pid
+                    ? 'border-sky-400 bg-sky-100 text-sky-800 shadow-sm'
+                    : 'border-slate-200 bg-white text-slate-500 hover:border-sky-300 hover:bg-sky-50 hover:text-sky-700'
+                }`}
+              >
+                <span className="text-base">{PART_ICONS[pid]}</span>
+                <span>
+                  <span className="block leading-none">{PART_LABELS[pid]}</span>
+                  <span className={`mt-1 block text-[10px] font-medium leading-none ${partId === pid ? 'text-sky-600' : 'text-slate-400'}`}>
+                    {pid === 5 ? '语法填词' : PART_DESC[pid]}
+                  </span>
                 </span>
-              </span>
-            </button>
-          ))}
+              </button>
+            ))}
+          </div>
+          {!isPart5 && batches.length > 1 && (
+            <div className="flex flex-wrap items-center gap-2 border-t border-slate-100 pt-3">
+              <span className="mr-1 text-xs font-extrabold tracking-wider text-slate-400">练习批次</span>
+              {batches.map((_, i) => (
+                <button key={i} onClick={() => setBatchIdx(i)}
+                  aria-current={batchIdx === i ? 'page' : undefined}
+                  className={`h-9 min-w-9 rounded-lg border px-3 text-sm font-extrabold transition-all ${
+                    batchIdx === i
+                      ? 'border-sky-500 bg-sky-500 text-white shadow-sm'
+                      : 'border-slate-200 bg-slate-50 text-slate-500 hover:border-sky-300 hover:bg-sky-50 hover:text-sky-700'
+                  }`}
+                >{i + 1}</button>
+              ))}
+              <span className="ml-1 text-xs text-slate-400">当前 {batchIdx + 1} / {batches.length}</span>
+            </div>
+          )}
         </div>
       </nav>
       <div className="max-w-[1440px] mx-auto px-3 sm:px-5 py-6 lg:py-8 flex gap-7">
@@ -486,24 +504,6 @@ export default function CambridgeReading() {
               </div>
             )}
           </div>
-
-          {/* Batch navigator (Parts 1-4) */}
-          {!isPart5 && batches.length > 1 && (
-            <div className="bg-white rounded-[22px] border border-slate-200 shadow-sm p-4">
-              <p className="text-[11px] font-bold text-slate-400 tracking-widest mb-2">练习批次</p>
-              <div className="flex flex-wrap gap-1">
-                {batches.map((_, i) => (
-                  <button key={i} onClick={() => setBatchIdx(i)}
-                    className={`w-8 h-8 rounded-lg text-xs font-bold transition-all ${
-                      batchIdx === i
-                        ? 'bg-sky-500 text-white shadow-sm'
-                        : 'bg-slate-50 text-slate-500 hover:bg-sky-50 hover:text-sky-700'
-                    }`}
-                  >{i + 1}</button>
-                ))}
-              </div>
-            </div>
-          )}
 
           {/* Part 5 set selector */}
           {isPart5 && (
