@@ -232,8 +232,6 @@ export default function CambridgeReading() {
   const p5Pct      = p5Score ? Math.round(p5Score.correct / p5Score.total * 100) : 0
 
   // ── Stimulus type icons ────────────────────────────────
-  const TYPE_ICON = { email: '📧', text: '💬', notice: '📋', ad: '📢', note: '📝', sign: '🪧' }
-
   // ── Components ─────────────────────────────────────────
 
   function MCOption({ q, opt, label, exam = false, large = false }) {
@@ -320,6 +318,62 @@ export default function CambridgeReading() {
     )
   }
 
+  function Part1Stimulus({ q }) {
+    const text = (
+      <HighlightableText
+        text={q.content}
+        storageKey={`part1-${q._key}`}
+        className="text-[18px] text-slate-900 whitespace-pre-line leading-8"
+      />
+    )
+
+    if (q.type === 'email') return (
+      <div className="overflow-hidden rounded-2xl border border-slate-300 bg-white shadow-[0_14px_35px_rgba(15,23,42,.09)]">
+        <div className="flex items-center gap-1.5 border-b border-slate-200 bg-slate-100 px-4 py-3">
+          <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
+          <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
+          <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
+          <span className="ml-3 text-[11px] font-bold uppercase tracking-[.16em] text-slate-400">Email</span>
+        </div>
+        <div className="border-b border-slate-100 px-5 py-3 text-sm leading-6 text-slate-500">
+          {q.from && <p><span className="inline-block w-12 text-slate-400">From</span><strong className="text-slate-800">{q.from}</strong></p>}
+          {q.to && <p><span className="inline-block w-12 text-slate-400">To</span><strong className="text-slate-800">{q.to}</strong></p>}
+        </div>
+        <div className="px-6 py-7">{text}</div>
+      </div>
+    )
+
+    if (q.type === 'text') return (
+      <div className="mx-auto max-w-[330px] rounded-[30px] border-[7px] border-slate-800 bg-slate-50 px-4 pb-7 pt-3 shadow-[0_16px_35px_rgba(15,23,42,.15)]">
+        <div className="mx-auto mb-7 h-1.5 w-16 rounded-full bg-slate-600" />
+        <div className="mb-3 text-center text-xs font-bold text-slate-500">{q.from || 'Message'}</div>
+        <div className="rounded-[20px_20px_6px_20px] bg-sky-100 px-5 py-5 text-left shadow-sm">{text}</div>
+      </div>
+    )
+
+    if (q.type === 'ad') return (
+      <div className="relative overflow-hidden rounded-2xl border-2 border-rose-300 bg-gradient-to-br from-rose-50 via-amber-50 to-orange-100 px-7 py-10 text-center shadow-[0_14px_35px_rgba(190,24,93,.10)]">
+        <span className="absolute right-4 top-4 rounded-full bg-rose-500 px-3 py-1 text-[10px] font-extrabold uppercase tracking-widest text-white">Advertisement</span>
+        <div className="pt-4 font-semibold">{text}</div>
+      </div>
+    )
+
+    if (q.type === 'sign') return (
+      <div className="rounded-xl border-[5px] border-slate-700 bg-slate-900 px-7 py-9 text-center shadow-[0_14px_30px_rgba(15,23,42,.18)] [&_*]:!text-white">
+        {text}
+      </div>
+    )
+
+    return (
+      <div className="relative rounded-xl bg-[#e7d8af] p-5 shadow-[0_14px_35px_rgba(71,55,25,.12)]">
+        <span className="absolute left-1/2 top-2 h-4 w-4 -translate-x-1/2 rounded-full border-2 border-white bg-red-500 shadow" />
+        <div className="min-h-[220px] border border-amber-200 bg-[#fffdf6] px-7 py-10 text-center shadow-[0_5px_14px_rgba(71,55,25,.14)] flex items-center justify-center">
+          <div>{text}</div>
+        </div>
+      </div>
+    )
+  }
+
   // ── Part 5 helpers ─────────────────────────────────────
   function renderPart5Passage(content) {
     return content.split(/\[(\d+)\]/).map((seg, i) => {
@@ -379,10 +433,10 @@ export default function CambridgeReading() {
   // ── Render ─────────────────────────────────────────────
   return (
     <CambridgeLayout activeModule="reading" level={level} setLevel={setLevel}>
-      <div className="max-w-[1440px] mx-auto px-5 py-8 flex gap-7">
+      <div className="max-w-[1440px] mx-auto px-3 sm:px-5 py-6 lg:py-8 flex gap-7">
 
         {/* Sidebar */}
-        <aside className="w-52 flex-shrink-0 space-y-4">
+        <aside className="hidden xl:block w-52 flex-shrink-0 space-y-4">
 
           {/* Part selector */}
           <div className="bg-white rounded-[22px] border border-slate-200 shadow-sm p-4">
@@ -549,7 +603,7 @@ export default function CambridgeReading() {
               className="bg-white rounded-[24px] border border-slate-200 shadow-sm overflow-hidden"
             >
               {/* Card header */}
-              <div className="px-8 py-6 border-b-2 border-slate-800 flex items-start justify-between">
+              <div className="px-5 sm:px-8 py-5 sm:py-6 border-b-2 border-slate-800 flex flex-wrap gap-4 items-start justify-between">
                 <div>
                   <div className="flex items-center gap-2 mb-0.5">
                     <span className="text-lg">{PART_ICONS[partId]}</span>
@@ -582,7 +636,7 @@ export default function CambridgeReading() {
               </div>
 
               {/* Part content */}
-              <div className="p-8">
+              <div className="p-4 sm:p-8">
 
                 {/* ── PART 1 ── */}
                 {partId === 1 && currentBatch && (
@@ -591,10 +645,10 @@ export default function CambridgeReading() {
                       <motion.div key={q._key}
                         initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: qi * 0.04 }}
-                        className="grid grid-cols-[360px_1fr] gap-14 py-12 border-b border-slate-300 last:border-b-0"
+                        className="grid grid-cols-1 2xl:grid-cols-[400px_minmax(0,1fr)] gap-8 2xl:gap-12 py-8 sm:py-10 border-b border-slate-300 last:border-b-0"
                       >
                         {/* Left: numbered stimulus box */}
-                        <div className="min-w-0 flex flex-col">
+                        <div className="min-w-0 w-full max-w-[520px] mx-auto 2xl:max-w-none flex flex-col">
                           <div className="flex items-center gap-2 mb-2">
                             <span className={`w-7 h-7 flex-shrink-0 rounded-full flex items-center justify-center text-xs font-extrabold transition-colors ${
                               batchChecked && !retrying[q._key]
@@ -602,21 +656,7 @@ export default function CambridgeReading() {
                                 : answers[q._key] ? 'bg-sky-500 text-white' : 'bg-sky-100 text-sky-700'
                             }`}>{qi + 1 + batchIdx * 6}</span>
                           </div>
-                          <div className="flex-1 border-2 border-slate-300 p-5 bg-white flex flex-col justify-center shadow-[0_1px_0_rgba(15,23,42,.04)]">
-                            {(q.from || q.title) && (
-                              <div className="flex flex-wrap gap-x-3 mb-2 text-xs text-gray-500 font-medium">
-                                {q.from && <span>{TYPE_ICON[q.type]||'📄'} From: <span className="text-gray-800 font-bold">{q.from}</span></span>}
-                                {q.to   && <span>To: <span className="text-gray-800 font-bold">{q.to}</span></span>}
-                                {!q.from && q.title && <span className="font-bold text-gray-800">{TYPE_ICON[q.type]||'📄'} {q.title}</span>}
-                              </div>
-                            )}
-                            <HighlightableText
-                              text={q.content}
-                              storageKey={`part1-${q._key}`}
-                              className={`text-[18px] text-slate-900 whitespace-pre-line leading-8 text-center ${q.type === 'notice' || q.type === 'ad' ? 'bg-[#dbc6ff] px-5 py-7' : ''}`}
-                            />
-                            {q.question && <p className="mt-3 text-sm font-semibold text-gray-800 border-t border-gray-200 pt-3">{q.question}</p>}
-                          </div>
+                          <Part1Stimulus q={q} />
                         </div>
 
                         {/* Right: options + wrong actions */}
