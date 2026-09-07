@@ -7,8 +7,13 @@ import { ketPart5Sets, PART5_GROUPS } from '../data/ketPart5Extras'
 
 const PART_LABELS = { 1: 'Part 1', 2: 'Part 2', 3: 'Part 3', 4: 'Part 4', 5: 'Part 5' }
 const PART_DESC   = { 1: '短文选义', 2: '人物配对', 3: '长文阅读', 4: '选词填空', 5: '语法填词' }
-const PART_ICONS  = { 1: '📄', 2: '👥', 3: '📖', 4: '🔤', 5: '✏️' }
-
+const PART_HELP   = {
+  1: '阅读六则短通知、信息或告示，从 A、B、C 中选择正确含义。',
+  2: '阅读三段人物或地点介绍，根据题目选择 A、B 或 C。',
+  3: '阅读一篇较长文章，根据文章内容完成五道选择题。',
+  4: '阅读短文，为每个空选择最恰当的单词。',
+  5: '根据上下文，在每个空中填写一个正确的单词。'
+}
 function HighlightableText({ text, storageKey, className = '' }) {
   const boxRef = useRef(null)
   const [marks, setMarks] = useState([])
@@ -434,52 +439,104 @@ export default function CambridgeReading() {
   return (
     <CambridgeLayout activeModule="reading" level={level} setLevel={setLevel}>
       <nav className="border-b border-slate-100 bg-white px-4 sm:px-6 py-4">
-        <div className="mx-auto max-w-[1440px] space-y-3">
-          <div className="flex flex-wrap items-center gap-2.5">
-            <span className="mr-1 hidden text-sm font-extrabold text-slate-400 lg:inline">阅读题型</span>
-            {[1,2,3,4,5].map(pid => (
-              <button
-                key={pid}
-                onClick={() => { setPartId(pid); setBatchIdx(0) }}
-                aria-current={partId === pid ? 'page' : undefined}
-                className={`flex items-center gap-2 rounded-xl border px-4 py-2.5 text-left text-sm font-extrabold transition ${
-                  partId === pid
-                    ? 'border-sky-400 bg-sky-100 text-sky-800 shadow-sm'
-                    : 'border-slate-200 bg-white text-slate-500 hover:border-sky-300 hover:bg-sky-50 hover:text-sky-700'
-                }`}
-              >
-                <span className="text-base">{PART_ICONS[pid]}</span>
-                <span>
-                  <span className="block leading-none">{PART_LABELS[pid]}</span>
-                  <span className={`mt-1 block text-[10px] font-medium leading-none ${partId === pid ? 'text-sky-600' : 'text-slate-400'}`}>
-                    {pid === 5 ? '语法填词' : PART_DESC[pid]}
-                  </span>
-                </span>
-              </button>
-            ))}
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-2.5">
+          <Link to="/cambridge/reading" className="mr-1 rounded-xl border border-sky-300 bg-sky-50 px-4 py-2.5 text-sm font-extrabold text-sky-800">
+            ← 我的阅读中心
+          </Link>
+          <span className="mr-1 text-slate-300">›</span>
+          {[1,2,3,4,5].map(pid => (
+            <button key={pid} onClick={() => { setPartId(pid); setBatchIdx(0) }}
+              aria-current={partId === pid ? 'page' : undefined}
+              className={`rounded-xl border px-4 py-2.5 text-sm font-extrabold transition ${
+                partId === pid
+                  ? 'border-sky-500 bg-sky-500 text-white shadow-sm'
+                  : 'border-slate-200 bg-white text-slate-500 hover:border-sky-300 hover:text-sky-700'
+              }`}
+            >Part {pid}</button>
+          ))}
+        </div>
+      </nav>
+      <main className="mx-auto max-w-6xl px-4 sm:px-6 py-7">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <div className="text-[11px] font-extrabold tracking-[.18em] text-sky-700">KET READING</div>
+            <h1 className="mt-1 text-3xl sm:text-4xl font-extrabold">{PART_LABELS[partId]} {PART_DESC[partId]}</h1>
+            <p className="mt-2 text-slate-500">{PART_HELP[partId]}</p>
           </div>
-          {!isPart5 && batches.length > 1 && (
-            <div className="flex flex-wrap items-center gap-2 border-t border-slate-100 pt-3">
-              <span className="mr-1 text-xs font-extrabold tracking-wider text-slate-400">练习批次</span>
+          <div className="flex items-center gap-3 rounded-2xl border border-sky-200 bg-sky-50 px-4 py-3">
+            <button onClick={() => setTimerOn(t => !t)}
+              className={`rounded-xl px-4 py-2 font-mono text-sm font-bold transition ${timerOn ? 'bg-sky-500 text-white' : 'bg-white text-slate-600 shadow-sm'}`}>
+              ⏱ {fmtTime(timer)}
+            </button>
+            <div className="min-w-20 text-right text-xs text-slate-500">
+              <div className="font-bold text-slate-700">{isPart5 ? p5Answered : batchAnswered} / {isPart5 ? p5Qs.length : batchQs.length}</div>
+              <div>完成进度</div>
+            </div>
+          </div>
+        </div>
+
+        {!isPart5 && batches.length > 1 && (
+          <section className="mt-6 rounded-[24px] border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
+            <div className="mb-3 flex items-center justify-between gap-3">
+              <strong className="text-sm text-slate-700">选择练习</strong>
+              <span className="text-xs text-slate-400">共 {batches.length} 套 · 当前为练习{batchIdx + 1}</span>
+            </div>
+            <div className="grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-12">
               {batches.map((_, i) => (
                 <button key={i} onClick={() => setBatchIdx(i)}
                   aria-current={batchIdx === i ? 'page' : undefined}
-                  className={`h-9 min-w-9 rounded-lg border px-3 text-sm font-extrabold transition-all ${
+                  className={`rounded-xl border px-3 py-3 text-sm font-extrabold transition ${
                     batchIdx === i
                       ? 'border-sky-500 bg-sky-500 text-white shadow-sm'
-                      : 'border-slate-200 bg-slate-50 text-slate-500 hover:border-sky-300 hover:bg-sky-50 hover:text-sky-700'
+                      : 'border-sky-100 bg-sky-50 text-sky-800 hover:border-sky-300'
                   }`}
                 >{i + 1}</button>
               ))}
-              <span className="ml-1 text-xs text-slate-400">当前 {batchIdx + 1} / {batches.length}</span>
             </div>
-          )}
-        </div>
-      </nav>
-      <div className="max-w-[1440px] mx-auto px-3 sm:px-5 py-6 lg:py-8 flex gap-7">
+          </section>
+        )}
+
+        {isPart5 && (
+          <section className="mt-6 rounded-[24px] border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
+            <div className="mb-3 flex items-center justify-between gap-3">
+              <strong className="text-sm text-slate-700">选择练习</strong>
+              <span className="text-xs text-slate-400">官方整套与专项题库分开显示</span>
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="mr-1 text-xs font-bold text-emerald-700">已核验官方真题</span>
+              {verifiedTests.map(test => (
+                <button key={test.id} onClick={() => { setPart5Mode('official'); setPart5Id(test.id) }}
+                  className={`rounded-xl border px-4 py-2.5 text-sm font-extrabold transition ${
+                    part5Mode === 'official' && part5Id === test.id
+                      ? 'border-sky-500 bg-sky-500 text-white'
+                      : 'border-emerald-200 bg-emerald-50 text-emerald-800 hover:border-emerald-400'
+                  }`}
+                >真题 {test.id}</button>
+              ))}
+            </div>
+            <div className="mt-4 space-y-3 border-t border-slate-100 pt-4">
+              {PART5_GROUPS.map(grp => (
+                <div key={grp.label} className="flex flex-wrap items-center gap-2">
+                  <span className="w-28 flex-shrink-0 text-xs font-bold text-slate-400">{grp.label}</span>
+                  {grp.ids.map(id => (
+                    <button key={id} onClick={() => { setPart5Mode('practice'); setPart5Id(id) }}
+                      className={`h-9 min-w-9 rounded-lg border px-3 text-sm font-bold transition ${
+                        part5Mode === 'practice' && part5Id === id
+                          ? 'border-sky-500 bg-sky-500 text-white'
+                          : 'border-slate-200 bg-slate-50 text-slate-500 hover:border-sky-300 hover:text-sky-700'
+                      }`}
+                    >{id}</button>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+      <div className="mt-6 flex gap-7">
 
         {/* Sidebar */}
-        <aside className="hidden xl:block w-52 flex-shrink-0 space-y-4">
+        <aside className="hidden w-52 flex-shrink-0 space-y-4">
 
           {/* Timer */}
           <div className="bg-white rounded-[22px] border border-slate-200 shadow-sm p-4">
@@ -603,39 +660,6 @@ export default function CambridgeReading() {
               exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.18 }}
               className="bg-white rounded-[24px] border border-slate-200 shadow-sm overflow-hidden"
             >
-              {/* Card header */}
-              <div className="px-5 sm:px-8 py-5 sm:py-6 border-b-2 border-slate-800 flex flex-wrap gap-4 items-start justify-between">
-                <div>
-                  <div className="flex items-center gap-2 mb-0.5">
-                    <span className="text-lg">{PART_ICONS[partId]}</span>
-                    <h2 className="font-extrabold text-slate-900 text-[26px] tracking-tight">
-                      {isPart5
-                        ? <>{p5Set?.source} <span className="text-violet-600">· Part 5</span></>
-                        : <><span className="text-slate-900">Reading:</span> <span className="text-sky-500">{PART_LABELS[partId]}</span></>
-                      }
-                    </h2>
-                    <span className="text-xs text-slate-500 font-medium bg-sky-50 px-2.5 py-1 rounded-full">
-                      {PART_DESC[partId]}
-                    </span>
-                    {!isPart5 && (
-                      <span className="text-xs font-bold text-slate-500 ml-1">练习 {batchIdx + 1} / {batches.length}</span>
-                    )}
-                  </div>
-                  {!isPart5 && currentBatch?.instructions && (
-                    <p className="text-sm text-slate-600 leading-relaxed max-w-2xl mt-4 bg-sky-50 border border-sky-100 px-4 py-3 rounded-xl">💡 {currentBatch.instructions}</p>
-                  )}
-                  {isPart5 && p5Part?.instructions && (
-                    <p className="text-xs text-gray-400 leading-relaxed max-w-lg">{p5Part.instructions}</p>
-                  )}
-                </div>
-                {!isPart5 && currentBatch?.title && (
-                  <div className="text-right flex-shrink-0 ml-4">
-                    <p className="text-sm font-semibold text-gray-700">{currentBatch.title}</p>
-                    {currentBatch.author && <p className="text-xs text-gray-400 mt-0.5">{currentBatch.author}</p>}
-                  </div>
-                )}
-              </div>
-
               {/* Part content */}
               <div className="p-4 sm:p-8">
 
@@ -929,6 +953,7 @@ export default function CambridgeReading() {
           </AnimatePresence>
         </div>
       </div>
+      </main>
     </CambridgeLayout>
   )
 }
