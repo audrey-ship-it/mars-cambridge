@@ -661,18 +661,20 @@ export default function CambridgeReading() {
                       <strong className="text-emerald-900">{currentBatch.testTitle}</strong>
                       <span className="text-emerald-700">已按原书页面核验 · 左侧可放大查看</span>
                     </div>
-                    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-start">
-                      <div className="space-y-4">
-                        {currentBatch.scanPages.map((src, index) => (
-                          <a key={src} href={src} target="_blank" rel="noreferrer"
+                    <div className="space-y-8">
+                      {currentBatch.scanPages.map((src, pageIndex) => {
+                        const pageQuestions = partId === 1
+                          ? currentBatch.questions.slice(pageIndex * 3, pageIndex * 3 + 3)
+                          : pageIndex === 0 ? currentBatch.questions : []
+                        return (
+                        <div key={src} className="grid grid-cols-1 gap-5 border-b border-slate-200 pb-8 last:border-b-0 last:pb-0 lg:grid-cols-[minmax(0,1.45fr)_minmax(280px,.55fr)] lg:items-start">
+                          <a href={src} target="_blank" rel="noreferrer"
                             className="block overflow-hidden rounded-xl border border-slate-200 bg-slate-50 shadow-sm">
-                            <img src={src} alt={`${currentBatch.testTitle} Part ${partId} 第 ${index + 1} 页`}
+                            <img src={src} alt={`${currentBatch.testTitle} Part ${partId} 第 ${pageIndex + 1} 页`}
                               className="h-auto w-full" />
                           </a>
-                        ))}
-                      </div>
-                      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:sticky lg:top-5">
-                        {currentBatch.questions.map(q => (
+                          {pageQuestions.length > 0 && <div className="space-y-3 lg:sticky lg:top-5">
+                          {pageQuestions.map(q => (
                           <div key={q._key} className={`rounded-xl border p-4 ${
                             batchChecked ? isCorrect14(q) ? 'border-emerald-300 bg-emerald-50' : 'border-red-300 bg-red-50' : 'border-slate-200'
                           }`}>
@@ -696,8 +698,13 @@ export default function CambridgeReading() {
                               })}
                             </div>
                           </div>
-                        ))}
-                      </div>
+                          ))}
+                          </div>}
+                        </div>
+                      )})}
+                      {partId !== 1 && currentBatch.scanPages.length > 1 && (
+                        <p className="text-center text-xs text-slate-400">答题卡固定在第一张材料页旁；向上滚动可继续作答。</p>
+                      )}
                     </div>
                   </div>
                 )}
