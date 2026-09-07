@@ -433,34 +433,35 @@ export default function CambridgeReading() {
   // ── Render ─────────────────────────────────────────────
   return (
     <CambridgeLayout activeModule="reading" level={level} setLevel={setLevel}>
+      <nav className="border-b border-slate-100 bg-white px-4 sm:px-6 py-4">
+        <div className="mx-auto flex max-w-[1440px] flex-wrap items-center gap-2.5">
+          <span className="mr-1 hidden text-sm font-extrabold text-slate-400 lg:inline">阅读题型</span>
+          {[1,2,3,4,5].map(pid => (
+            <button
+              key={pid}
+              onClick={() => { setPartId(pid); setBatchIdx(0) }}
+              aria-current={partId === pid ? 'page' : undefined}
+              className={`flex items-center gap-2 rounded-xl border px-4 py-2.5 text-left text-sm font-extrabold transition ${
+                partId === pid
+                  ? 'border-sky-400 bg-sky-100 text-sky-800 shadow-sm'
+                  : 'border-slate-200 bg-white text-slate-500 hover:border-sky-300 hover:bg-sky-50 hover:text-sky-700'
+              }`}
+            >
+              <span className="text-base">{PART_ICONS[pid]}</span>
+              <span>
+                <span className="block leading-none">{PART_LABELS[pid]}</span>
+                <span className={`mt-1 block text-[10px] font-medium leading-none ${partId === pid ? 'text-sky-600' : 'text-slate-400'}`}>
+                  {pid === 5 ? '语法填词' : PART_DESC[pid]}
+                </span>
+              </span>
+            </button>
+          ))}
+        </div>
+      </nav>
       <div className="max-w-[1440px] mx-auto px-3 sm:px-5 py-6 lg:py-8 flex gap-7">
 
         {/* Sidebar */}
         <aside className="hidden xl:block w-52 flex-shrink-0 space-y-4">
-
-          {/* Part selector */}
-          <div className="bg-white rounded-[22px] border border-slate-200 shadow-sm p-4">
-            <p className="text-[11px] font-bold text-slate-400 tracking-widest mb-3">阅读题型</p>
-            <div className="space-y-1">
-              {[1,2,3,4,5].map(pid => (
-                <button key={pid} onClick={() => { setPartId(pid); setBatchIdx(0) }}
-                  className={`w-full text-left px-3 py-2.5 rounded-xl text-xs transition-all flex items-center gap-2 ${
-                    partId === pid
-                      ? 'bg-sky-50 text-sky-600 font-bold ring-1 ring-sky-200'
-                      : 'text-slate-500 hover:bg-slate-50 hover:text-slate-700'
-                  }`}
-                >
-                    <span className="text-base">{PART_ICONS[pid]}</span>
-                  <div>
-                    <div className="font-bold">{PART_LABELS[pid]}</div>
-                    <div className={`text-[10px] ${partId === pid ? 'text-violet-400' : 'text-gray-400'}`}>
-                      {pid === 5 ? '语法填词' : PART_DESC[pid]}
-                    </div>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
 
           {/* Timer */}
           <div className="bg-white rounded-[22px] border border-slate-200 shadow-sm p-4">
