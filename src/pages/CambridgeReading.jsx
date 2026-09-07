@@ -264,14 +264,14 @@ export default function CambridgeReading() {
         <button
           disabled={effChk && !isRetry}
           onClick={handleClick}
-          className={`flex items-center gap-6 w-full text-left py-2 transition-all ${effChk && !right && !wrong ? 'opacity-45' : ''}`}
+          className={`flex items-center gap-3 sm:gap-5 w-full text-left py-2 transition-all ${effChk && !right && !wrong ? 'opacity-45' : ''}`}
         >
-          <span className={`w-11 h-11 flex-shrink-0 border-2 shadow-sm transition-colors ${
+          <span className={`w-9 h-9 sm:w-11 sm:h-11 flex-shrink-0 border-2 shadow-sm transition-colors ${
             right ? 'border-emerald-500 bg-emerald-50' : wrong ? 'border-red-400 bg-red-50' : selected ? 'border-sky-500 bg-sky-50' : 'border-sky-500 bg-sky-50 hover:bg-sky-100'
           } flex items-center justify-center font-bold text-sm ${right ? 'text-emerald-600' : wrong ? 'text-red-500' : 'text-sky-600'}`}>
             {(right || (selected && !effChk)) ? label : ''}
           </span>
-          <span className="text-[18px] leading-snug text-[#30284d]">{opt}</span>
+          <span className="text-[15px] sm:text-[18px] leading-snug text-[#30284d]">{opt}</span>
         </button>
       )
     }
@@ -335,11 +335,11 @@ export default function CambridgeReading() {
           <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
           <span className="ml-3 text-[11px] font-bold uppercase tracking-[.16em] text-slate-400">Email</span>
         </div>
-        <div className="border-b border-slate-100 px-5 py-3 text-sm leading-6 text-slate-500">
+        <div className="border-b border-slate-100 px-3 sm:px-5 py-3 text-sm leading-6 text-slate-500">
           {q.from && <p><span className="inline-block w-12 text-slate-400">From</span><strong className="text-slate-800">{q.from}</strong></p>}
           {q.to && <p><span className="inline-block w-12 text-slate-400">To</span><strong className="text-slate-800">{q.to}</strong></p>}
         </div>
-        <div className="px-6 py-7">{text}</div>
+        <div className="px-4 sm:px-6 py-5 sm:py-7">{text}</div>
       </div>
     )
 
@@ -365,9 +365,9 @@ export default function CambridgeReading() {
     )
 
     return (
-      <div className="relative rounded-xl bg-[#e7d8af] p-5 shadow-[0_14px_35px_rgba(71,55,25,.12)]">
+      <div className="relative rounded-xl bg-[#e7d8af] p-3 sm:p-5 shadow-[0_14px_35px_rgba(71,55,25,.12)]">
         <span className="absolute left-1/2 top-2 h-4 w-4 -translate-x-1/2 rounded-full border-2 border-white bg-red-500 shadow" />
-        <div className="min-h-[220px] border border-amber-200 bg-[#fffdf6] px-7 py-10 text-center shadow-[0_5px_14px_rgba(71,55,25,.14)] flex items-center justify-center">
+        <div className="min-h-[220px] border border-amber-200 bg-[#fffdf6] px-3 sm:px-7 py-7 sm:py-10 text-center shadow-[0_5px_14px_rgba(71,55,25,.14)] flex items-center justify-center">
           <div>{text}</div>
         </div>
       </div>
@@ -645,10 +645,10 @@ export default function CambridgeReading() {
                       <motion.div key={q._key}
                         initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: qi * 0.04 }}
-                        className="grid grid-cols-1 2xl:grid-cols-[400px_minmax(0,1fr)] gap-8 2xl:gap-12 py-8 sm:py-10 border-b border-slate-300 last:border-b-0"
+                        className="grid grid-cols-[minmax(0,.9fr)_minmax(0,1.1fr)] gap-4 lg:gap-8 py-8 sm:py-10 border-b border-slate-300 last:border-b-0 items-center"
                       >
                         {/* Left: numbered stimulus box */}
-                        <div className="min-w-0 w-full max-w-[520px] mx-auto 2xl:max-w-none flex flex-col">
+                        <div className="min-w-0 w-full flex flex-col">
                           <div className="flex items-center gap-2 mb-2">
                             <span className={`w-7 h-7 flex-shrink-0 rounded-full flex items-center justify-center text-xs font-extrabold transition-colors ${
                               batchChecked && !retrying[q._key]
@@ -660,7 +660,7 @@ export default function CambridgeReading() {
                         </div>
 
                         {/* Right: options + wrong actions */}
-                        <div className="min-w-0 flex flex-col justify-center space-y-4">
+                        <div className="min-w-0 flex flex-col justify-center space-y-3">
                           <h3 className="text-[20px] font-extrabold text-[#30284d]">{q.question || 'Choose the correct answer.'}</h3>
                           {Object.entries(q.options).map(([label, opt]) => (
                             <MCOption key={label} q={q} opt={opt} label={label} exam />
