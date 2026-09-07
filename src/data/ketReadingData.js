@@ -1,6 +1,8 @@
-/* ── KET A2 官方真题阅读数据 (4套) ── */
+/* ── KET A2 官方真题阅读数据 ── */
 
-export const ketTests = [
+import { officialReadingScans } from './officialReadingScans.js'
+
+const transcribedKetTests = [
   // ─── OFFICIAL BOOK 1 · TEST 1 (verified against source pages 8–15) ───
   {
     id: 1,
@@ -687,3 +689,8 @@ export const ketTests = [
     }
   }
 ]
+
+// Test 1 uses the hand-transcribed interactive layout. The remaining official
+// tests use source-page scans, which preserves every visual prompt and avoids
+// introducing OCR errors into the question content.
+export const ketTests = [transcribedKetTests[0], ...officialReadingScans]

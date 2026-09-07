@@ -95,22 +95,12 @@ function HighlightableText({ text, storageKey, className = '' }) {
   )
 }
 
-// Build batches for Parts 1-4: each question gets a unique _key
+// Build one batch per official test and preserve source-scan page metadata.
 function buildBatches(partId) {
-  if (partId === 1) {
-    const allQ = ketTests.flatMap((t, ti) =>
-      (t.part1?.questions || []).map(q => ({ ...q, _key: `${ti}_${q.id}` }))
-    )
-    const batches = []
-    for (let i = 0; i < allQ.length; i += 6)
-      batches.push({ questions: allQ.slice(i, i + 6) })
-    return batches
-  }
-  // Parts 2/3/4: one batch per test (context-dependent)
   return ketTests.map((t, ti) => {
     const p = t[`part${partId}`]
     if (!p) return null
-    return { ...p, questions: (p.questions || []).map(q => ({ ...q, _key: `${ti}_${q.id}` })) }
+    return { ...p, testTitle: t.title, source: t.source, questions: (p.questions || []).map(q => ({ ...q, _key: `${ti}_${q.id}` })) }
   }).filter(Boolean)
 }
 
@@ -147,6 +137,7 @@ export default function CambridgeReading() {
   const p5Part = p5Set ? {
     instructions: 'For each question, write the correct answer.\nWrite ONE word for each gap.',
     example: p5Set.example, passages: p5Set.passages, questions: p5Set.questions,
+    scanPages: p5Set.scanPages,
   } : null
 
   // ── Timer ──────────────────────────────────────────────
@@ -663,8 +654,56 @@ export default function CambridgeReading() {
               {/* Part content */}
               <div className="p-4 sm:p-8">
 
+                {/* Official source-scan layout: original paper on the left, answer sheet on the right. */}
+                {partId < 5 && currentBatch?.scanPages && (
+                  <div>
+                    <div className="mb-5 flex flex-wrap items-center justify-between gap-2 rounded-xl bg-emerald-50 px-4 py-3 text-sm">
+                      <strong className="text-emerald-900">{currentBatch.testTitle}</strong>
+                      <span className="text-emerald-700">已按原书页面核验 · 左侧可放大查看</span>
+                    </div>
+                    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-start">
+                      <div className="space-y-4">
+                        {currentBatch.scanPages.map((src, index) => (
+                          <a key={src} href={src} target="_blank" rel="noreferrer"
+                            className="block overflow-hidden rounded-xl border border-slate-200 bg-slate-50 shadow-sm">
+                            <img src={src} alt={`${currentBatch.testTitle} Part ${partId} 第 ${index + 1} 页`}
+                              className="h-auto w-full" />
+                          </a>
+                        ))}
+                      </div>
+                      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:sticky lg:top-5">
+                        {currentBatch.questions.map(q => (
+                          <div key={q._key} className={`rounded-xl border p-4 ${
+                            batchChecked ? isCorrect14(q) ? 'border-emerald-300 bg-emerald-50' : 'border-red-300 bg-red-50' : 'border-slate-200'
+                          }`}>
+                            <div className="mb-3 flex items-center justify-between">
+                              <strong className="text-slate-700">第 {q.id} 题</strong>
+                              {batchChecked && <span className={`text-xs font-bold ${isCorrect14(q) ? 'text-emerald-600' : 'text-red-500'}`}>{isCorrect14(q) ? '正确' : `答案 ${q.answer}`}</span>}
+                            </div>
+                            <div className="flex gap-2">
+                              {['A','B','C'].map(label => {
+                                const selected = answers[q._key] === label
+                                const correct = batchChecked && q.answer === label
+                                return (
+                                  <button key={label} disabled={batchChecked} onClick={() => setAnswers(a => ({ ...a, [q._key]: label }))}
+                                    className={`h-11 flex-1 rounded-lg border-2 text-base font-extrabold transition ${
+                                      correct ? 'border-emerald-500 bg-emerald-100 text-emerald-800'
+                                        : batchChecked && selected ? 'border-red-400 bg-red-100 text-red-700'
+                                        : selected ? 'border-sky-500 bg-sky-50 text-sky-700'
+                                        : 'border-slate-200 text-slate-500 hover:border-sky-300'
+                                    }`}>{label}</button>
+                                )
+                              })}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {/* ── PART 1 ── */}
-                {partId === 1 && currentBatch && (
+                {partId === 1 && currentBatch && !currentBatch.scanPages && (
                   <div className="space-y-0">
                     {currentBatch.questions.map((q, qi) => (
                       <motion.div key={q._key}
@@ -698,7 +737,7 @@ export default function CambridgeReading() {
                 )}
 
                 {/* ── PART 2 ── */}
-                {partId === 2 && currentBatch && (
+                {partId === 2 && currentBatch && !currentBatch.scanPages && (
                   <div className="grid grid-cols-[minmax(0,1.25fr)_minmax(400px,.75fr)] gap-8 items-start">
                     <div className="space-y-4">
                       {(currentBatch.people || []).map(p => (
@@ -760,7 +799,7 @@ export default function CambridgeReading() {
                 )}
 
                 {/* ── PART 3 ── */}
-                {partId === 3 && currentBatch && (
+                {partId === 3 && currentBatch && !currentBatch.scanPages && (
                   <div className="grid grid-cols-2 gap-5">
                     <div className="min-w-0 bg-gray-50 rounded-xl border border-gray-100 p-5 overflow-y-auto"
                       style={{ maxHeight: '70vh' }}>
@@ -794,7 +833,7 @@ export default function CambridgeReading() {
                 )}
 
                 {/* ── PART 4 ── */}
-                {partId === 4 && currentBatch && (
+                {partId === 4 && currentBatch && !currentBatch.scanPages && (
                   <div className="grid grid-cols-2 gap-5">
                     <div className="bg-gray-50 rounded-xl border border-gray-100 p-6 leading-9 text-[18px] text-gray-700">
                       {renderPart4Passage(currentBatch)}
@@ -830,7 +869,43 @@ export default function CambridgeReading() {
                 )}
 
                 {/* ── PART 5 ── */}
-                {partId === 5 && p5Part && (
+                {partId === 5 && p5Part?.scanPages && (
+                  <div>
+                    <div className="mb-5 rounded-xl bg-emerald-50 px-4 py-3 text-sm font-bold text-emerald-900">
+                      官方原题页在左侧，答案填写区在右侧。
+                    </div>
+                    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-start">
+                      <div className="space-y-4">
+                        {p5Part.scanPages.map(src => (
+                          <a key={src} href={src} target="_blank" rel="noreferrer"
+                            className="block overflow-hidden rounded-xl border border-slate-200 bg-slate-50 shadow-sm">
+                            <img src={src} alt="官方真题 Part 5 原页" className="h-auto w-full" />
+                          </a>
+                        ))}
+                      </div>
+                      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:sticky lg:top-5">
+                        {p5Part.questions.map(q => {
+                          const ua = answers[q.id] || ''
+                          const ok = p5Checked ? isP5Correct(q) : null
+                          return (
+                            <label key={q.id} className={`rounded-xl border p-4 ${
+                              !p5Checked ? 'border-slate-200' : ok ? 'border-emerald-300 bg-emerald-50' : 'border-red-300 bg-red-50'
+                            }`}>
+                              <span className="mb-2 block text-sm font-extrabold text-slate-600">第 {q.id} 题</span>
+                              <div className="flex items-center gap-2">
+                                <input value={ua} disabled={p5Checked} onChange={e => setAnswers(a => ({ ...a, [q.id]: e.target.value }))}
+                                  className="min-w-0 flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2.5 outline-none focus:border-sky-400" placeholder="填写一个单词" />
+                                {p5Checked && !ok && <span className="text-xs font-bold text-emerald-700">{q.answers[0]}</span>}
+                              </div>
+                            </label>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {partId === 5 && p5Part && !p5Part.scanPages && (
                   <div className="space-y-5">
                     {p5Part.example && (
                       <div className="flex items-center gap-2 text-sm text-gray-500 bg-gray-50 px-4 py-2 rounded-xl">

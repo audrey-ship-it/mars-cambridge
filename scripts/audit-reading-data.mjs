@@ -1,5 +1,7 @@
 import { ketTests } from '../src/data/ketReadingData.js'
 import { ketPart5Sets } from '../src/data/ketPart5Extras.js'
+import { existsSync } from 'node:fs'
+import { resolve } from 'node:path'
 
 const errors = []
 const warnings = []
@@ -34,6 +36,7 @@ function checkChoice(scope, question, labels = ['A', 'B', 'C']) {
 
 for (const test of ketTests) {
   const scope = `Test ${test.id}`
+  const isScan = test.source?.format === 'source-scan'
   if (!test.source?.file || !test.source?.test || test.source?.verified !== true) {
     fail(scope, '缺少可追溯且已核验的原卷来源（source.file/source.test/source.verified）')
   }
@@ -41,18 +44,18 @@ for (const test of ketTests) {
   expectIds(`${scope} Part 1`, test.part1?.questions, [1, 2, 3, 4, 5, 6])
   test.part1?.questions?.forEach(q => checkChoice(`${scope} Part 1 #${q.id}`, q))
 
-  if ((test.part2?.people || []).length !== 3) fail(`${scope} Part 2`, '人物/地点材料必须正好为 3 项')
+  if (!isScan && (test.part2?.people || []).length !== 3) fail(`${scope} Part 2`, '人物/地点材料必须正好为 3 项')
   expectIds(`${scope} Part 2`, test.part2?.questions, [7, 8, 9, 10, 11, 12, 13])
   test.part2?.questions?.forEach(q => {
     if (!['A', 'B', 'C'].includes(q.answer)) fail(`${scope} Part 2 #${q.id}`, '答案不在 A/B/C 中')
   })
 
-  if (!String(test.part3?.passage || '').trim()) fail(`${scope} Part 3`, '文章为空')
+  if (!isScan && !String(test.part3?.passage || '').trim()) fail(`${scope} Part 3`, '文章为空')
   expectIds(`${scope} Part 3`, test.part3?.questions, [14, 15, 16, 17, 18])
   test.part3?.questions?.forEach(q => checkChoice(`${scope} Part 3 #${q.id}`, q))
 
   expectIds(`${scope} Part 4`, test.part4?.questions, [19, 20, 21, 22, 23, 24])
-  if ((test.part4?.passage_segments || []).length !== 7) {
+  if (!isScan && (test.part4?.passage_segments || []).length !== 7) {
     fail(`${scope} Part 4`, `6 个空应有 7 段正文，实际为 ${(test.part4?.passage_segments || []).length} 段`)
   }
   test.part4?.questions?.forEach(q => checkChoice(`${scope} Part 4 #${q.id}`, q))
@@ -63,6 +66,16 @@ for (const test of ketTests) {
       fail(`${scope} Part 5 #${q.id}`, '答案为空')
     }
   })
+
+  if (isScan) {
+    for (let part = 1; part <= 5; part++) {
+      const scanPages = test[`part${part}`]?.scanPages || []
+      if (!scanPages.length) fail(`${scope} Part ${part}`, '缺少原卷扫描页')
+      scanPages.forEach(page => {
+        if (!existsSync(resolve('public', page.replace(/^\//, '')))) fail(`${scope} Part ${part}`, `扫描页不存在：${page}`)
+      })
+    }
+  }
 
 }
 
@@ -78,5 +91,5 @@ if (errors.length) {
   errors.forEach(item => console.error(`- ${item}`))
   process.exitCode = 1
 } else {
-  console.log('\n通过：题号、题量、选项、答案、挖空段落及来源字段均完整。')
+  console.log('\n通过：题号、题量、选项、答案、原卷扫描页及来源字段均完整。')
 }
