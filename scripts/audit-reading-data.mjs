@@ -69,8 +69,15 @@ for (const test of ketTests) {
 
   if (isScan) {
     for (let part = 1; part <= 5; part++) {
-      const scanPages = test[`part${part}`]?.scanPages || []
-      if (!scanPages.length) fail(`${scope} Part ${part}`, '缺少原卷扫描页')
+      const partData = test[`part${part}`] || {}
+      const scanPages = partData.scanPages || []
+      const hasStructuredContent = part === 1
+        ? partData.questions?.every(q => Object.values(q.options || {}).every(option => String(option).length > 1))
+        : part === 2 ? partData.people?.length === 3
+          : part === 3 ? Boolean(String(partData.passage || '').trim())
+            : part === 4 ? partData.passage_segments?.length === 7
+              : Boolean(partData.passages?.length)
+      if (!scanPages.length && !hasStructuredContent) fail(`${scope} Part ${part}`, '既没有结构化原题，也没有原卷扫描页')
       scanPages.forEach(page => {
         if (!existsSync(resolve('public', page.replace(/^\//, '')))) fail(`${scope} Part ${part}`, `扫描页不存在：${page}`)
       })

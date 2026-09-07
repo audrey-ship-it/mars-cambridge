@@ -725,7 +725,7 @@ export default function CambridgeReading() {
                               batchChecked && !retrying[q._key]
                                 ? isCorrect14(q) ? 'bg-emerald-500 text-white' : 'bg-red-400 text-white'
                                 : answers[q._key] ? 'bg-sky-500 text-white' : 'bg-sky-100 text-sky-700'
-                            }`}>{qi + 1 + batchIdx * 6}</span>
+                            }`}>{q.id}</span>
                           </div>
                           <Part1Stimulus q={q} />
                         </div>
