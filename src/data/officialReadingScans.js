@@ -12,7 +12,7 @@ const wordQuestions = answers => answers.map((accepted, index) => ({
 const pages = (base, names) => names.map(name => `/images/ket/reading/official/${base}/${name}.jpg`)
 const p1q = (id, type, content, options, answer, extra = {}) => ({ id, type, content, options: { A: options[0], B: options[1], C: options[2] }, answer, ...extra })
 
-function scanTest({ id, book, test, file, pageNames, answers, part1Questions }) {
+function scanTest({ id, book, test, file, pageNames, answers, part1Questions, part2Data }) {
   const [p1, p2, p3, p4, p5] = pageNames
   return {
     id,
@@ -21,7 +21,7 @@ function scanTest({ id, book, test, file, pageNames, answers, part1Questions }) 
     part1: part1Questions
       ? { instructions: 'For each question, choose the correct answer.', questions: part1Questions }
       : { scanPages: pages(`b${book}t${test}`, p1), questions: choiceQuestions(1, answers.slice(0, 6)) },
-    part2: { scanPages: pages(`b${book}t${test}`, p2), questions: choiceQuestions(7, answers.slice(6, 13)) },
+    part2: part2Data || { scanPages: pages(`b${book}t${test}`, p2), questions: choiceQuestions(7, answers.slice(6, 13)) },
     part3: { scanPages: pages(`b${book}t${test}`, p3), questions: choiceQuestions(14, answers.slice(13, 18)) },
     part4: { scanPages: pages(`b${book}t${test}`, p4), questions: choiceQuestions(19, answers.slice(18, 24)) },
     part5: {
@@ -93,7 +93,24 @@ export const officialReadingScans = [
           C: 'Stella wants to know if she can borrow Aaron’s bike until next weekend.'
         }, answer: 'B'
       }
-    ]
+    ],
+    part2Data: {
+      title: 'How three young people became DJs',
+      people: [
+        { name: 'DJ Fire', label: 'A', text: 'This Russian DJ grew up travelling with his parents who were in a rock band. He started learning piano at four, and drums at twelve. As a teenager, he wrote songs and posted them online as a hobby. Then, at 20, a music company started paying him to write songs for pop bands – and some have been on the radio. Later he became interested in electronic music and started playing it in clubs. He’s hoping to get an invitation to play at some international festivals this summer.' },
+        { name: 'DJ Goldrock', label: 'B', text: 'This South African DJ started playing the piano when he was 5. At 15, he played pop songs at a cousin’s birthday party, and got a hundred kids dancing. At that moment, he knew he wanted to be a DJ and never have a normal job. He started a website where he played his favourite songs, and soon had lots of fans. He’s now 20 and has his own show on national radio. For the past three years, he’s spent his summers going around the world playing dance music at festivals.' },
+        { name: 'DJ Mango', label: 'C', text: 'At 15, this Brazilian DJ’s parents gave him a new computer and DJ equipment for making electronic dance music. Later that year, he started playing music at local dance parties to make some extra money, and the parties just got bigger and bigger. A few years later, a journalist asked him why he became a DJ. He said that as a child his dream was to play the electric guitar for a rock group, but he wasn’t good enough!' }
+      ],
+      questions: [
+        { id: 7, text: 'Who travels to different countries every year to play his music?', answer: 'B' },
+        { id: 8, text: 'Who comes from a family of musicians?', answer: 'A' },
+        { id: 9, text: 'Who was paid to make music as a teenager?', answer: 'C' },
+        { id: 10, text: 'Who knows how to play more than one musical instrument?', answer: 'A' },
+        { id: 11, text: 'Who works for a radio station?', answer: 'B' },
+        { id: 12, text: 'Who writes music for other musicians?', answer: 'A' },
+        { id: 13, text: 'Who wanted to play in a band when he was younger?', answer: 'C' }
+      ]
+    }
   }),
   scanTest({
     id: 3, book: 1, test: 3, file: 'KET青少版官方真题1.pdf',
