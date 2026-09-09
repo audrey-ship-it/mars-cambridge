@@ -16,7 +16,9 @@ function readExamListProgress(exam) {
   let completed = 0
   let started = false
   let latest = null
-  let continuePath = `/cambridge/exams/${exam.id}?tab=reading`
+  let continuePath = exam.reading?.parts?.length
+    ? `/cambridge/exams/${exam.id}?tab=reading`
+    : `/cambridge/exams/${exam.id}?tab=writing`
 
   try {
     if (listeningParts) {
@@ -80,9 +82,9 @@ function readExamListProgress(exam) {
 export function ExamList() {
   const sectionSummary = (exam) => [
     exam.listening && '听力 25题',
-    exam.reading && '阅读 30题',
+    exam.reading?.parts?.length && '阅读 30题',
     exam.reading?.writing?.length && '写作 2题',
-    exam.speaking && '口语 2部分',
+    exam.speaking && `口语 ${exam.speaking.parts.length}部分`,
   ].filter(Boolean).join(' · ')
 
   return (
@@ -149,7 +151,8 @@ export default function CambridgeExam() {
   const [searchParams] = useSearchParams()
   const exam = KET_EXAMS.find(e => e.id === id)
   const requestedTab = searchParams.get('tab')
-  const initialTab = requestedTab || (exam?.listening ? 'listening' : 'reading')
+  const initialTab = requestedTab
+    || (exam?.listening ? 'listening' : exam?.reading?.parts?.length ? 'reading' : exam?.reading?.writing?.length ? 'writing' : 'speaking')
   const [section, setSection] = useState(initialTab)
 
   if (!exam) return (
@@ -174,7 +177,7 @@ export default function CambridgeExam() {
 function SectionTabs({ exam, section, onSection }) {
   const tabs = [
     exam?.listening && ['listening','🎧 听力'],
-    exam?.reading && ['reading','📖 阅读'],
+    exam?.reading?.parts?.length && ['reading','📖 阅读'],
     exam?.reading?.writing?.length && ['writing','✍️ 写作'],
     exam?.speaking && ['speaking','🎤 口语'],
   ].filter(Boolean)
@@ -1737,6 +1740,10 @@ function SpeakingTopicCard({ topic, part, examId, isSpeaking, onSpeak }) {
           </>
         ) : (
           <>
+            {topic.imageSrc && (
+              <img src={topic.imageSrc} alt={`${topic.theme} speaking card`}
+                className="w-full rounded-xl border border-gray-200 mb-4 bg-white" draggable={false} />
+            )}
             <div className="text-xs text-gray-400 font-semibold uppercase tracking-wide mb-2">话题问题</div>
             <ul className="space-y-1.5 mb-4">
               {topic.cardPrompts.map((q, i) => (
