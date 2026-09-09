@@ -836,7 +836,7 @@ export default function CambridgeReading() {
                 {/* ── PART 4 ── */}
                 {partId === 4 && currentBatch && !currentBatch.scanPages && (
                   <div className="grid grid-cols-2 gap-5">
-                    <div className="sticky top-5 max-h-[90vh] overflow-y-auto bg-gray-50 rounded-xl border border-gray-100 p-6 text-gray-700">
+                    <div className="min-w-0 max-h-[70vh] overflow-y-auto bg-gray-50 rounded-xl border border-gray-100 p-6 text-gray-700">
                       {currentBatch.title && (
                         <h3 className="mb-5 text-center text-2xl font-extrabold text-gray-900">
                           {currentBatch.title}
@@ -846,7 +846,7 @@ export default function CambridgeReading() {
                         {renderPart4Passage(currentBatch)}
                       </div>
                     </div>
-                    <div className="space-y-3 pr-1">
+                    <div className="min-w-0 max-h-[70vh] space-y-3 overflow-y-auto pr-1">
                       {currentBatch.questions.map((q, qi) => (
                         <motion.div key={q._key}
                           initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
