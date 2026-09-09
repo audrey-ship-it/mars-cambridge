@@ -23,8 +23,23 @@ const examPart3 = testIndex => {
   return p3(source.articleTitle, source.author || '', source.passage,
     source.questions.map(question => p3q(question.text, question.opts)))
 }
+const p4 = (title, passage, options) => ({
+  title,
+  passage_segments: passage.split('___'),
+  questions: options.map(items => ({ options: { A: items[0], B: items[1], C: items[2] } }))
+})
+const examPart4 = testIndex => {
+  const source = KET_EXAMS[testIndex - 1].reading.parts.find(part => part.part === 4)
+  return {
+    title: source.articleTitle,
+    passage_segments: source.passage.split(/\[\d+\]/),
+    questions: source.questions.map(question => ({
+      options: { A: question.opts[0], B: question.opts[1], C: question.opts[2] }
+    }))
+  }
+}
 
-function scanTest({ id, book, test, file, pageNames, answers, part1Questions, part2Data, part3Data }) {
+function scanTest({ id, book, test, file, pageNames, answers, part1Questions, part2Data, part3Data, part4Data }) {
   const [p1, p2, p3, p4, p5] = pageNames
   const structuredPart2 = part2Data ? {
     ...part2Data,
@@ -40,6 +55,14 @@ function scanTest({ id, book, test, file, pageNames, answers, part1Questions, pa
       answer: answers[13 + index]
     }))
   } : null
+  const structuredPart4 = part4Data ? {
+    ...part4Data,
+    questions: part4Data.questions.map((question, index) => ({
+      id: 19 + index,
+      ...question,
+      answer: answers[18 + index]
+    }))
+  } : null
   return {
     id,
     title: `官方真题 ${book} · Test ${test}`,
@@ -49,7 +72,7 @@ function scanTest({ id, book, test, file, pageNames, answers, part1Questions, pa
       : { scanPages: pages(`b${book}t${test}`, p1), questions: choiceQuestions(1, answers.slice(0, 6)) },
     part2: structuredPart2 || { scanPages: pages(`b${book}t${test}`, p2), questions: choiceQuestions(7, answers.slice(6, 13)) },
     part3: structuredPart3 || { scanPages: pages(`b${book}t${test}`, p3), questions: choiceQuestions(14, answers.slice(13, 18)) },
-    part4: { scanPages: pages(`b${book}t${test}`, p4), questions: choiceQuestions(19, answers.slice(18, 24)) },
+    part4: structuredPart4 || { scanPages: pages(`b${book}t${test}`, p4), questions: choiceQuestions(19, answers.slice(18, 24)) },
     part5: {
       scanPages: pages(`b${book}t${test}`, p5),
       questions: wordQuestions(answers.slice(24))
@@ -151,7 +174,10 @@ In the future, the path will probably change, and new parts may open. We saw not
       p3q('What does Kara say about the bear she saw?',['It looked hungry.','It was on the path.','It walked near her.']),
       p3q('What did the old man say about the trail?',['People from other countries will come to see it.','People will go into the countryside more because of it.','People from Canada will use it to see other parts of their country.']),
       p3q('What does Kara say should happen next?',['There should be a website about the trail.','Some parts of the trail should close.','There should be more signs along the trail.'])
-    ])
+    ]),
+    part4Data: p4('Sally Ride',`Sally Ride was born on 26th May, 1951, in California, USA. After high school, she went to Stanford University to study physics. While she was there, she saw an advertisement in her university newspaper ___ women to join the US space programme. Six women, including Sally, were ___ to become astronauts. On 18th June 1983, Sally became the first American woman to fly into space. Six days later, on 24th June, she ___ to Earth.
+
+When Sally ___ working as an astronaut in 1987, she started teaching at the University of California. She wanted to find ways to get more people, ___ girls, interested in studying science and mathematics. She also found time to write science books for children about ___ space.`,[['inviting','showing','looking'],['thought','decided','chosen'],['completed','returned','arrived'],['ended','closed','stopped'],['especially','exactly','clearly'],['exploring','going','travelling']])
   }),
   scanTest({
     id: 3, book: 1, test: 3, file: 'KET青少版官方真题1.pdf',
@@ -184,7 +210,10 @@ People always ask me if I'm tired when each show finishes, but I love skating, s
       p3q('What does Callie do just before each show?',['She talks to the other skaters.','She checks her skates are okay.','She takes a moment to be alone.']),
       p3q('What does Callie worry about?',['having an accident on the ice','forgetting what she has to say','dancing and singing at the same time']),
       p3q('How does Callie usually feel after a show?',['ready for a rest','glad that she’s finished','pleased about making people happy'])
-    ])
+    ]),
+    part4Data: p4('Art you can eat',`Yujia Hu was born in China, but moved to Milan, in Italy, when he was eight. His family have a Japanese restaurant there. When Yujia left school, he ___ a course at an art school, but he didn't complete it. ___, he went to work in the family restaurant as a sushi chef. Sushi is a Japanese dish made of rice, with fish and vegetables.
+
+Yujia is a big ___ of basketball, and a few years ago he ___ to start using sushi to make models of the faces of famous players. His next idea was to make little shoes, usually trainers, out of sushi. It ___ him about 30 minutes to make each shoe. Yujia doesn't serve the sushi shoes to customers at his family's restaurant, but he ___ photographs of them online.`,[['got','held','began'],['Instead','Really','Maybe'],['partner','fan','member'],['believed','understood','decided'],['spends','takes','delays'],['sends','shares','joins']])
   }),
   scanTest({
     id: 4, book: 1, test: 4, file: 'KET青少版官方真题1.pdf',
@@ -217,7 +246,10 @@ The other teachers were very friendly and on our days off, we did activities lik
       p3q('Where did Ben live when he was in Australia?',['in the hotel where he worked','with members of his family','on a boat on the river']),
       p3q('Why did Ben change his course in Japan?',['He heard about a better one.','He knew he needed more practice.','He wasn’t enjoying the first one.']),
       p3q('What does Ben say about winter camping?',['It wasn’t pleasant at night.','He would love to do it again soon.','It was the most interesting thing he’s ever done.'])
-    ])
+    ]),
+    part4Data: p4('Eric Koston',`Eric Koston is one of the world's best-known skateboarders. He was born in Thailand, but his family ___ to the US when he was a baby. His love of skateboarding began at the ___ of 11, when his older brother gave him a skateboard. It was an old, broken board, but he learned how to skateboard by watching other kids and then he ___ by himself every day.
+
+Three years later, he was so good that a company that made skateboards offered him a summer ___. That's when he ___ to make skateboarding his life. Since then, Eric has ___ many international competitions, made boarding videos and starred in a skateboarding video game. Now he owns a successful company making sports shoes and clothes.`,[['changed','moved','left'],['year','time','age'],['practised','taught','followed'],['career','job','work'],['thought','felt','decided'],['won','taken','tried']])
   }),
   scanTest({
     id: 5, book: 2, test: 1, file: 'KET青少版真题 2.pdf',
@@ -260,7 +292,12 @@ I always feel a bit scared before playing, it doesn't matter if the concert's bi
       p3q('Harry says that song writing is',['more fun than playing the guitar.','harder to do at home.','easier when it is quiet.']),
       p3q('Harry says that since he left Big Time',['he feels happier.','he has got new fans.','his music is more adult.']),
       p3q('Why does Harry prefer playing small concerts to big ones?',['He can meet his fans.','He can see all his friends there.','He feels less afraid before playing.'])
-    ])
+    ]),
+    part4Data: p4('The cola tree',`In the early 1800s, the first soft drinks were invented. One of the things that was ___ to them was the fruit of an African tree called the cola tree. This is where the word for the popular soft drink 'cola' ___ from.
+
+The first cola trees grew in the rainforests of Africa, but they are now also found in South America. They ___ hot places that get a lot of rain. Cola trees can be 25 metres ___ and they have beautiful purple and yellow flowers.
+
+The fruit of the cola tree is the kola nut. Kola nuts are very ___ in the countries of West Africa, where they are ___ in food and medicine. Kola nuts are given as gifts at weddings, and also when people visit the homes of their friends and family.`,[['made','put','added'],['comes','begins','starts'],['prefer','think','decide'],['tall','long','large'],['wonderful','important','advanced'],['done','used','got']])
   }),
   scanTest({
     id: 6, book: 2, test: 2, file: 'KET青少版真题 2.pdf',
@@ -293,7 +330,10 @@ It was a fantastic holiday and I loved camping. Now I know how much fun it is, I
       p3q('What does Emma say about the nights?',['Her bed was not very comfortable.','She enjoyed listening to the animals.','She slept well because she was tired.']),
       p3q('How did Emma feel when she saw the lion family?',['afraid because they looked dangerous','upset because she didn’t have her camera','sorry because they were hard to see']),
       p3q('What did Emma write in her diary about her holiday?',["I enjoyed camping with Mum, but I'd like to go with friends next time.","I loved watching the wild animals, but camping is hard work.","I'd like to try camping again, but in a warmer place."])
-    ])
+    ]),
+    part4Data: p4("Aslam's Bakery",`If you ever visit Hyderabad in India, make sure you don't ___ the Nimrah Bakery in the middle of the city. It is famous for 'Osmania' biscuits, which are made of milk, butter, flour and sometimes coconut. The biscuits are baked in the shop and are ___ hot to customers. Customers can eat them ___ with a cup of tea, or take them home to enjoy later.
+
+The bakery ___ to Aslam, who says that he sells 4,000 biscuits every day and 7,000 cups of tea. There are always people ___ to buy biscuits outside his shop, which is open daily from 4:00 a.m. to midnight. There are many other bakeries around the city selling Osmania biscuits, so Aslam is happy that his ___ is still so popular and successful.`,[['leave','miss','lose'],['paid','bought','sold'],['immediately','suddenly','actually'],['keeps','belongs','lends'],['standing','thinking','waiting'],['business','career','occupation']])
   }),
   scanTest({
     id: 7, book: 2, test: 3, file: 'KET青少版真题 2.pdf',
@@ -326,7 +366,12 @@ These days all our family holidays are spent snowboarding. I love everything abo
       p3q('What is Zoe explaining in the third paragraph?',['how gymnastics helped her learn to snowboard','how important it is to have more than one hobby','how long it takes for most people to learn to snowboard']),
       p3q('What does Zoe say about living in Italy?',['Her snowboarding improved a lot.','She missed snowboarding with her friends.','She met a lot of excellent snowboarders there.']),
       p3q('What does Zoe say about snowboarding in the final paragraph?',['She would like to go without her family next time.','She’s sorry she can’t go more often.','She never gets bored of going.'])
-    ])
+    ]),
+    part4Data: p4('Honey bees',`Honey bees are very important insects. They collect nectar from flowers and use it to make honey. As they do this, they also pick up pollen. They pass this from flower to flower, helping plants to make fruits and vegetables.
+
+Honey bees live in ___ groups. There are three ___ of bee: the queen, the worker and the drone. The queen lives for ___ years, but the workers die after a few weeks. During their short lives, worker bees need to find food and make honey. Worker bees are actually the only bees which ___ flowers.
+
+In the past ten years, the number of bees in some areas has fallen by 90%. Scientists can't ___ all the reasons for this. ___, they are worried because fewer bees means less food in the future.`,[['high','full','large'],['kinds','ways','things'],['lots','much','several'],['visit','go','arrive'],['describe','explain','discuss'],['Especially','However','Instead']])
   }),
   scanTest({
     id: 8, book: 2, test: 4, file: 'KET青少版真题 2.pdf',
@@ -357,7 +402,10 @@ Unfortunately, there aren't many jobs for young people. When I was little, most 
       p3q('When Ben became a teenager, he started to',['get bored with island life.','look for a different place to live.','make new friends in other places.']),
       p3q('Why does Ben think he might become a farmer?',['He thinks being a fisherman is dangerous.','He didn’t enjoy helping his father to fish.','He has always preferred farming to fishing.']),
       p3q('What is the writer doing in this article?',['explaining why an island is the best place for teenagers to live','describing the good and the bad things about living on an island','giving advice to people who might want to move to an island'])
-    ])
+    ]),
+    part4Data: p4('The library on wheels',`Antonio La Cava was a teacher in Italy for 42 years. When his career finished, he ___ he didn't want to stop working with children. So, in 2003, he ___ an old three-wheeled motorbike and made it into a library on wheels. He built a large box, and put it onto the back of the motorbike. Then he ___ it with more than 700 books written for children of all ages.
+
+Every week, Antonio visits eight villages around Basilicata in southern Italy. The whole trip is more than 500 kilometres ___. As Antonio enters the villages he ___ loud music, so the children know he's there. Antonio ___ children hundreds of books every week, and passes his love of books on to them.`,[['planned','decided','preferred'],['paid','bought','spent'],['filled','carried','collected'],['large','far','long'],['plays','puts','sends'],['borrows','lends','belongs']])
   }),
   scanTest({
     id: 9, book: 3, test: 1, file: '03 KET真题 - 第1套 - 阅读与写作.pdf',
@@ -376,7 +424,8 @@ Unfortunately, there aren't many jobs for young people. When I was little, most 
       'I’ve lived in lots of different countries because of my dad’s career, so I’ve had to learn several different languages. I seem to learn them quite easily. The last place I lived was Thailand. I’m still studying the language so I can continue to chat with my Thai classmates now I’m back in my home country. I’ve downloaded a new app with exercises in Thai, and I can’t wait to use it each morning because it’s so much fun.',
       'My mum comes from Russia and her parents still live there. We often stay with them during the school holidays, but unfortunately I didn’t learn Russian when I was little so talking to them has always been hard. After our last trip I decided it was time for me to learn the language. I now have lessons and remember all the new vocabulary my teacher teaches us.'
     ],['Who says he’s pleased about how quickly he improved?','Who is learning a foreign language without a teacher?','Who needs to know a foreign language for the career he wants?','Who says he remembers all the new words he learns in his language lessons?','Who is practising a language so he can have conversations with friends?','Who is studying a foreign language for family reasons?','Who says he has lots of experience learning new languages?']),
-    part3Data: examPart3(1)
+    part3Data: examPart3(1),
+    part4Data: examPart4(1)
   }),
   scanTest({
     id: 10, book: 3, test: 2, file: '03 KET真题 - 第2套 - 阅读与写作.pdf',
@@ -395,7 +444,8 @@ Unfortunately, there aren't many jobs for young people. When I was little, most 
       'I visited the Natural History Museum with my dad when I was younger, but this was my first visit on my own. I already knew about some of the stuff at the museum from lessons at school, but I was amazed at how much I enjoyed the exhibitions. My favourite one was the dinosaur exhibition. It was the busiest part of the museum and full of people, but I didn’t mind that. I’ve been several times already, so I don’t think I’ll visit again.',
       'I’m so glad my mum took me to the News Museum. It has exhibitions about the news and is different from most other museums because it’s more about events than things. Unfortunately, I didn’t have time to see everything, so I’ve already decided to go back. My favourite part was a special theatre showing short videos of interesting news reports. There was also an exhibition about photo-journalists and their work. I really enjoyed learning how they get such good pictures.'
     ],['Who says that not many other museums are like the one she visited?','Who plans to return to the museum?','Who says the museum was hard to find?','Who visited the museum alone?','Who liked an exhibition about an interesting career?','Who says she enjoyed taking part in an activity at the museum?','Who says that one exhibition was more popular than the others?']),
-    part3Data: examPart3(2)
+    part3Data: examPart3(2),
+    part4Data: examPart4(2)
   }),
   scanTest({
     id: 11, book: 3, test: 3, file: '03 KET真题 - 第3套 - 阅读与写作.pdf',
@@ -414,7 +464,8 @@ Unfortunately, there aren't many jobs for young people. When I was little, most 
       'I’d always wanted to visit France, so I was really excited when my parents told me we were going to the city of Caen in the north of the country for our summer holidays last year. There were some lovely beaches not far from the city and we also went to an attractive indoor market, which sold everything from fish to flowers. It was wonderful. However, the best thing we did was a one-day cooking course. I’ve never cooked anything before and it was really fun!',
       'My family always spend our summer holidays in the south of France, and last year we stayed at a campsite on a beach near Arles. I loved swimming in the sea and in the campsite pool. I also enjoyed using my French when we went shopping at the local market. My school friends would be amazed! Because my mum and dad are artists, they wanted to visit a museum about the painter Van Gogh. Usually I don’t like museums, but actually this one was really interesting.'
     ],['Who describes a market he visited?','Who plans to improve his spoken French?','Who was surprised he enjoyed a place his parents took him to?','Who preferred the pool to the beach?','Who made some new friends during his holiday?','Who learnt how to do something new on his holiday?','Who says he liked practising his French?']),
-    part3Data: examPart3(3)
+    part3Data: examPart3(3),
+    part4Data: examPart4(3)
   }),
   scanTest({
     id: 12, book: 3, test: 4, file: '03 KET真题 - 第4套 - 阅读与写作.pdf',
@@ -433,7 +484,8 @@ Unfortunately, there aren't many jobs for young people. When I was little, most 
       'Being a farmer is a hard life. There are so many jobs to do and most of them are quite boring. Also, farmers can’t travel much and that’s something I really want to do when I’m older. One thing I love is being up before the sun each day. That’s when I feed the chickens. It’s quiet then, with only the noise of the animals. When I was little, the cows looked so big. I always ran away when they came near me. It seems silly now.',
       'My mum and dad are farmers. They often work from early morning until late at night, and always seem so tired. They do too much really, so I try to help if I can. One thing I’m good at is helping Dad when the farm machines break - it’s a great feeling to get them working again. In fact, I’d like to be a mechanic when I leave school. However, I want to continue living in the countryside because I love all the animals.'
     ],['Who was frightened of a kind of farm animal when he was younger?','Who describes the views from the farm?','Who thinks living on a farm is not very exciting?','Who enjoys repairing things on the farm?','Who explains why it’s difficult for farmers to go away on holiday?','Who thinks his parents don’t rest enough?','Who is happy to get up early in the morning?']),
-    part3Data: examPart3(4)
+    part3Data: examPart3(4),
+    part4Data: examPart4(4)
   })
 ]
 import { KET_EXAMS } from './ketExamData.js'

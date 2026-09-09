@@ -842,8 +842,15 @@ export default function CambridgeReading() {
                 {/* ── PART 4 ── */}
                 {partId === 4 && currentBatch && !currentBatch.scanPages && (
                   <div className="grid grid-cols-2 gap-5">
-                    <div className="bg-gray-50 rounded-xl border border-gray-100 p-6 leading-9 text-[18px] text-gray-700">
-                      {renderPart4Passage(currentBatch)}
+                    <div className="bg-gray-50 rounded-xl border border-gray-100 p-6 text-gray-700">
+                      {currentBatch.title && (
+                        <h3 className="mb-5 text-center text-2xl font-extrabold text-gray-900">
+                          {currentBatch.title}
+                        </h3>
+                      )}
+                      <div className="leading-9 text-[18px]">
+                        {renderPart4Passage(currentBatch)}
+                      </div>
                     </div>
                     <div className="space-y-3 pr-1">
                       {currentBatch.questions.map((q, qi) => (
