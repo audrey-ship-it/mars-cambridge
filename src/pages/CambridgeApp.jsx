@@ -1443,8 +1443,8 @@ const DASH_SECTIONS = [
   {
     id: 'writing', icon: '✍️', title: '写作练习',
     parts: [
-      { label: 'Part 6 · 写邮件', available: true, link: () => '/cambridge/exams/ket-3-test1?tab=writing&part=6' },
-      { label: 'Part 7 · 看图写故事', available: true, link: () => '/cambridge/exams/ket-3-test1?tab=writing&part=7' },
+      { label: 'Part 6 · Email', available: true, link: () => '/cambridge/writing?part=6&set=1' },
+      { label: 'Part 7 · 看图写话', available: true, link: () => '/cambridge/writing?part=7&set=1' },
     ],
   },
   {

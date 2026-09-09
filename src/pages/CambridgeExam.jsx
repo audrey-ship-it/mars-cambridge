@@ -1238,7 +1238,7 @@ function ScoreDots({ n, max = 5 }) {
   )
 }
 
-function WritingCard({ w, wi, storageKey }) {
+export function WritingCard({ w, wi, storageKey }) {
   const [text, setText] = useState(() => {
     if (!storageKey) return ''
     try { return localStorage.getItem(storageKey) || '' } catch { return '' }
