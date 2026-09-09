@@ -137,7 +137,7 @@ const transcribedKetTests = [
       passages: [
         {
           from: "Rachel", to: "Chris",
-          content: "We're back [0] from our family holiday in the US. It was amazing! It's [25] biggest country I've ever been to. We travelled from Los Angeles to Seattle [26] car. It's nearly 2000 km and the trip took us [27] very long time – nearly a week.\n\nMy family liked Los Angeles best, [28] I didn't agree – Seattle was my favourite place. It's smaller [29] Los Angeles, and the food was better. Seattle is near the sea and we ate lots of fish. The only problem was that [30] rained almost every day!\n\nLet's meet for a chat soon. I have a present for you!"
+          content: "We're back from our family holiday in the US. It was amazing! It's [25] biggest country I've ever been to. We travelled from Los Angeles to Seattle [26] car. It's nearly 2000 km and the trip took us [27] very long time – nearly a week.\n\nMy family liked Los Angeles best, [28] I didn't agree – Seattle was my favourite place. It's smaller [29] Los Angeles, and the food was better. Seattle is near the sea and we ate lots of fish. The only problem was that [30] rained almost every day!\n\nLet's meet for a chat soon. I have a present for you!"
         }
       ],
       questions: [

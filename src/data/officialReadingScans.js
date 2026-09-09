@@ -38,8 +38,23 @@ const examPart4 = testIndex => {
     }))
   }
 }
+const p5 = (exampleAnswer, passages) => ({
+  example: { number: 0, answer: exampleAnswer },
+  passages
+})
+const examPart5 = testIndex => {
+  const source = KET_EXAMS[testIndex - 1].reading.parts.find(part => part.part === 5)
+  return {
+    example: { number: 0, answer: source.example.ans },
+    passages: source.passages.map(passage => ({ content: passage.text })),
+    questions: source.questions.map(question => ({
+      id: question.n,
+      answers: Array.isArray(question.ans) ? question.ans : [question.ans]
+    }))
+  }
+}
 
-function scanTest({ id, book, test, file, pageNames, answers, part1Questions, part2Data, part3Data, part4Data }) {
+function scanTest({ id, book, test, file, pageNames, answers, part1Questions, part2Data, part3Data, part4Data, part5Data }) {
   const [p1, p2, p3, p4, p5] = pageNames
   const structuredPart2 = part2Data ? {
     ...part2Data,
@@ -73,10 +88,9 @@ function scanTest({ id, book, test, file, pageNames, answers, part1Questions, pa
     part2: structuredPart2 || { scanPages: pages(`b${book}t${test}`, p2), questions: choiceQuestions(7, answers.slice(6, 13)) },
     part3: structuredPart3 || { scanPages: pages(`b${book}t${test}`, p3), questions: choiceQuestions(14, answers.slice(13, 18)) },
     part4: structuredPart4 || { scanPages: pages(`b${book}t${test}`, p4), questions: choiceQuestions(19, answers.slice(18, 24)) },
-    part5: {
-      scanPages: pages(`b${book}t${test}`, p5),
-      questions: wordQuestions(answers.slice(24))
-    }
+    part5: part5Data
+      ? { ...part5Data, questions: part5Data.questions || wordQuestions(answers.slice(24)) }
+      : { scanPages: pages(`b${book}t${test}`, p5), questions: wordQuestions(answers.slice(24)) }
   }
 }
 
@@ -177,7 +191,11 @@ In the future, the path will probably change, and new parts may open. We saw not
     ]),
     part4Data: p4('Sally Ride',`Sally Ride was born on 26th May, 1951, in California, USA. After high school, she went to Stanford University to study physics. While she was there, she saw an advertisement in her university newspaper ___ women to join the US space programme. Six women, including Sally, were ___ to become astronauts. On 18th June 1983, Sally became the first American woman to fly into space. Six days later, on 24th June, she ___ to Earth.
 
-When Sally ___ working as an astronaut in 1987, she started teaching at the University of California. She wanted to find ways to get more people, ___ girls, interested in studying science and mathematics. She also found time to write science books for children about ___ space.`,[['inviting','showing','looking'],['thought','decided','chosen'],['completed','returned','arrived'],['ended','closed','stopped'],['especially','exactly','clearly'],['exploring','going','travelling']])
+When Sally ___ working as an astronaut in 1987, she started teaching at the University of California. She wanted to find ways to get more people, ___ girls, interested in studying science and mathematics. She also found time to write science books for children about ___ space.`,[['inviting','showing','looking'],['thought','decided','chosen'],['completed','returned','arrived'],['ended','closed','stopped'],['especially','exactly','clearly'],['exploring','going','travelling']]),
+    part5Data: p5('got',[
+      { from:'Riley', to:'Kris', content:"My dad's got three tickets for the hockey match next Wednesday. One was for my brother, but now he's [25] free that day, so we have an extra one. Do you [26] to come? Dad would like to leave our house at 4 o'clock. Let me know as soon [27] possible." },
+      { from:'Kris', to:'Riley', content:"Wow! That's really kind [28] you. Thanks! I asked Mum if I can come and she said yes. I finish school a bit later [29] you, so Mum will drive me to your house at 4 o'clock. Is there anything I need [30] bring with me?" }
+    ])
   }),
   scanTest({
     id: 3, book: 1, test: 3, file: 'KET青少版官方真题1.pdf',
@@ -213,7 +231,8 @@ People always ask me if I'm tired when each show finishes, but I love skating, s
     ]),
     part4Data: p4('Art you can eat',`Yujia Hu was born in China, but moved to Milan, in Italy, when he was eight. His family have a Japanese restaurant there. When Yujia left school, he ___ a course at an art school, but he didn't complete it. ___, he went to work in the family restaurant as a sushi chef. Sushi is a Japanese dish made of rice, with fish and vegetables.
 
-Yujia is a big ___ of basketball, and a few years ago he ___ to start using sushi to make models of the faces of famous players. His next idea was to make little shoes, usually trainers, out of sushi. It ___ him about 30 minutes to make each shoe. Yujia doesn't serve the sushi shoes to customers at his family's restaurant, but he ___ photographs of them online.`,[['got','held','began'],['Instead','Really','Maybe'],['partner','fan','member'],['believed','understood','decided'],['spends','takes','delays'],['sends','shares','joins']])
+Yujia is a big ___ of basketball, and a few years ago he ___ to start using sushi to make models of the faces of famous players. His next idea was to make little shoes, usually trainers, out of sushi. It ___ him about 30 minutes to make each shoe. Yujia doesn't serve the sushi shoes to customers at his family's restaurant, but he ___ photographs of them online.`,[['got','held','began'],['Instead','Really','Maybe'],['partner','fan','member'],['believed','understood','decided'],['spends','takes','delays'],['sends','shares','joins']]),
+    part5Data: p5('are',[{ from:'Jason', to:'Mum', content:"We are all having a great time camping in the forest. My class has got [25] best place on the campsite, with a great view of the mountains.\n\nLast night, [26] rained really hard. Lots of people got wet, [27] I was lucky my new tent stayed dry all night! I'm really glad we decided to buy it. It's much better [28] my old one.\n\nBy the way, I forgot [29] tell the football coach that I'm away [30] the moment. Can you let him know that I can't come to practice this week?\n\nThanks!" }])
   }),
   scanTest({
     id: 4, book: 1, test: 4, file: 'KET青少版官方真题1.pdf',
@@ -249,7 +268,8 @@ The other teachers were very friendly and on our days off, we did activities lik
     ]),
     part4Data: p4('Eric Koston',`Eric Koston is one of the world's best-known skateboarders. He was born in Thailand, but his family ___ to the US when he was a baby. His love of skateboarding began at the ___ of 11, when his older brother gave him a skateboard. It was an old, broken board, but he learned how to skateboard by watching other kids and then he ___ by himself every day.
 
-Three years later, he was so good that a company that made skateboards offered him a summer ___. That's when he ___ to make skateboarding his life. Since then, Eric has ___ many international competitions, made boarding videos and starred in a skateboarding video game. Now he owns a successful company making sports shoes and clothes.`,[['changed','moved','left'],['year','time','age'],['practised','taught','followed'],['career','job','work'],['thought','felt','decided'],['won','taken','tried']])
+Three years later, he was so good that a company that made skateboards offered him a summer ___. That's when he ___ to make skateboarding his life. Since then, Eric has ___ many international competitions, made boarding videos and starred in a skateboarding video game. Now he owns a successful company making sports shoes and clothes.`,[['changed','moved','left'],['year','time','age'],['practised','taught','followed'],['career','job','work'],['thought','felt','decided'],['won','taken','tried']]),
+    part5Data: p5('from',[{ content:"Hi everyone. My name is Juan and I've joined this website because I'm looking for a penfriend. I come from Mexico and I live in a town called Playa del Carmen on the Caribbean Sea, near the city of Cancun. It's not as famous [25] Cancun but I think it is one of [26] most beautiful places in Mexico.\n\nTourists come to Playa del Carmen from [27] over the world because the weather's always warm and the food's great. [28] fact, my friends and I go to the beach almost every day. It's brilliant!\n\nDo you want [29] know more about Playa del Carmen? [30] you do, write to me soon." }])
   }),
   scanTest({
     id: 5, book: 2, test: 1, file: 'KET青少版真题 2.pdf',
@@ -297,7 +317,8 @@ I always feel a bit scared before playing, it doesn't matter if the concert's bi
 
 The first cola trees grew in the rainforests of Africa, but they are now also found in South America. They ___ hot places that get a lot of rain. Cola trees can be 25 metres ___ and they have beautiful purple and yellow flowers.
 
-The fruit of the cola tree is the kola nut. Kola nuts are very ___ in the countries of West Africa, where they are ___ in food and medicine. Kola nuts are given as gifts at weddings, and also when people visit the homes of their friends and family.`,[['made','put','added'],['comes','begins','starts'],['prefer','think','decide'],['tall','long','large'],['wonderful','important','advanced'],['done','used','got']])
+The fruit of the cola tree is the kola nut. Kola nuts are very ___ in the countries of West Africa, where they are ___ in food and medicine. Kola nuts are given as gifts at weddings, and also when people visit the homes of their friends and family.`,[['made','put','added'],['comes','begins','starts'],['prefer','think','decide'],['tall','long','large'],['wonderful','important','advanced'],['done','used','got']]),
+    part5Data: p5('for',[{ from:'Dave', to:'Ali', content:"I've got some news for you. We've just moved into our new house. We moved because Dad got a new job in March.\n\nOur new house has three floors and is a lot bigger [25] our old one. I really like [26]. My bedroom is at [27] top and I can see a long way from my window. Our garden is really big. Dad has said he'll build me a treehouse [28] my school holiday begins.\n\nI'm starting at a new school next week. I hope I'll [29] able to make new friends. I'm worried about it, but also excited. [30] you have any news?" }])
   }),
   scanTest({
     id: 6, book: 2, test: 2, file: 'KET青少版真题 2.pdf',
@@ -333,7 +354,11 @@ It was a fantastic holiday and I loved camping. Now I know how much fun it is, I
     ]),
     part4Data: p4("Aslam's Bakery",`If you ever visit Hyderabad in India, make sure you don't ___ the Nimrah Bakery in the middle of the city. It is famous for 'Osmania' biscuits, which are made of milk, butter, flour and sometimes coconut. The biscuits are baked in the shop and are ___ hot to customers. Customers can eat them ___ with a cup of tea, or take them home to enjoy later.
 
-The bakery ___ to Aslam, who says that he sells 4,000 biscuits every day and 7,000 cups of tea. There are always people ___ to buy biscuits outside his shop, which is open daily from 4:00 a.m. to midnight. There are many other bakeries around the city selling Osmania biscuits, so Aslam is happy that his ___ is still so popular and successful.`,[['leave','miss','lose'],['paid','bought','sold'],['immediately','suddenly','actually'],['keeps','belongs','lends'],['standing','thinking','waiting'],['business','career','occupation']])
+The bakery ___ to Aslam, who says that he sells 4,000 biscuits every day and 7,000 cups of tea. There are always people ___ to buy biscuits outside his shop, which is open daily from 4:00 a.m. to midnight. There are many other bakeries around the city selling Osmania biscuits, so Aslam is happy that his ___ is still so popular and successful.`,[['leave','miss','lose'],['paid','bought','sold'],['immediately','suddenly','actually'],['keeps','belongs','lends'],['standing','thinking','waiting'],['business','career','occupation']]),
+    part5Data: p5('we',[
+      { from:'Andy', to:'Tom', content:"Let's take a picnic with us when we go to the river tomorrow. I saw on TV that the weather is going to [25] really nice. I'll make [26] few sandwiches, so can you bring some drinks? I'll also bring my blanket for us to sit on." },
+      { from:'Tom', to:'Andy', content:"Yes, a picnic sounds like a great idea! I can get some drinks [27] my way. Would you prefer cola [28] orange juice? The shop near my house sells both of [29]. Don't forget your swimming things. I'll bring my football [30] I can find it." }
+    ])
   }),
   scanTest({
     id: 7, book: 2, test: 3, file: 'KET青少版真题 2.pdf',
@@ -371,7 +396,11 @@ These days all our family holidays are spent snowboarding. I love everything abo
 
 Honey bees live in ___ groups. There are three ___ of bee: the queen, the worker and the drone. The queen lives for ___ years, but the workers die after a few weeks. During their short lives, worker bees need to find food and make honey. Worker bees are actually the only bees which ___ flowers.
 
-In the past ten years, the number of bees in some areas has fallen by 90%. Scientists can't ___ all the reasons for this. ___, they are worried because fewer bees means less food in the future.`,[['high','full','large'],['kinds','ways','things'],['lots','much','several'],['visit','go','arrive'],['describe','explain','discuss'],['Especially','However','Instead']])
+In the past ten years, the number of bees in some areas has fallen by 90%. Scientists can't ___ all the reasons for this. ___, they are worried because fewer bees means less food in the future.`,[['high','full','large'],['kinds','ways','things'],['lots','much','several'],['visit','go','arrive'],['describe','explain','discuss'],['Especially','However','Instead']]),
+    part5Data: p5('you',[
+      { from:'Marty', to:'Robbie', content:"Hi Robbie,\n\nHave you ever played baseball? I played it at my last school and it [25] really good fun! We liked it more [26] all the other sports. I'd like to start a baseball club here if enough students are interested. What [27] you think?" },
+      { from:'Robbie', to:'Marty', content:"That sounds like [28] great idea! [29] don't you make a poster and ask Mrs Taylor to put it up in the sports hall? I'm sure [30] are lots of students who'd love to learn to play." }
+    ])
   }),
   scanTest({
     id: 8, book: 2, test: 4, file: 'KET青少版真题 2.pdf',
@@ -405,7 +434,8 @@ Unfortunately, there aren't many jobs for young people. When I was little, most 
     ]),
     part4Data: p4('The library on wheels',`Antonio La Cava was a teacher in Italy for 42 years. When his career finished, he ___ he didn't want to stop working with children. So, in 2003, he ___ an old three-wheeled motorbike and made it into a library on wheels. He built a large box, and put it onto the back of the motorbike. Then he ___ it with more than 700 books written for children of all ages.
 
-Every week, Antonio visits eight villages around Basilicata in southern Italy. The whole trip is more than 500 kilometres ___. As Antonio enters the villages he ___ loud music, so the children know he's there. Antonio ___ children hundreds of books every week, and passes his love of books on to them.`,[['planned','decided','preferred'],['paid','bought','spent'],['filled','carried','collected'],['large','far','long'],['plays','puts','sends'],['borrows','lends','belongs']])
+Every week, Antonio visits eight villages around Basilicata in southern Italy. The whole trip is more than 500 kilometres ___. As Antonio enters the villages he ___ loud music, so the children know he's there. Antonio ___ children hundreds of books every week, and passes his love of books on to them.`,[['planned','decided','preferred'],['paid','bought','spent'],['filled','carried','collected'],['large','far','long'],['plays','puts','sends'],['borrows','lends','belongs']]),
+    part5Data: p5('are',[{ from:'Amy', to:'Jake', content:"I'm on holiday with my family and we are having a great time! Our hotel is really nice and [25] is a beautiful beach not far away, where we go swimming. The weather here is much warmer [26] it is at home.\n\n[27] rained yesterday so we decided to go ice-skating. The day was a [28] of fun, and we might go again if the weather is bad tomorrow!\n\nWe're planning [29] do some shopping in the town centre at [30] weekend to get some presents, and then we're coming home on Monday.\n\nSee you soon!" }])
   }),
   scanTest({
     id: 9, book: 3, test: 1, file: '03 KET真题 - 第1套 - 阅读与写作.pdf',
@@ -425,7 +455,8 @@ Every week, Antonio visits eight villages around Basilicata in southern Italy. T
       'My mum comes from Russia and her parents still live there. We often stay with them during the school holidays, but unfortunately I didn’t learn Russian when I was little so talking to them has always been hard. After our last trip I decided it was time for me to learn the language. I now have lessons and remember all the new vocabulary my teacher teaches us.'
     ],['Who says he’s pleased about how quickly he improved?','Who is learning a foreign language without a teacher?','Who needs to know a foreign language for the career he wants?','Who says he remembers all the new words he learns in his language lessons?','Who is practising a language so he can have conversations with friends?','Who is studying a foreign language for family reasons?','Who says he has lots of experience learning new languages?']),
     part3Data: examPart3(1),
-    part4Data: examPart4(1)
+    part4Data: examPart4(1),
+    part5Data: examPart5(1)
   }),
   scanTest({
     id: 10, book: 3, test: 2, file: '03 KET真题 - 第2套 - 阅读与写作.pdf',
@@ -445,7 +476,8 @@ Every week, Antonio visits eight villages around Basilicata in southern Italy. T
       'I’m so glad my mum took me to the News Museum. It has exhibitions about the news and is different from most other museums because it’s more about events than things. Unfortunately, I didn’t have time to see everything, so I’ve already decided to go back. My favourite part was a special theatre showing short videos of interesting news reports. There was also an exhibition about photo-journalists and their work. I really enjoyed learning how they get such good pictures.'
     ],['Who says that not many other museums are like the one she visited?','Who plans to return to the museum?','Who says the museum was hard to find?','Who visited the museum alone?','Who liked an exhibition about an interesting career?','Who says she enjoyed taking part in an activity at the museum?','Who says that one exhibition was more popular than the others?']),
     part3Data: examPart3(2),
-    part4Data: examPart4(2)
+    part4Data: examPart4(2),
+    part5Data: examPart5(2)
   }),
   scanTest({
     id: 11, book: 3, test: 3, file: '03 KET真题 - 第3套 - 阅读与写作.pdf',
@@ -465,7 +497,8 @@ Every week, Antonio visits eight villages around Basilicata in southern Italy. T
       'My family always spend our summer holidays in the south of France, and last year we stayed at a campsite on a beach near Arles. I loved swimming in the sea and in the campsite pool. I also enjoyed using my French when we went shopping at the local market. My school friends would be amazed! Because my mum and dad are artists, they wanted to visit a museum about the painter Van Gogh. Usually I don’t like museums, but actually this one was really interesting.'
     ],['Who describes a market he visited?','Who plans to improve his spoken French?','Who was surprised he enjoyed a place his parents took him to?','Who preferred the pool to the beach?','Who made some new friends during his holiday?','Who learnt how to do something new on his holiday?','Who says he liked practising his French?']),
     part3Data: examPart3(3),
-    part4Data: examPart4(3)
+    part4Data: examPart4(3),
+    part5Data: examPart5(3)
   }),
   scanTest({
     id: 12, book: 3, test: 4, file: '03 KET真题 - 第4套 - 阅读与写作.pdf',
@@ -485,7 +518,8 @@ Every week, Antonio visits eight villages around Basilicata in southern Italy. T
       'My mum and dad are farmers. They often work from early morning until late at night, and always seem so tired. They do too much really, so I try to help if I can. One thing I’m good at is helping Dad when the farm machines break - it’s a great feeling to get them working again. In fact, I’d like to be a mechanic when I leave school. However, I want to continue living in the countryside because I love all the animals.'
     ],['Who was frightened of a kind of farm animal when he was younger?','Who describes the views from the farm?','Who thinks living on a farm is not very exciting?','Who enjoys repairing things on the farm?','Who explains why it’s difficult for farmers to go away on holiday?','Who thinks his parents don’t rest enough?','Who is happy to get up early in the morning?']),
     part3Data: examPart3(4),
-    part4Data: examPart4(4)
+    part4Data: examPart4(4),
+    part5Data: examPart5(4)
   })
 ]
 import { KET_EXAMS } from './ketExamData.js'

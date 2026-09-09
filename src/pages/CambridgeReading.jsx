@@ -920,26 +920,28 @@ export default function CambridgeReading() {
                 )}
 
                 {partId === 5 && p5Part && !p5Part.scanPages && (
-                  <div className="space-y-5">
-                    {p5Part.example && (
-                      <div className="flex items-center gap-2 text-sm text-gray-500 bg-gray-50 px-4 py-2 rounded-xl">
-                        <span className="font-semibold">Example:</span>
-                        <span className="bg-white px-2 py-0.5 rounded font-mono border border-gray-200">({p5Part.example.number})</span>
-                        <span className="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded font-medium">{p5Part.example.answer}</span>
-                      </div>
-                    )}
-                    {(p5Part.passages || []).map((p, i) => (
-                      <div key={i} className="bg-gray-50 border border-gray-100 rounded-xl p-5">
-                        {(p.from || p.to) && (
-                          <div className="flex gap-3 mb-3 text-xs text-gray-500 pb-2 border-b border-gray-200">
-                            {p.from && <span>📧 <span className="font-bold text-gray-700">{p.from}</span></span>}
-                            {p.to   && <span>→ <span className="font-bold text-gray-700">{p.to}</span></span>}
-                          </div>
-                        )}
-                        <p className="text-sm text-gray-700 leading-loose">{renderPart5Passage(p.content)}</p>
-                      </div>
-                    ))}
-                    <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-2 gap-5 items-start">
+                    <div className="min-w-0 space-y-4">
+                      {p5Part.example && (
+                        <div className="flex items-center gap-2 text-sm text-gray-500 bg-gray-50 px-4 py-2 rounded-xl">
+                          <span className="font-semibold">Example:</span>
+                          <span className="bg-white px-2 py-0.5 rounded font-mono border border-gray-200">({p5Part.example.number})</span>
+                          <span className="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded font-medium">{p5Part.example.answer}</span>
+                        </div>
+                      )}
+                      {(p5Part.passages || []).map((p, i) => (
+                        <div key={i} className="bg-gray-50 border border-gray-100 rounded-xl p-5">
+                          {(p.from || p.to) && (
+                            <div className="flex gap-3 mb-3 text-sm text-gray-500 pb-2 border-b border-gray-200">
+                              {p.from && <span>📧 <span className="font-bold text-gray-700">{p.from}</span></span>}
+                              {p.to   && <span>→ <span className="font-bold text-gray-700">{p.to}</span></span>}
+                            </div>
+                          )}
+                          <p className="text-[18px] text-gray-700 leading-9 whitespace-pre-line">{renderPart5Passage(p.content)}</p>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="grid grid-cols-2 gap-3 lg:sticky lg:top-5">
                       {p5Part.questions.map(q => {
                         const ua = answers[q.id] || ''
                         const ok = p5Checked ? isP5Correct(q) : null
@@ -954,7 +956,7 @@ export default function CambridgeReading() {
                             }`}>({q.id})</span>
                             <input type="text" disabled={p5Checked} value={ua}
                               onChange={e => setAnswers(a => ({ ...a, [q.id]: e.target.value }))}
-                              className="flex-1 bg-transparent text-sm focus:outline-none text-gray-700 placeholder:text-gray-300"
+                            className="min-w-0 flex-1 bg-transparent text-base focus:outline-none text-gray-700 placeholder:text-gray-300"
                               placeholder="填词…"
                             />
                             {p5Checked && !ok && (
