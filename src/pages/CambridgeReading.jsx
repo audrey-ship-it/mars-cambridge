@@ -836,7 +836,7 @@ export default function CambridgeReading() {
                 {/* ── PART 4 ── */}
                 {partId === 4 && currentBatch && !currentBatch.scanPages && (
                   <div className="grid grid-cols-2 gap-5">
-                    <div className="bg-gray-50 rounded-xl border border-gray-100 p-6 text-gray-700">
+                    <div className="sticky top-5 max-h-[90vh] overflow-y-auto bg-gray-50 rounded-xl border border-gray-100 p-6 text-gray-700">
                       {currentBatch.title && (
                         <h3 className="mb-5 text-center text-2xl font-extrabold text-gray-900">
                           {currentBatch.title}
