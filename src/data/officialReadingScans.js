@@ -16,14 +16,29 @@ const p2 = (title, names, texts, questions) => ({
   people: names.map((name, index) => ({ name, label: ['A','B','C'][index], text: texts[index] })),
   questions
 })
+const p3q = (text, options) => ({ text, options: { A: options[0], B: options[1], C: options[2] } })
+const p3 = (title, author, passage, questions) => ({ title, author, passage, questions })
+const examPart3 = testIndex => {
+  const source = KET_EXAMS[testIndex - 1].reading.parts.find(part => part.part === 3)
+  return p3(source.articleTitle, source.author || '', source.passage,
+    source.questions.map(question => p3q(question.text, question.opts)))
+}
 
-function scanTest({ id, book, test, file, pageNames, answers, part1Questions, part2Data }) {
+function scanTest({ id, book, test, file, pageNames, answers, part1Questions, part2Data, part3Data }) {
   const [p1, p2, p3, p4, p5] = pageNames
   const structuredPart2 = part2Data ? {
     ...part2Data,
     questions: part2Data.questions.map((question, index) => typeof question === 'string'
       ? { id: 7 + index, text: question, answer: answers[6 + index] }
       : question)
+  } : null
+  const structuredPart3 = part3Data ? {
+    ...part3Data,
+    questions: part3Data.questions.map((question, index) => ({
+      id: 14 + index,
+      ...question,
+      answer: answers[13 + index]
+    }))
   } : null
   return {
     id,
@@ -33,7 +48,7 @@ function scanTest({ id, book, test, file, pageNames, answers, part1Questions, pa
       ? { instructions: 'For each question, choose the correct answer.', questions: part1Questions }
       : { scanPages: pages(`b${book}t${test}`, p1), questions: choiceQuestions(1, answers.slice(0, 6)) },
     part2: structuredPart2 || { scanPages: pages(`b${book}t${test}`, p2), questions: choiceQuestions(7, answers.slice(6, 13)) },
-    part3: { scanPages: pages(`b${book}t${test}`, p3), questions: choiceQuestions(14, answers.slice(13, 18)) },
+    part3: structuredPart3 || { scanPages: pages(`b${book}t${test}`, p3), questions: choiceQuestions(14, answers.slice(13, 18)) },
     part4: { scanPages: pages(`b${book}t${test}`, p4), questions: choiceQuestions(19, answers.slice(18, 24)) },
     part5: {
       scanPages: pages(`b${book}t${test}`, p5),
@@ -121,7 +136,22 @@ export const officialReadingScans = [
         { id: 12, text: 'Who writes music for other musicians?', answer: 'A' },
         { id: 13, text: 'Who wanted to play in a band when he was younger?', answer: 'C' }
       ]
-    }
+    },
+    part3Data: p3('A path across Canada','Thirteen-year-old Kara Finch writes about The Great Trail - a footpath that goes across Canada.',`The Great Trail goes from one side of Canada to the other. At 24,000 km, it is the longest trail in the world. The Great Trail project began in 1992 and took 25 years to complete. It opened in 2017, exactly 150 years after Canada became one country.
+
+The Great Trail is actually lots of paths joined together. You can cycle, walk or horse-ride on most of it, but there are parts where the only way you can travel is by boat. And there are others where the trail is part of the highway, which doesn't sound very safe to me.
+
+My father and I spent a day walking along part of The Great Trail that was surprisingly busy. We were told you don't usually see bears when there are lots of people, but we did. It was moving through the trees, quite close to us, and I felt a little afraid. “I don't think it's hungry!” laughed my dad.
+
+At lunchtime, we talked to an old man on the trail. Dad asked him if he thought the path was going to help Canadians learn more about their countryside. “Not really,” he said. “We've always loved to be outdoors. But it will bring us tourists from around the world, which is important.”
+
+In the future, the path will probably change, and new parts may open. We saw nothing to tell us we were on The Great Trail, which is a shame. I know there's information on the website, but it's good to know when you're walking on a special path. They need to add some signs, I think.`,[
+      p3q('What is Kara doing in the first paragraph?',['telling tourists how long it takes to walk The Great Trail','explaining the history of The Great Trail','giving walkers advice about walking in Canada']),
+      p3q('What does Kara think is dangerous?',['Some parts of the path are on roads.','You need a boat for parts of the path.','Bikes and horses share the same path.']),
+      p3q('What does Kara say about the bear she saw?',['It looked hungry.','It was on the path.','It walked near her.']),
+      p3q('What did the old man say about the trail?',['People from other countries will come to see it.','People will go into the countryside more because of it.','People from Canada will use it to see other parts of their country.']),
+      p3q('What does Kara say should happen next?',['There should be a website about the trail.','Some parts of the trail should close.','There should be more signs along the trail.'])
+    ])
   }),
   scanTest({
     id: 3, book: 1, test: 3, file: 'KET青少版官方真题1.pdf',
@@ -139,7 +169,22 @@ export const officialReadingScans = [
       'Mrs Philips was my science teacher when I joined my school and she still is, so I don’t know what the other teachers are like. But I think Mrs Philips gives us so much great stuff to do. Even when we think something is too hard for us, she says she knows we can all do it, and she’s usually right! She also shows us drawings, photos and websites to explain how things work, which I love.',
       'I have a fantastic science teacher called Mrs Rhodes. She loves her subject - especially plants. She is able to draw wonderful pictures of them on the board, which helps us understand them. She never seems to get tired or bored when she’s teaching. She takes time to get to know each student in the class so that she can help them better. I think she’s the reason I want to be a science teacher one day.',
       'In just one year, Mrs James has become my favourite teacher. Until I joined her class, I was very bad at science, but she explained things so well that I soon understood them better. My marks went up almost immediately. She always has time at the end of lessons if we’re having problems. But it isn’t just teaching that makes her great. She’s also interested in our lives and gives advice on how to be a better person.'
-    ],['Who says his teacher helps with things other than science?','Who says his teacher is really interested in what she teaches?','Who says his teacher believes every student can be successful?','Who says he has chosen his future career because of his teacher?','Who says his teacher helped him to improve quickly?','Who says he’s only ever had one science teacher at his school?','Who says his teacher is very good at drawing?'])
+    ],['Who says his teacher helps with things other than science?','Who says his teacher is really interested in what she teaches?','Who says his teacher believes every student can be successful?','Who says he has chosen his future career because of his teacher?','Who says his teacher helped him to improve quickly?','Who says he’s only ever had one science teacher at his school?','Who says his teacher is very good at drawing?']),
+    part3Data: p3('Callie Rice - ice dancer','',`Growing up, I was in an ice-skating club, and my friends and I did lots of competitions. When I was 18, I entered a big one in Italy, and I came first. The prize was a job as an ice dancer in a big show. That's how my career started.
+
+One of the things I love about the shows is the beautiful clothes. The only trouble is that sometimes they're heavy and I get very hot. Also, I have to change lots of times in one show. The people who make the clothes are very clever - it's amazing how quickly they work!
+
+Before the show starts, we get dressed, put our skates on, and wish each other good luck. Then, while I'm waiting to go on, I like to sit quietly by myself and think about what I'm going to do. The other skaters chat together or listen to music.
+
+In the shows, we have to dance, sing, and also speak. For me, ice dancing is fine, but I'm not an actor. I'm always a bit scared I won't remember the words. I'm not bothered about falling - it doesn't usually happen. And I really enjoy joining in with all the songs.
+
+People always ask me if I'm tired when each show finishes, but I love skating, so I never feel that way. I love listening to the people who came to watch - so excited as they leave, talking about what they've seen. That's when I'm really happy I chose ice dancing as a career.`,[
+      p3q("How did Callie's career as an ice dancer begin?",['She won a competition.','She saw an advert for a job.','A friend invited her to join an ice show.']),
+      p3q('What does Callie say about the clothes she wears?',['Some are prettier than others.','It’s hard to skate in them.','Making them takes a long time.']),
+      p3q('What does Callie do just before each show?',['She talks to the other skaters.','She checks her skates are okay.','She takes a moment to be alone.']),
+      p3q('What does Callie worry about?',['having an accident on the ice','forgetting what she has to say','dancing and singing at the same time']),
+      p3q('How does Callie usually feel after a show?',['ready for a rest','glad that she’s finished','pleased about making people happy'])
+    ])
   }),
   scanTest({
     id: 4, book: 1, test: 4, file: 'KET青少版官方真题1.pdf',
@@ -157,7 +202,22 @@ export const officialReadingScans = [
       'I had a great time in Rome with my family. It was my first holiday outside my own country and I couldn’t wait to go. I found out all I could about Rome from the library and on the internet. Knowing about the history made seeing all the old buildings, like the Colosseum, much more interesting. We were able to do lots of sightseeing because the taxis and buses and the metro were cheap and fast.',
       'It was really hot when I arrived at Rome airport with my parents last summer. I loved walking around famous places like the Trevi Fountain, but all the cars and buses in the city sometimes made walking difficult. I really loved the food. The Italians have a special kind of ice cream called gelato which is wonderful, but the best thing I had was a pizza at a local market. I also got some great things to take back for my friends.',
       'It was so hot when my dad and I went to Rome last year that we usually waited until after the sun went down to explore the city on foot. During the day we went to museums, shops and restaurants. The pasta there is amazing, and I had some Italian ice cream, called gelato, for the first time. That was the thing I liked most. After a few days in Rome, we decided to take a train into the countryside for a day. It was nice to see all the small villages and farms.'
-    ],['Who says it was easy to travel around in Rome?','Who says he felt very excited before his holiday?','Who says there was a lot of traffic in Rome?','Who says he prepared carefully for his trip?','Who says his favourite food on the trip was Italian ice cream?','Who bought some things to give as gifts?','Who took a short trip outside Rome?'])
+    ],['Who says it was easy to travel around in Rome?','Who says he felt very excited before his holiday?','Who says there was a lot of traffic in Rome?','Who says he prepared carefully for his trip?','Who says his favourite food on the trip was Italian ice cream?','Who bought some things to give as gifts?','Who took a short trip outside Rome?']),
+    part3Data: p3('A wonderful year','Ben Jones talks about his year of travel before studying at university.',`I always knew I wanted to spend a year travelling before university. I wanted to see the world, improve my skiing, make new friends from other countries and, more than anything, try lots of things I've never done before.
+
+The first place I visited was France. I've always loved the French language and I wanted to study it. Then, while I was there, I became interested in French food. I took some cooking lessons at a farmhouse in the French countryside, and learned to make lots of lovely dishes.
+
+Next, I visited Australia. My cousins live near the river in Sydney, so I had somewhere to stay. To begin with, we spent a lot of time sailing in their boat. But then I got a job in a hotel. It was great - the customers and staff were so friendly.
+
+My last country was Japan, where I learned to become a skiing teacher. I planned to do a three-week course. But when I got there, I saw that I wasn't actually that good, so I changed to a seven-week one. The course was amazing and afterwards I got a job with a skiing company.
+
+The other teachers were very friendly and on our days off, we did activities like snowboarding. One weekend we even did winter camping. That was quite interesting, but it was cold, so I can't say I slept well! Anyway, we're all planning to meet up soon and I can't wait.`,[
+      p3q('What did Ben want to do during the year after he left school?',['try some different sports','have some new experiences','meet up with old friends']),
+      p3q('Why did Ben go to France?',['to do a French cooking course','to see the French countryside','to learn to speak French']),
+      p3q('Where did Ben live when he was in Australia?',['in the hotel where he worked','with members of his family','on a boat on the river']),
+      p3q('Why did Ben change his course in Japan?',['He heard about a better one.','He knew he needed more practice.','He wasn’t enjoying the first one.']),
+      p3q('What does Ben say about winter camping?',['It wasn’t pleasant at night.','He would love to do it again soon.','It was the most interesting thing he’s ever done.'])
+    ])
   }),
   scanTest({
     id: 5, book: 2, test: 1, file: 'KET青少版真题 2.pdf',
@@ -175,7 +235,32 @@ export const officialReadingScans = [
       'Last summer, my family and another family we’re close to went by coach to Canada. It was a long journey and the coach was crowded, so I was really glad when we finally arrived. We stayed in a little wooden house in the middle of a forest. The weather wasn’t too hot, which I was pleased about. The best thing was the horse riding. It was my first time on a horse, but I had lessons every day and by the end of the holiday I was quite good.',
       'I went to Canada in August with my family. My mum booked everything online, and we got a non-stop flight from the UK. We stayed in a little hotel in a town called Whistler. From our room, we could see beautiful mountains and fields of flowers. We did lots of activities, including swimming, hiking and white-water rafting. There was an interesting shop in town where I found things to take back home for my friends.',
       'I learnt to fish last summer, so my parents bought me fishing equipment as a birthday present. They said Canada is great for fishing so we could go there for our holiday to try it out. We drove from our home in the US to the national park and put up our tent near a lake. The next day it was raining so hard you almost couldn’t see the lake. But I thought, “Fantastic, that’s perfect for catching fish.” And it was true, because I caught five that day. I took lots of photos to show my friends back home.'
-    ],['Who describes the view from where he was staying?','Who says he didn’t enjoy the journey from his home?','Who bought some gifts while he was on holiday?','Who describes feeling excited by some bad weather?','Who says he enjoyed learning a new activity during his holiday?','Who went on holiday with friends as well as family?','Who explains why he and his family chose to go to Canada?'])
+    ],['Who describes the view from where he was staying?','Who says he didn’t enjoy the journey from his home?','Who bought some gifts while he was on holiday?','Who describes feeling excited by some bad weather?','Who says he enjoyed learning a new activity during his holiday?','Who went on holiday with friends as well as family?','Who explains why he and his family chose to go to Canada?']),
+    part3Data: p3('Harry Mack','British singer Harry Mack started his career in a boy band called Big Time, but he left last year to start work on his own album. We met him in California to ask him about his new life.',`Do you like California?
+
+Yes. The weather's always warm and sunny and the people are great. But the thing I really love is that I can see the sea from my apartment and listen to it while I'm lying in bed at night.
+
+How did you get ideas for your new album?
+
+I did 150 concerts last year with Big Time, so I was on buses and planes a lot. There wasn't much to do on those journeys, except think about music. When I arrived at the hotel late at night, I often had something in my head.
+
+Do you like writing songs?
+
+Yes. I write every morning at home, because there's less noise then, and I can think. In the afternoons, I practise the new songs on my guitar for a few hours.
+
+Has your music changed since you left Big Time?
+
+Yes. Big Time did dance music, but I'm older now and so are my fans. I want to do music that's right for the age we are now. The fans all love it.
+
+Do you enjoy playing concerts?
+
+I always feel a bit scared before playing, it doesn't matter if the concert's big or small. However, my favourite is smaller concerts because I like chatting with fans before I start. It's like being in a room full of friends.`,[
+      p3q('What does Harry like best about being in California?',['living by the water','spending time in the sun','meeting new people']),
+      p3q('Harry says he got ideas for his new album',['when he was playing concerts.','when he was travelling.','when he was sleeping.']),
+      p3q('Harry says that song writing is',['more fun than playing the guitar.','harder to do at home.','easier when it is quiet.']),
+      p3q('Harry says that since he left Big Time',['he feels happier.','he has got new fans.','his music is more adult.']),
+      p3q('Why does Harry prefer playing small concerts to big ones?',['He can meet his fans.','He can see all his friends there.','He feels less afraid before playing.'])
+    ])
   }),
   scanTest({
     id: 6, book: 2, test: 2, file: 'KET青少版真题 2.pdf',
@@ -193,7 +278,22 @@ export const officialReadingScans = [
       'From the centre of the town of Nosara, you can easily walk to several good beaches for beginner surfers. The sea is warm all year round and the weather is beautiful, so you’ll be surprised by how quiet the beaches always are. There are many excellent surf teachers around the town, and their prices aren’t high. The town’s also famous for its wildlife park, where you can see some amazing sea animals.',
       'The area around Agadir in the south of Morocco is very popular with surfers. Beginners need to go in autumn when the sea is safe and the water is nice and warm. Experienced surfers will enjoy it more in winter when the waves are big and exciting. From the city you can drive to many lovely beaches in less than 20 minutes. The area’s well known for having a large number of surf camps. These are comfortable and friendly and don’t cost much.',
       'A surprising number of people haven’t heard that the southern side of Barbados is excellent for beginner surfers. However, Zed Layson, a famous surfer, has a school at Surfer’s Point, which is excellent for those who want to try the sport for the first time. As well as good teachers, there is always a photographer waiting to take a picture of you on your surfboard. In summer it rains a lot, but the water is warm so surfing is still possible.'
-    ],['Which place is only good for beginners at one time of year?','Where can you learn from a well-known teacher?','Which place has something to do when you’re not surfing?','Which place has wet weather at one time of the year?','Where is it possible to stay without paying a lot?','Which place is not well known as a good place to learn to surf?','From which town can you get to the surfing beaches on foot?'])
+    ],['Which place is only good for beginners at one time of year?','Where can you learn from a well-known teacher?','Which place has something to do when you’re not surfing?','Which place has wet weather at one time of the year?','Where is it possible to stay without paying a lot?','Which place is not well known as a good place to learn to surf?','From which town can you get to the surfing beaches on foot?']),
+    part3Data: p3("Emma's camping trip in Namibia",'',`Last summer Mum and I went camping in Namibia. It was my first time camping and my first visit to Namibia. My mum already knew the country. As a teenager she went travelling there with a cousin, and she always planned to go back one day. I knew Namibia was in Africa, but I had to check online to see exactly where.
+
+The campsite was beautiful, with a big swimming pool. Campsites usually have showers, but when we got there, we found that this one had a real bath - I couldn't believe it. Also, we didn't need to make our own meals because there was a camp chef who cooked for us in an outdoor kitchen.
+
+I was always tired in the evenings and I couldn't wait to get into my little camp bed. Every night I lay there listening to all the animals. They were really noisy, so it wasn't always easy to sleep. However, hearing them was one of the best things about the holiday.
+
+We also saw a lot of animals. One day we found a lion family and stopped to watch them. Unfortunately, they were sleeping in long grass by a tree, and I couldn't get any good photos of them. They didn't look scary but our guide didn't let us get close.
+
+It was a fantastic holiday and I loved camping. Now I know how much fun it is, I think I'll try it in my own country with some friends, maybe as soon as next summer.`,[
+      p3q("Why did Emma's mum choose Namibia for their holiday?",['She wanted to visit it for a second time.','She had a cousin who was from there.','She saw a travel website about it.']),
+      p3q('When they arrived at the campsite, Emma was surprised by',['the kitchen.','the bathroom.','the swimming pool.']),
+      p3q('What does Emma say about the nights?',['Her bed was not very comfortable.','She enjoyed listening to the animals.','She slept well because she was tired.']),
+      p3q('How did Emma feel when she saw the lion family?',['afraid because they looked dangerous','upset because she didn’t have her camera','sorry because they were hard to see']),
+      p3q('What did Emma write in her diary about her holiday?',["I enjoyed camping with Mum, but I'd like to go with friends next time.","I loved watching the wild animals, but camping is hard work.","I'd like to try camping again, but in a warmer place."])
+    ])
   }),
   scanTest({
     id: 7, book: 2, test: 3, file: 'KET青少版真题 2.pdf',
@@ -211,7 +311,22 @@ export const officialReadingScans = [
       'Students of all ages are welcome at this school, and children can even do a course with their parents. Before starting each day, the group goes to the local market to buy fresh food to cook with, and at the end of the morning everyone has a meal together and shares the dishes they’ve made. Several times a year, the school asks a different professional chef to visit to give students ideas for new dishes.',
       'The courses at this school show 10- to 16-year-olds how to make simple but delicious main meals using food from local farms. At the end of every day, students take photos of the dishes and post them on the school website. Then they carefully pack their dishes, so they can enjoy them later with their family that evening. For busy students who cannot get there after school, there are also morning classes every Saturday.',
       'This school has courses for 11- to 15-year-olds who want to make healthy food the whole family can enjoy. Students learn what they should and shouldn’t eat and also how to cook with fruit and vegetables. The course includes online videos that give ideas for dishes students can practise at home at weekends. This school is very popular, so call now to get your place!'
-    ],['Which school has a course at the weekend?','Which school teaches students about foods which are good for them?','At which school can the whole family take a class together?','Which school invites someone special to come and teach students?','Which school puts extra cooking instructions on the internet?','At which school do students take home the food they have cooked?','Which school’s cooking course includes a shopping trip?'])
+    ],['Which school has a course at the weekend?','Which school teaches students about foods which are good for them?','At which school can the whole family take a class together?','Which school invites someone special to come and teach students?','Which school puts extra cooking instructions on the internet?','At which school do students take home the food they have cooked?','Which school’s cooking course includes a shopping trip?']),
+    part3Data: p3('My hobby','Fifteen-year-old Zoe Cabello talks about snowboarding',`I first tried snowboarding when I was seven, on a family holiday. My older brother was already a really good snowboarder, and at that age, I always wanted to do everything he did. My dad paid for a lesson, but I didn't enjoy it at all, and decided never to do it again.
+
+After that, I started doing gymnastics, and I got really good at it. Then, when I was nine, one of my friends had a snowboarding party at an indoor snow centre for her birthday. I wanted to say no because I was scared of hurting myself. However, she really wanted me to go, so I decided to be brave, and said yes.
+
+And actually, this time, I thought snowboarding was amazing! Because of all the gymnastics, I was strong and fit and it wasn't difficult for me. In just a couple of hours I was able to stay on my feet from the top of the slope to the bottom.
+
+When I was 11, we moved to Italy for nine months because of my father's job. We lived in the north of the country, near the mountains, and I was able to go snowboarding a lot. When we returned home, my friends couldn't believe how good I was.
+
+These days all our family holidays are spent snowboarding. I love everything about it - the fresh air, the views, even the clothes. But more than anything, I love the fact that there's always something new to learn. That's what keeps it interesting for me.`,[
+      p3q('Why did Zoe want to try snowboarding when she was seven?',['to find out if she liked it','to be like her brother','to make her dad happy']),
+      p3q("When Zoe was invited to her friend's birthday party she felt",['excited.','surprised.','worried.']),
+      p3q('What is Zoe explaining in the third paragraph?',['how gymnastics helped her learn to snowboard','how important it is to have more than one hobby','how long it takes for most people to learn to snowboard']),
+      p3q('What does Zoe say about living in Italy?',['Her snowboarding improved a lot.','She missed snowboarding with her friends.','She met a lot of excellent snowboarders there.']),
+      p3q('What does Zoe say about snowboarding in the final paragraph?',['She would like to go without her family next time.','She’s sorry she can’t go more often.','She never gets bored of going.'])
+    ])
   }),
   scanTest({
     id: 8, book: 2, test: 4, file: 'KET青少版真题 2.pdf',
@@ -229,7 +344,20 @@ export const officialReadingScans = [
       'My parents booked this adventure holiday, and to begin with I thought it sounded a bit scary. But in fact, I really enjoyed it. We spent the first week mountain biking. It wasn’t as difficult as it looked, and during the week I really improved. Then we moved to a different hotel near a beach for the second week, where we learned to do lots of water sports. That was my favourite part of the holiday. I made friends with some other boys in the hotel.',
       'We’ve been on holiday with this company once before, but this time my parents chose France instead of Croatia. The hotel wasn’t great this year. It was really crowded and it was hard to get a seat in the dining room. However, the sports and activities were fantastic. In the first week, we did climbing and hiking, and in the second week we did water sports. The other guests were great too.',
       'We usually have quiet holidays, but this year I really wanted to do something more exciting. I found the website for this company and showed it to my parents. At first they were worried, but after they spoke to the staff they started to like the idea. I was so glad when they booked! We had a great time. Mum and Dad met some new friends and said they want to book with this company again next year.'
-    ],['Who says his family will have another adventure holiday in the future?','Who says he got better at one of the sports he did on holiday?','Who says that his parents made some new friends on holiday?','Who preferred the second week of his holiday to the first?','Who says there were too many people at the hotel where he stayed?','Who says he was worried about going on an adventure holiday?','Who gave his parents the idea of going on an adventure holiday?'])
+    ],['Who says his family will have another adventure holiday in the future?','Who says he got better at one of the sports he did on holiday?','Who says that his parents made some new friends on holiday?','Who preferred the second week of his holiday to the first?','Who says there were too many people at the hotel where he stayed?','Who says he was worried about going on an adventure holiday?','Who gave his parents the idea of going on an adventure holiday?']),
+    part3Data: p3('Living on a small island','My name is Ben and I’m 17.',`I live on a small island near Ireland. It's 5 km long with only 200 people. When I was a child, life was great. On small islands, everybody knows everybody, so I always had someone to be with. I played in the fields and on the beach. I went swimming. I even learned to drive on my uncle's farm when I was 11.
+
+I've always enjoyed going to school here. There are only three in my class so we each get lots of time with the teacher. She doesn't live on the island. Sometimes, if the weather is bad, she can't get here, but we still have lessons online. The internet is great for us. We can have friends all over the world and chat and play computer games with them.
+
+I had some difficult times when I first became a teenager. I felt that there wasn't enough for me to do. I even thought about leaving the island because I wanted to have interesting experiences and meet new people. But I decided to stay and now I'm planning to live here when I grow up.
+
+Unfortunately, there aren't many jobs for young people. When I was little, most men were fishermen, like Dad, or farmers, like my uncle. Now there are just a few fishermen. It can be difficult. I've been fishing with Dad sometimes, but I always feel sick on a boat, so I might prefer farming.`,[
+      p3q('What does Ben say in the first paragraph about living on an island?',['He was never lonely.','He never went anywhere by car.','His favourite place was the beach.']),
+      p3q("What do we learn about the school on Ben's island?",['The classes are usually online.','The lessons are very long.','There are not many students.']),
+      p3q('When Ben became a teenager, he started to',['get bored with island life.','look for a different place to live.','make new friends in other places.']),
+      p3q('Why does Ben think he might become a farmer?',['He thinks being a fisherman is dangerous.','He didn’t enjoy helping his father to fish.','He has always preferred farming to fishing.']),
+      p3q('What is the writer doing in this article?',['explaining why an island is the best place for teenagers to live','describing the good and the bad things about living on an island','giving advice to people who might want to move to an island'])
+    ])
   }),
   scanTest({
     id: 9, book: 3, test: 1, file: '03 KET真题 - 第1套 - 阅读与写作.pdf',
@@ -247,7 +375,8 @@ export const officialReadingScans = [
       'At the moment, I’m learning Arabic because I’d like to be a journalist one day, and being able to speak other languages is important for this job. It wasn’t possible to learn Arabic at school, but a friend of mine knew a woman who could give me lessons and now she comes to my house twice a week. It was difficult at first because I was a complete beginner. But I worked hard and after just six months I was able to speak and write the language quite well, which I’m really happy about.',
       'I’ve lived in lots of different countries because of my dad’s career, so I’ve had to learn several different languages. I seem to learn them quite easily. The last place I lived was Thailand. I’m still studying the language so I can continue to chat with my Thai classmates now I’m back in my home country. I’ve downloaded a new app with exercises in Thai, and I can’t wait to use it each morning because it’s so much fun.',
       'My mum comes from Russia and her parents still live there. We often stay with them during the school holidays, but unfortunately I didn’t learn Russian when I was little so talking to them has always been hard. After our last trip I decided it was time for me to learn the language. I now have lessons and remember all the new vocabulary my teacher teaches us.'
-    ],['Who says he’s pleased about how quickly he improved?','Who is learning a foreign language without a teacher?','Who needs to know a foreign language for the career he wants?','Who says he remembers all the new words he learns in his language lessons?','Who is practising a language so he can have conversations with friends?','Who is studying a foreign language for family reasons?','Who says he has lots of experience learning new languages?'])
+    ],['Who says he’s pleased about how quickly he improved?','Who is learning a foreign language without a teacher?','Who needs to know a foreign language for the career he wants?','Who says he remembers all the new words he learns in his language lessons?','Who is practising a language so he can have conversations with friends?','Who is studying a foreign language for family reasons?','Who says he has lots of experience learning new languages?']),
+    part3Data: examPart3(1)
   }),
   scanTest({
     id: 10, book: 3, test: 2, file: '03 KET真题 - 第2套 - 阅读与写作.pdf',
@@ -265,7 +394,8 @@ export const officialReadingScans = [
       'Last week, I went to the Cartoon Museum with my mum. It’s a small museum and we had to ask for directions because we got lost on our way there. When we finally got there, we walked around the various exhibitions, including one about the history of cartoons. The best part for me was joining a one-hour drawing class. An artist talked about his work and I did some cartoons of my own. It was a great little museum, but I saw most things, so I’m not planning to return.',
       'I visited the Natural History Museum with my dad when I was younger, but this was my first visit on my own. I already knew about some of the stuff at the museum from lessons at school, but I was amazed at how much I enjoyed the exhibitions. My favourite one was the dinosaur exhibition. It was the busiest part of the museum and full of people, but I didn’t mind that. I’ve been several times already, so I don’t think I’ll visit again.',
       'I’m so glad my mum took me to the News Museum. It has exhibitions about the news and is different from most other museums because it’s more about events than things. Unfortunately, I didn’t have time to see everything, so I’ve already decided to go back. My favourite part was a special theatre showing short videos of interesting news reports. There was also an exhibition about photo-journalists and their work. I really enjoyed learning how they get such good pictures.'
-    ],['Who says that not many other museums are like the one she visited?','Who plans to return to the museum?','Who says the museum was hard to find?','Who visited the museum alone?','Who liked an exhibition about an interesting career?','Who says she enjoyed taking part in an activity at the museum?','Who says that one exhibition was more popular than the others?'])
+    ],['Who says that not many other museums are like the one she visited?','Who plans to return to the museum?','Who says the museum was hard to find?','Who visited the museum alone?','Who liked an exhibition about an interesting career?','Who says she enjoyed taking part in an activity at the museum?','Who says that one exhibition was more popular than the others?']),
+    part3Data: examPart3(2)
   }),
   scanTest({
     id: 11, book: 3, test: 3, file: '03 KET真题 - 第3套 - 阅读与写作.pdf',
@@ -283,7 +413,8 @@ export const officialReadingScans = [
       'Last June my family and I went to France for our summer holiday. We spent two weeks at a campsite in the south of the country, near Marseilles. There was a beach not too far away but it was very crowded so I spent nearly all my time at the campsite pool, which was much nicer. I met some French kids there and we had a great time together. I really need to work hard on my French though, so that next time it will be easier to talk to people.',
       'I’d always wanted to visit France, so I was really excited when my parents told me we were going to the city of Caen in the north of the country for our summer holidays last year. There were some lovely beaches not far from the city and we also went to an attractive indoor market, which sold everything from fish to flowers. It was wonderful. However, the best thing we did was a one-day cooking course. I’ve never cooked anything before and it was really fun!',
       'My family always spend our summer holidays in the south of France, and last year we stayed at a campsite on a beach near Arles. I loved swimming in the sea and in the campsite pool. I also enjoyed using my French when we went shopping at the local market. My school friends would be amazed! Because my mum and dad are artists, they wanted to visit a museum about the painter Van Gogh. Usually I don’t like museums, but actually this one was really interesting.'
-    ],['Who describes a market he visited?','Who plans to improve his spoken French?','Who was surprised he enjoyed a place his parents took him to?','Who preferred the pool to the beach?','Who made some new friends during his holiday?','Who learnt how to do something new on his holiday?','Who says he liked practising his French?'])
+    ],['Who describes a market he visited?','Who plans to improve his spoken French?','Who was surprised he enjoyed a place his parents took him to?','Who preferred the pool to the beach?','Who made some new friends during his holiday?','Who learnt how to do something new on his holiday?','Who says he liked practising his French?']),
+    part3Data: examPart3(3)
   }),
   scanTest({
     id: 12, book: 3, test: 4, file: '03 KET真题 - 第4套 - 阅读与写作.pdf',
@@ -301,6 +432,8 @@ export const officialReadingScans = [
       'I love our farm. From every window of our farmhouse, you can see beautiful countryside for miles. Of course, it’s not a perfect life. There are always machines to repair, and farmers never get time off because the animals need them every day. That’s the reason my family and I can’t visit other countries in the summer. But what’s fantastic is that you’re never bored. My parents say the farm will be mine when I’m older, and I’m really happy about that.',
       'Being a farmer is a hard life. There are so many jobs to do and most of them are quite boring. Also, farmers can’t travel much and that’s something I really want to do when I’m older. One thing I love is being up before the sun each day. That’s when I feed the chickens. It’s quiet then, with only the noise of the animals. When I was little, the cows looked so big. I always ran away when they came near me. It seems silly now.',
       'My mum and dad are farmers. They often work from early morning until late at night, and always seem so tired. They do too much really, so I try to help if I can. One thing I’m good at is helping Dad when the farm machines break - it’s a great feeling to get them working again. In fact, I’d like to be a mechanic when I leave school. However, I want to continue living in the countryside because I love all the animals.'
-    ],['Who was frightened of a kind of farm animal when he was younger?','Who describes the views from the farm?','Who thinks living on a farm is not very exciting?','Who enjoys repairing things on the farm?','Who explains why it’s difficult for farmers to go away on holiday?','Who thinks his parents don’t rest enough?','Who is happy to get up early in the morning?'])
+    ],['Who was frightened of a kind of farm animal when he was younger?','Who describes the views from the farm?','Who thinks living on a farm is not very exciting?','Who enjoys repairing things on the farm?','Who explains why it’s difficult for farmers to go away on holiday?','Who thinks his parents don’t rest enough?','Who is happy to get up early in the morning?']),
+    part3Data: examPart3(4)
   })
 ]
+import { KET_EXAMS } from './ketExamData.js'
