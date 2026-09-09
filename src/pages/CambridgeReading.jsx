@@ -716,7 +716,7 @@ export default function CambridgeReading() {
                       <motion.div key={q._key}
                         initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: qi * 0.04 }}
-                        className="grid grid-cols-[minmax(0,.9fr)_minmax(0,1.1fr)] gap-4 lg:gap-8 py-8 sm:py-10 border-b border-slate-300 last:border-b-0 items-center"
+                        className="grid grid-cols-1 lg:grid-cols-[minmax(0,.9fr)_minmax(0,1.1fr)] gap-4 lg:gap-8 py-8 sm:py-10 border-b border-slate-300 last:border-b-0 items-center"
                       >
                         {/* Left: numbered stimulus box */}
                         <div className="min-w-0 w-full flex flex-col">
@@ -745,7 +745,7 @@ export default function CambridgeReading() {
 
                 {/* ── PART 2 ── */}
                 {partId === 2 && currentBatch && !currentBatch.scanPages && (
-                  <div className="grid grid-cols-[minmax(0,1.25fr)_minmax(400px,.75fr)] gap-8 items-start">
+                  <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1.25fr)_minmax(400px,.75fr)] gap-8 items-start">
                     <div className="space-y-4">
                       {(currentBatch.people || []).map(p => (
                         <div key={p.name} className="bg-slate-50 rounded-2xl border border-slate-200 p-6">
@@ -758,7 +758,7 @@ export default function CambridgeReading() {
                         </div>
                       ))}
                     </div>
-                    <div className="space-y-3 sticky top-5">
+                    <div className="space-y-3 xl:sticky xl:top-5">
                       {currentBatch.questions.map((q, qi) => (
                         <motion.div key={q._key}
                           initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
@@ -807,9 +807,19 @@ export default function CambridgeReading() {
 
                 {/* ── PART 3 ── */}
                 {partId === 3 && currentBatch && !currentBatch.scanPages && (
-                  <div className="grid grid-cols-2 gap-5">
+                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">
                     <div className="min-w-0 bg-gray-50 rounded-xl border border-gray-100 p-5 overflow-y-auto"
                       style={{ maxHeight: '70vh' }}>
+                      {currentBatch.title && (
+                        <h3 className="mb-2 text-center text-2xl font-extrabold text-gray-900">
+                          {currentBatch.title}
+                        </h3>
+                      )}
+                      {currentBatch.author && (
+                        <p className="mb-5 text-center text-sm italic text-gray-500">
+                          {currentBatch.author}
+                        </p>
+                      )}
                       <HighlightableText text={currentBatch.passage} storageKey={`part3-${batchIdx}`}
                         className="text-[19px] text-gray-700 leading-9 whitespace-pre-line" />
                     </div>
@@ -841,7 +851,7 @@ export default function CambridgeReading() {
 
                 {/* ── PART 4 ── */}
                 {partId === 4 && currentBatch && !currentBatch.scanPages && (
-                  <div className="grid grid-cols-2 gap-5">
+                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">
                     <div className="bg-gray-50 rounded-xl border border-gray-100 p-6 text-gray-700">
                       {currentBatch.title && (
                         <h3 className="mb-5 text-center text-2xl font-extrabold text-gray-900">
@@ -920,7 +930,7 @@ export default function CambridgeReading() {
                 )}
 
                 {partId === 5 && p5Part && !p5Part.scanPages && (
-                  <div className="grid grid-cols-2 gap-5 items-start">
+                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 items-start">
                     <div className="min-w-0 space-y-4">
                       {p5Part.example && (
                         <div className="flex items-center gap-2 text-sm text-gray-500 bg-gray-50 px-4 py-2 rounded-xl">
@@ -941,7 +951,7 @@ export default function CambridgeReading() {
                         </div>
                       ))}
                     </div>
-                    <div className="grid grid-cols-2 gap-3 lg:sticky lg:top-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 xl:sticky xl:top-5">
                       {p5Part.questions.map(q => {
                         const ua = answers[q.id] || ''
                         const ok = p5Checked ? isP5Correct(q) : null
