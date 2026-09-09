@@ -491,34 +491,18 @@ export default function CambridgeReading() {
           <section className="mt-6 rounded-[24px] border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
             <div className="mb-3 flex items-center justify-between gap-3">
               <strong className="text-sm text-slate-700">选择练习</strong>
-              <span className="text-xs text-slate-400">官方整套与专项题库分开显示</span>
+              <span className="text-xs text-slate-400">共 {verifiedTests.length} 套 · 当前为练习{part5Id}</span>
             </div>
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="mr-1 text-xs font-bold text-emerald-700">已核验官方真题</span>
+            <div className="grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-12">
               {verifiedTests.map(test => (
                 <button key={test.id} onClick={() => { setPart5Mode('official'); setPart5Id(test.id) }}
-                  className={`rounded-xl border px-4 py-2.5 text-sm font-extrabold transition ${
+                  aria-current={part5Mode === 'official' && part5Id === test.id ? 'page' : undefined}
+                  className={`rounded-xl border px-3 py-3 text-sm font-extrabold transition ${
                     part5Mode === 'official' && part5Id === test.id
-                      ? 'border-sky-500 bg-sky-500 text-white'
-                      : 'border-emerald-200 bg-emerald-50 text-emerald-800 hover:border-emerald-400'
+                      ? 'border-sky-500 bg-sky-500 text-white shadow-sm'
+                      : 'border-sky-100 bg-sky-50 text-sky-800 hover:border-sky-300'
                   }`}
-                >真题 {test.id}</button>
-              ))}
-            </div>
-            <div className="mt-4 space-y-3 border-t border-slate-100 pt-4">
-              {PART5_GROUPS.map(grp => (
-                <div key={grp.label} className="flex flex-wrap items-center gap-2">
-                  <span className="w-28 flex-shrink-0 text-xs font-bold text-slate-400">{grp.label}</span>
-                  {grp.ids.map(id => (
-                    <button key={id} onClick={() => { setPart5Mode('practice'); setPart5Id(id) }}
-                      className={`h-9 min-w-9 rounded-lg border px-3 text-sm font-bold transition ${
-                        part5Mode === 'practice' && part5Id === id
-                          ? 'border-sky-500 bg-sky-500 text-white'
-                          : 'border-slate-200 bg-slate-50 text-slate-500 hover:border-sky-300 hover:text-sky-700'
-                      }`}
-                    >{id}</button>
-                  ))}
-                </div>
+                >{test.id}</button>
               ))}
             </div>
           </section>
