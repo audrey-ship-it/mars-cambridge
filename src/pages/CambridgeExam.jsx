@@ -1254,6 +1254,9 @@ export function WritingCard({ w, wi, storageKey }) {
   const words = text.trim().split(/\s+/).filter(Boolean).length
   const minWords = w.type === 'story_writing' ? 35 : 25
   const canGrade = words >= 5
+  const modelAnswer = w.type === 'guided_writing' && /(?:See you|Best wishes|Love|Bye)[,!]?\s*$/i.test(w.modelAnswer)
+    ? `${w.modelAnswer}\nAlex`
+    : w.modelAnswer
 
   function handleGrade() {
     setGraded(scoreWriting(text, w))
@@ -1367,7 +1370,7 @@ export function WritingCard({ w, wi, storageKey }) {
         <motion.div initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }}
           className="mt-2 bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-3">
           <div className="text-xs font-bold text-emerald-700 mb-1.5">参考答案</div>
-          <pre className="text-sm text-gray-700 whitespace-pre-wrap font-sans leading-relaxed">{w.modelAnswer}</pre>
+          <pre className="text-sm text-gray-700 whitespace-pre-wrap font-sans leading-relaxed">{modelAnswer}</pre>
         </motion.div>
       )}
     </div>
