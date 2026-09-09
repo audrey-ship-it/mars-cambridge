@@ -729,7 +729,7 @@ export default function CambridgeReading() {
 
                 {/* ── PART 2 ── */}
                 {partId === 2 && currentBatch && !currentBatch.scanPages && (
-                  <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1.25fr)_minmax(400px,.75fr)] gap-8 items-start">
+                  <div className="grid grid-cols-[minmax(0,1.25fr)_minmax(400px,.75fr)] gap-8 items-start">
                     <div className="space-y-4">
                       {(currentBatch.people || []).map(p => (
                         <div key={p.name} className="bg-slate-50 rounded-2xl border border-slate-200 p-6">
@@ -742,7 +742,7 @@ export default function CambridgeReading() {
                         </div>
                       ))}
                     </div>
-                    <div className="space-y-3 xl:sticky xl:top-5">
+                    <div className="space-y-3 sticky top-5">
                       {currentBatch.questions.map((q, qi) => (
                         <motion.div key={q._key}
                           initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
@@ -791,7 +791,7 @@ export default function CambridgeReading() {
 
                 {/* ── PART 3 ── */}
                 {partId === 3 && currentBatch && !currentBatch.scanPages && (
-                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">
+                  <div className="grid grid-cols-2 gap-5">
                     <div className="min-w-0 bg-gray-50 rounded-xl border border-gray-100 p-5 overflow-y-auto"
                       style={{ maxHeight: '70vh' }}>
                       {currentBatch.title && (
@@ -835,7 +835,7 @@ export default function CambridgeReading() {
 
                 {/* ── PART 4 ── */}
                 {partId === 4 && currentBatch && !currentBatch.scanPages && (
-                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">
+                  <div className="grid grid-cols-2 gap-5">
                     <div className="bg-gray-50 rounded-xl border border-gray-100 p-6 text-gray-700">
                       {currentBatch.title && (
                         <h3 className="mb-5 text-center text-2xl font-extrabold text-gray-900">
