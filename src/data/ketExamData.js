@@ -439,7 +439,7 @@ export const KET_EXAMS = [
           part: 6, type: 'guided_writing',
           title: 'Part 6 · 引导写作',
           prompt: "You would like to go to the cinema on Saturday. Write an email to your English friend, Jay.\n\nIn your email:\n• invite Jay to come with you\n• suggest a film to see\n• explain why Jay will enjoy the film\n\nWrite 25 words or more.",
-          modelAnswer: "Hi Jay!\n\nWould you like to go to the cinema with me this Saturday? I'd love to see the new Spider-Man film — it's full of action and the special effects are amazing. I think you'll really enjoy it!\n\nLet me know if you're free.\n\nBest wishes",
+          modelAnswer: "Hi Jay!\n\nI hope you’re well. Would you like to go to the cinema with me this Saturday? I'd love to see the new Spider-Man film — it's full of action and the special effects are amazing. I think you'll really enjoy it!\n\nLet me know if you're free.\n\nBest wishes",
           tips: ['三个要点都要覆盖：邀请Jay / 推荐电影 / 解释原因', '至少25词', '语气友好，开头 Hi Jay，结尾签名'],
         },
         {
