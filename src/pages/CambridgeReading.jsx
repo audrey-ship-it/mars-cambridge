@@ -730,7 +730,7 @@ export default function CambridgeReading() {
                 {/* ── PART 2 ── */}
                 {partId === 2 && currentBatch && !currentBatch.scanPages && (
                   <div className="grid grid-cols-[minmax(0,1.25fr)_minmax(400px,.75fr)] gap-8 items-start">
-                    <div className="max-h-[90vh] space-y-4 overflow-y-auto pr-2 sticky top-5">
+                    <div className="max-h-[125vh] space-y-4 overflow-y-auto pr-2 sticky top-5">
                       {(currentBatch.people || []).map(p => (
                         <div key={p.name} className="bg-slate-50 rounded-2xl border border-slate-200 p-6">
                           <div className="flex items-center gap-3 mb-3">
