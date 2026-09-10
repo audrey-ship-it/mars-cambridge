@@ -4,6 +4,12 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { KET_EXAMS } from '../data/ketExamData'
 import { CambridgeLayout } from './CambridgeApp'
 
+const ORDERED_KET_EXAMS = [...KET_EXAMS].sort((left, right) => {
+  const [, leftBook, leftTest] = left.id.match(/^ket-(\d+)-test(\d+)$/) || []
+  const [, rightBook, rightTest] = right.id.match(/^ket-(\d+)-test(\d+)$/) || []
+  return (Number(leftBook) - Number(rightBook)) || (Number(leftTest) - Number(rightTest))
+})
+
 /* ══════════════════════════════
    Exam List Page  /cambridge/exams
 ══════════════════════════════ */
@@ -99,7 +105,7 @@ export function ExamList() {
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {KET_EXAMS.map(exam => {
+          {ORDERED_KET_EXAMS.map((exam, examIndex) => {
             const progress = readExamListProgress(exam)
             return (
             <Link key={exam.id} to={progress.continuePath}
@@ -112,8 +118,8 @@ export function ExamList() {
                   <span className={`rounded-full px-2.5 py-1 text-xs font-bold ${progress.status === '已完成' ? 'bg-emerald-100 text-emerald-700' : progress.status === '进行中' ? 'bg-amber-100 text-amber-800' : 'bg-gray-100 text-gray-500'}`}>{progress.status}</span>
                 </div>
                 <div className="mt-5">
-                  <div className="text-xl font-extrabold leading-snug text-gray-900 transition-colors group-hover:text-[#064e3b]">{exam.title}</div>
-                  <div className="mt-2 text-sm leading-6 text-gray-400">{exam.label}</div>
+                  <div className="text-xl font-extrabold leading-snug text-gray-900 transition-colors group-hover:text-[#064e3b]">真题 {examIndex + 1}</div>
+                  <div className="mt-2 text-sm leading-6 text-gray-400">{exam.title}</div>
                   <div className="mt-1 text-sm leading-6 text-gray-400">{sectionSummary(exam)}</div>
                 </div>
                 <div className="mt-auto pt-5">
