@@ -1620,7 +1620,7 @@ function WritingExam({ exam, section, onSection }) {
 /* ══════════════════════════════
    Speaking Exam
 ══════════════════════════════ */
-function useTTS() {
+export function useTTS() {
   const [speaking, setSpeaking] = useState(null)
 
   function speak(id, text) {
@@ -1812,7 +1812,7 @@ function SpeakingTopicCard({ topic, part, examId, isSpeaking, onSpeak }) {
   )
 }
 
-function SpeakingRecordingPractice({ examId, topic }) {
+export function SpeakingRecordingPractice({ examId, topic }) {
   const recorderRef = useRef(null)
   const streamRef = useRef(null)
   const chunksRef = useRef([])

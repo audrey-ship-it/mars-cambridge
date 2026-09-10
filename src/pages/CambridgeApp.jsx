@@ -1450,8 +1450,8 @@ const DASH_SECTIONS = [
   {
     id: 'speaking', icon: '🎙️', title: '口语练习',
     parts: [
-      { label: 'Part 1 · 个人问答', available: true, link: () => '/cambridge/exams/ket-3-test1?tab=speaking' },
-      { label: 'Part 2 · 话题讨论', available: true, link: () => '/cambridge/exams/ket-3-test1?tab=speaking&part=2' },
+      { label: 'Part 1 · 个人问答', available: true, link: () => '/cambridge/speaking?part=1&set=1' },
+      { label: 'Part 2 · 图片讨论', available: true, link: () => '/cambridge/speaking?part=2&set=1' },
     ],
   },
   {
