@@ -10,6 +10,27 @@ const ORDERED_KET_EXAMS = [...KET_EXAMS].sort((left, right) => {
   return (Number(leftBook) - Number(rightBook)) || (Number(leftTest) - Number(rightTest))
 })
 
+const EXAM_COLLECTIONS = [
+  { id: 'schools', label: '青少版真题', count: 12, help: 'KET for Schools 官方真题 1–3' },
+  { id: 'standard', label: '标准版真题', count: 8, help: 'A2 Key 标准版官方真题 1–2' },
+  { id: 'mock', label: '模拟题', count: 15, help: 'Trainer 1、Trainer 2 与 Exam Booster' },
+  { id: 'sample', label: '官方样题', count: 1, help: 'A2 Key 官方样题' },
+]
+
+const PENDING_EXAMS = {
+  standard: Array.from({ length: 8 }, (_, index) => ({
+    id: `standard-${index + 1}`,
+    name: `标准版真题 ${index + 1}`,
+    source: `A2 KET 新题型官方真题 ${Math.floor(index / 4) + 1} · Test ${(index % 4) + 1}`,
+  })),
+  mock: [
+    ...Array.from({ length: 6 }, (_, index) => ({ id: `trainer-1-${index + 1}`, name: `Trainer 1 · Test ${index + 1}`, source: '剑桥 KET 官方模考题精讲精练 1' })),
+    ...Array.from({ length: 6 }, (_, index) => ({ id: `trainer-2-${index + 1}`, name: `Trainer 2 · Test ${index + 1}`, source: '剑桥 KET 官方模考题精讲精练 2' })),
+    ...Array.from({ length: 3 }, (_, index) => ({ id: `booster-${index + 1}`, name: `Exam Booster · Test ${index + 1}`, source: 'Exam Booster A2' })),
+  ],
+  sample: [{ id: 'official-sample-1', name: '官方样题 1', source: 'A2 Key 官方样题' }],
+}
+
 /* ══════════════════════════════
    Exam List Page  /cambridge/exams
 ══════════════════════════════ */
@@ -88,12 +109,16 @@ function readExamListProgress(exam) {
 
 export function ExamList() {
   const [level, setLevel] = useState('KET')
+  const [collection, setCollection] = useState('schools')
   const sectionSummary = (exam) => [
     exam.listening && '听力 25题',
     exam.reading?.parts?.length && '阅读 30题',
     exam.reading?.writing?.length && '写作 2题',
     exam.speaking && `口语 ${exam.speaking.parts.length}部分`,
   ].filter(Boolean).join(' · ')
+  const displayedExams = collection === 'schools'
+    ? ORDERED_KET_EXAMS.map((exam, index) => ({ exam, id: exam.id, name: `真题 ${index + 1}`, source: exam.title }))
+    : PENDING_EXAMS[collection]
 
   return (
     <CambridgeLayout activeModule="exams" level={level} setLevel={setLevel}>
@@ -104,12 +129,26 @@ export function ExamList() {
           <p className="text-sm text-gray-500">阅读、写作与口语真题训练；完整听力套题请前往“我的听力中心”</p>
         </div>
 
+        <section className="mb-6 rounded-[22px] border border-gray-200 bg-white p-4 shadow-sm">
+          <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
+            {EXAM_COLLECTIONS.map(item => (
+              <button key={item.id} type="button" onClick={() => setCollection(item.id)} aria-current={collection === item.id ? 'page' : undefined}
+                className={`rounded-2xl border px-4 py-3 text-left transition ${collection === item.id ? 'border-emerald-600 bg-emerald-600 text-white shadow-sm' : 'border-gray-200 bg-white text-gray-600 hover:border-emerald-300'}`}>
+                <span className="block text-sm font-extrabold">{item.label} · {item.count}套</span>
+                <span className={`mt-1 block text-[11px] leading-4 ${collection === item.id ? 'text-emerald-100' : 'text-gray-400'}`}>{item.help}</span>
+              </button>
+            ))}
+          </div>
+        </section>
+
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {ORDERED_KET_EXAMS.map((exam, examIndex) => {
-            const progress = readExamListProgress(exam)
+          {displayedExams.map(item => {
+            const exam = item.exam
+            const progress = exam ? readExamListProgress(exam) : { status: '待录入', completed: 0, total: 0, percent: 0 }
+            const Card = exam ? Link : 'div'
             return (
-            <Link key={exam.id} to={progress.continuePath}
-              className="group block aspect-square rounded-[22px] border border-gray-200 bg-white p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md lg:p-6">
+            <Card key={item.id} {...(exam ? { to: progress.continuePath } : {})}
+              className={`group block aspect-square rounded-[22px] border border-gray-200 bg-white p-5 shadow-sm lg:p-6 ${exam ? 'transition-all hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md' : 'opacity-75'}`}>
               <div className="flex h-full flex-col">
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-[#064e3b]">
@@ -118,22 +157,22 @@ export function ExamList() {
                   <span className={`rounded-full px-2.5 py-1 text-xs font-bold ${progress.status === '已完成' ? 'bg-emerald-100 text-emerald-700' : progress.status === '进行中' ? 'bg-amber-100 text-amber-800' : 'bg-gray-100 text-gray-500'}`}>{progress.status}</span>
                 </div>
                 <div className="mt-5">
-                  <div className="text-xl font-extrabold leading-snug text-gray-900 transition-colors group-hover:text-[#064e3b]">真题 {examIndex + 1}</div>
-                  <div className="mt-2 text-sm leading-6 text-gray-400">{exam.title}</div>
-                  <div className="mt-1 text-sm leading-6 text-gray-400">{sectionSummary(exam)}</div>
+                  <div className="text-xl font-extrabold leading-snug text-gray-900 transition-colors group-hover:text-[#064e3b]">{item.name}</div>
+                  <div className="mt-2 text-sm leading-6 text-gray-400">{item.source}</div>
+                  <div className="mt-1 text-sm leading-6 text-gray-400">{exam ? sectionSummary(exam) : '题目、答案与配套材料正在整理'}</div>
                 </div>
                 <div className="mt-auto pt-5">
                   <div className="mb-2 flex items-center justify-between gap-3">
                     <span className="text-xs font-semibold text-gray-400">练习进度</span>
-                    <span className="whitespace-nowrap text-xs font-bold text-gray-500">{progress.completed} / {progress.total} 项</span>
+                    <span className="whitespace-nowrap text-xs font-bold text-gray-500">{exam ? `${progress.completed} / ${progress.total} 项` : '尚未开放'}</span>
                   </div>
                   <div className="h-1.5 overflow-hidden rounded-full bg-gray-100">
                     <div className="h-full rounded-full bg-[#0d7656]" style={{ width: `${progress.percent}%` }} />
                   </div>
-                  <div className="mt-4 text-right text-sm font-extrabold text-[#0d7656]">{progress.status === '未开始' ? '开始练习 →' : '继续练习 →'}</div>
+                  <div className={`mt-4 text-right text-sm font-extrabold ${exam ? 'text-[#0d7656]' : 'text-gray-400'}`}>{exam ? (progress.status === '未开始' ? '开始练习 →' : '继续练习 →') : '整理中'}</div>
                 </div>
               </div>
-            </Link>
+            </Card>
           )})}
 
         </div>
