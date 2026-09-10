@@ -98,29 +98,33 @@ export function ExamList() {
           <p className="text-sm text-gray-500">阅读、写作与口语真题训练；完整听力套题请前往“我的听力中心”</p>
         </div>
 
-        <div className="space-y-3">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {KET_EXAMS.map(exam => {
             const progress = readExamListProgress(exam)
             return (
             <Link key={exam.id} to={progress.continuePath}
-              className="block bg-white rounded-2xl border border-gray-100 shadow-sm px-6 py-5 hover:shadow-md hover:border-[#064e3b]/20 transition-all group">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-[#064e3b] flex items-center justify-center flex-shrink-0">
-                  <span className="text-white text-xl">📝</span>
-                </div>
-                <div className="flex-1">
-                  <div className="font-bold text-gray-900 group-hover:text-[#064e3b] transition-colors">{exam.title}</div>
-                  <div className="text-xs text-gray-400 mt-0.5">{exam.label} · {sectionSummary(exam)}</div>
-                  <div className="mt-3 flex items-center gap-3">
-                    <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-gray-100">
-                      <div className="h-full rounded-full bg-[#0d7656]" style={{ width: `${progress.percent}%` }} />
-                    </div>
-                    <span className="whitespace-nowrap text-[11px] font-bold text-gray-500">{progress.completed} / {progress.total} 项</span>
+              className="group block aspect-square rounded-[22px] border border-gray-200 bg-white p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md lg:p-6">
+              <div className="flex h-full flex-col">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-[#064e3b]">
+                    <span className="text-xl text-white">📝</span>
                   </div>
-                </div>
-                <div className="flex flex-col items-end gap-1.5">
                   <span className={`rounded-full px-2.5 py-1 text-xs font-bold ${progress.status === '已完成' ? 'bg-emerald-100 text-emerald-700' : progress.status === '进行中' ? 'bg-amber-100 text-amber-800' : 'bg-gray-100 text-gray-500'}`}>{progress.status}</span>
-                  <span className="text-xs font-bold text-[#0d7656]">{progress.status === '未开始' ? '开始练习 →' : '继续练习 →'}</span>
+                </div>
+                <div className="mt-5">
+                  <div className="text-xl font-extrabold leading-snug text-gray-900 transition-colors group-hover:text-[#064e3b]">{exam.title}</div>
+                  <div className="mt-2 text-sm leading-6 text-gray-400">{exam.label}</div>
+                  <div className="mt-1 text-sm leading-6 text-gray-400">{sectionSummary(exam)}</div>
+                </div>
+                <div className="mt-auto pt-5">
+                  <div className="mb-2 flex items-center justify-between gap-3">
+                    <span className="text-xs font-semibold text-gray-400">练习进度</span>
+                    <span className="whitespace-nowrap text-xs font-bold text-gray-500">{progress.completed} / {progress.total} 项</span>
+                  </div>
+                  <div className="h-1.5 overflow-hidden rounded-full bg-gray-100">
+                    <div className="h-full rounded-full bg-[#0d7656]" style={{ width: `${progress.percent}%` }} />
+                  </div>
+                  <div className="mt-4 text-right text-sm font-extrabold text-[#0d7656]">{progress.status === '未开始' ? '开始练习 →' : '继续练习 →'}</div>
                 </div>
               </div>
             </Link>
