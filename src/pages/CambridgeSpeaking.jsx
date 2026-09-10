@@ -110,8 +110,17 @@ export default function CambridgeSpeaking() {
               </button>
 
               <button type="button" onClick={() => setPart(2)} className="group overflow-hidden rounded-[28px] border border-slate-200 bg-white text-left shadow-sm transition hover:-translate-y-1 hover:border-emerald-300 hover:shadow-lg">
-                <div className="h-56 overflow-hidden bg-slate-100 p-4">
-                  <img src="/images/ket/productive/b3/test-4-speaking.jpg" alt="KET 图片讨论话题卡" className="h-full w-full rounded-2xl border border-white/80 bg-white object-cover object-top shadow-sm" />
+                <div className="grid h-56 place-items-center bg-gradient-to-br from-emerald-50 to-cyan-50 p-6">
+                  <svg viewBox="0 0 420 210" role="img" aria-label="两位考生讨论图片卡" className="h-full w-full max-w-md">
+                    <rect x="25" y="20" width="370" height="165" rx="24" fill="#fff" stroke="#a7f3d0" strokeWidth="3" />
+                    <rect x="137" y="43" width="146" height="91" rx="12" fill="#ecfdf5" stroke="#10b981" strokeWidth="3" />
+                    <circle cx="174" cy="76" r="15" fill="#7dd3fc" />
+                    <path d="m147 121 34-31 23 21 20-17 48 27Z" fill="#6ee7b7" />
+                    <circle cx="91" cy="105" r="25" fill="#6ee7b7" /><path d="M53 164c4-31 18-47 38-47s34 16 38 47" fill="#059669" />
+                    <circle cx="329" cy="105" r="25" fill="#bae6fd" /><path d="M291 164c4-31 18-47 38-47s34 16 38 47" fill="#0284c7" />
+                    <path d="M119 90h24M277 90h24" stroke="#10b981" strokeWidth="4" strokeLinecap="round" />
+                    <path d="m131 81 12 9-12 9M289 81l-12 9 12 9" fill="none" stroke="#10b981" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
                 </div>
                 <div className="p-6">
                   <div className="text-xs font-extrabold tracking-widest text-emerald-600">PART 2</div>
