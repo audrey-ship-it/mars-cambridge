@@ -110,13 +110,13 @@ export default function CambridgeSpeaking() {
                 {topics.map((_, index) => <button key={index} onClick={() => setQuestionIndex(index)} className={`grid h-8 w-8 place-items-center rounded-lg text-xs font-extrabold ${questionIndex === index ? 'bg-emerald-600 text-white' : 'bg-slate-100 text-slate-500'}`}>{index + 1}</button>)}
               </div>
             </div>
-            <div className="grid gap-0 lg:grid-cols-2">
-              <div className="border-b border-slate-100 p-6 lg:border-b-0 lg:border-r">
+            <div>
+              <div className="border-b border-slate-100 px-6 py-6 sm:px-8">
                 <div className="text-xs font-extrabold tracking-wide text-emerald-700">考官提问</div>
                 <h2 className="mt-3 text-2xl font-extrabold leading-snug text-slate-900">{topic.question}</h2>
                 <p className="mt-3 text-sm text-slate-500">回答思路：{topic.chineseHint}</p>
               </div>
-              <div className="p-6"><ReferenceAnswer topic={topic} /></div>
+              <div className="px-6 py-5 sm:px-8"><ReferenceAnswer topic={topic} /></div>
             </div>
           </section>
         )}
