@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { KET_EXAMS } from '../data/ketExamData'
+import { CambridgeLayout } from './CambridgeApp'
 
 /* ══════════════════════════════
    Exam List Page  /cambridge/exams
@@ -80,6 +81,7 @@ function readExamListProgress(exam) {
 }
 
 export function ExamList() {
+  const [level, setLevel] = useState('KET')
   const sectionSummary = (exam) => [
     exam.listening && '听力 25题',
     exam.reading?.parts?.length && '阅读 30题',
@@ -88,21 +90,8 @@ export function ExamList() {
   ].filter(Boolean).join(' · ')
 
   return (
-    <div className="min-h-screen bg-[#f8f9fc]">
-      <header className="bg-white border-b border-gray-100 sticky top-0 z-30 shadow-sm">
-        <div className="max-w-2xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link to="/cambridge/ket" className="flex items-center gap-1.5 text-gray-400 hover:text-gray-700 transition-colors group">
-            <svg className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            <span className="text-sm font-medium">返回</span>
-          </Link>
-          <span className="font-bold text-gray-900">火星<span className="text-[#064e3b]">剑桥</span> <span className="text-gray-400 font-normal text-sm">真题练习</span></span>
-          <div className="w-16" />
-        </div>
-      </header>
-
-      <div className="max-w-2xl mx-auto px-6 py-8">
+    <CambridgeLayout activeModule="exams" level={level} setLevel={setLevel}>
+      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <div className="mb-6">
           <span className="text-xs font-bold bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">A2 KET</span>
           <h1 className="text-2xl font-bold text-gray-900 mt-2 mb-1">KET 官方真题</h1>
@@ -138,8 +127,8 @@ export function ExamList() {
           )})}
 
         </div>
-      </div>
-    </div>
+      </main>
+    </CambridgeLayout>
   )
 }
 
