@@ -105,7 +105,7 @@ export default function CambridgeSpeaking() {
                   <div className="text-xs font-extrabold tracking-widest text-emerald-600">PART 1</div>
                   <h2 className="mt-1 text-2xl font-extrabold text-slate-900 group-hover:text-emerald-700">个人问答</h2>
                   <p className="mt-2 leading-7 text-slate-500">围绕个人信息、家庭、学校、兴趣等 15 个常考主题，练习用完整句子自然作答。</p>
-                  <span className="mt-5 inline-flex items-center font-bold text-emerald-700">进入 15 个主题练习 <span className="ml-2">→</span></span>
+                  <span className="mt-5 inline-flex items-center font-bold text-emerald-700">进入主题练习 <span className="ml-2">→</span></span>
                 </div>
               </button>
 
@@ -126,7 +126,7 @@ export default function CambridgeSpeaking() {
                   <div className="text-xs font-extrabold tracking-widest text-emerald-600">PART 2</div>
                   <h2 className="mt-1 text-2xl font-extrabold text-slate-900 group-hover:text-emerald-700">图片讨论</h2>
                   <p className="mt-2 leading-7 text-slate-500">观察官方话题图卡，练习描述图片、比较选择、表达观点，并与同伴展开讨论。</p>
-                  <span className="mt-5 inline-flex items-center font-bold text-emerald-700">进入 12 套图片练习 <span className="ml-2">→</span></span>
+                  <span className="mt-5 inline-flex items-center font-bold text-emerald-700">进入图片练习 <span className="ml-2">→</span></span>
                 </div>
               </button>
             </section>
