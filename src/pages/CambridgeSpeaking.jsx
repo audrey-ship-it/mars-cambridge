@@ -34,7 +34,7 @@ function ReferenceAnswer({ topic }) {
 
 export default function CambridgeSpeaking() {
   const [searchParams, setSearchParams] = useSearchParams()
-  const initialPart = searchParams.get('part') === '2' ? 2 : 1
+  const initialPart = searchParams.get('part') === '2' ? 2 : searchParams.get('part') === '1' ? 1 : 0
   const initialSet = Math.min(12, Math.max(1, Number(searchParams.get('set')) || 1))
   const initialTopic = Math.max(0, KET_SPEAKING_PART1_TOPICS.findIndex(item => item.id === searchParams.get('topic')))
   const [level, setLevel] = useState('KET')
@@ -55,7 +55,9 @@ export default function CambridgeSpeaking() {
     : '')
 
   useEffect(() => {
-    const nextParams = part === 1
+    const nextParams = part === 0
+      ? {}
+      : part === 1
       ? { part: '1', topic: selectedTopic.id }
       : { part: '2', set: String(setIndex + 1) }
     setSearchParams(nextParams, { replace: true })
@@ -67,7 +69,10 @@ export default function CambridgeSpeaking() {
     <CambridgeLayout activeModule="speaking" level={level} setLevel={setLevel}>
       <nav className="border-b border-slate-100 bg-white px-4 py-4 sm:px-6">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-2.5">
-          <div className="mr-1 rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-2.5 text-sm font-extrabold text-emerald-800">我的口语中心</div>
+          <button type="button" onClick={() => setPart(0)} aria-current={part === 0 ? 'page' : undefined}
+            className={`mr-1 rounded-xl border px-4 py-2.5 text-sm font-extrabold transition ${part === 0 ? 'border-emerald-600 bg-emerald-600 text-white shadow-sm' : 'border-emerald-300 bg-emerald-50 text-emerald-800 hover:bg-emerald-100'}`}>
+            我的口语中心
+          </button>
           <span className="mr-1 text-slate-300">›</span>
           {[1, 2].map(partId => (
             <button key={partId} type="button" onClick={() => setPart(partId)} aria-current={part === partId ? 'page' : undefined}
@@ -79,11 +84,53 @@ export default function CambridgeSpeaking() {
       </nav>
 
       <main className="mx-auto max-w-6xl px-4 py-7 sm:px-6">
-        <div className="text-[11px] font-extrabold tracking-[.18em] text-emerald-700">KET SPEAKING</div>
-        <h1 className="mt-1 text-3xl font-extrabold text-slate-950 sm:text-4xl">{PART_INFO[part].title}</h1>
-        <p className="mt-2 text-slate-500">{PART_INFO[part].help}</p>
+        {part === 0 ? (
+          <>
+            <div className="text-[11px] font-extrabold tracking-[.18em] text-emerald-700">KET SPEAKING</div>
+            <h1 className="mt-1 text-3xl font-extrabold text-slate-950 sm:text-4xl">我的口语中心</h1>
+            <p className="mt-2 text-slate-500">选择一种练习，熟悉 KET 口语考试的提问方式与表达方法。</p>
 
-        <section className="mt-6 rounded-[24px] border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
+            <section className="mt-7 grid gap-5 md:grid-cols-2">
+              <button type="button" onClick={() => setPart(1)} className="group overflow-hidden rounded-[28px] border border-slate-200 bg-white text-left shadow-sm transition hover:-translate-y-1 hover:border-emerald-300 hover:shadow-lg">
+                <div className="grid h-56 place-items-center bg-gradient-to-br from-emerald-50 to-cyan-50 p-6">
+                  <svg viewBox="0 0 420 210" role="img" aria-label="考官与考生进行个人问答" className="h-full w-full max-w-md">
+                    <rect x="25" y="20" width="370" height="165" rx="24" fill="#fff" stroke="#a7f3d0" strokeWidth="3" />
+                    <circle cx="125" cy="84" r="30" fill="#6ee7b7" /><path d="M76 157c5-37 24-55 49-55s44 18 49 55" fill="#059669" />
+                    <circle cx="295" cy="84" r="30" fill="#bae6fd" /><path d="M246 157c5-37 24-55 49-55s44 18 49 55" fill="#0284c7" />
+                    <path d="M166 55h72c12 0 22 10 22 22v25c0 12-10 22-22 22h-20l-15 15v-15h-37c-12 0-22-10-22-22V77c0-12 10-22 22-22Z" fill="#fff" stroke="#10b981" strokeWidth="3" />
+                    <circle cx="180" cy="90" r="5" fill="#10b981" /><circle cx="202" cy="90" r="5" fill="#10b981" /><circle cx="224" cy="90" r="5" fill="#10b981" />
+                  </svg>
+                </div>
+                <div className="p-6">
+                  <div className="text-xs font-extrabold tracking-widest text-emerald-600">PART 1</div>
+                  <h2 className="mt-1 text-2xl font-extrabold text-slate-900 group-hover:text-emerald-700">个人问答</h2>
+                  <p className="mt-2 leading-7 text-slate-500">围绕个人信息、家庭、学校、兴趣等 15 个常考主题，练习用完整句子自然作答。</p>
+                  <span className="mt-5 inline-flex items-center font-bold text-emerald-700">进入 15 个主题练习 <span className="ml-2">→</span></span>
+                </div>
+              </button>
+
+              <button type="button" onClick={() => setPart(2)} className="group overflow-hidden rounded-[28px] border border-slate-200 bg-white text-left shadow-sm transition hover:-translate-y-1 hover:border-emerald-300 hover:shadow-lg">
+                <div className="h-56 overflow-hidden bg-slate-100 p-4">
+                  <img src="/images/ket/productive/b3/test-4-speaking.jpg" alt="KET 图片讨论话题卡" className="h-full w-full rounded-2xl border border-white/80 bg-white object-cover object-top shadow-sm" />
+                </div>
+                <div className="p-6">
+                  <div className="text-xs font-extrabold tracking-widest text-emerald-600">PART 2</div>
+                  <h2 className="mt-1 text-2xl font-extrabold text-slate-900 group-hover:text-emerald-700">图片讨论</h2>
+                  <p className="mt-2 leading-7 text-slate-500">观察官方话题图卡，练习描述图片、比较选择、表达观点，并与同伴展开讨论。</p>
+                  <span className="mt-5 inline-flex items-center font-bold text-emerald-700">进入 12 套图片练习 <span className="ml-2">→</span></span>
+                </div>
+              </button>
+            </section>
+          </>
+        ) : (
+          <>
+            <div className="text-[11px] font-extrabold tracking-[.18em] text-emerald-700">KET SPEAKING</div>
+            <h1 className="mt-1 text-3xl font-extrabold text-slate-950 sm:text-4xl">{PART_INFO[part].title}</h1>
+            <p className="mt-2 text-slate-500">{PART_INFO[part].help}</p>
+          </>
+        )}
+
+        {part !== 0 && <section className="mt-6 rounded-[24px] border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
           <div className="mb-3 flex items-center justify-between gap-3">
             <strong className="text-sm text-slate-700">{part === 1 ? '选择主题' : '选择练习'}</strong>
             <span className="text-xs text-slate-400">{part === 1 ? `共15个主题 · 当前：${selectedTopic.label}` : `共 ${SPEAKING_SETS.length} 套 · 当前为练习${setIndex + 1}`}</span>
@@ -109,7 +156,7 @@ export default function CambridgeSpeaking() {
               ))}
             </div>
           )}
-        </section>
+        </section>}
 
         {topic && part === 1 && (
           <section className="mt-6 overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-sm">
