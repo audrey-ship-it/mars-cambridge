@@ -31,6 +31,11 @@ const PENDING_EXAMS = {
   sample: [{ id: 'official-sample-1', name: '官方样题 1', source: 'A2 Key 官方样题' }],
 }
 
+function examSetNumber(exam) {
+  const [, book, test] = exam.id.match(/^ket-(\d+)-test(\d+)$/) || []
+  return ((Number(book) - 1) * 4) + Number(test)
+}
+
 /* ══════════════════════════════
    Exam List Page  /cambridge/exams
 ══════════════════════════════ */
@@ -110,12 +115,7 @@ function readExamListProgress(exam) {
 export function ExamList() {
   const [level, setLevel] = useState('KET')
   const [collection, setCollection] = useState('schools')
-  const sectionSummary = (exam) => [
-    exam.listening && '听力 25题',
-    exam.reading?.parts?.length && '阅读 30题',
-    exam.reading?.writing?.length && '写作 2题',
-    exam.speaking && `口语 ${exam.speaking.parts.length}部分`,
-  ].filter(Boolean).join(' · ')
+  const sectionSummary = () => '听力 25题 · 阅读 30题 · 写作 2题 · 口语 2部分'
   const displayedExams = collection === 'schools'
     ? ORDERED_KET_EXAMS.map((exam, index) => ({ exam, id: exam.id, name: `真题 ${index + 1}`, source: exam.title }))
     : PENDING_EXAMS[collection]
@@ -126,7 +126,7 @@ export function ExamList() {
         <div className="mb-6">
           <span className="text-xs font-bold bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">A2 KET</span>
           <h1 className="text-2xl font-bold text-gray-900 mt-2 mb-1">KET 官方真题</h1>
-          <p className="text-sm text-gray-500">阅读、写作与口语真题训练；完整听力套题请前往“我的听力中心”</p>
+          <p className="text-sm text-gray-500">每套真题包含听力、阅读、写作和口语四个部分</p>
         </div>
 
         <section className="mb-6 rounded-[22px] border border-gray-200 bg-white p-4 shadow-sm">
@@ -147,7 +147,7 @@ export function ExamList() {
             const progress = exam ? readExamListProgress(exam) : { status: '待录入', completed: 0, total: 0, percent: 0 }
             const Card = exam ? Link : 'div'
             return (
-            <Card key={item.id} {...(exam ? { to: progress.continuePath } : {})}
+            <Card key={item.id} {...(exam ? { to: `/cambridge/exams/${exam.id}` } : {})}
               className={`group block aspect-square rounded-[22px] border border-gray-200 bg-white p-5 shadow-sm lg:p-6 ${exam ? 'transition-all hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md' : 'opacity-75'}`}>
               <div className="flex h-full flex-col">
                 <div className="flex items-start justify-between gap-3">
@@ -164,18 +164,55 @@ export function ExamList() {
                 <div className="mt-auto pt-5">
                   <div className="mb-2 flex items-center justify-between gap-3">
                     <span className="text-xs font-semibold text-gray-400">练习进度</span>
-                    <span className="whitespace-nowrap text-xs font-bold text-gray-500">{exam ? `${progress.completed} / ${progress.total} 项` : '尚未开放'}</span>
+                    <span className="whitespace-nowrap text-xs font-bold text-gray-500">{exam ? `${progress.percent}%` : '尚未开放'}</span>
                   </div>
                   <div className="h-1.5 overflow-hidden rounded-full bg-gray-100">
                     <div className="h-full rounded-full bg-[#0d7656]" style={{ width: `${progress.percent}%` }} />
                   </div>
-                  <div className={`mt-4 text-right text-sm font-extrabold ${exam ? 'text-[#0d7656]' : 'text-gray-400'}`}>{exam ? (progress.status === '未开始' ? '开始练习 →' : '继续练习 →') : '整理中'}</div>
+                  <div className={`mt-4 text-right text-sm font-extrabold ${exam ? 'text-[#0d7656]' : 'text-gray-400'}`}>{exam ? '进入真题 →' : '整理中'}</div>
                 </div>
               </div>
             </Card>
           )})}
 
         </div>
+      </main>
+    </CambridgeLayout>
+  )
+}
+
+function ExamOverview({ exam }) {
+  const [level, setLevel] = useState('KET')
+  const setNumber = examSetNumber(exam)
+  const sections = [
+    { icon: '🎧', title: '听力', en: 'Listening', detail: '5个 Part · 25道题', href: `/cambridge/listening?part=1&set=${setNumber}` },
+    { icon: '📖', title: '阅读', en: 'Reading', detail: '5个 Part · 30道题', href: `/cambridge/reading?part=1&set=${setNumber}` },
+    { icon: '✍️', title: '写作', en: 'Writing', detail: 'Part 6 Email · Part 7 看图写话', href: `/cambridge/writing?part=6&set=${setNumber}` },
+    { icon: '🎙️', title: '口语', en: 'Speaking', detail: 'Part 1 个人问答 · Part 2 图片讨论', href: `/cambridge/speaking?part=2&set=${setNumber}` },
+  ]
+
+  return (
+    <CambridgeLayout activeModule="exams" level={level} setLevel={setLevel}>
+      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+        <Link to="/cambridge/exams" className="text-sm font-bold text-emerald-700 hover:text-emerald-900">← 返回真题列表</Link>
+        <div className="mt-5 text-[11px] font-extrabold tracking-[.18em] text-emerald-700">KET FULL PRACTICE TEST</div>
+        <h1 className="mt-1 text-3xl font-extrabold text-slate-950 sm:text-4xl">真题 {setNumber}</h1>
+        <p className="mt-2 text-slate-500">{exam.title} · 按试卷结构完成听力、阅读、写作和口语。</p>
+
+        <section className="mt-7 grid gap-4 sm:grid-cols-2">
+          {sections.map((item, index) => (
+            <Link key={item.title} to={item.href} className="group flex min-h-56 flex-col rounded-[24px] border border-slate-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md">
+              <div className="flex items-start justify-between">
+                <span className="grid h-14 w-14 place-items-center rounded-2xl bg-emerald-50 text-2xl">{item.icon}</span>
+                <span className="text-xs font-extrabold tracking-widest text-slate-300">0{index + 1}</span>
+              </div>
+              <div className="mt-5 text-xs font-extrabold tracking-widest text-emerald-600">{item.en.toUpperCase()}</div>
+              <h2 className="mt-1 text-2xl font-extrabold text-slate-900 group-hover:text-emerald-700">{item.title}</h2>
+              <p className="mt-2 text-sm leading-6 text-slate-500">{item.detail}</p>
+              <span className="mt-auto pt-5 text-right text-sm font-extrabold text-emerald-700">进入{item.title} →</span>
+            </Link>
+          ))}
+        </section>
       </main>
     </CambridgeLayout>
   )
@@ -202,6 +239,8 @@ export default function CambridgeExam() {
       </div>
     </div>
   )
+
+  if (!requestedTab) return <ExamOverview exam={exam} />
 
   if (section === 'listening') return <ListeningExam exam={exam} section={section} onSection={setSection} />
   if (section === 'speaking')  return <SpeakingExam  exam={exam} section={section} onSection={setSection} />
