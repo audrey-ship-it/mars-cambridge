@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { CambridgeLayout } from './CambridgeApp'
 import { KET_EXAMS } from '../data/ketExamData'
+import { KET_SPEAKING_PART1_TOPICS } from '../data/ketSpeakingTopicBank'
 
 const SPEAKING_SETS = [1, 2, 3].flatMap(book => [1, 2, 3, 4].map(test => {
   const exam = KET_EXAMS.find(item => item.id === `ket-${book}-test${test}`)
@@ -9,18 +10,8 @@ const SPEAKING_SETS = [1, 2, 3].flatMap(book => [1, 2, 3, 4].map(test => {
 })).filter(Boolean)
 
 const PART_INFO = {
-  1: { label: 'Part 1 · 个人问答', title: 'Part 1 个人问答', help: '听考官提问，用完整句子回答，并补充理由或细节。' },
+  1: { label: 'Part 1 · 个人问答', title: 'Part 1 个人问答', help: '按15个常考主题练习考官问答，用完整句子回答，并补充理由或细节。' },
   2: { label: 'Part 2 · 图片讨论', title: 'Part 2 图片讨论', help: '观察官方话题图卡，围绕图片表达观点并进行比较。' },
-}
-
-const partOnePool = KET_EXAMS.flatMap(exam => exam.speaking?.parts?.find(item => item.part === 1)?.topics || [])
-
-function fallbackPartOne(setIndex) {
-  if (!partOnePool.length) return []
-  return Array.from({ length: 3 }, (_, index) => {
-    const source = partOnePool[(setIndex * 3 + index) % partOnePool.length]
-    return { ...source, id: `practice-${setIndex + 1}-${index + 1}` }
-  })
 }
 
 function ReferenceAnswer({ topic }) {
@@ -45,26 +36,32 @@ export default function CambridgeSpeaking() {
   const [searchParams, setSearchParams] = useSearchParams()
   const initialPart = searchParams.get('part') === '2' ? 2 : 1
   const initialSet = Math.min(12, Math.max(1, Number(searchParams.get('set')) || 1))
+  const initialTopic = Math.max(0, KET_SPEAKING_PART1_TOPICS.findIndex(item => item.id === searchParams.get('topic')))
   const [level, setLevel] = useState('KET')
   const [part, setPart] = useState(initialPart)
   const [setIndex, setSetIndex] = useState(initialSet - 1)
+  const [topicIndex, setTopicIndex] = useState(initialTopic)
   const [questionIndex, setQuestionIndex] = useState(0)
   const selected = SPEAKING_SETS[setIndex]
-  const sourcePart = selected?.exam.speaking?.parts?.find(item => item.part === part)
+  const sourcePart = selected?.exam.speaking?.parts?.find(item => item.part === 2)
+  const selectedTopic = KET_SPEAKING_PART1_TOPICS[topicIndex]
   const topics = useMemo(() => {
-    if (part === 1) return sourcePart?.topics?.length ? sourcePart.topics : fallbackPartOne(setIndex)
+    if (part === 1) return selectedTopic?.questions || []
     return sourcePart?.topics || []
-  }, [part, setIndex, sourcePart])
+  }, [part, selectedTopic, sourcePart])
   const topic = topics[Math.min(questionIndex, Math.max(0, topics.length - 1))]
   const topicImage = topic?.imageSrc || (part === 2
     ? `/images/ket/productive/b${selected.book}/test-${selected.test}-speaking.jpg`
     : '')
 
   useEffect(() => {
-    setSearchParams({ part: String(part), set: String(setIndex + 1) }, { replace: true })
-  }, [part, setIndex, setSearchParams])
+    const nextParams = part === 1
+      ? { part: '1', topic: selectedTopic.id }
+      : { part: '2', set: String(setIndex + 1) }
+    setSearchParams(nextParams, { replace: true })
+  }, [part, setIndex, selectedTopic, setSearchParams])
 
-  useEffect(() => setQuestionIndex(0), [part, setIndex])
+  useEffect(() => setQuestionIndex(0), [part, setIndex, topicIndex])
 
   return (
     <CambridgeLayout activeModule="speaking" level={level} setLevel={setLevel}>
@@ -88,24 +85,36 @@ export default function CambridgeSpeaking() {
 
         <section className="mt-6 rounded-[24px] border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
           <div className="mb-3 flex items-center justify-between gap-3">
-            <strong className="text-sm text-slate-700">选择练习</strong>
-            <span className="text-xs text-slate-400">共 {SPEAKING_SETS.length} 套 · 当前为练习{setIndex + 1}</span>
+            <strong className="text-sm text-slate-700">{part === 1 ? '选择主题' : '选择练习'}</strong>
+            <span className="text-xs text-slate-400">{part === 1 ? `共15个主题 · 当前：${selectedTopic.label}` : `共 ${SPEAKING_SETS.length} 套 · 当前为练习${setIndex + 1}`}</span>
           </div>
-          <div className="grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-12">
-            {SPEAKING_SETS.map((item, index) => (
-              <button key={item.exam.id} type="button" onClick={() => setSetIndex(index)} aria-current={setIndex === index ? 'page' : undefined}
-                title={`${item.exam.label} · ${PART_INFO[part].label}`}
-                className={`rounded-xl border px-3 py-3 text-sm font-extrabold transition ${setIndex === index ? 'border-emerald-600 bg-emerald-600 text-white shadow-sm' : 'border-emerald-100 bg-emerald-50 text-emerald-800 hover:border-emerald-300'}`}>
-                {index + 1}
-              </button>
-            ))}
-          </div>
+          {part === 1 ? (
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
+              {KET_SPEAKING_PART1_TOPICS.map((item, index) => (
+                <button key={item.id} type="button" onClick={() => setTopicIndex(index)} aria-current={topicIndex === index ? 'page' : undefined}
+                  className={`rounded-xl border px-3 py-3 text-left transition ${topicIndex === index ? 'border-emerald-600 bg-emerald-600 text-white shadow-sm' : 'border-emerald-100 bg-emerald-50 text-emerald-800 hover:border-emerald-300'}`}>
+                  <span className="block text-sm font-extrabold">{index + 1}. {item.label}</span>
+                  <span className={`mt-0.5 block text-[11px] ${topicIndex === index ? 'text-emerald-100' : 'text-emerald-600'}`}>{item.en}</span>
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-12">
+              {SPEAKING_SETS.map((item, index) => (
+                <button key={item.exam.id} type="button" onClick={() => setSetIndex(index)} aria-current={setIndex === index ? 'page' : undefined}
+                  title={`${item.exam.label} · ${PART_INFO[part].label}`}
+                  className={`rounded-xl border px-3 py-3 text-sm font-extrabold transition ${setIndex === index ? 'border-emerald-600 bg-emerald-600 text-white shadow-sm' : 'border-emerald-100 bg-emerald-50 text-emerald-800 hover:border-emerald-300'}`}>
+                  {index + 1}
+                </button>
+              ))}
+            </div>
+          )}
         </section>
 
         {topic && part === 1 && (
           <section className="mt-6 overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-sm">
             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 px-5 py-4">
-              <span className="text-xs font-semibold text-slate-400">练习 {setIndex + 1} · 问题 {questionIndex + 1}/{topics.length}</span>
+              <span className="text-xs font-semibold text-slate-400">主题：{selectedTopic.label} · 问题 {questionIndex + 1}/{topics.length}</span>
               <div className="flex gap-2">
                 {topics.map((_, index) => <button key={index} onClick={() => setQuestionIndex(index)} className={`grid h-8 w-8 place-items-center rounded-lg text-xs font-extrabold ${questionIndex === index ? 'bg-emerald-600 text-white' : 'bg-slate-100 text-slate-500'}`}>{index + 1}</button>)}
               </div>
