@@ -154,7 +154,7 @@ const navGroups = [
     { id: 'listening', icon: '🎧', label: '听力', path: '/cambridge/listening' },
     { id: 'dictation', icon: '⌨️', label: '听写', path: '/cambridge/dictation' },
     { id: 'writing', icon: '✍️', label: '写作', path: '/cambridge/exams/ket-3-test1?tab=writing&part=6', badge: 'AI' },
-    { id: 'speaking', icon: '🎙️', label: '口语', path: '/cambridge/speaking', badge: '录音' },
+    { id: 'speaking', icon: '🎙️', label: '口语', path: '/cambridge/speaking', badge: '范例' },
   ] },
   { label: '模拟考试', items: [{ id: 'exam', icon: '📝', label: 'KET 模考', path: '/cambridge/exams' }] },
   { label: '学习管理', items: [
@@ -195,7 +195,7 @@ const weeklyTaskTemplates = [
   { title: '听力真题训练', path: '/cambridge/listening', color: 'bg-cyan-500', focus: '1 个听力 Part' },
   { title: '阅读真题训练', path: '/cambridge/reading', color: 'bg-violet-500', focus: '1 个阅读 Part' },
   { title: '写作输出练习', path: '/cambridge/exams/ket-3-test1?tab=writing&part=6', color: 'bg-rose-500', focus: '1 篇短写作' },
-  { title: '口语表达练习', path: '/cambridge/speaking', color: 'bg-orange-500', focus: '录音与自评' },
+  { title: '口语表达练习', path: '/cambridge/speaking', color: 'bg-orange-500', focus: '参考与表达' },
   { title: '错题集中复习', path: '/cambridge/grammar/mistakes', color: 'bg-amber-500', focus: '本周错题' },
 ]
 
@@ -216,7 +216,7 @@ const dailyTaskTemplates = {
   '听力真题训练': [['听前预测', '浏览 1 个听力 Part 题目 · 约 5 分钟', '/cambridge/listening'], ['完成听力真题', '完成 1 个听力 Part · 约 15 分钟', '/cambridge/listening'], ['回顾听力错题', '查看答案与错题解析 · 约 10 分钟', '/cambridge/listening']],
   '阅读真题训练': [['阅读词汇预热', '复习本篇关键表达 · 约 5 分钟', '/cambridge/reading'], ['完成阅读真题', '完成 1 个阅读 Part · 约 15 分钟', '/cambridge/reading'], ['回顾阅读错题', '查看答案与定位线索 · 约 10 分钟', '/cambridge/reading']],
   '写作输出练习': [['分析写作任务', '确定题目、对象和写作要点 · 约 5 分钟', '/cambridge/exams/ket-3-test1?tab=writing&part=6'], ['完成一篇短写作', '完成邮件或短文草稿 · 约 18 分钟', '/cambridge/exams/ket-3-test1?tab=writing&part=6'], ['检查并修改', '核对内容、语法和拼写 · 约 7 分钟', '/cambridge/exams/ket-3-test1?tab=writing&part=6']],
-  '口语表达练习': [['准备表达素材', '整理本次主题词汇 · 约 8 分钟', '/cambridge/speaking'], ['录音回答题目', '完成 1 组口语回答 · 约 14 分钟', '/cambridge/speaking'], ['回听并自评', '记录一个可改进点 · 约 8 分钟', '/cambridge/speaking']],
+  '口语表达练习': [['熟悉口语题目', '阅读本次问题 · 约 8 分钟', '/cambridge/speaking'], ['独立口头回答', '完成 1 组口语回答 · 约 14 分钟', '/cambridge/speaking'], ['对照参考答案', '整理一个可复用表达 · 约 8 分钟', '/cambridge/speaking']],
   '错题集中复习': [['复习词汇错题', '回顾待复习词汇 · 约 10 分钟', '/cambridge/words?mode=review'], ['复习语法错题', '完成语法错题练习 · 约 10 分钟', '/cambridge/grammar/mistakes'], ['复习阅读与听力错题', '回顾本周易错题 · 约 10 分钟', '/cambridge/reading']],
 }
 

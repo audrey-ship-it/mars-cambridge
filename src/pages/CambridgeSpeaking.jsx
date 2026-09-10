@@ -1,8 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { motion } from 'framer-motion'
 import { CambridgeLayout } from './CambridgeApp'
-import { SpeakingRecordingPractice, useTTS } from './CambridgeExam'
 import { KET_EXAMS } from '../data/ketExamData'
 
 const SPEAKING_SETS = [1, 2, 3].flatMap(book => [1, 2, 3, 4].map(test => {
@@ -25,29 +23,13 @@ function fallbackPartOne(setIndex) {
   })
 }
 
-function AudioAnswer({ topic }) {
-  const [showAnswer, setShowAnswer] = useState(false)
-  const { speaking, speak, stop } = useTTS()
-
-  useEffect(() => () => stop(), [])
-
+function ReferenceAnswer({ topic }) {
   return (
-    <>
-      <button type="button" onClick={() => speaking ? stop() : speak(topic.id, topic.modelAnswer)}
-        className={`mt-4 w-full rounded-xl px-4 py-3 text-sm font-extrabold text-white transition ${speaking ? 'bg-emerald-500' : 'bg-[#064e3b] hover:bg-[#065f46]'}`}>
-        {speaking ? '■ 停止播放' : '🎧 听范例答案'}
-      </button>
-      <button type="button" onClick={() => setShowAnswer(value => !value)}
-        className="mt-3 text-xs font-bold text-[#064e3b] hover:underline">
-        {showAnswer ? '隐藏范例答案 ▲' : '查看范例答案 ▼'}
-      </button>
-      {showAnswer && (
-        <motion.div initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }}
-          className="mt-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4">
-          <div className="mb-2 text-xs font-extrabold text-emerald-700">🗣 范例答案</div>
-          <p className="text-sm leading-7 text-slate-700">{topic.modelAnswer}</p>
-        </motion.div>
-      )}
+    <div>
+      <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5">
+        <div className="mb-3 text-xs font-extrabold tracking-wide text-emerald-700">参考答案</div>
+        <p className="text-base leading-8 text-slate-700">{topic.modelAnswer}</p>
+      </div>
       {!!topic.phrases?.length && (
         <div className="mt-4 flex flex-wrap gap-2">
           {topic.phrases.map((phrase, index) => (
@@ -55,7 +37,7 @@ function AudioAnswer({ topic }) {
           ))}
         </div>
       )}
-    </>
+    </div>
   )
 }
 
@@ -133,9 +115,8 @@ export default function CambridgeSpeaking() {
                 <div className="text-xs font-extrabold tracking-wide text-emerald-700">考官提问</div>
                 <h2 className="mt-3 text-2xl font-extrabold leading-snug text-slate-900">{topic.question}</h2>
                 <p className="mt-3 text-sm text-slate-500">回答思路：{topic.chineseHint}</p>
-                <AudioAnswer topic={topic} />
               </div>
-              <div className="p-5"><SpeakingRecordingPractice examId={selected.exam.id} topic={topic} /></div>
+              <div className="p-6"><ReferenceAnswer topic={topic} /></div>
             </div>
           </section>
         )}
@@ -153,8 +134,7 @@ export default function CambridgeSpeaking() {
                 <ol className="mt-4 space-y-3">
                   {topic.cardPrompts.map((question, index) => <li key={index} className="flex gap-3 rounded-xl border border-slate-200 p-3 text-sm leading-6 text-slate-700"><span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-emerald-100 text-xs font-extrabold text-emerald-700">{index + 1}</span>{question}</li>)}
                 </ol>
-                <AudioAnswer topic={topic} />
-                <SpeakingRecordingPractice examId={selected.exam.id} topic={topic} />
+                <div className="mt-5"><ReferenceAnswer topic={topic} /></div>
               </div>
             </div>
           </section>
