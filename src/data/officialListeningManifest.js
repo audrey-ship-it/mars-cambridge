@@ -6,6 +6,8 @@ export const OFFICIAL_LISTENING_SETS = [
 ];
 
 export function officialListeningAudio(setId, part) {
+  // 第 9 套与 KET 3 Test 1 使用同一组音频，线上统一走一份文件，避免重复发布素材。
+  if (Number(setId) === 9) return `/audio/ket/test1/KfS3_PT_audio_track_0${part}.mp3`;
   const set=OFFICIAL_LISTENING_SETS.find(item=>item.id===Number(setId));
   return set ? `${set.audioPrefix}${part}.mp3` : '';
 }
