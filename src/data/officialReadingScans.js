@@ -1,0 +1,525 @@
+const choiceQuestions = (start, answers) => answers.map((answer, index) => ({
+  id: start + index,
+  answer,
+  options: { A: 'A', B: 'B', C: 'C' }
+}))
+
+const wordQuestions = answers => answers.map((accepted, index) => ({
+  id: 25 + index,
+  answers: Array.isArray(accepted) ? accepted : [accepted]
+}))
+
+const pages = (base, names) => names.map(name => `/images/ket/reading/official/${base}/${name}.jpg`)
+const p1q = (id, type, content, options, answer, extra = {}) => ({ id, type, content, options: { A: options[0], B: options[1], C: options[2] }, answer, ...extra })
+const p2 = (title, names, texts, questions) => ({
+  title,
+  people: names.map((name, index) => ({ name, label: ['A','B','C'][index], text: texts[index] })),
+  questions
+})
+const p3q = (text, options) => ({ text, options: { A: options[0], B: options[1], C: options[2] } })
+const p3 = (title, author, passage, questions) => ({ title, author, passage, questions })
+const examPart3 = testIndex => {
+  const source = KET_EXAMS[testIndex - 1].reading.parts.find(part => part.part === 3)
+  return p3(source.articleTitle, source.author || '', source.passage,
+    source.questions.map(question => p3q(question.text, question.opts)))
+}
+const p4 = (title, passage, options) => ({
+  title,
+  passage_segments: passage.split('___'),
+  questions: options.map(items => ({ options: { A: items[0], B: items[1], C: items[2] } }))
+})
+const examPart4 = testIndex => {
+  const source = KET_EXAMS[testIndex - 1].reading.parts.find(part => part.part === 4)
+  return {
+    title: source.articleTitle,
+    passage_segments: source.passage.split(/\[\d+\]/),
+    questions: source.questions.map(question => ({
+      options: { A: question.opts[0], B: question.opts[1], C: question.opts[2] }
+    }))
+  }
+}
+const p5 = (exampleAnswer, passages) => ({
+  example: { number: 0, answer: exampleAnswer },
+  passages
+})
+const examPart5 = testIndex => {
+  const source = KET_EXAMS[testIndex - 1].reading.parts.find(part => part.part === 5)
+  return {
+    example: { number: 0, answer: source.example.ans },
+    passages: source.passages.map(passage => ({ content: passage.text })),
+    questions: source.questions.map(question => ({
+      id: question.n,
+      answers: Array.isArray(question.ans) ? question.ans : [question.ans]
+    }))
+  }
+}
+
+function scanTest({ id, book, test, file, pageNames, answers, part1Questions, part2Data, part3Data, part4Data, part5Data }) {
+  const [p1, p2, p3, p4, p5] = pageNames
+  const structuredPart2 = part2Data ? {
+    ...part2Data,
+    questions: part2Data.questions.map((question, index) => typeof question === 'string'
+      ? { id: 7 + index, text: question, answer: answers[6 + index] }
+      : question)
+  } : null
+  const structuredPart3 = part3Data ? {
+    ...part3Data,
+    questions: part3Data.questions.map((question, index) => ({
+      id: 14 + index,
+      ...question,
+      answer: answers[13 + index]
+    }))
+  } : null
+  const structuredPart4 = part4Data ? {
+    ...part4Data,
+    questions: part4Data.questions.map((question, index) => ({
+      id: 19 + index,
+      ...question,
+      answer: answers[18 + index]
+    }))
+  } : null
+  return {
+    id,
+    title: `官方真题 ${book} · Test ${test}`,
+    source: { file, collection: `KET青少版官方真题 ${book}`, test, verified: true, format: 'source-scan' },
+    part1: part1Questions
+      ? { instructions: 'For each question, choose the correct answer.', questions: part1Questions }
+      : { scanPages: pages(`b${book}t${test}`, p1), questions: choiceQuestions(1, answers.slice(0, 6)) },
+    part2: structuredPart2 || { scanPages: pages(`b${book}t${test}`, p2), questions: choiceQuestions(7, answers.slice(6, 13)) },
+    part3: structuredPart3 || { scanPages: pages(`b${book}t${test}`, p3), questions: choiceQuestions(14, answers.slice(13, 18)) },
+    part4: structuredPart4 || { scanPages: pages(`b${book}t${test}`, p4), questions: choiceQuestions(19, answers.slice(18, 24)) },
+    part5: part5Data
+      ? { ...part5Data, questions: part5Data.questions || wordQuestions(answers.slice(24)) }
+      : { scanPages: pages(`b${book}t${test}`, p5), questions: wordQuestions(answers.slice(24)) }
+  }
+}
+
+export const officialReadingScans = [
+  scanTest({
+    id: 2, book: 1, test: 2, file: 'KET青少版官方真题1.pdf',
+    pageNames: [['page-025','page-026'], ['page-027','page-028'], ['page-029','page-030'], ['page-031'], ['page-032']],
+    answers: ['B','A','C','C','B','B','B','A','C','A','B','A','C','B','A','C','A','C','A','C','B','C','A','A','not','want','as','of','than','to'],
+    part1Questions: [
+      {
+        id: 1, type: 'notice', title: 'Fashionista Clothes',
+        content: 'Please keep the receipt – you cannot return anything without it.',
+        options: {
+          A: 'Make sure that your receipt is correct before you leave the shop.',
+          B: 'If you want to bring something back to this shop, you need a receipt.',
+          C: 'Someone will check your receipt when you go out of the shop.'
+        }, answer: 'B'
+      },
+      {
+        id: 2, type: 'text', from: 'Sally', to: 'Luke',
+        content: "Thanks for asking me to go to the cinema. It sounds fun, but I’m afraid I’ve got too much homework. Maybe some other time.",
+        question: 'Sally is telling Luke',
+        options: {
+          A: 'why she is too busy to see a movie.',
+          B: 'which homework she needs to complete.',
+          C: 'when she will be available to see a movie.'
+        }, answer: 'A'
+      },
+      {
+        id: 3, type: 'text', from: 'Jessica',
+        content: "Did anyone pick up my biology textbook by mistake after our science lesson in the library? I don’t mind coming to get it from you.",
+        options: {
+          A: 'Jessica needs to borrow a textbook from someone in her science class.',
+          B: 'Jessica wants someone from her science class to bring her textbook to her.',
+          C: 'Jessica is hoping someone in her science class has found her textbook.'
+        }, answer: 'C'
+      },
+      {
+        id: 4, type: 'text', from: 'Nathan', to: 'Laila',
+        content: "I’m visiting my grandparents this weekend so I can’t meet you to finish our art project. Are you free this Thursday instead?",
+        question: 'Why did Nathan write the message?',
+        options: {
+          A: 'to check if Laila can work on their art project over the weekend',
+          B: 'to tell Laila he won’t be able to complete the project on his own',
+          C: 'to ask Laila if she’s able to meet him earlier than they planned'
+        }, answer: 'C'
+      },
+      {
+        id: 5, type: 'ad', title: '24 hour sale!',
+        content: 'Download any 10 songs for 99p\nThen £1.99 per song as usual',
+        options: {
+          A: 'You have 24 hours to buy as many songs as you like for 99p each.',
+          B: 'The cost of each song is £1.99 after you buy more than ten songs.',
+          C: 'Some popular songs that cost £1.99 aren’t included in the sale.'
+        }, answer: 'B'
+      },
+      {
+        id: 6, type: 'text', from: 'Stella', to: 'Aaron',
+        content: "Thanks for lending me your bike. I’ll bring it back as soon as mine is repaired. It might be ready by next weekend.",
+        options: {
+          A: 'Stella is checking when Aaron will need his bike back.',
+          B: 'Stella can’t say exactly when she will be able to return Aaron’s bike.',
+          C: 'Stella wants to know if she can borrow Aaron’s bike until next weekend.'
+        }, answer: 'B'
+      }
+    ],
+    part2Data: {
+      title: 'How three young people became DJs',
+      people: [
+        { name: 'DJ Fire', label: 'A', text: 'This Russian DJ grew up travelling with his parents who were in a rock band. He started learning piano at four, and drums at twelve. As a teenager, he wrote songs and posted them online as a hobby. Then, at 20, a music company started paying him to write songs for pop bands – and some have been on the radio. Later he became interested in electronic music and started playing it in clubs. He’s hoping to get an invitation to play at some international festivals this summer.' },
+        { name: 'DJ Goldrock', label: 'B', text: 'This South African DJ started playing the piano when he was 5. At 15, he played pop songs at a cousin’s birthday party, and got a hundred kids dancing. At that moment, he knew he wanted to be a DJ and never have a normal job. He started a website where he played his favourite songs, and soon had lots of fans. He’s now 20 and has his own show on national radio. For the past three years, he’s spent his summers going around the world playing dance music at festivals.' },
+        { name: 'DJ Mango', label: 'C', text: 'At 15, this Brazilian DJ’s parents gave him a new computer and DJ equipment for making electronic dance music. Later that year, he started playing music at local dance parties to make some extra money, and the parties just got bigger and bigger. A few years later, a journalist asked him why he became a DJ. He said that as a child his dream was to play the electric guitar for a rock group, but he wasn’t good enough!' }
+      ],
+      questions: [
+        { id: 7, text: 'Who travels to different countries every year to play his music?', answer: 'B' },
+        { id: 8, text: 'Who comes from a family of musicians?', answer: 'A' },
+        { id: 9, text: 'Who was paid to make music as a teenager?', answer: 'C' },
+        { id: 10, text: 'Who knows how to play more than one musical instrument?', answer: 'A' },
+        { id: 11, text: 'Who works for a radio station?', answer: 'B' },
+        { id: 12, text: 'Who writes music for other musicians?', answer: 'A' },
+        { id: 13, text: 'Who wanted to play in a band when he was younger?', answer: 'C' }
+      ]
+    },
+    part3Data: p3('A path across Canada','Thirteen-year-old Kara Finch writes about The Great Trail - a footpath that goes across Canada.',`The Great Trail goes from one side of Canada to the other. At 24,000 km, it is the longest trail in the world. The Great Trail project began in 1992 and took 25 years to complete. It opened in 2017, exactly 150 years after Canada became one country.
+
+The Great Trail is actually lots of paths joined together. You can cycle, walk or horse-ride on most of it, but there are parts where the only way you can travel is by boat. And there are others where the trail is part of the highway, which doesn't sound very safe to me.
+
+My father and I spent a day walking along part of The Great Trail that was surprisingly busy. We were told you don't usually see bears when there are lots of people, but we did. It was moving through the trees, quite close to us, and I felt a little afraid. “I don't think it's hungry!” laughed my dad.
+
+At lunchtime, we talked to an old man on the trail. Dad asked him if he thought the path was going to help Canadians learn more about their countryside. “Not really,” he said. “We've always loved to be outdoors. But it will bring us tourists from around the world, which is important.”
+
+In the future, the path will probably change, and new parts may open. We saw nothing to tell us we were on The Great Trail, which is a shame. I know there's information on the website, but it's good to know when you're walking on a special path. They need to add some signs, I think.`,[
+      p3q('What is Kara doing in the first paragraph?',['telling tourists how long it takes to walk The Great Trail','explaining the history of The Great Trail','giving walkers advice about walking in Canada']),
+      p3q('What does Kara think is dangerous?',['Some parts of the path are on roads.','You need a boat for parts of the path.','Bikes and horses share the same path.']),
+      p3q('What does Kara say about the bear she saw?',['It looked hungry.','It was on the path.','It walked near her.']),
+      p3q('What did the old man say about the trail?',['People from other countries will come to see it.','People will go into the countryside more because of it.','People from Canada will use it to see other parts of their country.']),
+      p3q('What does Kara say should happen next?',['There should be a website about the trail.','Some parts of the trail should close.','There should be more signs along the trail.'])
+    ]),
+    part4Data: p4('Sally Ride',`Sally Ride was born on 26th May, 1951, in California, USA. After high school, she went to Stanford University to study physics. While she was there, she saw an advertisement in her university newspaper ___ women to join the US space programme. Six women, including Sally, were ___ to become astronauts. On 18th June 1983, Sally became the first American woman to fly into space. Six days later, on 24th June, she ___ to Earth.
+
+When Sally ___ working as an astronaut in 1987, she started teaching at the University of California. She wanted to find ways to get more people, ___ girls, interested in studying science and mathematics. She also found time to write science books for children about ___ space.`,[['inviting','showing','looking'],['thought','decided','chosen'],['completed','returned','arrived'],['ended','closed','stopped'],['especially','exactly','clearly'],['exploring','going','travelling']]),
+    part5Data: p5('got',[
+      { from:'Riley', to:'Kris', content:"My dad's got three tickets for the hockey match next Wednesday. One was for my brother, but now he's [25] free that day, so we have an extra one. Do you [26] to come? Dad would like to leave our house at 4 o'clock. Let me know as soon [27] possible." },
+      { from:'Kris', to:'Riley', content:"Wow! That's really kind [28] you. Thanks! I asked Mum if I can come and she said yes. I finish school a bit later [29] you, so Mum will drive me to your house at 4 o'clock. Is there anything I need [30] bring with me?" }
+    ])
+  }),
+  scanTest({
+    id: 3, book: 1, test: 3, file: 'KET青少版官方真题1.pdf',
+    pageNames: [['page-041','page-042'], ['page-043','page-044'], ['page-045','page-046'], ['page-047'], ['page-048']],
+    answers: ['A','C','B','B','A','C','C','B','A','B','C','A','B','A','B','C','B','C','C','A','B','C','B','B','the','it',['but','although','however','so'],'than','to','at'],
+    part1Questions: [
+      p1q(1,'text','Thanks for inviting me to your badminton party at the sports club next Saturday afternoon. Will I know anyone else there?',['who is going to the party.','what they’re going to do at the party.','what time the party starts.'],'A',{from:'Ben',to:'Toby',question:'Ben wants to know'}),
+      p1q(2,'notice','Summer show\nI have some great actors and dancers but still need people who play instruments.\nWe practise Tuesdays and Thursdays after school.\nMrs Jenkins',['some better actors and dancers.','anyone with free time this summer.','students who are good at music.'],'C',{question:'For the show, Mrs Jenkins is looking for'}),
+      p1q(3,'ad','Are you an excellent swimmer and over 10 years old?\nThen you can join the sailing club!\nThursdays 5–8 p.m.\nOnly £50 per term',['New members of any age are welcome to join the club.','You must be able to swim to become a member of the club.','There is a special price for new members who join the club on Thursday.'],'B'),
+      p1q(4,'text','Have you still got that history book of mine? Could you let me have it back because Rob needs it for the weekend?',['lend the book to Rob when he’s finished reading it','return the book so that someone else can read it','use the book over the weekend'],'B',{from:'Sally',to:'Justin',question:'What should Justin do?'}),
+      p1q(5,'text','I saw your text about Dad’s birthday present, but we always get him socks! What about sunglasses? Mum can take us to get some.',['Karin doesn’t agree with Serena about what to buy their father.','Karin thinks their mother will have better ideas for a present.','Karin doesn’t know what to buy her father for his birthday.'],'A',{from:'Karin',to:'Serena'}),
+      p1q(6,'notice','City Library\nLibrary computers are for members only – ask receptionist about becoming a member.',['You need to ask the receptionist which computers you can use.','Only people who work at the library can use the computers.','If you join the library, you can use the computers.'],'C')
+    ],
+    part2Data: p2('A great science teacher',['Joshua','Dan','Chris'],[
+      'Mrs Philips was my science teacher when I joined my school and she still is, so I don’t know what the other teachers are like. But I think Mrs Philips gives us so much great stuff to do. Even when we think something is too hard for us, she says she knows we can all do it, and she’s usually right! She also shows us drawings, photos and websites to explain how things work, which I love.',
+      'I have a fantastic science teacher called Mrs Rhodes. She loves her subject - especially plants. She is able to draw wonderful pictures of them on the board, which helps us understand them. She never seems to get tired or bored when she’s teaching. She takes time to get to know each student in the class so that she can help them better. I think she’s the reason I want to be a science teacher one day.',
+      'In just one year, Mrs James has become my favourite teacher. Until I joined her class, I was very bad at science, but she explained things so well that I soon understood them better. My marks went up almost immediately. She always has time at the end of lessons if we’re having problems. But it isn’t just teaching that makes her great. She’s also interested in our lives and gives advice on how to be a better person.'
+    ],['Who says his teacher helps with things other than science?','Who says his teacher is really interested in what she teaches?','Who says his teacher believes every student can be successful?','Who says he has chosen his future career because of his teacher?','Who says his teacher helped him to improve quickly?','Who says he’s only ever had one science teacher at his school?','Who says his teacher is very good at drawing?']),
+    part3Data: p3('Callie Rice - ice dancer','',`Growing up, I was in an ice-skating club, and my friends and I did lots of competitions. When I was 18, I entered a big one in Italy, and I came first. The prize was a job as an ice dancer in a big show. That's how my career started.
+
+One of the things I love about the shows is the beautiful clothes. The only trouble is that sometimes they're heavy and I get very hot. Also, I have to change lots of times in one show. The people who make the clothes are very clever - it's amazing how quickly they work!
+
+Before the show starts, we get dressed, put our skates on, and wish each other good luck. Then, while I'm waiting to go on, I like to sit quietly by myself and think about what I'm going to do. The other skaters chat together or listen to music.
+
+In the shows, we have to dance, sing, and also speak. For me, ice dancing is fine, but I'm not an actor. I'm always a bit scared I won't remember the words. I'm not bothered about falling - it doesn't usually happen. And I really enjoy joining in with all the songs.
+
+People always ask me if I'm tired when each show finishes, but I love skating, so I never feel that way. I love listening to the people who came to watch - so excited as they leave, talking about what they've seen. That's when I'm really happy I chose ice dancing as a career.`,[
+      p3q("How did Callie's career as an ice dancer begin?",['She won a competition.','She saw an advert for a job.','A friend invited her to join an ice show.']),
+      p3q('What does Callie say about the clothes she wears?',['Some are prettier than others.','It’s hard to skate in them.','Making them takes a long time.']),
+      p3q('What does Callie do just before each show?',['She talks to the other skaters.','She checks her skates are okay.','She takes a moment to be alone.']),
+      p3q('What does Callie worry about?',['having an accident on the ice','forgetting what she has to say','dancing and singing at the same time']),
+      p3q('How does Callie usually feel after a show?',['ready for a rest','glad that she’s finished','pleased about making people happy'])
+    ]),
+    part4Data: p4('Art you can eat',`Yujia Hu was born in China, but moved to Milan, in Italy, when he was eight. His family have a Japanese restaurant there. When Yujia left school, he ___ a course at an art school, but he didn't complete it. ___, he went to work in the family restaurant as a sushi chef. Sushi is a Japanese dish made of rice, with fish and vegetables.
+
+Yujia is a big ___ of basketball, and a few years ago he ___ to start using sushi to make models of the faces of famous players. His next idea was to make little shoes, usually trainers, out of sushi. It ___ him about 30 minutes to make each shoe. Yujia doesn't serve the sushi shoes to customers at his family's restaurant, but he ___ photographs of them online.`,[['got','held','began'],['Instead','Really','Maybe'],['partner','fan','member'],['believed','understood','decided'],['spends','takes','delays'],['sends','shares','joins']]),
+    part5Data: p5('are',[{ from:'Jason', to:'Mum', content:"We are all having a great time camping in the forest. My class has got [25] best place on the campsite, with a great view of the mountains.\n\nLast night, [26] rained really hard. Lots of people got wet, [27] I was lucky my new tent stayed dry all night! I'm really glad we decided to buy it. It's much better [28] my old one.\n\nBy the way, I forgot [29] tell the football coach that I'm away [30] the moment. Can you let him know that I can't come to practice this week?\n\nThanks!" }])
+  }),
+  scanTest({
+    id: 4, book: 1, test: 4, file: 'KET青少版官方真题1.pdf',
+    pageNames: [['page-057','page-058'], ['page-059','page-060'], ['page-061','page-062'], ['page-063'], ['page-064']],
+    answers: ['B','C','B','B','C','A','C','A','C','A','B','A','C','A','C','A','B','B','B','B','A','C','A','B','as','the','all','in','to','if'],
+    part1Questions: [
+      p1q(1,'text','About our badminton match at the sports club this afternoon – I can’t find my racket anywhere. Do you have a spare one?',['she knows where the match is taking place.','she can lend him some equipment.','she is free to play badminton today.'],'B',{from:'Sebastian',to:'Lisa',question:'Sebastian is asking Lisa if'}),
+      p1q(2,'text','I looked online and there’s no bus to the beach on Saturday morning! My mum can’t drive us – is your dad free?',['check the bus timetable for Saturday.','ask his father to give them a lift on Saturday.','find out the quickest way to drive to the beach.'],'B',{from:'Dave',to:'Mike',question:'Dave would like Mike to'}),
+      p1q(3,'email','I didn’t copy down what our maths homework is for tomorrow. Can you have a look in your homework diary and email me?',['Nancy has lost her homework diary.','Nancy needs help with some difficult homework.','Nancy forgot to make a note of what she needs to do.'],'C',{from:'Nancy',to:'Fred'}),
+      p1q(4,'notice','School Library\nFrom next week library will open at 8.00 and close at 5.30\n(Wednesdays 8.30–4.30)\nSpeak to staff about booking a school laptop.',['Library staff won’t have much time to help you next week.','Arrive early at the library if you would like to book a school laptop.','The times when you can visit the library will change soon.'],'C'),
+      p1q(5,'notice','School Sports Day\nThis will take place in hall instead of field if it rains – check website.\nFriday, 28 September, 9.00 a.m.–3.00 p.m.\nParents and friends welcome.',['If the weather is bad, we will cancel sports day.','All students should come to the hall at 9.00 a.m. on Friday.','Students can invite visitors to come and enjoy the day.'],'C'),
+      p1q(6,'text','Did you discuss that homework with your teacher? Is it clearer now what she wants? I’m home now if you need to call.',['has changed his homework.','helped him to understand his homework.','needs to speak to her about his homework.'],'B',{from:'Mum',to:'Joe',question:'Mum is asking if Joe’s teacher'})
+    ],
+    part2Data: p2('My trip to Rome',['Rhodri','Patrick','Josh'],[
+      'I had a great time in Rome with my family. It was my first holiday outside my own country and I couldn’t wait to go. I found out all I could about Rome from the library and on the internet. Knowing about the history made seeing all the old buildings, like the Colosseum, much more interesting. We were able to do lots of sightseeing because the taxis and buses and the metro were cheap and fast.',
+      'It was really hot when I arrived at Rome airport with my parents last summer. I loved walking around famous places like the Trevi Fountain, but all the cars and buses in the city sometimes made walking difficult. I really loved the food. The Italians have a special kind of ice cream called gelato which is wonderful, but the best thing I had was a pizza at a local market. I also got some great things to take back for my friends.',
+      'It was so hot when my dad and I went to Rome last year that we usually waited until after the sun went down to explore the city on foot. During the day we went to museums, shops and restaurants. The pasta there is amazing, and I had some Italian ice cream, called gelato, for the first time. That was the thing I liked most. After a few days in Rome, we decided to take a train into the countryside for a day. It was nice to see all the small villages and farms.'
+    ],['Who says it was easy to travel around in Rome?','Who says he felt very excited before his holiday?','Who says there was a lot of traffic in Rome?','Who says he prepared carefully for his trip?','Who says his favourite food on the trip was Italian ice cream?','Who bought some things to give as gifts?','Who took a short trip outside Rome?']),
+    part3Data: p3('A wonderful year','Ben Jones talks about his year of travel before studying at university.',`I always knew I wanted to spend a year travelling before university. I wanted to see the world, improve my skiing, make new friends from other countries and, more than anything, try lots of things I've never done before.
+
+The first place I visited was France. I've always loved the French language and I wanted to study it. Then, while I was there, I became interested in French food. I took some cooking lessons at a farmhouse in the French countryside, and learned to make lots of lovely dishes.
+
+Next, I visited Australia. My cousins live near the river in Sydney, so I had somewhere to stay. To begin with, we spent a lot of time sailing in their boat. But then I got a job in a hotel. It was great - the customers and staff were so friendly.
+
+My last country was Japan, where I learned to become a skiing teacher. I planned to do a three-week course. But when I got there, I saw that I wasn't actually that good, so I changed to a seven-week one. The course was amazing and afterwards I got a job with a skiing company.
+
+The other teachers were very friendly and on our days off, we did activities like snowboarding. One weekend we even did winter camping. That was quite interesting, but it was cold, so I can't say I slept well! Anyway, we're all planning to meet up soon and I can't wait.`,[
+      p3q('What did Ben want to do during the year after he left school?',['try some different sports','have some new experiences','meet up with old friends']),
+      p3q('Why did Ben go to France?',['to do a French cooking course','to see the French countryside','to learn to speak French']),
+      p3q('Where did Ben live when he was in Australia?',['in the hotel where he worked','with members of his family','on a boat on the river']),
+      p3q('Why did Ben change his course in Japan?',['He heard about a better one.','He knew he needed more practice.','He wasn’t enjoying the first one.']),
+      p3q('What does Ben say about winter camping?',['It wasn’t pleasant at night.','He would love to do it again soon.','It was the most interesting thing he’s ever done.'])
+    ]),
+    part4Data: p4('Eric Koston',`Eric Koston is one of the world's best-known skateboarders. He was born in Thailand, but his family ___ to the US when he was a baby. His love of skateboarding began at the ___ of 11, when his older brother gave him a skateboard. It was an old, broken board, but he learned how to skateboard by watching other kids and then he ___ by himself every day.
+
+Three years later, he was so good that a company that made skateboards offered him a summer ___. That's when he ___ to make skateboarding his life. Since then, Eric has ___ many international competitions, made boarding videos and starred in a skateboarding video game. Now he owns a successful company making sports shoes and clothes.`,[['changed','moved','left'],['year','time','age'],['practised','taught','followed'],['career','job','work'],['thought','felt','decided'],['won','taken','tried']]),
+    part5Data: p5('from',[{ content:"Hi everyone. My name is Juan and I've joined this website because I'm looking for a penfriend. I come from Mexico and I live in a town called Playa del Carmen on the Caribbean Sea, near the city of Cancun. It's not as famous [25] Cancun but I think it is one of [26] most beautiful places in Mexico.\n\nTourists come to Playa del Carmen from [27] over the world because the weather's always warm and the food's great. [28] fact, my friends and I go to the beach almost every day. It's brilliant!\n\nDo you want [29] know more about Playa del Carmen? [30] you do, write to me soon." }])
+  }),
+  scanTest({
+    id: 5, book: 2, test: 1, file: 'KET青少版真题 2.pdf',
+    pageNames: [['page-010','page-011'], ['page-012','page-013'], ['page-014','page-015'], ['page-016'], ['page-017']],
+    answers: ['C','C','C','A','B','B','B','A','B','C','A','A','C','A','B','C','C','A','C','A','A','A','B','B','than','it','the',['when','after','before'],'be',['do','did']],
+    part1Questions: [
+      p1q(1,'email','Can you come sailing this weekend? My dad’s rented a small boat for two days. It doesn’t matter that it’s your first time.',['there isn’t much space on the boat.','the sailing trip will be very short.','Lucy has never sailed before.'],'C',{from:'Emma',to:'Lucy',question:'Emma says it’s not a problem that'}),
+      p1q(2,'notice','Friday singing lessons (Room 3B)\nPlease tell Mrs Topson by Thursday afternoon if interested.',['Mrs Topson is telling students about a change to their singing lessons.','Mrs Topson is offering to give singing lessons on Thursdays and Fridays.','Mrs Topson would like to know who wants to have singing lessons.'],'C'),
+      p1q(3,'text','You left your maths book at my house yesterday. I’ll bring it to school tomorrow and give it to you.',['Max has borrowed one of Jamie’s books.','Max and Jamie will have a maths class tomorrow.','Max has found Jamie’s schoolbook.'],'C',{from:'Max',to:'Jamie'}),
+      p1q(4,'email','Anyone interested in becoming a member of an after-school sports club this term must complete an online form first.',['You cannot join a sports club until you have filled in a form.','If you belong to a sports club, check online for details about it.','The sports clubs aren’t taking new members because they’re already full.'],'A',{from:'Mr Thomas',to:'Students'}),
+      p1q(5,'text','I’m working late tonight – back by 7. Turn the heating on if you’re cold. You’ll find some pasta in the fridge.',['there is a problem with the heating.','she’s left some food ready for Jack.','she’ll be home at the usual time.'],'B',{from:'Mum',to:'Jack',question:'Jack’s mother says'}),
+      p1q(6,'email','We need some articles for the school magazine. Email me with your ideas by Tuesday. I’ll need the finished articles in two weeks.',['will be available on Tuesday.','is looking for writers.','needs new readers.'],'B',{from:'School magazine',to:'All students',question:'The school magazine'})
+    ],
+    part2Data: p2('Canadian holiday',['Gary','Marcus','George'],[
+      'Last summer, my family and another family we’re close to went by coach to Canada. It was a long journey and the coach was crowded, so I was really glad when we finally arrived. We stayed in a little wooden house in the middle of a forest. The weather wasn’t too hot, which I was pleased about. The best thing was the horse riding. It was my first time on a horse, but I had lessons every day and by the end of the holiday I was quite good.',
+      'I went to Canada in August with my family. My mum booked everything online, and we got a non-stop flight from the UK. We stayed in a little hotel in a town called Whistler. From our room, we could see beautiful mountains and fields of flowers. We did lots of activities, including swimming, hiking and white-water rafting. There was an interesting shop in town where I found things to take back home for my friends.',
+      'I learnt to fish last summer, so my parents bought me fishing equipment as a birthday present. They said Canada is great for fishing so we could go there for our holiday to try it out. We drove from our home in the US to the national park and put up our tent near a lake. The next day it was raining so hard you almost couldn’t see the lake. But I thought, “Fantastic, that’s perfect for catching fish.” And it was true, because I caught five that day. I took lots of photos to show my friends back home.'
+    ],['Who describes the view from where he was staying?','Who says he didn’t enjoy the journey from his home?','Who bought some gifts while he was on holiday?','Who describes feeling excited by some bad weather?','Who says he enjoyed learning a new activity during his holiday?','Who went on holiday with friends as well as family?','Who explains why he and his family chose to go to Canada?']),
+    part3Data: p3('Harry Mack','British singer Harry Mack started his career in a boy band called Big Time, but he left last year to start work on his own album. We met him in California to ask him about his new life.',`Do you like California?
+
+Yes. The weather's always warm and sunny and the people are great. But the thing I really love is that I can see the sea from my apartment and listen to it while I'm lying in bed at night.
+
+How did you get ideas for your new album?
+
+I did 150 concerts last year with Big Time, so I was on buses and planes a lot. There wasn't much to do on those journeys, except think about music. When I arrived at the hotel late at night, I often had something in my head.
+
+Do you like writing songs?
+
+Yes. I write every morning at home, because there's less noise then, and I can think. In the afternoons, I practise the new songs on my guitar for a few hours.
+
+Has your music changed since you left Big Time?
+
+Yes. Big Time did dance music, but I'm older now and so are my fans. I want to do music that's right for the age we are now. The fans all love it.
+
+Do you enjoy playing concerts?
+
+I always feel a bit scared before playing, it doesn't matter if the concert's big or small. However, my favourite is smaller concerts because I like chatting with fans before I start. It's like being in a room full of friends.`,[
+      p3q('What does Harry like best about being in California?',['living by the water','spending time in the sun','meeting new people']),
+      p3q('Harry says he got ideas for his new album',['when he was playing concerts.','when he was travelling.','when he was sleeping.']),
+      p3q('Harry says that song writing is',['more fun than playing the guitar.','harder to do at home.','easier when it is quiet.']),
+      p3q('Harry says that since he left Big Time',['he feels happier.','he has got new fans.','his music is more adult.']),
+      p3q('Why does Harry prefer playing small concerts to big ones?',['He can meet his fans.','He can see all his friends there.','He feels less afraid before playing.'])
+    ]),
+    part4Data: p4('The cola tree',`In the early 1800s, the first soft drinks were invented. One of the things that was ___ to them was the fruit of an African tree called the cola tree. This is where the word for the popular soft drink 'cola' ___ from.
+
+The first cola trees grew in the rainforests of Africa, but they are now also found in South America. They ___ hot places that get a lot of rain. Cola trees can be 25 metres ___ and they have beautiful purple and yellow flowers.
+
+The fruit of the cola tree is the kola nut. Kola nuts are very ___ in the countries of West Africa, where they are ___ in food and medicine. Kola nuts are given as gifts at weddings, and also when people visit the homes of their friends and family.`,[['made','put','added'],['comes','begins','starts'],['prefer','think','decide'],['tall','long','large'],['wonderful','important','advanced'],['done','used','got']]),
+    part5Data: p5('for',[{ from:'Dave', to:'Ali', content:"I've got some news for you. We've just moved into our new house. We moved because Dad got a new job in March.\n\nOur new house has three floors and is a lot bigger [25] our old one. I really like [26]. My bedroom is at [27] top and I can see a long way from my window. Our garden is really big. Dad has said he'll build me a treehouse [28] my school holiday begins.\n\nI'm starting at a new school next week. I hope I'll [29] able to make new friends. I'm worried about it, but also excited. [30] you have any news?" }])
+  }),
+  scanTest({
+    id: 6, book: 2, test: 2, file: 'KET青少版真题 2.pdf',
+    pageNames: [['page-026','page-027'], ['page-028','page-029'], ['page-030','page-031'], ['page-032'], ['page-033']],
+    answers: ['A','C','A','C','B','A','B','C','A','C','B','C','A','A','B','B','C','A','B','C','A','B','C','A','be','a','on',['or','to'],['them','these','those'],'if'],
+    part1Questions: [
+      p1q(1,'notice','School picnic\nBring sandwiches, but sorry – no chocolate. I have bottles of water for everyone. Don’t forget a jacket – the weather won’t be very warm.',['Students don’t need to bring their own drinks to the picnic.','Students will not have a picnic if the weather’s bad.','Students can bring any food they like to the picnic.'],'A'),
+      p1q(2,'ad','Bike for sale – £100\nTwo years old and has new tyres and lights. Good for riding in town or exploring the countryside. Contact Kevin – 033126502.',['The bike has a few things wrong with it.','Call Kevin to find out how much the bike costs.','You can use the bike in different kinds of places.'],'C',{question:'What does the advert say?'}),
+      p1q(3,'notice','This month’s newsletter available to download. Includes everything students need to know about school.',['Students can find out information about the school in an online newsletter.','Students need to tell the school if they are interested in receiving a newsletter.','Students should let the school know what they want included in the newsletter.'],'A'),
+      p1q(4,'notice','Library\nIf you would like to take out any books to read during the school holidays, Friday is the last day you can do this.',['Students must return books to the library before Friday.','The school library will be closed on Friday.','Students should borrow books by the end of Friday.'],'C'),
+      p1q(5,'text','I hope your cold’s better. Mr Morgan said don’t worry about bringing your history project to class – you can upload it instead.',['give his project to Peter','post his project online','bring his project to school'],'B',{from:'Peter',to:'Danny',question:'What should Danny do?'}),
+      p1q(6,'text','I’m still at work. Grandma will meet you after school and take you back to hers for dinner. I’ll be there soon after that.',['to explain to Priti when he will see her','to tell Priti he will eat with her this evening','to ask Priti to contact her grandmother'],'A',{from:'Dad',to:'Priti',question:'Why did Priti’s dad write this message?'})
+    ],
+    part2Data: p2('Three places to learn surfing',['Nosara','Agadir','Inch Marlow'],[
+      'From the centre of the town of Nosara, you can easily walk to several good beaches for beginner surfers. The sea is warm all year round and the weather is beautiful, so you’ll be surprised by how quiet the beaches always are. There are many excellent surf teachers around the town, and their prices aren’t high. The town’s also famous for its wildlife park, where you can see some amazing sea animals.',
+      'The area around Agadir in the south of Morocco is very popular with surfers. Beginners need to go in autumn when the sea is safe and the water is nice and warm. Experienced surfers will enjoy it more in winter when the waves are big and exciting. From the city you can drive to many lovely beaches in less than 20 minutes. The area’s well known for having a large number of surf camps. These are comfortable and friendly and don’t cost much.',
+      'A surprising number of people haven’t heard that the southern side of Barbados is excellent for beginner surfers. However, Zed Layson, a famous surfer, has a school at Surfer’s Point, which is excellent for those who want to try the sport for the first time. As well as good teachers, there is always a photographer waiting to take a picture of you on your surfboard. In summer it rains a lot, but the water is warm so surfing is still possible.'
+    ],['Which place is only good for beginners at one time of year?','Where can you learn from a well-known teacher?','Which place has something to do when you’re not surfing?','Which place has wet weather at one time of the year?','Where is it possible to stay without paying a lot?','Which place is not well known as a good place to learn to surf?','From which town can you get to the surfing beaches on foot?']),
+    part3Data: p3("Emma's camping trip in Namibia",'',`Last summer Mum and I went camping in Namibia. It was my first time camping and my first visit to Namibia. My mum already knew the country. As a teenager she went travelling there with a cousin, and she always planned to go back one day. I knew Namibia was in Africa, but I had to check online to see exactly where.
+
+The campsite was beautiful, with a big swimming pool. Campsites usually have showers, but when we got there, we found that this one had a real bath - I couldn't believe it. Also, we didn't need to make our own meals because there was a camp chef who cooked for us in an outdoor kitchen.
+
+I was always tired in the evenings and I couldn't wait to get into my little camp bed. Every night I lay there listening to all the animals. They were really noisy, so it wasn't always easy to sleep. However, hearing them was one of the best things about the holiday.
+
+We also saw a lot of animals. One day we found a lion family and stopped to watch them. Unfortunately, they were sleeping in long grass by a tree, and I couldn't get any good photos of them. They didn't look scary but our guide didn't let us get close.
+
+It was a fantastic holiday and I loved camping. Now I know how much fun it is, I think I'll try it in my own country with some friends, maybe as soon as next summer.`,[
+      p3q("Why did Emma's mum choose Namibia for their holiday?",['She wanted to visit it for a second time.','She had a cousin who was from there.','She saw a travel website about it.']),
+      p3q('When they arrived at the campsite, Emma was surprised by',['the kitchen.','the bathroom.','the swimming pool.']),
+      p3q('What does Emma say about the nights?',['Her bed was not very comfortable.','She enjoyed listening to the animals.','She slept well because she was tired.']),
+      p3q('How did Emma feel when she saw the lion family?',['afraid because they looked dangerous','upset because she didn’t have her camera','sorry because they were hard to see']),
+      p3q('What did Emma write in her diary about her holiday?',["I enjoyed camping with Mum, but I'd like to go with friends next time.","I loved watching the wild animals, but camping is hard work.","I'd like to try camping again, but in a warmer place."])
+    ]),
+    part4Data: p4("Aslam's Bakery",`If you ever visit Hyderabad in India, make sure you don't ___ the Nimrah Bakery in the middle of the city. It is famous for 'Osmania' biscuits, which are made of milk, butter, flour and sometimes coconut. The biscuits are baked in the shop and are ___ hot to customers. Customers can eat them ___ with a cup of tea, or take them home to enjoy later.
+
+The bakery ___ to Aslam, who says that he sells 4,000 biscuits every day and 7,000 cups of tea. There are always people ___ to buy biscuits outside his shop, which is open daily from 4:00 a.m. to midnight. There are many other bakeries around the city selling Osmania biscuits, so Aslam is happy that his ___ is still so popular and successful.`,[['leave','miss','lose'],['paid','bought','sold'],['immediately','suddenly','actually'],['keeps','belongs','lends'],['standing','thinking','waiting'],['business','career','occupation']]),
+    part5Data: p5('we',[
+      { from:'Andy', to:'Tom', content:"Let's take a picnic with us when we go to the river tomorrow. I saw on TV that the weather is going to [25] really nice. I'll make [26] few sandwiches, so can you bring some drinks? I'll also bring my blanket for us to sit on." },
+      { from:'Tom', to:'Andy', content:"Yes, a picnic sounds like a great idea! I can get some drinks [27] my way. Would you prefer cola [28] orange juice? The shop near my house sells both of [29]. Don't forget your swimming things. I'll bring my football [30] I can find it." }
+    ])
+  }),
+  scanTest({
+    id: 7, book: 2, test: 3, file: 'KET青少版真题 2.pdf',
+    pageNames: [['page-042','page-043'], ['page-044','page-045'], ['page-046','page-047'], ['page-048'], ['page-049']],
+    answers: ['C','B','A','C','A','C','B','C','A','A','C','B','A','B','C','A','A','C','C','A','C','A','B','B',['was','is'],'than','do','a','why','there'],
+    part1Questions: [
+      p1q(1,'email','The gym’s not available tomorrow for practice because of the roof repairs, but we can use the school hall after 4.00 p.m.',['The dance group won’t be able to use the school hall tomorrow.','The repairs to the gym roof will be finished at 4.00 p.m. tomorrow.','Dance practice will not be in the usual place tomorrow.'],'C',{from:'Ms Graham',to:'Dance group'}),
+      p1q(2,'text','The history trip’s this Friday, but I’m still feeling ill. I’ll decide tomorrow if I’m going and then I’ll let the teacher know.',['The history trip is happening tomorrow instead of Friday.','Tilly may not be well enough to go on the school trip.','Julia should tell the teacher if Tilly is going on the trip or not.'],'B',{from:'Tilly',to:'Julia'}),
+      p1q(3,'ad','Highfields School computer club\nStarts Monday 4.30 p.m.\nLearn how to make interesting websites.',['If you join this club, you might get better at making websites.','The members of this club need to have experience of making websites.','The club wants students to think of ideas to make the school website interesting.'],'A'),
+      p1q(4,'email','I’d like to have your art projects this Friday if possible. If you haven’t finished, bring them to my office by Monday 9.00 a.m.',['They should begin their art projects on Monday.','He would like to talk to them about their projects on Friday.','They can have some extra time to complete their projects.'],'C',{from:'Mr Green',to:'Students',question:'What is Mr Green telling students?'}),
+      p1q(5,'text','I’m at football practice with Joe. Can I invite him for supper afterwards? We’ve both done all our homework.',['Simon would like to bring Joe home with him.','Simon is thinking of going to football practice with Joe.','Simon wants Joe to help him with his homework.'],'A',{from:'Simon',to:'Mum'}),
+      p1q(6,'email','Did I leave my sunglasses at your house? Check the kitchen table. If you find them, can you bring them to school tomorrow?',['David is checking where Chloe has put his sunglasses.','David is going to lend Chloe his sunglasses.','David is trying to find out if Chloe has his sunglasses.'],'C',{from:'David',to:'Chloe'})
+    ],
+    part2Data: p2('Cookery schools for young people',['Park Cookery School','Little Chefs Cookery School','Good Cook School'],[
+      'Students of all ages are welcome at this school, and children can even do a course with their parents. Before starting each day, the group goes to the local market to buy fresh food to cook with, and at the end of the morning everyone has a meal together and shares the dishes they’ve made. Several times a year, the school asks a different professional chef to visit to give students ideas for new dishes.',
+      'The courses at this school show 10- to 16-year-olds how to make simple but delicious main meals using food from local farms. At the end of every day, students take photos of the dishes and post them on the school website. Then they carefully pack their dishes, so they can enjoy them later with their family that evening. For busy students who cannot get there after school, there are also morning classes every Saturday.',
+      'This school has courses for 11- to 15-year-olds who want to make healthy food the whole family can enjoy. Students learn what they should and shouldn’t eat and also how to cook with fruit and vegetables. The course includes online videos that give ideas for dishes students can practise at home at weekends. This school is very popular, so call now to get your place!'
+    ],['Which school has a course at the weekend?','Which school teaches students about foods which are good for them?','At which school can the whole family take a class together?','Which school invites someone special to come and teach students?','Which school puts extra cooking instructions on the internet?','At which school do students take home the food they have cooked?','Which school’s cooking course includes a shopping trip?']),
+    part3Data: p3('My hobby','Fifteen-year-old Zoe Cabello talks about snowboarding',`I first tried snowboarding when I was seven, on a family holiday. My older brother was already a really good snowboarder, and at that age, I always wanted to do everything he did. My dad paid for a lesson, but I didn't enjoy it at all, and decided never to do it again.
+
+After that, I started doing gymnastics, and I got really good at it. Then, when I was nine, one of my friends had a snowboarding party at an indoor snow centre for her birthday. I wanted to say no because I was scared of hurting myself. However, she really wanted me to go, so I decided to be brave, and said yes.
+
+And actually, this time, I thought snowboarding was amazing! Because of all the gymnastics, I was strong and fit and it wasn't difficult for me. In just a couple of hours I was able to stay on my feet from the top of the slope to the bottom.
+
+When I was 11, we moved to Italy for nine months because of my father's job. We lived in the north of the country, near the mountains, and I was able to go snowboarding a lot. When we returned home, my friends couldn't believe how good I was.
+
+These days all our family holidays are spent snowboarding. I love everything about it - the fresh air, the views, even the clothes. But more than anything, I love the fact that there's always something new to learn. That's what keeps it interesting for me.`,[
+      p3q('Why did Zoe want to try snowboarding when she was seven?',['to find out if she liked it','to be like her brother','to make her dad happy']),
+      p3q("When Zoe was invited to her friend's birthday party she felt",['excited.','surprised.','worried.']),
+      p3q('What is Zoe explaining in the third paragraph?',['how gymnastics helped her learn to snowboard','how important it is to have more than one hobby','how long it takes for most people to learn to snowboard']),
+      p3q('What does Zoe say about living in Italy?',['Her snowboarding improved a lot.','She missed snowboarding with her friends.','She met a lot of excellent snowboarders there.']),
+      p3q('What does Zoe say about snowboarding in the final paragraph?',['She would like to go without her family next time.','She’s sorry she can’t go more often.','She never gets bored of going.'])
+    ]),
+    part4Data: p4('Honey bees',`Honey bees are very important insects. They collect nectar from flowers and use it to make honey. As they do this, they also pick up pollen. They pass this from flower to flower, helping plants to make fruits and vegetables.
+
+Honey bees live in ___ groups. There are three ___ of bee: the queen, the worker and the drone. The queen lives for ___ years, but the workers die after a few weeks. During their short lives, worker bees need to find food and make honey. Worker bees are actually the only bees which ___ flowers.
+
+In the past ten years, the number of bees in some areas has fallen by 90%. Scientists can't ___ all the reasons for this. ___, they are worried because fewer bees means less food in the future.`,[['high','full','large'],['kinds','ways','things'],['lots','much','several'],['visit','go','arrive'],['describe','explain','discuss'],['Especially','However','Instead']]),
+    part5Data: p5('you',[
+      { from:'Marty', to:'Robbie', content:"Hi Robbie,\n\nHave you ever played baseball? I played it at my last school and it [25] really good fun! We liked it more [26] all the other sports. I'd like to start a baseball club here if enough students are interested. What [27] you think?" },
+      { from:'Robbie', to:'Marty', content:"That sounds like [28] great idea! [29] don't you make a poster and ask Mrs Taylor to put it up in the sports hall? I'm sure [30] are lots of students who'd love to learn to play." }
+    ])
+  }),
+  scanTest({
+    id: 8, book: 2, test: 4, file: 'KET青少版真题 2.pdf',
+    pageNames: [['page-058','page-059'], ['page-060','page-061'], ['page-062','page-063'], ['page-064'], ['page-065']],
+    answers: ['B','C','B','B','C','A','C','A','C','A','B','A','C','A','C','A','B','B','B','B','A','C','A','B','there','than','it',['lot','load'],'to','the'],
+    part1Questions: [
+      p1q(1,'ad','Greenfields Sports Club\nHalf-price when you join with a friend!\nOffer available January only.',['Extra sports will become available for members to try.','Two people can join for the price of one.','New members will pay nothing for a month.'],'B',{question:'What will happen at the club in January?'}),
+      p1q(2,'text','I’ve lost my maths textbook! Can I borrow yours so I can do the homework? Will you be at home at 5.00 p.m.?',['to ask Holly to explain a problem in the textbook','to ask Holly if she has found his textbook','to ask Holly to lend him a textbook'],'C',{from:'Jack',to:'Holly',question:'Why has Jack written this text?'}),
+      p1q(3,'text','Make sure you’ve put your homework in your school bag – and pick up those clothes from your bedroom floor before I get home.',['finish his homework','tidy his bedroom','change his clothes'],'B',{from:'Mum',to:'Tom',question:'What does Tom’s mum want Tom to do before she gets home?'}),
+      p1q(4,'notice','School Cafe\nMonday/Tuesday next week – no hot food.\nDrinks and sandwiches only.',['The cafe will be closed for several days next week.','Some kinds of food won’t be available for part of next week.','Students are asked to bring sandwiches to school next week.'],'B'),
+      p1q(5,'email','You missed tennis club today, and the day of the competition has changed to Monday. Will you have your new racket by then?',['to tell Hannah to remember her tennis racket','to ask Hannah why she didn’t go to the tennis club','to give Hannah new information about the competition'],'C',{from:'Kate',to:'Hannah',question:'Why has Kate written this email?'}),
+      p1q(6,'notice','Timetables for next term will be ready to collect from the school office next week, or you can print them from the website from tomorrow.',['There are two ways of finding out about next term’s timetable.','Students who don’t have a computer can get their timetable this week.','Go to the school office next week for information about printing your timetable.'],'A')
+    ],
+    part2Data: p2('Adventure holidays',['David','Hari','Nick'],[
+      'My parents booked this adventure holiday, and to begin with I thought it sounded a bit scary. But in fact, I really enjoyed it. We spent the first week mountain biking. It wasn’t as difficult as it looked, and during the week I really improved. Then we moved to a different hotel near a beach for the second week, where we learned to do lots of water sports. That was my favourite part of the holiday. I made friends with some other boys in the hotel.',
+      'We’ve been on holiday with this company once before, but this time my parents chose France instead of Croatia. The hotel wasn’t great this year. It was really crowded and it was hard to get a seat in the dining room. However, the sports and activities were fantastic. In the first week, we did climbing and hiking, and in the second week we did water sports. The other guests were great too.',
+      'We usually have quiet holidays, but this year I really wanted to do something more exciting. I found the website for this company and showed it to my parents. At first they were worried, but after they spoke to the staff they started to like the idea. I was so glad when they booked! We had a great time. Mum and Dad met some new friends and said they want to book with this company again next year.'
+    ],['Who says his family will have another adventure holiday in the future?','Who says he got better at one of the sports he did on holiday?','Who says that his parents made some new friends on holiday?','Who preferred the second week of his holiday to the first?','Who says there were too many people at the hotel where he stayed?','Who says he was worried about going on an adventure holiday?','Who gave his parents the idea of going on an adventure holiday?']),
+    part3Data: p3('Living on a small island','My name is Ben and I’m 17.',`I live on a small island near Ireland. It's 5 km long with only 200 people. When I was a child, life was great. On small islands, everybody knows everybody, so I always had someone to be with. I played in the fields and on the beach. I went swimming. I even learned to drive on my uncle's farm when I was 11.
+
+I've always enjoyed going to school here. There are only three in my class so we each get lots of time with the teacher. She doesn't live on the island. Sometimes, if the weather is bad, she can't get here, but we still have lessons online. The internet is great for us. We can have friends all over the world and chat and play computer games with them.
+
+I had some difficult times when I first became a teenager. I felt that there wasn't enough for me to do. I even thought about leaving the island because I wanted to have interesting experiences and meet new people. But I decided to stay and now I'm planning to live here when I grow up.
+
+Unfortunately, there aren't many jobs for young people. When I was little, most men were fishermen, like Dad, or farmers, like my uncle. Now there are just a few fishermen. It can be difficult. I've been fishing with Dad sometimes, but I always feel sick on a boat, so I might prefer farming.`,[
+      p3q('What does Ben say in the first paragraph about living on an island?',['He was never lonely.','He never went anywhere by car.','His favourite place was the beach.']),
+      p3q("What do we learn about the school on Ben's island?",['The classes are usually online.','The lessons are very long.','There are not many students.']),
+      p3q('When Ben became a teenager, he started to',['get bored with island life.','look for a different place to live.','make new friends in other places.']),
+      p3q('Why does Ben think he might become a farmer?',['He thinks being a fisherman is dangerous.','He didn’t enjoy helping his father to fish.','He has always preferred farming to fishing.']),
+      p3q('What is the writer doing in this article?',['explaining why an island is the best place for teenagers to live','describing the good and the bad things about living on an island','giving advice to people who might want to move to an island'])
+    ]),
+    part4Data: p4('The library on wheels',`Antonio La Cava was a teacher in Italy for 42 years. When his career finished, he ___ he didn't want to stop working with children. So, in 2003, he ___ an old three-wheeled motorbike and made it into a library on wheels. He built a large box, and put it onto the back of the motorbike. Then he ___ it with more than 700 books written for children of all ages.
+
+Every week, Antonio visits eight villages around Basilicata in southern Italy. The whole trip is more than 500 kilometres ___. As Antonio enters the villages he ___ loud music, so the children know he's there. Antonio ___ children hundreds of books every week, and passes his love of books on to them.`,[['planned','decided','preferred'],['paid','bought','spent'],['filled','carried','collected'],['large','far','long'],['plays','puts','sends'],['borrows','lends','belongs']]),
+    part5Data: p5('are',[{ from:'Amy', to:'Jake', content:"I'm on holiday with my family and we are having a great time! Our hotel is really nice and [25] is a beautiful beach not far away, where we go swimming. The weather here is much warmer [26] it is at home.\n\n[27] rained yesterday so we decided to go ice-skating. The day was a [28] of fun, and we might go again if the weather is bad tomorrow!\n\nWe're planning [29] do some shopping in the town centre at [30] weekend to get some presents, and then we're coming home on Monday.\n\nSee you soon!" }])
+  }),
+  scanTest({
+    id: 9, book: 3, test: 1, file: '03 KET真题 - 第1套 - 阅读与写作.pdf',
+    pageNames: [['page-01','page-02'], ['page-03','page-04'], ['page-05','page-06'], ['page-07'], ['page-08']],
+    answers: ['B','A','C','C','B','B','A','B','A','C','B','C','B','A','B','C','C','B','B','A','C','A','B','B','the',['it','this'],'there',['with','against'],['ago','back'],'if'],
+    part1Questions: [
+      p1q(1,'ad','Bored with computer games? Looking for a different hobby? Join us at chess club! Fridays at 16.00 in room 16.',['like playing a variety of games.','are interested in trying something new.','have experience of playing computer chess.'],'B',{question:'The club wants to find people who'}),
+      p1q(2,'text','Have you got an extra T-shirt I can borrow for gym class? I’ve forgotten mine and it’s too late to go back home.',['to find out if Zoe is able to lend her something','to ask if Zoe can collect something from the gym','to check if Zoe has remembered to bring the right sports kit'],'A',{from:'Tilda',to:'Zoe',question:'Why has Tilda sent this message?'}),
+      p1q(3,'sign','BREAD ISN’T GOOD FOR DUCKS!\nBird food available at visitor centre\n£1 per bag',['Bird food costs less at the visitor centre than at other places.','The visitor centre wants more people to give food to the ducks.','Visitors must be careful about the kind of food they give to the ducks.'],'C',{question:'What is this sign saying?'}),
+      p1q(4,'email','Sorry to hear you’re not well. If you aren’t able to play in the big match next week, let me know soon.',['I’m afraid I haven’t decided if you can take part in the competition yet.','It’s a shame you missed the last match, but I’m glad you’re feeling better.','You must contact me if your health doesn’t improve over the next few days.'],'C',{from:'Ms Wilson',to:'Josh',question:'What is Ms Wilson saying to Josh?'}),
+      p1q(5,'text','The 4 p.m. bus is delayed and won’t arrive for another hour. If I can’t get a lift with anyone, I’ll walk home.',['to explain why he missed the bus','to tell her his plans for getting home','to find out if she can give him a lift'],'B',{from:'Eric',to:'Mum',question:'Why has Eric sent his mum this message?'}),
+      p1q(6,'email','Anyone who’s already on the list for this trip but hasn’t paid, please give me £15.00 by 3 p.m.',['There are a few spaces left if anyone wants to go on the trip.','If you’ve got a place on the trip, you need to pay today.','Students who have paid for the trip should come to a meeting at 3 p.m.'],'B',{from:'Mrs Brown',to:'All students',question:'What is this email saying?'})
+    ],
+    part2Data: p2('Studying a foreign language',['Frank','Marc','Ivan'],[
+      'At the moment, I’m learning Arabic because I’d like to be a journalist one day, and being able to speak other languages is important for this job. It wasn’t possible to learn Arabic at school, but a friend of mine knew a woman who could give me lessons and now she comes to my house twice a week. It was difficult at first because I was a complete beginner. But I worked hard and after just six months I was able to speak and write the language quite well, which I’m really happy about.',
+      'I’ve lived in lots of different countries because of my dad’s career, so I’ve had to learn several different languages. I seem to learn them quite easily. The last place I lived was Thailand. I’m still studying the language so I can continue to chat with my Thai classmates now I’m back in my home country. I’ve downloaded a new app with exercises in Thai, and I can’t wait to use it each morning because it’s so much fun.',
+      'My mum comes from Russia and her parents still live there. We often stay with them during the school holidays, but unfortunately I didn’t learn Russian when I was little so talking to them has always been hard. After our last trip I decided it was time for me to learn the language. I now have lessons and remember all the new vocabulary my teacher teaches us.'
+    ],['Who says he’s pleased about how quickly he improved?','Who is learning a foreign language without a teacher?','Who needs to know a foreign language for the career he wants?','Who says he remembers all the new words he learns in his language lessons?','Who is practising a language so he can have conversations with friends?','Who is studying a foreign language for family reasons?','Who says he has lots of experience learning new languages?']),
+    part3Data: examPart3(1),
+    part4Data: examPart4(1),
+    part5Data: examPart5(1)
+  }),
+  scanTest({
+    id: 10, book: 3, test: 2, file: '03 KET真题 - 第2套 - 阅读与写作.pdf',
+    pageNames: [['page-01','page-02'], ['page-03','page-04'], ['page-05','page-06'], ['page-07'], ['page-08']],
+    answers: ['C','A','B','B','B','C','C','C','A','B','C','A','B','B','B','B','A','C','B','B','A','A','B','C',['like','love'],'with','than','the','as','what'],
+    part1Questions: [
+      p1q(1,'text','I’ll see you at the tennis centre later for our game. Did you say you booked for 5 or 6 o’clock?',['Martine is asking Ben where they are playing tennis later.','Martine is letting Ben know that she has changed her plans.','Martine is checking what time she will meet Ben.'],'C',{from:'Martine',to:'Ben'}),
+      p1q(2,'ad','New in store!\nGreat adventure stories for young adults\nSee “Teenage Books”: 1st Floor',['Some interesting books have just arrived.','There are books for teenagers on every floor.','Adventure stories are the most popular books.'],'A'),
+      p1q(3,'ad','ABC Study App\nKeep details in one place – including date to finish homework.\nNo in-app advertisements.\nShare work with teachers and classmates.',['which website they should use to do their homework.','when they need to complete their homework.','who may be able to help them with their homework.'],'B',{question:'The app helps students remember'}),
+      p1q(4,'notice','Greenhill Castle\nGuided tour 10 a.m.\n(not included in ticket price)\n12 people only',['There is a tour of the castle every hour.','Castle visitors have to pay extra to join a tour group.','Groups of more than 12 people must book tickets to enter the castle.'],'B'),
+      p1q(5,'email','If you’re not at the stadium at 6 p.m. today for practice, you won’t be able to play in Saturday’s match.',['giving the team information about Saturday’s match','telling everyone in the team they must come to this evening’s practice','explaining that the hockey team is going to practise in a different place today'],'B',{from:'Mr Blake',to:'Hockey Team',question:'What is Mr Blake doing in this email?'}),
+      p1q(6,'text','Grandma gave me the Race video game for my birthday, but I’ve already got it. Would you like it? I haven’t used it.',['to check if Lucy has a video game he can borrow','to ask Lucy for her opinion of a video game','to offer Lucy a video game he doesn’t need'],'C',{from:'Daniel',to:'Lucy',question:'Why has Daniel written this message?'})
+    ],
+    part2Data: p2('My museum visit',['Julia','Becky','Tania'],[
+      'Last week, I went to the Cartoon Museum with my mum. It’s a small museum and we had to ask for directions because we got lost on our way there. When we finally got there, we walked around the various exhibitions, including one about the history of cartoons. The best part for me was joining a one-hour drawing class. An artist talked about his work and I did some cartoons of my own. It was a great little museum, but I saw most things, so I’m not planning to return.',
+      'I visited the Natural History Museum with my dad when I was younger, but this was my first visit on my own. I already knew about some of the stuff at the museum from lessons at school, but I was amazed at how much I enjoyed the exhibitions. My favourite one was the dinosaur exhibition. It was the busiest part of the museum and full of people, but I didn’t mind that. I’ve been several times already, so I don’t think I’ll visit again.',
+      'I’m so glad my mum took me to the News Museum. It has exhibitions about the news and is different from most other museums because it’s more about events than things. Unfortunately, I didn’t have time to see everything, so I’ve already decided to go back. My favourite part was a special theatre showing short videos of interesting news reports. There was also an exhibition about photo-journalists and their work. I really enjoyed learning how they get such good pictures.'
+    ],['Who says that not many other museums are like the one she visited?','Who plans to return to the museum?','Who says the museum was hard to find?','Who visited the museum alone?','Who liked an exhibition about an interesting career?','Who says she enjoyed taking part in an activity at the museum?','Who says that one exhibition was more popular than the others?']),
+    part3Data: examPart3(2),
+    part4Data: examPart4(2),
+    part5Data: examPart5(2)
+  }),
+  scanTest({
+    id: 11, book: 3, test: 3, file: '03 KET真题 - 第3套 - 阅读与写作.pdf',
+    pageNames: [['page-02','page-03'], ['page-04','page-05'], ['page-06','page-07'], ['page-08'], ['page-09']],
+    answers: ['B','C','A','A','B','C','B','A','C','A','A','B','C','C','B','A','C','C','C','A','A','B','C','B','for','you','the','are','by','if'],
+    part1Questions: [
+      p1q(1,'ad','Learn to draw and paint with this fantastic app!\nPerfect for beginners – kids or adults\nFirst 8 weeks free, then £3 per month',['Children will need an adult to help them with this app.','You can try this app for two months before you have to pay.','This app is only good for people who have experience of computer art.'],'B'),
+      p1q(2,'text','I’ve got to finish my art project for Mrs Green tonight so I can’t go to badminton club. Next week will be fine.',['to say Mark should finish the art project before playing badminton','to find out if Mark is going to badminton club next week','to say that he is not able to play badminton with Mark this evening'],'C',{from:'Steven',to:'Mark',question:'Why did Steven send this message?'}),
+      p1q(3,'sign','School groups booked on museum tours must wait here while their teachers see receptionist.',['speak to a member of staff','go and pay for tickets','book a tour of the museum'],'A',{question:'While school groups are waiting, what will their teachers do?'}),
+      p1q(4,'text','How about swimming at the lake tomorrow morning? Mum can take us. We’ll be back before dinner. Ask your mother and ring me.',['to suggest a day out at the lake','to find out how they’ll get to the lake','to check how long they’ll stay at the lake'],'A',{from:'Sue',to:'Isabel',question:'Why did Sue write this message?'}),
+      p1q(5,'text','I’ve finished that book I borrowed from you. Do you want me to return it now, or can I lend it to my brother?',['explaining why he can’t return Patrick’s book','checking if Patrick needs his book back immediately','asking Patrick to lend him another book'],'B',{from:'Henry',to:'Patrick',question:'What is Henry doing in this message?'}),
+      p1q(6,'email','Workers will finish painting the music room on Friday after school, so we can have band practice there on Monday.',['The workers are going to paint the music room next week.','The students will have a lesson in the music room on Friday.','The band can use the music room starting from Monday.'],'C',{from:'Mr Boyd',to:'Music students'})
+    ],
+    part2Data: p2('Holidays in France',['Marco','Jing','Tommy'],[
+      'Last June my family and I went to France for our summer holiday. We spent two weeks at a campsite in the south of the country, near Marseilles. There was a beach not too far away but it was very crowded so I spent nearly all my time at the campsite pool, which was much nicer. I met some French kids there and we had a great time together. I really need to work hard on my French though, so that next time it will be easier to talk to people.',
+      'I’d always wanted to visit France, so I was really excited when my parents told me we were going to the city of Caen in the north of the country for our summer holidays last year. There were some lovely beaches not far from the city and we also went to an attractive indoor market, which sold everything from fish to flowers. It was wonderful. However, the best thing we did was a one-day cooking course. I’ve never cooked anything before and it was really fun!',
+      'My family always spend our summer holidays in the south of France, and last year we stayed at a campsite on a beach near Arles. I loved swimming in the sea and in the campsite pool. I also enjoyed using my French when we went shopping at the local market. My school friends would be amazed! Because my mum and dad are artists, they wanted to visit a museum about the painter Van Gogh. Usually I don’t like museums, but actually this one was really interesting.'
+    ],['Who describes a market he visited?','Who plans to improve his spoken French?','Who was surprised he enjoyed a place his parents took him to?','Who preferred the pool to the beach?','Who made some new friends during his holiday?','Who learnt how to do something new on his holiday?','Who says he liked practising his French?']),
+    part3Data: examPart3(3),
+    part4Data: examPart4(3),
+    part5Data: examPart5(3)
+  }),
+  scanTest({
+    id: 12, book: 3, test: 4, file: '03 KET真题 - 第4套 - 阅读与写作.pdf',
+    pageNames: [['page-01','page-02'], ['page-03','page-04'], ['page-05','page-06'], ['page-07'], ['page-08']],
+    answers: ['A','C','C','B','A','B','B','A','B','C','A','C','B','B','C','B','B','A','C','B','A','C','B','C','to',['what','how'],'a','with',['can','will','could','would'],'about'],
+    part1Questions: [
+      p1q(1,'text','Are you sure you picked up the right trainers after football practice today? Mine are missing, and they look exactly like yours.',['Harry thinks it’s possible that Maria has his trainers.','Harry is offering to help Maria find her trainers.','Harry is telling Maria to take her trainers to football practice.'],'A',{from:'Harry',to:'Maria'}),
+      p1q(2,'text','Liam’s party’s on the same day as the concert! I’ve spoken to Liam but there’s nothing that he can do. What a shame!',['angry that Liam didn’t help her','worried about having such a busy day','sorry that she will have to miss an event'],'C',{from:'Nadia',to:'Lizzie',question:'How does Nadia feel?'}),
+      p1q(3,'ad','Upload your photos by March 17th\nWinners decided on April 25th\n£6 to enter',['a photograph.','an exhibition.','a competition.'],'C',{question:'This message on a website gives information about'}),
+      p1q(4,'notice','All library staff are in a meeting this morning. If you are returning books, leave them on the desk. To borrow books, come back later.',['There is a new way of borrowing books at the library from today.','It is not possible to take books out of the library at the moment.','Visitors are invited to a special event at the library this morning.'],'B'),
+      p1q(5,'text','I’ve got your science book. Wait for me outside the library at 2 o’clock and I’ll give it back. It was very useful.',['where he’ll meet her.','which book he needs from her.','what time he’ll leave the library.'],'A',{from:'Darren',to:'Alice',question:'Darren is texting Alice to let her know'}),
+      p1q(6,'email','Adventure Park\nTicket price £20\nVisit again in the next 7 days and enter free!',['The adventure park will be free for everyone to visit next week.','If you pay now and return this week, you won’t pay a second time.','People who have already visited can pay less next time.'],'B')
+    ],
+    part2Data: p2('Life on a farm',['Harry','Aaron','Sonny'],[
+      'I love our farm. From every window of our farmhouse, you can see beautiful countryside for miles. Of course, it’s not a perfect life. There are always machines to repair, and farmers never get time off because the animals need them every day. That’s the reason my family and I can’t visit other countries in the summer. But what’s fantastic is that you’re never bored. My parents say the farm will be mine when I’m older, and I’m really happy about that.',
+      'Being a farmer is a hard life. There are so many jobs to do and most of them are quite boring. Also, farmers can’t travel much and that’s something I really want to do when I’m older. One thing I love is being up before the sun each day. That’s when I feed the chickens. It’s quiet then, with only the noise of the animals. When I was little, the cows looked so big. I always ran away when they came near me. It seems silly now.',
+      'My mum and dad are farmers. They often work from early morning until late at night, and always seem so tired. They do too much really, so I try to help if I can. One thing I’m good at is helping Dad when the farm machines break - it’s a great feeling to get them working again. In fact, I’d like to be a mechanic when I leave school. However, I want to continue living in the countryside because I love all the animals.'
+    ],['Who was frightened of a kind of farm animal when he was younger?','Who describes the views from the farm?','Who thinks living on a farm is not very exciting?','Who enjoys repairing things on the farm?','Who explains why it’s difficult for farmers to go away on holiday?','Who thinks his parents don’t rest enough?','Who is happy to get up early in the morning?']),
+    part3Data: examPart3(4),
+    part4Data: examPart4(4),
+    part5Data: examPart5(4)
+  })
+]
+import { KET_EXAMS } from './ketExamData.js'

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 320" role="img" aria-labelledby="title desc">
+  <title id="title">A bicycle breaks during a countryside ride</title>
+  <desc id="desc">Three panels show two friends cycling, one bicycle breaking, and a car arriving to take them home.</desc>
+  <rect width="1080" height="320" fill="#fff"/>
+  <g fill="none" stroke="#1f2937" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="8" y="8" width="338" height="304"/><rect x="371" y="8" width="338" height="304"/><rect x="734" y="8" width="338" height="304"/>
+    <path d="M8 88q70-47 140 0t140 0 58 0M371 88q70-47 140 0t140 0 58 0M734 88q70-47 140 0t140 0 58 0"/>
+    <circle cx="290" cy="45" r="18"/><circle cx="654" cy="45" r="18"/>
+    <!-- panel one bicycles -->
+    <circle cx="88" cy="245" r="42"/><circle cx="205" cy="245" r="42"/><path d="M88 245l48-82 69 82-73-4 29-48h-54m29-30 45 0"/>
+    <circle cx="139" cy="115" r="20"/><path d="M121 113q18-25 38-2m-11 25 34 37m-39-36-38 40m38-40-7 26"/>
+    <circle cx="225" cy="244" r="39"/><circle cx="318" cy="244" r="39"/><path d="M225 244l39-75 54 75-58-3 25-45h-45m24-27 36 0"/>
+    <circle cx="270" cy="122" r="19"/><path d="M253 120q16-24 37-2m-11 27 25 29m-31-28-30 36m30-36-9 23"/>
+    <!-- panel two broken bicycle and phone -->
+    <circle cx="416" cy="254" r="37"/><path d="M454 238l56-55 48 60-72-5 22-40"/><path d="M420 254l-28 8m46-18 20 35"/>
+    <circle cx="504" cy="185" r="20"/><path d="M486 183q18-26 39-3m-12 29-28 74m35-74 31 74m-38-62 36-1"/>
+    <circle cx="627" cy="121" r="20"/><path d="M609 119q17-25 38-2m-11 29-26 73m37-73 28 73m-40-63 23 12"/><path d="M653 131l10 24m-13-28 11-5 10 27"/>
+    <path d="M568 151q14-15 27 0m-25 17q14-15 28 0" stroke-dasharray="3 10"/>
+    <!-- panel three car and bikes -->
+    <path d="M792 195l44-65h130l65 54 24 55H779v-34z" fill="#f4f5f7"/><path d="M852 143h99l48 42H827z"/><circle cx="840" cy="239" r="31" fill="#fff"/><circle cx="995" cy="239" r="31" fill="#fff"/>
+    <circle cx="928" cy="160" r="15"/><path d="M916 159q12-19 26-2m-17 18 35 10"/>
+    <circle cx="774" cy="121" r="18"/><path d="M758 119q16-23 35-2m-11 26-20 67m31-67 23 67"/>
+    <circle cx="1040" cy="132" r="18"/><path d="M1024 130q16-23 35-2m-11 26-18 52"/>
+    <circle cx="774" cy="61" r="28"/><circle cx="837" cy="61" r="28"/><path d="M774 61l25-44 38 44-40-2 18-29"/>
+  </g>
+</svg>

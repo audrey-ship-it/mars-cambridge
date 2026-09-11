@@ -1,0 +1,59 @@
+function unit(title,intro,guide,concepts,rows){const a=rows.map(([base,past,z,wrong,wrongForm,exp,blankSentence,blankZh])=>({base,past,z,wrong,wrongForm,exp,blankSentence,blankZh}));return{title,intro,guide,questions:[...concepts,...a.slice(0,15-concepts.length).map(i=>({q:`What is the past form of “${i.base}”?`,qZh:`“${i.base}”的过去式是什么？`,opts:[i.past,i.wrongForm,i.base,`${i.base}ing`],ans:0,expZh:i.exp}))],blanks:a.map(i=>({sentence:i.blankSentence||`Yesterday, I ___ (${i.base}).`,sentenceZh:i.blankZh||i.z,ans:[i.past],expZh:i.exp})),corrections:a.map(i=>({sentence:i.wrong,sentenceZh:i.z,error:i.wrongForm,correct:i.past,expZh:i.exp}))}}
+const c=(q,qZh,opts,ans,expZh)=>({q,qZh,opts,ans,expZh})
+const regular=[
+  ['play','played','我昨天踢了足球。','I playd football yesterday.','playd','play直接加-ed，变为played。','After school yesterday, the children ___ basketball in the playground. (play)','昨天放学后，孩子们在操场上打了篮球。'],
+  ['work','worked','我昨天工作了。','I workt yesterday.','workt','work加-ed，变为worked。','Last Saturday, Mum ___ at the bookshop until six o’clock. (work)','上周六，妈妈在书店工作到六点。'],
+  ['live','lived','我们去年住在这里。','We liveed here last year.','liveed','live以e结尾，只加-d。','When I was five, my family ___ in a small house near the sea. (live)','我五岁时，我们一家住在海边的一所小房子里。'],
+  ['move','moved','他们上周搬家了。','They moveed house last week.','moveed','move以e结尾，只加-d。','Three months ago, Ben and his parents ___ to Cambridge. (move)','三个月前，Ben和父母搬到了剑桥。'],
+  ['study','studied','她昨晚学习了。','She studyed last night.','studyed','辅音+y结尾，变y为i加-ed。','Before the test on Monday, Sara ___ English for two hours. (study)','周一考试前，Sara学习了两个小时英语。'],
+  ['carry','carried','他帮我拿了包。','He carryed my bag.','carryed','carry变y为i加-ed。','On our walk last weekend, Dad ___ the heavy picnic basket. (carry)','上周末散步时，爸爸提着沉重的野餐篮。'],
+  ['stop','stopped','公交车停了。','The bus stoped.','stoped','重读闭音节stop双写p加-ed。','At half past eight this morning, the school bus ___ outside our house. (stop)','今天早上八点半，校车停在了我家门外。'],
+  ['plan','planned','我们计划了旅行。','We planed the trip.','planed','plan双写n加-ed。','During lunch yesterday, we ___ our class trip to the zoo. (plan)','昨天午餐时，我们计划了班级动物园之旅。'],
+  ['visit','visited','我拜访了奶奶。','I visitted Grandma.','visitted','visit直接加-ed，不双写t。','In the spring holiday, Mia ___ her grandparents in Scotland. (visit)','春假期间，Mia去苏格兰看望了祖父母。'],
+  ['open','opened','她打开了门。','She openned the door.','openned','open重音不在末尾，直接加-ed。','When the bell rang, the teacher ___ the classroom door. (open)','铃响时，老师打开了教室门。'],
+  ['wash','washed','他洗了车。','He washd the car.','washd','wash直接加-ed，拼作washed。','Last Sunday morning, Leo ___ his muddy football boots. (wash)','上周日早晨，Leo洗了沾满泥的足球鞋。'],
+  ['dance','danced','他们在聚会上跳舞。','They danceed at the party.','danceed','dance以e结尾，只加-d。','At the school party last night, everyone ___ to their favourite songs. (dance)','昨晚学校聚会上，大家随着最喜欢的歌曲跳舞。'],
+  ['try','tried','Mia试了试。','Mia tryed.','tryed','辅音+y结尾，变y为i加-ed。','For the first time last month, Ava ___ ice skating with her friends. (try)','上个月，Ava第一次和朋友们尝试了滑冰。'],
+  ['clean','cleaned','爸爸打扫了厨房。','Dad cleand the kitchen.','cleand','clean直接加-ed。','Before our guests arrived on Friday, Dad ___ the kitchen. (clean)','周五客人到达前，爸爸打扫了厨房。'],
+  ['arrive','arrived','火车准时到达。','The train arriveed on time.','arriveed','arrive以e结尾，只加-d。','At the end of our journey, the train ___ at York on time. (arrive)','旅程结束时，火车准时抵达了约克。']
+]
+const irregular1=[
+  ['be','was','我昨天在家。','I be at home yesterday.','be','I的be过去式使用was。','Yesterday morning, I ___ late for school because the bus did not come. (be)','昨天早上，我上学迟到了，因为公交车没有来。'],
+  ['go','went','我们去了公园。','We goed to the park.','goed','go的不规则过去式是went。','Last Saturday, we ___ to the science museum with our teacher. (go)','上周六，我们和老师一起去了科学博物馆。'],
+  ['come','came','Mia来得很早。','Mia comed early.','comed','come的过去式是came。','Two days ago, my grandparents ___ to our house for dinner. (come)','两天前，我的祖父母来我家吃晚饭。'],
+  ['see','saw','我看见了一只鸟。','I seed a bird.','seed','see的过去式是saw。','Last night, Mia ___ a shooting star from her bedroom window. (see)','昨晚，Mia从卧室窗户看到了一颗流星。'],
+  ['eat','ate','他们吃了午饭。','They eated lunch.','eated','eat的过去式是ate。','At lunchtime yesterday, the children ___ noodles and fresh fruit. (eat)','昨天午餐时，孩子们吃了面条和新鲜水果。'],
+  ['drink','drank','他喝了水。','He drinked water.','drinked','drink的过去式是drank。','After football practice last Friday, Leo ___ a large bottle of water. (drink)','上周五足球训练后，Leo喝了一大瓶水。'],
+  ['have','had','我们玩得很开心。','We haved fun.','haved','have的过去式是had。','When I was eight, I ___ a red bicycle that I rode every day. (have)','我八岁时有一辆红色自行车，每天都骑。'],
+  ['do','did','她做了家庭作业。','She doed her homework.','doed','do的过去式是did。','On Monday evening, Sara ___ her homework before dinner. (do)','周一晚上，Sara在晚饭前完成了家庭作业。'],
+  ['make','made','妈妈做了蛋糕。','Mum maked a cake.','maked','make的过去式是made。','Last weekend, my sister and I ___ a chocolate cake for Dad. (make)','上周末，我和姐姐为爸爸做了一个巧克力蛋糕。'],
+  ['take','took','Leo拍了一张照片。','Leo taked a photo.','taked','take的过去式是took。','During our trip last month, Mum ___ many photos of the mountains. (take)','上个月旅行期间，妈妈拍了许多山景照片。'],
+  ['give','gave','她给了我一本书。','She gived me a book.','gived','give的过去式是gave。','On my birthday, my best friend ___ me a book about space. (give)','在我生日那天，我最好的朋友送给我一本关于太空的书。'],
+  ['get','got','我收到了一封信。','I getted a letter.','getted','get的过去式是got。','Three weeks ago, Ben ___ a new library card from the town library. (get)','三周前，Ben在镇图书馆办了一张新的借书证。'],
+  ['say','said','他向我问好。','He sayed hello.','sayed','say的过去式是said。','When the lesson ended, our teacher ___ goodbye to everyone. (say)','课程结束时，我们的老师向大家道别。'],
+  ['tell','told','爸爸给我们讲了故事。','Dad telled us a story.','telled','tell的过去式是told。','Before bed on Sunday, Dad ___ us a funny story about a bear. (tell)','周日睡前，爸爸给我们讲了一个关于熊的有趣故事。'],
+  ['find','found','我找到了钥匙。','I finded my keys.','finded','find的过去式是found。','During the school holiday, I ___ my lost watch under the sofa. (find)','学校假期期间，我在沙发下面找到了丢失的手表。']
+]
+const irregular2=[
+  ['buy','bought','她买了一本书。','She buyed a book.','buyed','buy的过去式是bought。','Last Sunday, Amy ___ a birthday present for her brother. (buy)','上周日，Amy给弟弟买了一份生日礼物。'],
+  ['bring','brought','他带来了食物。','He bringed food.','bringed','bring的过去式是brought。','At our class picnic yesterday, Jack ___ sandwiches for everyone. (bring)','昨天班级野餐时，Jack给大家带来了三明治。'],
+  ['think','thought','我想到了一个主意。','I thinked of an idea.','thinked','think的过去式是thought。','While I was walking home, I ___ about our science project. (think)','我步行回家时，想到了我们的科学项目。'],
+  ['write','wrote','Mia写了一封邮件。','Mia writed an email.','writed','write的过去式是wrote。','Two nights ago, Mia ___ an email to her cousin in Australia. (write)','两天前的晚上，Mia给澳大利亚的表妹写了一封邮件。'],
+  ['read','read','我昨晚读了这本书。','I readed the book last night.','readed','read过去式拼写仍为read，读音变为/red/。','Before bed last night, I ___ three chapters of my new book. (read)','昨晚睡觉前，我读了新书的三个章节。'],
+  ['speak','spoke','我们和老师交谈了。','We speaked to the teacher.','speaked','speak的过去式是spoke。','After class on Tuesday, we ___ to our teacher about the homework. (speak)','周二课后，我们和老师谈了家庭作业。'],
+  ['run','ran','狗跑走了。','The dog runned away.','runned','run的过去式是ran。','During the school race last month, Leo ___ faster than everyone else. (run)','上个月校内赛跑时，Leo跑得比其他人都快。'],
+  ['swim','swam','他们在海里游泳。','They swimmed in the sea.','swimmed','swim的过去式是swam。','On our summer holiday, we ___ in the sea every morning. (swim)','暑假期间，我们每天早晨都在海里游泳。'],
+  ['begin','began','课程九点开始。','The lesson beginned at nine.','beginned','begin的过去式是began。','At nine o’clock yesterday, the school concert ___. (begin)','昨天九点，学校音乐会开始了。'],
+  ['break','broke','Leo打破了窗户。','Leo breaked the window.','breaked','break的过去式是broke。','While playing football last Friday, Ben accidentally ___ a window. (break)','上周五踢足球时，Ben不小心打破了一扇窗户。'],
+  ['choose','chose','她选择了蓝色的包。','She choosed the blue bag.','choosed','choose的过去式是chose。','At the shop last weekend, Sara ___ the blue backpack. (choose)','上周末在商店里，Sara选择了蓝色双肩包。'],
+  ['drive','drove','爸爸开车回家了。','Dad drived home.','drived','drive的过去式是drove。','After the party on Saturday night, Dad ___ us home. (drive)','周六晚上的聚会结束后，爸爸开车送我们回家。'],
+  ['fly','flew','鸟飞走了。','The bird flied away.','flied','fly表示飞行时过去式是flew。','Early this morning, a flock of birds ___ over our garden. (fly)','今天一早，一群鸟飞过了我们的花园。'],
+  ['know','knew','我知道答案。','I knowed the answer.','knowed','know的过去式是knew。','When the teacher asked the question, Ava ___ the answer immediately. (know)','老师提问时，Ava立刻知道了答案。'],
+  ['wear','wore','她穿着红色连衣裙。','She weared a red dress.','weared','wear的过去式是wore。','At the school play last year, Lily ___ a long red dress. (wear)','去年学校演出时，Lily穿了一条红色长裙。']
+]
+const rules={32:[c('How do most regular verbs form the past?','多数规则动词怎样构成过去式？',['加-ed','加-en','变元音','加-ing'],0,'多数规则动词加-ed。'),c('What happens to a verb ending in “e”?','以e结尾的动词怎样变过去式？',['只加-d','再加-ed','去e加-ing','双写e'],0,'如live→lived。'),c('What happens to consonant + y?','辅音+y结尾怎样变化？',['变y为i加-ed','直接加-d','加-es','双写y'],0,'如study→studied。')],33:[c('How should irregular past forms be learned?','不规则过去式应怎样掌握？',['按高频形式记忆并在语境中练习','一律加-ed','一律加-d','只看词尾'],0,'不规则动词没有统一的-ed规则。'),c('Which pairs are correct?','哪些变化正确？（多选）',['go→went','see→saw','eat→ate','have→haved'],[0,1,2],'have的过去式是had。'),c('What follows “did”?','did后使用什么形式？',['动词原形','不规则过去式','过去分词','-ing'],0,'did后主要动词回到原形。')],34:[c('Which past form keeps the same spelling as its base?','哪个动词过去式与原形拼写相同？',['read','write','speak','choose'],0,'read过去式拼写不变但读音改变。'),c('Which pairs are correct?','哪些变化正确？（多选）',['buy→bought','think→thought','write→wrote','run→runned'],[0,1,2],'run的过去式是ran。'),c('Which verbs change their vowel in the past?','哪些动词过去式发生元音变化？（多选）',['swim→swam','begin→began','drive→drove','wash→washed'],[0,1,2],'前三个是不规则元音变化。')]}
+export const GRAMMAR_PAST_FORM_QUESTIONS={
+32:unit('规则动词的过去式','规则动词过去式通常加-ed，但需注意以e、辅音+y以及重读闭音节结尾的拼写变化。',{uses:['构成一般过去时肯定句'],structures:['一般 + ed','以e结尾 + d','辅音+y → ied','重读闭音节双写末字母 + ed'],signals:['yesterday/last/ago等过去时间'],warning:'did/didn’t后仍使用动词原形，不使用-ed。'},rules[32],regular),
+33:unit('不规则动词的过去式（1）','常用不规则动词的过去式不遵循-ed规则，需要结合句子记忆。',{uses:['表达过去完成的动作'],structures:['go→went, see→saw, have→had','do→did, make→made, take→took'],signals:['过去时间词与肯定句'],warning:'不规则过去式只用于肯定结构；did/didn’t后回到原形。'},rules[33],irregular1),
+34:unit('不规则动词的过去式（2）','进一步学习写作、阅读和口语中高频的不规则过去式及其拼写、读音变化。',{uses:['扩展一般过去时的不规则动词表达'],structures:['buy→bought, write→wrote','run→ran, swim→swam','read→read（拼写不变）'],signals:['叙述过去经历和故事'],warning:'注意read过去式拼写不变但读音为/red/，fly表示飞行时过去式是flew。'},rules[34],irregular2),
+}

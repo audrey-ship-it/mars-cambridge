@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KET Reading & Writing · Part 1–5 Real Content Preview</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f6f9; color: #222; padding: 20px; }
+  h1 { font-size: 20px; color: #064e3b; margin-bottom: 4px; }
+  .subtitle { font-size: 13px; color: #666; margin-bottom: 24px; }
+  .section { background: white; border-radius: 14px; border: 1px solid #e5e7eb; padding: 20px; margin-bottom: 20px; }
+  .section-title { font-size: 15px; font-weight: 800; color: #064e3b; margin-bottom: 4px; }
+  .section-sub { font-size: 12px; color: #888; margin-bottom: 14px; }
+  .q-block { margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid #f0f0f0; }
+  .q-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .q-num { font-size: 12px; font-weight: 700; color: #064e3b; margin-bottom: 6px; }
+  .stimulus { background: #f8f9fc; border-radius: 10px; border: 1px solid #e5e7eb; padding: 12px 14px; margin-bottom: 10px; font-size: 13px; line-height: 1.6; }
+  .stimulus .label { font-size: 10px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .stimulus .msg-header { font-size: 11px; color: #6b7280; margin-bottom: 6px; font-style: italic; }
+  .options { list-style: none; }
+  .options li { display: flex; gap: 10px; align-items: flex-start; padding: 7px 10px; border-radius: 8px; margin-bottom: 4px; font-size: 13px; cursor: pointer; border: 1.5px solid #e5e7eb; transition: all 0.15s; }
+  .options li:hover { border-color: #064e3b; background: #f0fdf4; }
+  .options li .opt-letter { font-weight: 800; color: #064e3b; min-width: 16px; }
+  .options li.correct { background: #ecfdf5; border-color: #064e3b; }
+  .options li.correct .opt-letter { color: #fff; background: #064e3b; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 11px; }
+  .answer-key { font-size: 11px; color: #6b7280; margin-top: 6px; }
+  .answer-key span { font-weight: 700; color: #064e3b; }
+
+  /* Part 2 */
+  .passage-card { border: 1.5px solid #e5e7eb; border-radius: 10px; margin-bottom: 10px; overflow: hidden; }
+  .passage-header { background: #064e3b; color: white; padding: 8px 14px; font-size: 13px; font-weight: 700; }
+  .passage-body { padding: 12px 14px; font-size: 13px; line-height: 1.7; }
+  .matching-q { display: flex; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #f0f0f0; font-size: 13px; }
+  .matching-q:last-child { border-bottom: none; }
+  .matching-q .qn { font-weight: 700; color: #064e3b; min-width: 28px; font-size: 13px; }
+  .matching-q .ans-badge { background: #ecfdf5; border: 1.5px solid #064e3b; color: #064e3b; font-weight: 800; font-size: 12px; padding: 2px 8px; border-radius: 20px; min-width: 32px; text-align: center; }
+
+  /* Part 3 */
+  .article-box { background: #f8f9fc; border-radius: 10px; border: 1px solid #e5e7eb; padding: 16px; margin-bottom: 14px; }
+  .article-title { font-size: 16px; font-weight: 800; color: #1f2937; margin-bottom: 2px; }
+  .article-author { font-size: 12px; color: #6b7280; margin-bottom: 12px; }
+  .article-body { font-size: 13px; line-height: 1.8; color: #374151; }
+  .article-body p { margin-bottom: 10px; }
+
+  /* Part 4 */
+  .gap-passage { background: #f8f9fc; border-radius: 10px; border: 1px solid #e5e7eb; padding: 16px; margin-bottom: 14px; font-size: 14px; line-height: 2; }
+  .gap { background: #fef3c7; border: 1.5px solid #d97706; border-radius: 6px; padding: 1px 10px; font-size: 11px; font-weight: 700; color: #92400e; margin: 0 2px; }
+  .gap-q { margin-bottom: 10px; }
+  .gap-q .gq-num { font-size: 12px; font-weight: 700; color: #064e3b; display: inline-block; min-width: 30px; }
+  .gap-q .gq-opts { display: inline-flex; gap: 8px; }
+  .gap-q .gq-opts span { padding: 3px 10px; border-radius: 20px; border: 1.5px solid #e5e7eb; font-size: 12px; cursor: pointer; }
+  .gap-q .gq-opts span.correct { background: #064e3b; color: white; border-color: #064e3b; font-weight: 700; }
+
+  /* Part 5 */
+  .openq-passage { background: #f8f9fc; border-radius: 10px; border: 1px solid #e5e7eb; padding: 16px; font-size: 14px; line-height: 2.2; }
+  .openq-gap { border: none; border-bottom: 2px solid #064e3b; background: transparent; width: 70px; text-align: center; font-size: 13px; font-weight: 600; color: #064e3b; outline: none; margin: 0 2px; }
+  .gap-num { font-size: 10px; font-weight: 700; color: #064e3b; vertical-align: super; margin-right: 2px; }
+  .example-banner { background: #ecfdf5; border-radius: 8px; padding: 8px 14px; font-size: 12px; color: #065f46; margin-bottom: 12px; }
+
+  .tag { display: inline-block; background: #ecfdf5; color: #065f46; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 20px; border: 1px solid #a7f3d0; margin-right: 4px; }
+</style>
+</head>
+<body>
+
+<div style="position:sticky;top:0;z-index:100;background:white;border-bottom:1px solid #e5e7eb;padding:10px 20px;margin:-20px -20px 20px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 4px rgba(0,0,0,.06)">
+  <a href="http://localhost:5174/cambridge/exams" style="display:flex;align-items:center;gap:6px;color:#064e3b;font-size:13px;font-weight:700;text-decoration:none;background:#ecfdf5;border:1px solid #a7f3d0;padding:5px 12px;border-radius:20px;" onclick="window.location.href='http://localhost:5174/cambridge/exams';return false;">← 真题列表</a>
+  <a href="http://localhost:5174/" style="display:flex;align-items:center;gap:6px;color:#6b7280;font-size:13px;font-weight:600;text-decoration:none;background:#f3f4f6;border:1px solid #e5e7eb;padding:5px 12px;border-radius:20px;">🏠 主页</a>
+  <span style="flex:1"></span>
+  <span style="font-size:12px;color:#9ca3af;">📄 内容预览 · 不计分</span>
+</div>
+
+<h1>🟢 KET for Schools 3 · Test 1 — Reading & Writing</h1>
+<p class="subtitle">Real content preview · Parts 1–5 · Answer keys shown</p>
+
+<!-- ═══════════════ PART 1 ═══════════════ -->
+<div class="section">
+  <div class="section-title">Part 1 · 短文选择 &nbsp;<span class="tag">Questions 1–6</span></div>
+  <div class="section-sub">For each question, choose the correct answer.</div>
+
+  <!-- Q1 -->
+  <div class="q-block">
+    <div class="q-num">1</div>
+    <div class="stimulus">
+      <div class="label">📌 Notice</div>
+      <div style="border:1.5px solid #e5e7eb; border-radius:8px; padding:10px; font-size:13px; text-align:center;">
+        <strong>Bored with computer games?</strong><br>
+        Looking for a different hobby?<br><br>
+        <strong>Join us at chess club!</strong><br>
+        <span style="font-size:11px; color:#666;">Fridays @ 4:30 in room 4B.</span>
+      </div>
+    </div>
+    <div style="font-size:13px; font-weight:600; color:#374151; margin-bottom:8px;">The club wants to find people who</div>
+    <ul class="options">
+      <li><span class="opt-letter">A</span> like playing a variety of games.</li>
+      <li class="correct"><span class="opt-letter">B</span> are interested in trying something new.</li>
+      <li><span class="opt-letter">C</span> have experience of playing computer chess.</li>
+    </ul>
+    <div class="answer-key">Answer: <span>B</span></div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="q-block">
+    <div class="q-num">2</div>
+    <div class="stimulus">
+      <div class="label">📱 Message</div>
+      <div class="msg-header">Tilda → Zoe</div>
+      <em>"Zoe, Have you got an extra T-shirt I can borrow for the match tomorrow? I've forgotten mine and it's too late to go back home. Tilda"</em>
+    </div>
+    <div style="font-size:13px; font-weight:600; color:#374151; margin-bottom:8px;">Why has Tilda sent this message?</div>
+    <ul class="options">
+      <li class="correct"><span class="opt-letter">A</span> to find out if Zoe is able to lend her something</li>
+      <li><span class="opt-letter">B</span> to ask if Zoe can collect something from the gym</li>
+      <li><span class="opt-letter">C</span> to check if Zoe has remembered to bring the right sports kit</li>
+    </ul>
+    <div class="answer-key">Answer: <span>A</span></div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="q-block">
+    <div class="q-num">3</div>
+    <div class="stimulus">
+      <div class="label">🪧 Sign</div>
+      <div style="border:1.5px solid #e5e7eb; border-radius:8px; padding:10px; font-size:13px; text-align:center;">
+        <strong>BREAD ISN'T GOOD FOR DUCKS</strong><br>
+        Bird food available at visitor centre — £1 per bag
+      </div>
+    </div>
+    <div style="font-size:13px; font-weight:600; color:#374151; margin-bottom:8px;">What is this sign saying?</div>
+    <ul class="options">
+      <li><span class="opt-letter">A</span> Bird food costs less at the visitor centre than at other places.</li>
+      <li><span class="opt-letter">B</span> The visitor centre wants more people to give food to the ducks.</li>
+      <li class="correct"><span class="opt-letter">C</span> Visitors must be careful about the kind of food they give to the ducks.</li>
+    </ul>
+    <div class="answer-key">Answer: <span>C</span></div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="q-block">
+    <div class="q-num">4</div>
+    <div class="stimulus">
+      <div class="label">✉️ Email</div>
+      <div class="msg-header">Ms. Wilson → Josh</div>
+      <em>"Josh, Sorry to hear you're not well and you won't be able to play in the big match next week, let me know soon. Ms. Wilson"</em>
+    </div>
+    <div style="font-size:13px; font-weight:600; color:#374151; margin-bottom:8px;">What is Ms. Wilson saying to Josh?</div>
+    <ul class="options">
+      <li><span class="opt-letter">A</span> I'm afraid I haven't decided if you can take part in the competition yet.</li>
+      <li><span class="opt-letter">B</span> It's a shame you missed the last match, but I'm glad you're feeling better.</li>
+      <li class="correct"><span class="opt-letter">C</span> You must contact me if your health doesn't improve over the next few days.</li>
+    </ul>
+    <div class="answer-key">Answer: <span>C</span></div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="q-block">
+    <div class="q-num">5</div>
+    <div class="stimulus">
+      <div class="label">📱 Message</div>
+      <div class="msg-header">Eric → Mum</div>
+      <em>"The 4 p.m. bus to town has just gone. I'm going to arrive for another hour. If I can't get a lift from someone, I'll walk home. Eric"</em>
+    </div>
+    <div style="font-size:13px; font-weight:600; color:#374151; margin-bottom:8px;">Why has Eric sent his mum this message?</div>
+    <ul class="options">
+      <li><span class="opt-letter">A</span> to explain why he has missed the bus</li>
+      <li class="correct"><span class="opt-letter">B</span> to tell her his plans for getting home</li>
+      <li><span class="opt-letter">C</span> to find out if she can give him a lift</li>
+    </ul>
+    <div class="answer-key">Answer: <span>B</span></div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="q-block">
+    <div class="q-num">6</div>
+    <div class="stimulus">
+      <div class="label">✉️ Email</div>
+      <div class="msg-header">Mrs. Brown (School Trip)</div>
+      <em>"Anyone who's already on the list for this trip but hasn't paid, please give me £10.00 by 3 p.m."</em>
+    </div>
+    <div style="font-size:13px; font-weight:600; color:#374151; margin-bottom:8px;">What is this email saying?</div>
+    <ul class="options">
+      <li><span class="opt-letter">A</span> There are a few spaces left if anyone wants to go on the trip.</li>
+      <li class="correct"><span class="opt-letter">B</span> If you've got a place on the trip, you need to pay today.</li>
+      <li><span class="opt-letter">C</span> Students who have paid for the trip should come to a meeting at 3 p.m.</li>
+    </ul>
+    <div class="answer-key">Answer: <span>B</span></div>
+  </div>
+</div>
+
+<!-- ═══════════════ PART 2 ═══════════════ -->
+<div class="section">
+  <div class="section-title">Part 2 · 多项匹配 &nbsp;<span class="tag">Questions 7–13</span></div>
+  <div class="section-sub">Three teenagers talk about learning a new language. Read about Frank, Marc and Ivan. For each question, choose the correct answer (A, B or C).</div>
+
+  <div class="passage-card">
+    <div class="passage-header">A &nbsp;·&nbsp; Frank</div>
+    <div class="passage-body">At the moment, I'm learning Arabic because I'd like to be a journalist one day, and being able to speak other languages is important for my job. It wasn't possible to learn Arabic at school, but a friend of mine knew a woman who could give me lessons and now she comes to my house twice a week. It was difficult at first because I was a complete beginner, but I worked hard and after just six months I was able to speak and write the language quite well, which I'm really happy about.</div>
+  </div>
+
+  <div class="passage-card">
+    <div class="passage-header">B &nbsp;·&nbsp; Marc</div>
+    <div class="passage-body">I've lived in lots of different countries because of my dad's career, so I've had to learn several different languages. I want to learn Thai quite easily. The last place I lived was Thailand. I'm still studying the language so I can continue to chat with my Thai classmates now I'm back in my home country. I've downloaded a new app on my phone to help me learn Thai, and I can't wait to use it each morning because it's so much fun.</div>
+  </div>
+
+  <div class="passage-card">
+    <div class="passage-header">C &nbsp;·&nbsp; Ivan</div>
+    <div class="passage-body">My mum comes from Russia and her parents still live there. We often stay with them during the school holidays, but unfortunately I didn't learn Russian when I was little so talking to them has always been hard. After our last trip I decided it was time for me to learn the language and I took a course at a local college — and it's great! But the teacher makes us laugh. I think that's why I never forget any of the vocabulary she teaches us.</div>
+  </div>
+
+  <div style="margin-top:14px;">
+    <div class="matching-q"><span class="qn">7</span><span style="flex:1; font-size:13px;">Who says he's pleased about how quickly he improved?</span><span class="ans-badge">A</span></div>
+    <div class="matching-q"><span class="qn">8</span><span style="flex:1; font-size:13px;">Who is learning a foreign language without a teacher?</span><span class="ans-badge">B</span></div>
+    <div class="matching-q"><span class="qn">9</span><span style="flex:1; font-size:13px;">Who needs to know a foreign language for the career he wants?</span><span class="ans-badge">A</span></div>
+    <div class="matching-q"><span class="qn">10</span><span style="flex:1; font-size:13px;">Who says he remembers all the new words he learns in his language lessons?</span><span class="ans-badge">C</span></div>
+    <div class="matching-q"><span class="qn">11</span><span style="flex:1; font-size:13px;">Who is practising a language so he can have conversations with friends?</span><span class="ans-badge">B</span></div>
+    <div class="matching-q"><span class="qn">12</span><span style="flex:1; font-size:13px;">Who is studying a foreign language for family reasons?</span><span class="ans-badge">C</span></div>
+    <div class="matching-q"><span class="qn">13</span><span style="flex:1; font-size:13px;">Who says he has lots of experience learning new languages?</span><span class="ans-badge">B</span></div>
+  </div>
+</div>
+
+<!-- ═══════════════ PART 3 ═══════════════ -->
+<div class="section">
+  <div class="section-title">Part 3 · 长文阅读 &nbsp;<span class="tag">Questions 14–18</span></div>
+  <div class="section-sub">For each question, choose the correct answer.</div>
+
+  <div class="article-box">
+    <div class="article-title">My first trip to Hollywood, USA</div>
+    <div class="article-author">Jelica Shaw talks about a family holiday to Los Angeles</div>
+    <div class="article-body">
+      <p>This summer, my parents and I had a holiday in Hollywood, an area in Los Angeles famous for its filmmaking. My mum and dad are journalists and both worked there, so they know the city really well.</p>
+      <p>Our hotel was near the Hollywood Walk of Fame, a famous pavement that has over 2,600 metal stars with the names of famous actors and singers on them. It's very popular with visitors. We walked along it every day, and I'm glad about that, as there were so many names to read.</p>
+      <p>On the second day, we went on a tour at Universal Studios. This is a film studio where famous actors work, and it also has some exciting rides. The rides were good, but visiting the places where movies such as Jurassic Park were made was my favourite part of the tour.</p>
+      <p>On the third day, we went on the Rodeo Drive Tour. It's a bus tour to see famous people's houses. Actually, most of the homes were a really long way from the road or behind trees or gates, which is a pity. But the guide was so funny that I still enjoyed myself and the time went by very quickly.</p>
+      <p>For our final sight, we watched a film at an outdoor theatre called the Hollywood Bowl. The Sound of Music is my dad's favourite film so I know the story and songs quite well, but I couldn't believe 17,000 other people wanted to watch it too. I had no idea it was so popular! It was certainly an experience I'll never forget.</p>
+    </div>
+  </div>
+
+  <div class="q-block">
+    <div class="q-num">14 &nbsp; What do we learn about Jelica's parents in the first paragraph?</div>
+    <ul class="options">
+      <li><span class="opt-letter">A</span> They have been to Hollywood many times.</li>
+      <li><span class="opt-letter">B</span> They don't have a summer holiday every year.</li>
+      <li class="correct"><span class="opt-letter">C</span> They have careers in the film business.</li>
+    </ul>
+    <div class="answer-key">Answer: <span>C</span> — "My mum and dad are journalists and both worked there"</div>
+  </div>
+
+  <div class="q-block">
+    <div class="q-num">15 &nbsp; What does Jelica say about the Hollywood Walk of Fame?</div>
+    <ul class="options">
+      <li><span class="opt-letter">A</span> She thought it was too crowded.</li>
+      <li class="correct"><span class="opt-letter">B</span> She was pleased she visited it more than once.</li>
+      <li><span class="opt-letter">C</span> She liked being able to see it from her hotel room.</li>
+    </ul>
+    <div class="answer-key">Answer: <span>B</span> — "I'm glad about that, as there were so many names to read"</div>
+  </div>
+
+  <div class="q-block">
+    <div class="q-num">16 &nbsp; What did Jelica like most about visiting Universal Studios Hollywood?</div>
+    <ul class="options">
+      <li><span class="opt-letter">A</span> going on all the rides</li>
+      <li><span class="opt-letter">B</span> meeting some famous actors</li>
+      <li class="correct"><span class="opt-letter">C</span> seeing where films were made</li>
+    </ul>
+    <div class="answer-key">Answer: <span>C</span> — "visiting the places where movies … were made was my favourite part"</div>
+  </div>
+
+  <div class="q-block">
+    <div class="q-num">17 &nbsp; What does Jelica say about the Rodeo Drive Tour?</div>
+    <ul class="options">
+      <li><span class="opt-letter">A</span> The bus ride took too long.</li>
+      <li class="correct"><span class="opt-letter">B</span> The guide was a bit boring.</li>
+      <li><span class="opt-letter">C</span> The homes were quite hard to see.</li>
+    </ul>
+    <div class="answer-key">Answer: <span>C</span> — "most of the homes were a really long way from the road or behind trees or gates, which is a pity"</div>
+  </div>
+
+  <div class="q-block">
+    <div class="q-num">18 &nbsp; What was Jelica surprised about at the Hollywood Bowl?</div>
+    <ul class="options">
+      <li><span class="opt-letter">A</span> which film was shown</li>
+      <li class="correct"><span class="opt-letter">B</span> the number of people at the film</li>
+      <li><span class="opt-letter">C</span> the fact that people sang during the film</li>
+    </ul>
+    <div class="answer-key">Answer: <span>B</span> — "I couldn't believe 17,000 other people wanted to watch it too"</div>
+  </div>
+</div>
+
+<!-- ═══════════════ PART 4 ═══════════════ -->
+<div class="section">
+  <div class="section-title">Part 4 · 选词填空 &nbsp;<span class="tag">Questions 19–24</span></div>
+  <div class="section-sub">For each question, choose the correct answer.</div>
+
+  <div class="gap-passage">
+    <div style="font-size:15px; font-weight:800; text-align:center; margin-bottom:12px;">Mark Twain</div>
+    The American writer Mark Twain was born in 1835. At the age of four, the family
+    <span class="gap">[19] left / moved / got</span> to Hannibal, a town on the Mississippi River. When he was a child, he
+    <span class="gap">[20] spent / took / used</span> most of his free time chatting to the people who worked on the river. He loved hearing the stories they
+    <span class="gap">[21] spoke / told / said</span> about their lives.
+    <br><br>
+    When he was only 11, Mark began earning money for his family. He worked in a printing company and wrote articles for the local newspaper, but what he really wanted to do was to
+    <span class="gap">[22] become / start / begin</span> a river boat captain. He studied
+    <span class="gap">[23] long / hard / right</span> for his licence and then worked for many years on the river.
+    <br><br>
+    Lots of the ideas for Twain's most
+    <span class="gap">[24] excellent / famous / known</span> book, <em>The Adventures of Huckleberry Finn</em>, came from his life on the Mississippi.
+  </div>
+
+  <div style="margin-top:10px;">
+    <div class="gap-q"><span class="gq-num">[19]</span> <span class="gq-opts"><span>A left</span><span class="correct">B moved</span><span>C got</span></span></div>
+    <div class="gap-q"><span class="gq-num">[20]</span> <span class="gq-opts"><span class="correct">A spent</span><span>B took</span><span>C used</span></span></div>
+    <div class="gap-q"><span class="gq-num">[21]</span> <span class="gq-opts"><span>A spoke</span><span>B said</span><span class="correct">C told</span></span></div>
+    <div class="gap-q"><span class="gq-num">[22]</span> <span class="gq-opts"><span class="correct">A become</span><span>B start</span><span>C begin</span></span></div>
+    <div class="gap-q"><span class="gq-num">[23]</span> <span class="gq-opts"><span>A long</span><span class="correct">B hard</span><span>C right</span></span></div>
+    <div class="gap-q"><span class="gq-num">[24]</span> <span class="gq-opts"><span>A excellent</span><span class="correct">B famous</span><span>C known</span></span></div>
+  </div>
+</div>
+
+<!-- ═══════════════ PART 5 ═══════════════ -->
+<div class="section">
+  <div class="section-title">Part 5 · 语法填空 &nbsp;<span class="tag">Questions 25–30</span></div>
+  <div class="section-sub">For each question, write the correct answer. Write ONE word for each gap.</div>
+
+  <div class="example-banner">
+    <strong>Example [0]:</strong> Welcome <u>to</u> my blog! &nbsp;→ Answer: <strong>"to"</strong>
+  </div>
+
+  <div class="openq-passage">
+    <div style="font-size:11px; color:#6b7280; margin-bottom:6px;">📝 Blog post</div>
+    Welcome <input class="openq-gap" value="to" disabled> my blog! Each week, I give you my opinion about
+    <sup class="gap-num">(25)</sup><input class="openq-gap" placeholder="___"> latest computer game that I've tried. Today's post is about a brilliant game called MathsFun.
+    <sup class="gap-num">(26)</sup><input class="openq-gap" placeholder="___"> is very easy to play and includes exercises and quizzes.
+    <br><br>
+    <sup class="gap-num">(27)</sup><input class="openq-gap" placeholder="___"> are two reasons why I like this computer game. First, I can choose to play alone
+    or <sup class="gap-num">(28)</sup><input class="openq-gap" placeholder="___"> friends. Second, any level of player, from beginner to advanced, can play.
+    <br><br>
+    MathsFun has helped me a lot. A month <sup class="gap-num">(29)</sup><input class="openq-gap" placeholder="___">, I wasn't getting good marks at school, but now I am.
+    <sup class="gap-num">(30)</sup><input class="openq-gap" placeholder="___"> you want to improve too, you should try this game.
+  </div>
+
+  <div style="margin-top:14px; background:#ecfdf5; border-radius:10px; padding:12px 14px; font-size:13px; color:#065f46;">
+    <strong>Answers:</strong> &nbsp;
+    25 → <strong>the</strong> &nbsp;|&nbsp;
+    26 → <strong>It</strong> &nbsp;|&nbsp;
+    27 → <strong>There</strong> &nbsp;|&nbsp;
+    28 → <strong>with</strong> &nbsp;|&nbsp;
+    29 → <strong>ago</strong> &nbsp;|&nbsp;
+    30 → <strong>If</strong>
+  </div>
+</div>
+
+<!-- ═══════════════ WRITING ═══════════════ -->
+<div class="section">
+  <div class="section-title">Part 6 · 引导写作 &nbsp;<span class="tag">Question 31</span></div>
+  <div class="section-sub">You want to go to the cinema with your English friend Jay. Write an email to Jay. In your email: say which film you want to see · say when you want to go · explain why you want to see this film. Write 25 words or more.</div>
+  <textarea rows="4" style="width:100%; border:1.5px solid #e5e7eb; border-radius:10px; padding:10px; font-size:13px; color:#374151; resize:none; outline:none; margin-top:8px;" placeholder="在这里练习写作..."></textarea>
+</div>
+
+<div class="section">
+  <div class="section-title">Part 7 · 看图写故事 &nbsp;<span class="tag">Question 32</span></div>
+  <div class="section-sub">Look at the three pictures. Write the story shown in the pictures. Write 35 words or more.</div>
+  <img src="images/ket/test1/writing/part7_story.jpg" alt="Story pictures" style="width:100%; border-radius:10px; border:1px solid #e5e7eb; margin:10px 0;">
+  <textarea rows="5" style="width:100%; border:1.5px solid #e5e7eb; border-radius:10px; padding:10px; font-size:13px; color:#374151; resize:none; outline:none;" placeholder="在这里练习写作..."></textarea>
+</div>
+
+</body>
+</html>
