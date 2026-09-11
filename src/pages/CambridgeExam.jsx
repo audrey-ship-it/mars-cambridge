@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from 'react'
-import { Link, useParams, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { KET_EXAMS } from '../data/ketExamData'
+import { ketTests } from '../data/ketReadingData'
 import { CambridgeLayout } from './CambridgeApp'
 
 const ORDERED_KET_EXAMS = [...KET_EXAMS].sort((left, right) => {
@@ -9,6 +10,38 @@ const ORDERED_KET_EXAMS = [...KET_EXAMS].sort((left, right) => {
   const [, rightBook, rightTest] = right.id.match(/^ket-(\d+)-test(\d+)$/) || []
   return (Number(leftBook) - Number(rightBook)) || (Number(leftTest) - Number(rightTest))
 })
+
+const examDurationLabel = totalSeconds => `${String(Math.floor(totalSeconds / 60)).padStart(2, '0')}:${String(totalSeconds % 60).padStart(2, '0')}`
+const answerIndex = value => Math.max(0, 'ABC'.indexOf(value))
+
+function useExamLevel() {
+  const navigate = useNavigate()
+  const [level, setLevelState] = useState(() => {
+    try { return localStorage.getItem('cambridge_level') || 'KET' } catch { return 'KET' }
+  })
+  function setLevel(nextLevel) {
+    setLevelState(nextLevel)
+    try { localStorage.setItem('cambridge_level', nextLevel) } catch { /* local storage may be unavailable */ }
+    if (nextLevel !== 'KET') navigate(`/cambridge/${nextLevel.toLowerCase()}`)
+  }
+  return [level, setLevel]
+}
+
+function adaptReadingTest(test) {
+  if (!test) return []
+  const p1 = test.part1
+  const p2 = test.part2
+  const p3 = test.part3
+  const p4 = test.part4
+  const p5 = test.part5
+  return [
+    { part: 1, title: 'Part 1 · 短文选义', type: 'text_mcq', instructions: p1.instructions, questions: p1.questions.map(q => ({ n: q.id, ...q, opts: Object.values(q.options), ans: answerIndex(q.answer) })) },
+    { part: 2, title: `Part 2 · ${p2.title || '人物配对'}`, type: 'multiple_matching', instructions: p2.instructions, passages: (p2.people || p2.passages || []).map(p => ({ label: p.label, name: p.name, text: p.text })), questions: p2.questions.map(q => ({ n: q.id, text: q.text, ans: q.answer, exp: q.explanation })) },
+    { part: 3, title: `Part 3 · ${p3.title}`, type: 'article_mcq', instructions: p3.instructions || 'For each question, choose the correct answer.', articleTitle: p3.title, author: p3.author, passage: p3.passage, questions: p3.questions.map(q => ({ n: q.id, text: q.text, opts: Object.values(q.options), ans: answerIndex(q.answer), exp: q.explanation })) },
+    { part: 4, title: `Part 4 · ${p4.title || '选词填空'}`, type: 'gap_fill_mcq', instructions: p4.instructions || 'For each question, choose the correct answer.', articleTitle: p4.title, passage: p4.passage || (p4.passage_segments || []).map((segment, index) => `${segment}${p4.questions[index] ? `[${p4.questions[index].id}]` : ''}`).join(''), questions: p4.questions.map(q => ({ n: q.id, opts: Object.values(q.options), ans: answerIndex(q.answer), exp: q.explanation })) },
+    { part: 5, title: 'Part 5 · 语法填词', type: 'open_gap_fill', instructions: p5.instructions, example: p5.example ? { hint: `Complete gap ${p5.example.number}.`, ans: p5.example.answer } : null, passages: p5.passages.map(p => ({ from: p.from, to: p.to, label: p.label, text: p.text || p.content })), questions: p5.questions.map(q => ({ n: q.id, ans: q.answers || [q.answer], exp: q.explanation })) },
+  ]
+}
 
 const EXAM_COLLECTIONS = [
   { id: 'schools', label: '青少版真题', count: 12, help: 'KET for Schools 官方真题 1–3' },
@@ -113,9 +146,9 @@ function readExamListProgress(exam) {
 }
 
 export function ExamList() {
-  const [level, setLevel] = useState('KET')
+  const [level, setLevel] = useExamLevel()
   const [collection, setCollection] = useState('schools')
-  const sectionSummary = () => '听力 25题 · 阅读 30题 · 写作 2题 · 口语 2部分'
+  const sectionSummary = () => '听力 30分钟 · 阅读与写作 60分钟 · 口语 8–10分钟'
   const displayedExams = collection === 'schools'
     ? ORDERED_KET_EXAMS.map((exam, index) => ({ exam, id: exam.id, name: `真题 ${index + 1}`, source: exam.title }))
     : PENDING_EXAMS[collection]
@@ -126,7 +159,7 @@ export function ExamList() {
         <div className="mb-6">
           <span className="text-xs font-bold bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">A2 KET</span>
           <h1 className="text-2xl font-bold text-gray-900 mt-2 mb-1">KET 官方真题</h1>
-          <p className="text-sm text-gray-500">每套真题包含听力、阅读、写作和口语四个部分</p>
+          <p className="text-sm text-gray-500">每套真题按正式考试分为听力、阅读与写作、口语三张试卷</p>
         </div>
 
         <section className="mb-6 rounded-[22px] border border-gray-200 bg-white p-4 shadow-sm">
@@ -182,13 +215,12 @@ export function ExamList() {
 }
 
 function ExamOverview({ exam }) {
-  const [level, setLevel] = useState('KET')
+  const [level, setLevel] = useExamLevel()
   const setNumber = examSetNumber(exam)
   const sections = [
-    { icon: '🎧', title: '听力', en: 'Listening', detail: '5个 Part · 25道题', href: `/cambridge/listening?part=1&set=${setNumber}` },
-    { icon: '📖', title: '阅读', en: 'Reading', detail: '5个 Part · 30道题', href: `/cambridge/reading?part=1&set=${setNumber}` },
-    { icon: '✍️', title: '写作', en: 'Writing', detail: 'Part 6 Email · Part 7 看图写话', href: `/cambridge/writing?part=6&set=${setNumber}` },
-    { icon: '🎙️', title: '口语', en: 'Speaking', detail: 'Part 1 个人问答 · Part 2 图片讨论', href: `/cambridge/speaking?part=2&set=${setNumber}` },
+    { icon: '🎧', title: '听力', en: 'Listening', detail: '30分钟 · 5个 Part · 25道题', href: `/cambridge/listening?mode=mock&exam=${exam.id}&part=1&set=${setNumber}` },
+    { icon: '📖', title: '阅读与写作', en: 'Reading & Writing', detail: '60分钟 · 7个 Part · 阅读30题 + 写作2题', href: exam.reading?.parts?.length ? `/cambridge/exams/${exam.id}?tab=reading` : `/cambridge/reading?part=1&set=${setNumber}` },
+    { icon: '🎙️', title: '口语', en: 'Speaking', detail: '8–10分钟 · Part 1 个人问答 · Part 2 图片讨论', href: `/cambridge/speaking?part=2&set=${setNumber}` },
   ]
 
   return (
@@ -197,7 +229,7 @@ function ExamOverview({ exam }) {
         <Link to="/cambridge/exams" className="text-sm font-bold text-emerald-700 hover:text-emerald-900">← 返回真题列表</Link>
         <div className="mt-5 text-[11px] font-extrabold tracking-[.18em] text-emerald-700">KET FULL PRACTICE TEST</div>
         <h1 className="mt-1 text-3xl font-extrabold text-slate-950 sm:text-4xl">真题 {setNumber}</h1>
-        <p className="mt-2 text-slate-500">{exam.title} · 按试卷结构完成听力、阅读、写作和口语。</p>
+        <p className="mt-2 text-slate-500">{exam.title} · 按正式试卷结构完成听力、阅读与写作、口语。</p>
 
         <section className="mt-7 grid gap-4 sm:grid-cols-2">
           {sections.map((item, index) => (
@@ -224,7 +256,11 @@ function ExamOverview({ exam }) {
 export default function CambridgeExam() {
   const { id } = useParams()
   const [searchParams] = useSearchParams()
-  const exam = KET_EXAMS.find(e => e.id === id)
+  const baseExam = KET_EXAMS.find(e => e.id === id)
+  const readingSet = baseExam ? ketTests[examSetNumber(baseExam) - 1] : null
+  const exam = baseExam && !baseExam.reading?.parts?.length && readingSet
+    ? { ...baseExam, reading: { ...baseExam.reading, parts: adaptReadingTest(readingSet) } }
+    : baseExam
   const requestedTab = searchParams.get('tab')
   const initialTab = requestedTab
     || (exam?.listening ? 'listening' : exam?.reading?.parts?.length ? 'reading' : exam?.reading?.writing?.length ? 'writing' : 'speaking')
@@ -325,59 +361,41 @@ function ListeningExam({ exam, section, onSection }) {
 /* ══════════════════════════════
    Shared Exam Shell (listening or reading)
 ══════════════════════════════ */
-function ExamShell({ exam, section, onSection, parts, partIndex, allAnswers, isDone, onReset, children }) {
+function ExamShell({ exam, section, onSection, parts, partIndex, allAnswers, isDone, onReset, timerSeconds, timerPaused, onToggleTimer, children }) {
+  const [level, setLevel] = useExamLevel()
   return (
-    <div className="min-h-screen bg-[#f8f9fc]">
-      <header className="bg-white border-b border-gray-100 sticky top-0 z-30 shadow-sm">
-        <div className="max-w-2xl mx-auto px-6 h-12 flex items-center justify-between">
-          <Link to="/cambridge/exams" className="flex items-center gap-1.5 text-gray-400 hover:text-gray-700 transition-colors group">
+    <CambridgeLayout activeModule="exams" level={level} setLevel={setLevel}>
+      <header className="border-b border-slate-100 bg-white px-6 py-4">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-2">
+          <Link to={`/cambridge/exams/${exam.id}`} className="group mr-2 flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm font-extrabold text-emerald-800">
             <svg className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
-            <span className="text-sm font-medium">真题列表</span>
+            <span>真题总览</span>
           </Link>
-          <div className="text-center">
-            <div className="text-[11px] font-bold text-gray-800 leading-tight">{exam.label}</div>
+          <div className="mr-2 rounded-xl bg-[#064e3b] px-4 py-2.5 text-sm font-extrabold text-white">
+            {section === 'reading' ? '📖 阅读与写作模考 · 60分钟' : exam.label}
           </div>
-          <div className="w-20" />
+          {parts.map((p, index) => {
+            const finished = allAnswers[index] !== undefined
+            return <span key={p.part} className={`rounded-xl border px-4 py-2.5 text-sm font-extrabold ${index === partIndex && !isDone ? 'border-emerald-700 bg-emerald-700 text-white' : finished || isDone ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : 'border-slate-200 bg-white text-slate-400'}`}>Part {p.part}{finished || isDone ? ' ✓' : ''}</span>
+          })}
+          {onToggleTimer ? (
+            <button type="button" onClick={onToggleTimer} className={`ml-auto rounded-xl px-4 py-2.5 font-mono text-sm font-extrabold ${timerPaused ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-700'}`}>
+              ⏱ {examDurationLabel(timerSeconds)}{section === 'reading' ? ' / 60:00' : ''} · {timerPaused ? '继续计时' : '暂停计时'}
+            </button>
+          ) : <div className="w-20" />}
         </div>
 
         {/* Section tabs */}
-        <div className="max-w-2xl mx-auto">
+        <div className="hidden">
           <SectionTabs exam={exam} section={section} onSection={onSection} />
         </div>
 
-        {/* Part progress */}
-        <div className="max-w-2xl mx-auto px-6 pb-2.5">
-          <div className="flex gap-1 mb-1">
-            {parts.map((p, i) => (
-              <div key={i} className={`flex-1 h-1.5 rounded-full transition-all ${
-                isDone ? 'bg-emerald-400'
-                : allAnswers[i] !== undefined ? 'bg-[#064e3b]/60'
-                : i === partIndex ? 'bg-[#064e3b]'
-                : 'bg-gray-100'
-              }`} />
-            ))}
-          </div>
-          <div className="flex gap-1 text-[10px] font-medium">
-            {parts.map((p, i) => (
-              <div key={i} className={`flex-1 text-center ${
-                i === partIndex && !isDone ? 'text-[#064e3b] font-bold' : 'text-gray-400'
-              }`}>
-                {p.part}
-                {allAnswers[i] !== undefined && !isDone && <span className="ml-0.5 opacity-60">✓</span>}
-              </div>
-            ))}
-          </div>
-          {onReset && !isDone && Object.keys(allAnswers).length > 0 && (
-            <div className="mt-1.5 text-right">
-              <button onClick={onReset} className="text-[10px] font-semibold text-gray-400 hover:text-red-500 transition-colors">重新开始本套</button>
-            </div>
-          )}
-        </div>
+        {onReset && !isDone && Object.keys(allAnswers).length > 0 && <div className="mx-auto mt-2 max-w-6xl text-right"><button onClick={onReset} className="text-xs font-semibold text-slate-400 hover:text-red-500">重新开始本套</button></div>}
       </header>
-      <div className="max-w-2xl mx-auto px-6 py-6">{children}</div>
-    </div>
+      <main className="mx-auto max-w-5xl px-6 py-7">{children}</main>
+    </CambridgeLayout>
   )
 }
 
@@ -865,7 +883,9 @@ function countReadingMistakes(part, answers = []) {
 }
 
 function ReadingExam({ exam, section, onSection }) {
-  const parts = exam.reading.parts
+  const readingParts = exam.reading.parts
+  const writingParts = (exam.reading.writing || []).map(task => ({ ...task, type: 'writing_task', instructions: task.part === 6 ? 'Write an email or note of 25 words or more.' : 'Write a story of 35 words or more based on the three pictures.', questions: [{ n: task.part === 6 ? 31 : 32 }] }))
+  const parts = [...readingParts, ...writingParts]
   const progressKey = `mars_ket_exam_progress_v1:${exam.id}:reading`
   const [savedProgress] = useState(() => {
     try {
@@ -876,11 +896,38 @@ function ReadingExam({ exam, section, onSection }) {
   const [partIndex, setPartIndex] = useState(() => Math.min(savedProgress.partIndex || 0, parts.length - 1))
   const [allAnswers, setAllAnswers] = useState(() => savedProgress.allAnswers || {})
   const [done, setDone] = useState(() => savedProgress.done === true)
+  const [startedAt, setStartedAt] = useState(() => savedProgress.startedAt || Date.now())
+  const [pausedAt, setPausedAt] = useState(() => savedProgress.pausedAt || null)
+  const [totalPausedMs, setTotalPausedMs] = useState(() => savedProgress.totalPausedMs || 0)
+  const [redoOnly, setRedoOnly] = useState(() => savedProgress.redo === true)
+  const [timerSeconds, setTimerSeconds] = useState(() => {
+    const endpoint = savedProgress.finishedAt || savedProgress.pausedAt || Date.now()
+    return Math.max(0, Math.floor((endpoint - (savedProgress.startedAt || Date.now()) - (savedProgress.totalPausedMs || 0)) / 1000))
+  })
+
+  useEffect(() => {
+    if (done || pausedAt) return undefined
+    const timer = window.setInterval(() => setTimerSeconds(Math.max(0, Math.floor((Date.now() - startedAt - totalPausedMs) / 1000))), 1000)
+    return () => window.clearInterval(timer)
+  }, [done, pausedAt, startedAt, totalPausedMs])
 
   function saveProgress(next) {
     try {
-      localStorage.setItem(progressKey, JSON.stringify({ ...next, savedAt: new Date().toISOString() }))
+      localStorage.setItem(progressKey, JSON.stringify({ startedAt, pausedAt, totalPausedMs, redo: redoOnly, ...next, savedAt: new Date().toISOString() }))
     } catch { /* local storage may be unavailable */ }
+  }
+
+  function toggleReadingTimer() {
+    const now = Date.now()
+    if (pausedAt) {
+      const nextTotal = totalPausedMs + now - pausedAt
+      setPausedAt(null)
+      setTotalPausedMs(nextTotal)
+      try { localStorage.setItem(progressKey, JSON.stringify({ ...savedProgress, partIndex, allAnswers, done, redo: redoOnly, startedAt, pausedAt: null, totalPausedMs: nextTotal })) } catch { /* local storage may be unavailable */ }
+    } else {
+      setPausedAt(now)
+      try { localStorage.setItem(progressKey, JSON.stringify({ ...savedProgress, partIndex, allAnswers, done, redo: redoOnly, startedAt, pausedAt: now, totalPausedMs })) } catch { /* local storage may be unavailable */ }
+    }
   }
 
   function restartReading() {
@@ -889,43 +936,84 @@ function ReadingExam({ exam, section, onSection }) {
 
   function resetReading() {
     restartReading()
+    const now = Date.now()
+    setStartedAt(now)
+    setPausedAt(null)
+    setTotalPausedMs(0)
+    setTimerSeconds(0)
+    setRedoOnly(false)
     setPartIndex(0)
     setAllAnswers({})
     setDone(false)
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  function redoReadingMistakes() {
+    const nextAnswers = { ...allAnswers }
+    let firstWrongPart = null
+    readingParts.forEach((part, index) => {
+      const answers = [...(allAnswers[index] || [])]
+      let hasWrong = false
+      part.questions.forEach((question, questionIndex) => {
+        const value = answers[questionIndex]
+        const isRight = part.type === 'open_gap_fill'
+          ? (question.ans || []).some(answer => answer.trim().toLowerCase() === String(value || '').trim().toLowerCase())
+          : value === question.ans
+        if (!isRight) {
+          answers[questionIndex] = part.type === 'open_gap_fill' ? '' : null
+          hasWrong = true
+        }
+      })
+      nextAnswers[index] = answers
+      if (hasWrong && firstWrongPart === null) firstWrongPart = index
+    })
+    if (firstWrongPart === null) return
+    const now = Date.now()
+    setAllAnswers(nextAnswers)
+    setPartIndex(firstWrongPart)
+    setDone(false)
+    setRedoOnly(true)
+    setStartedAt(now)
+    setPausedAt(null)
+    setTotalPausedMs(0)
+    setTimerSeconds(0)
+    try { localStorage.setItem(progressKey, JSON.stringify({ partIndex: firstWrongPart, allAnswers: nextAnswers, done: false, redo: true, startedAt: now, pausedAt: null, totalPausedMs: 0 })) } catch { /* local storage may be unavailable */ }
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   function handlePartDone(answers) {
     const updated = { ...allAnswers, [partIndex]: answers }
-    const wrongCounts = Object.fromEntries(Object.entries(updated).map(([index, values]) => [index, countReadingMistakes(parts[Number(index)], values)]))
+    const wrongCounts = Object.fromEntries(Object.entries(updated).filter(([index]) => Number(index) < readingParts.length).map(([index, values]) => [index, countReadingMistakes(parts[Number(index)], values)]))
+    const nextPartIndex = parts.findIndex((candidate, index) => index > partIndex && (
+      !updated[index] || candidate.questions.some((_, questionIndex) => updated[index][questionIndex] === null || updated[index][questionIndex] === undefined || String(updated[index][questionIndex]).trim() === '')
+    ))
     setAllAnswers(updated)
-    if (partIndex + 1 >= parts.length) {
+    if (nextPartIndex === -1) {
+      const finishedAt = Date.now()
+      const finalPausedMs = totalPausedMs + (pausedAt ? finishedAt - pausedAt : 0)
+      setTimerSeconds(Math.max(0, Math.floor((finishedAt - startedAt - finalPausedMs) / 1000)))
       setDone(true)
-      saveProgress({ partIndex, allAnswers: updated, wrongCounts, done: true })
+      saveProgress({ partIndex, allAnswers: updated, wrongCounts, done: true, finishedAt, pausedAt: null, totalPausedMs: finalPausedMs })
     } else {
-      const nextPartIndex = partIndex + 1
       setPartIndex(nextPartIndex)
       saveProgress({ partIndex: nextPartIndex, allAnswers: updated, wrongCounts, done: false })
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
   }
 
-  if (done) return (
-    <ExamShell exam={exam} section={section} onSection={onSection}
-      parts={parts} partIndex={partIndex} allAnswers={allAnswers} isDone>
-      <ReadingFinalResult exam={exam} allAnswers={allAnswers} onRestart={restartReading} />
-    </ExamShell>
-  )
+  if (done) return <ReadingFinalResult exam={exam} parts={parts} allAnswers={allAnswers} elapsed={timerSeconds} onRestart={resetReading} onRedoWrong={redoReadingMistakes} />
 
   const part = parts[partIndex]
   return (
     <ExamShell exam={exam} section={section} onSection={onSection}
-      parts={parts} partIndex={partIndex} allAnswers={allAnswers} onReset={resetReading}>
+      parts={parts} partIndex={partIndex} allAnswers={allAnswers} onReset={resetReading}
+      timerSeconds={timerSeconds} timerPaused={Boolean(pausedAt)} onToggleTimer={toggleReadingTimer}>
       <AnimatePresence mode="wait">
         <motion.div key={partIndex}
           initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}>
-          <ReadingPartRouter part={part} isLast={partIndex + 1 >= parts.length} onDone={handlePartDone} />
+          {redoOnly && <div className="mb-4 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-3 text-sm font-extrabold text-amber-800">错题重做模式 · 本页只显示上次答错的题</div>}
+          <ReadingPartRouter part={part} initialAnswers={allAnswers[partIndex]} redoOnly={redoOnly} isLast={partIndex + 1 >= parts.length} onDone={handlePartDone} />
         </motion.div>
       </AnimatePresence>
     </ExamShell>
@@ -935,7 +1023,8 @@ function ReadingExam({ exam, section, onSection }) {
 /* ══════════════════════════════
    Reading Part Router
 ══════════════════════════════ */
-function ReadingPartRouter({ part, isLast, onDone }) {
+function ReadingPartRouter({ part, initialAnswers, redoOnly, isLast, onDone }) {
+  const sharedProps = { part, initialAnswers, redoOnly, isLast, onDone }
   return (
     <div>
       <div className="flex items-center gap-3 mb-4">
@@ -950,53 +1039,148 @@ function ReadingPartRouter({ part, isLast, onDone }) {
       <div className="bg-[#064e3b]/5 border border-[#064e3b]/10 rounded-2xl px-5 py-3 mb-5">
         <p className="text-sm text-gray-700">{part.instructions}</p>
       </div>
-      {part.type === 'text_mcq'          && <TextMCQPart          part={part} isLast={isLast} onDone={onDone} />}
-      {part.type === 'multiple_matching'  && <MultipleMatchingPart part={part} isLast={isLast} onDone={onDone} />}
-      {part.type === 'article_mcq'        && <ArticleMCQPart       part={part} isLast={isLast} onDone={onDone} />}
-      {part.type === 'gap_fill_mcq'       && <GapFillMCQPart       part={part} isLast={isLast} onDone={onDone} />}
-      {part.type === 'open_gap_fill'      && <OpenGapFillPart      part={part} isLast={isLast} onDone={onDone} />}
+      {part.type === 'text_mcq'          && <TextMCQPart {...sharedProps} />}
+      {part.type === 'multiple_matching' && <MultipleMatchingPart {...sharedProps} />}
+      {part.type === 'article_mcq'       && <ArticleMCQPart {...sharedProps} />}
+      {part.type === 'gap_fill_mcq'      && <GapFillMCQPart {...sharedProps} />}
+      {part.type === 'open_gap_fill'     && <OpenGapFillPart {...sharedProps} />}
+      {part.type === 'writing_task'      && <WritingMockPart {...sharedProps} />}
+    </div>
+  )
+}
+
+function WritingMockPart({ part, initialAnswers, isLast, onDone }) {
+  const [text, setText] = useState(initialAnswers?.[0] || '')
+  const words = text.trim().split(/\s+/).filter(Boolean).length
+  const minimum = part.part === 6 ? 25 : 35
+  const ready = words >= minimum
+
+  return (
+    <div className="rounded-[24px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+        <pre className="whitespace-pre-wrap font-sans text-base leading-7 text-slate-800">{part.prompt}</pre>
+        {part.imageSrc && <img src={part.imageSrc} alt={part.imageDesc || 'Writing picture story'} className="mt-5 max-h-[460px] w-full rounded-2xl border border-slate-200 bg-white object-contain" />}
+      </div>
+      <div className="mt-5">
+        <div className="mb-2 flex items-center justify-between"><label className="font-extrabold text-slate-900">你的答案</label><span className={`text-sm font-extrabold ${ready ? 'text-emerald-700' : 'text-amber-700'}`}>{words} / {minimum}+ words</span></div>
+        <textarea value={text} onChange={event => setText(event.target.value)} rows={part.part === 7 ? 12 : 9} spellCheck placeholder={part.part === 6 ? 'Write your email here…' : 'Write your story here…'} className="w-full resize-y rounded-2xl border-2 border-slate-200 px-5 py-4 text-base leading-7 text-slate-800 outline-none transition focus:border-emerald-600" />
+        <p className="mt-2 text-xs text-slate-400">模考期间不显示参考答案或即时评分，提交整张试卷后再查看结果。</p>
+      </div>
+      <button type="button" onClick={() => onDone([text])} disabled={!ready} className="mt-6 w-full rounded-2xl bg-[#064e3b] py-4 text-base font-extrabold text-white transition hover:bg-[#065f46] disabled:opacity-30">{isLast ? '提交阅读与写作答卷 →' : 'Part 7 →'}</button>
     </div>
   )
 }
 
 /* ── Part 1: Short-text MCQ ── */
-function TextMCQPart({ part, isLast, onDone }) {
-  const [sel, setSel] = useState(Array(part.questions.length).fill(null))
+function materialType(question) {
+  const type = String(question.type || '').toLowerCase()
+  if (type === 'ad' || type === 'advertisement') return 'advertisement'
+  if (type === 'text' || type === 'message' || type === 'sms') return 'message'
+  if (type === 'email') return 'email'
+  if (type === 'sign') return 'sign'
+  return 'notice'
+}
+
+function ReadingMaterialCard({ question }) {
+  const type = materialType(question)
+
+  if (type === 'email') {
+    return (
+      <div className="w-full max-w-md overflow-hidden rounded-2xl border border-sky-200 bg-white text-left shadow-lg">
+        <div className="flex items-center gap-2 border-b border-sky-100 bg-sky-50 px-4 py-3">
+          <span className="h-2.5 w-2.5 rounded-full bg-red-400" /><span className="h-2.5 w-2.5 rounded-full bg-amber-400" /><span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
+          <span className="ml-2 text-xs font-extrabold uppercase tracking-[.18em] text-sky-700">Email</span>
+        </div>
+        <div className="border-b border-slate-100 px-5 py-3 text-xs leading-6 text-slate-500">
+          <div><strong className="inline-block w-12 text-slate-700">From</strong>{question.from || 'Sender'}</div>
+          <div><strong className="inline-block w-12 text-slate-700">To</strong>{question.to || 'Recipient'}</div>
+          {question.title && <div><strong className="inline-block w-12 text-slate-700">Subject</strong>{question.title}</div>}
+        </div>
+        <p className="whitespace-pre-line px-5 py-5 text-base font-medium leading-7 text-slate-800">{question.content}</p>
+      </div>
+    )
+  }
+
+  if (type === 'message') {
+    return (
+      <div className="w-full max-w-[330px] rounded-[36px] border-[7px] border-slate-800 bg-white p-3 shadow-xl">
+        <div className="mx-auto mb-3 h-1.5 w-16 rounded-full bg-slate-300" />
+        <div className="rounded-[24px] bg-slate-50 px-4 py-5 text-left">
+          <div className="mb-4 flex items-center gap-3 border-b border-slate-200 pb-3">
+            <span className="grid h-9 w-9 place-items-center rounded-full bg-emerald-600 text-sm font-extrabold text-white">{(question.from || 'M').charAt(0)}</span>
+            <div><div className="text-sm font-extrabold text-slate-800">{question.from || 'Message'}</div><div className="text-[11px] text-slate-400">Text message</div></div>
+          </div>
+          <div className="rounded-2xl rounded-tl-sm bg-emerald-100 px-4 py-3">
+            <p className="whitespace-pre-line text-sm font-medium leading-6 text-slate-800">{question.content}</p>
+          </div>
+          <div className="mt-2 text-right text-[10px] text-slate-400">Delivered</div>
+        </div>
+      </div>
+    )
+  }
+
+  if (type === 'advertisement') {
+    return (
+      <div className="w-full max-w-md rotate-[1deg] overflow-hidden rounded-xl border-4 border-rose-300 bg-gradient-to-br from-rose-50 via-white to-amber-50 p-3 shadow-xl">
+        <div className="rounded-lg border-2 border-dashed border-rose-300 px-6 py-7 text-center">
+          <div className="mb-3 text-xs font-black uppercase tracking-[.25em] text-rose-600">Special offer</div>
+          {question.title && <h3 className="mb-3 text-2xl font-black uppercase text-rose-700">{question.title}</h3>}
+          <p className="whitespace-pre-line text-xl font-black leading-8 text-slate-900">{question.content}</p>
+          <div className="mx-auto mt-5 h-1 w-20 rounded-full bg-amber-400" />
+        </div>
+      </div>
+    )
+  }
+
+  if (type === 'sign') {
+    return (
+      <div className="w-full max-w-md rounded-xl border-[10px] border-slate-300 bg-[#174b6b] px-7 py-8 text-center shadow-xl ring-2 ring-slate-500">
+        {question.title && <div className="mb-3 text-xl font-black uppercase tracking-wider text-white">{question.title}</div>}
+        <p className="whitespace-pre-line text-xl font-extrabold leading-8 text-white">{question.content}</p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="relative w-full max-w-md rotate-[-1deg] border border-amber-300 bg-[#fffdf5] px-7 py-9 text-center shadow-[0_12px_30px_rgba(120,90,20,.16)]">
+      <span className="absolute -top-3 left-1/2 h-6 w-6 -translate-x-1/2 rounded-full border-2 border-white bg-red-500 shadow" />
+      <div className="mb-4 text-xs font-extrabold uppercase tracking-[.24em] text-amber-700">Notice</div>
+      {question.title && <h3 className="mb-3 text-xl font-black text-slate-900">{question.title}</h3>}
+      <p className="whitespace-pre-line text-lg font-semibold leading-8 text-slate-800">{question.content}</p>
+    </div>
+  )
+}
+
+function TextMCQPart({ part, initialAnswers, redoOnly, isLast, onDone }) {
+  const [sel, setSel] = useState(() => part.questions.map((_, index) => initialAnswers?.[index] ?? null))
+  const [visibleIndexes] = useState(() => part.questions.map((_, index) => index).filter(index => !redoOnly || initialAnswers?.[index] === null || initialAnswers?.[index] === undefined || String(initialAnswers[index]).trim() === ''))
   const allDone = sel.every(s => s !== null)
 
   return (
     <div>
       <div className="space-y-4 mb-6">
-        {part.questions.map((q, i) => (
-          <div key={i} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        {part.questions.map((q, i) => ({ q, i })).filter(({ i }) => visibleIndexes.includes(i)).map(({ q, i }) => (
+          <div key={i} className="grid overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-sm lg:grid-cols-2">
             {/* Text source */}
-            <div className="bg-gray-50 border-b border-gray-100 px-5 py-3">
-              {q.type === 'message' || q.type === 'email' ? (
-                <div className="text-xs text-gray-400 mb-1">
-                  {q.type === 'message' ? '📱 Message' : '✉️ Email'}
-                  {q.from && <> • From: <strong>{q.from}</strong>{q.to && <> to <strong>{q.to}</strong></>}</>}
-                </div>
-              ) : (
-                <div className="text-xs text-gray-400 mb-1">📋 {q.label || 'Notice'}</div>
-              )}
-              <p className="text-sm text-gray-800 italic leading-relaxed whitespace-pre-line">"{q.content}"</p>
+            <div className={`grid min-h-[320px] place-items-center border-b border-slate-100 p-7 lg:border-b-0 lg:border-r ${materialType(q) === 'email' ? 'bg-sky-50' : materialType(q) === 'message' ? 'bg-emerald-50' : materialType(q) === 'advertisement' ? 'bg-rose-50' : materialType(q) === 'sign' ? 'bg-slate-100' : 'bg-amber-50'}`}>
+              <ReadingMaterialCard question={q} />
             </div>
             {/* Question & options */}
-            <div className="p-5">
-              <p className="text-sm font-semibold text-gray-800 mb-3">
-                <span className="text-[#064e3b] font-bold mr-1">{q.n}.</span>
+            <div className="p-6 lg:p-7">
+              <p className="mb-5 text-xl font-extrabold leading-snug text-slate-900">
+                <span className="mr-2 inline-grid h-9 w-9 place-items-center rounded-full bg-emerald-100 text-sm font-extrabold text-emerald-700">{q.n}</span>
                 {q.question || `What does this ${q.from ? 'message' : 'notice'} mean?`}
               </p>
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {q.opts.map((opt, j) => (
                   <button key={j} onClick={() => setSel(prev => prev.map((v,k) => k===i ? j : v))}
-                    className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl border text-left transition-all ${
+                    className={`flex min-h-[72px] w-full items-center gap-4 rounded-2xl border px-4 py-3 text-left transition-all ${
                       sel[i]===j ? 'border-[#064e3b] bg-[#064e3b]/5' : 'border-gray-200 bg-white hover:border-[#064e3b]/30 hover:bg-gray-50'
                     }`}>
-                    <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-extrabold flex-shrink-0 ${
+                    <span className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full text-sm font-extrabold ${
                       sel[i]===j ? 'bg-[#064e3b] text-white' : 'bg-gray-100 text-gray-500'
                     }`}>{ABC[j]}</span>
-                    <span className="text-sm text-gray-800">{opt}</span>
+                    <span className="text-base font-semibold leading-6 text-slate-800">{opt}</span>
                   </button>
                 ))}
               </div>
@@ -1013,54 +1197,45 @@ function TextMCQPart({ part, isLast, onDone }) {
 }
 
 /* ── Part 2: Multiple matching ── */
-function MultipleMatchingPart({ part, isLast, onDone }) {
-  const [sel, setSel] = useState(Array(part.questions.length).fill(null))
-  const [expandedPassage, setExpandedPassage] = useState(null)
+function MultipleMatchingPart({ part, initialAnswers, redoOnly, isLast, onDone }) {
+  const [sel, setSel] = useState(() => part.questions.map((_, index) => initialAnswers?.[index] ?? null))
+  const [visibleIndexes] = useState(() => part.questions.map((_, index) => index).filter(index => !redoOnly || initialAnswers?.[index] === null || initialAnswers?.[index] === undefined || String(initialAnswers[index]).trim() === ''))
   const allDone = sel.every(s => s !== null)
 
   return (
     <div>
-      {/* Passages (collapsible) */}
-      <div className="space-y-2 mb-5">
-        {part.passages.map((p, pi) => (
-          <div key={pi} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-            <button onClick={() => setExpandedPassage(expandedPassage === pi ? null : pi)}
-              className="w-full flex items-center gap-3 px-5 py-3.5 text-left hover:bg-gray-50 transition-colors">
-              <span className="w-7 h-7 rounded-lg bg-[#064e3b] flex items-center justify-center text-white text-xs font-extrabold flex-shrink-0">{p.label}</span>
-              <span className="font-semibold text-gray-800 text-sm flex-1">{p.name}</span>
-              <svg className={`w-4 h-4 text-gray-400 transition-transform ${expandedPassage===pi ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-            {expandedPassage === pi && (
-              <div className="px-5 pb-4 border-t border-gray-50">
-                <p className="text-sm text-gray-700 leading-relaxed pt-3">{p.text}</p>
-              </div>
-            )}
+      <div className="mb-6 grid items-start gap-5 lg:grid-cols-[minmax(0,1.05fr)_minmax(420px,.95fr)]">
+        <section className="rounded-[24px] border border-slate-200 bg-slate-50 p-4 lg:sticky lg:top-3 lg:max-h-[calc(100vh-1.5rem)] lg:overflow-y-auto">
+          <div className="mb-3 text-sm font-extrabold uppercase tracking-wider text-emerald-700">阅读材料</div>
+          <div className="space-y-3">
+            {part.passages.map((p, pi) => (
+              <article key={pi} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                <div className="mb-3 flex items-center gap-3">
+                  <span className="grid h-9 w-9 place-items-center rounded-xl bg-[#064e3b] text-sm font-extrabold text-white">{p.label}</span>
+                  <h3 className="font-extrabold text-slate-900">{p.name}</h3>
+                </div>
+                <p className="text-base leading-7 text-slate-700">{p.text}</p>
+              </article>
+            ))}
           </div>
-        ))}
-      </div>
+        </section>
 
-      {/* Questions */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-6">
-        <div className="space-y-3">
-          {part.questions.map((q, i) => (
-            <div key={i} className="flex items-start gap-3">
-              <span className="text-xs font-extrabold text-gray-400 mt-2.5 w-5 flex-shrink-0">{q.n}</span>
-              <div className="flex-1">
-                <p className="text-sm text-gray-800 mb-2">{q.text}</p>
-                <div className="flex gap-2">
+        <section className="rounded-[24px] border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="mb-4 text-sm font-extrabold uppercase tracking-wider text-emerald-700">选择答案</div>
+          <div className="space-y-4">
+            {part.questions.map((q, i) => ({ q, i })).filter(({ i }) => visibleIndexes.includes(i)).map(({ q, i }) => (
+              <div key={i} className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
+                <p className="mb-3 font-semibold leading-6 text-slate-800"><span className="mr-2 font-extrabold text-emerald-700">{q.n}.</span>{q.text}</p>
+                <div className="grid grid-cols-3 gap-2">
                   {part.passages.map(p => (
                     <button key={p.label} onClick={() => setSel(prev => prev.map((v,k) => k===i ? p.label : v))}
-                      className={`px-4 py-1.5 rounded-xl text-sm font-bold border transition-all ${
-                        sel[i]===p.label ? 'bg-[#064e3b] text-white border-[#064e3b]' : 'bg-white border-gray-200 text-gray-500 hover:border-[#064e3b]/40'
-                      }`}>{p.label}</button>
+                      className={`min-h-12 rounded-xl border text-sm font-extrabold transition-all ${sel[i]===p.label ? 'border-[#064e3b] bg-[#064e3b] text-white' : 'border-slate-200 bg-white text-slate-600 hover:border-[#064e3b]/40'}`}>{p.label}</button>
                   ))}
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        </section>
       </div>
 
       <button onClick={() => onDone(sel)} disabled={!allDone}
@@ -1072,56 +1247,40 @@ function MultipleMatchingPart({ part, isLast, onDone }) {
 }
 
 /* ── Part 3: Article MCQ ── */
-function ArticleMCQPart({ part, isLast, onDone }) {
-  const [sel, setSel] = useState(Array(part.questions.length).fill(null))
-  const [showArticle, setShowArticle] = useState(true)
+function ArticleMCQPart({ part, initialAnswers, redoOnly, isLast, onDone }) {
+  const [sel, setSel] = useState(() => part.questions.map((_, index) => initialAnswers?.[index] ?? null))
+  const [visibleIndexes] = useState(() => part.questions.map((_, index) => index).filter(index => !redoOnly || initialAnswers?.[index] === null || initialAnswers?.[index] === undefined || String(initialAnswers[index]).trim() === ''))
   const allDone = sel.every(s => s !== null)
 
   return (
     <div>
-      {/* Article */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mb-5">
-        <button onClick={() => setShowArticle(v => !v)}
-          className="w-full flex items-center justify-between px-5 py-3.5 bg-gray-50 border-b border-gray-100 text-left hover:bg-gray-100 transition-colors">
-          <div>
-            <div className="font-bold text-gray-900 text-sm">{part.articleTitle}</div>
-            {part.author && <div className="text-xs text-gray-500 mt-0.5">{part.author}</div>}
-          </div>
-          <svg className={`w-4 h-4 text-gray-400 transition-transform flex-shrink-0 ${showArticle ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
-        {showArticle && (
-          <div className="px-5 py-4 max-h-72 overflow-y-auto">
+      <div className="mb-6 grid items-start gap-5 lg:grid-cols-2">
+        <article className="rounded-[24px] border border-slate-200 bg-white shadow-sm lg:sticky lg:top-3 lg:max-h-[calc(100vh-1.5rem)] lg:overflow-y-auto">
+          <header className="border-b border-slate-100 bg-slate-50 px-6 py-5">
+            <h3 className="text-xl font-extrabold text-slate-900">{part.articleTitle}</h3>
+            {part.author && <div className="mt-1 text-sm text-slate-500">{part.author}</div>}
+          </header>
+          <div className="p-6">
             {part.passage.split('\n\n').map((para, i) => (
-              <p key={i} className="text-sm text-gray-700 leading-relaxed mb-3 last:mb-0">{para}</p>
+              <p key={i} className="mb-4 text-base leading-8 text-slate-700 last:mb-0">{para}</p>
             ))}
           </div>
-        )}
-      </div>
-
-      {/* Questions */}
-      <div className="space-y-4 mb-6">
-        {part.questions.map((q, i) => (
-          <div key={i} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-            <p className="text-sm font-semibold text-gray-900 mb-3">
-              <span className="text-gray-400 font-normal mr-1">{q.n}.</span>{q.text}
-            </p>
-            <div className="space-y-2">
-              {q.opts.map((opt, j) => (
-                <button key={j} onClick={() => setSel(prev => prev.map((v,k) => k===i ? j : v))}
-                  className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl border text-left transition-all ${
-                    sel[i]===j ? 'border-[#064e3b] bg-[#064e3b]/5' : 'border-gray-200 bg-white hover:border-[#064e3b]/30 hover:bg-gray-50'
-                  }`}>
-                  <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-extrabold flex-shrink-0 ${
-                    sel[i]===j ? 'bg-[#064e3b] text-white' : 'bg-gray-100 text-gray-500'
-                  }`}>{ABC[j]}</span>
-                  <span className="text-sm text-gray-800">{opt}</span>
-                </button>
-              ))}
+        </article>
+        <section className="space-y-4">
+          {part.questions.map((q, i) => ({ q, i })).filter(({ i }) => visibleIndexes.includes(i)).map(({ q, i }) => (
+            <div key={i} className="rounded-[22px] border border-slate-200 bg-white p-5 shadow-sm">
+              <p className="mb-4 font-extrabold leading-6 text-slate-900"><span className="mr-2 text-emerald-700">{q.n}.</span>{q.text}</p>
+              <div className="space-y-2.5">
+                {q.opts.map((opt, j) => (
+                  <button key={j} onClick={() => setSel(prev => prev.map((v,k) => k===i ? j : v))} className={`flex min-h-14 w-full items-center gap-3 rounded-xl border px-4 py-2.5 text-left transition-all ${sel[i]===j ? 'border-[#064e3b] bg-[#064e3b]/5' : 'border-slate-200 bg-white hover:border-[#064e3b]/30'}`}>
+                    <span className={`grid h-8 w-8 flex-shrink-0 place-items-center rounded-full text-xs font-extrabold ${sel[i]===j ? 'bg-[#064e3b] text-white' : 'bg-slate-100 text-slate-500'}`}>{ABC[j]}</span>
+                    <span className="text-sm font-semibold leading-5 text-slate-800">{opt}</span>
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </section>
       </div>
 
       <button onClick={() => onDone(sel)} disabled={!allDone}
@@ -1133,8 +1292,9 @@ function ArticleMCQPart({ part, isLast, onDone }) {
 }
 
 /* ── Part 4: Gap-fill MCQ ── */
-function GapFillMCQPart({ part, isLast, onDone }) {
-  const [sel, setSel] = useState(Array(part.questions.length).fill(null))
+function GapFillMCQPart({ part, initialAnswers, redoOnly, isLast, onDone }) {
+  const [sel, setSel] = useState(() => part.questions.map((_, index) => initialAnswers?.[index] ?? null))
+  const [visibleIndexes] = useState(() => part.questions.map((_, index) => index).filter(index => !redoOnly || initialAnswers?.[index] === null || initialAnswers?.[index] === undefined || String(initialAnswers[index]).trim() === ''))
   const allDone = sel.every(s => s !== null)
 
   // Parse passage into segments split on [19], [20] etc.
@@ -1161,31 +1321,23 @@ function GapFillMCQPart({ part, isLast, onDone }) {
 
   return (
     <div>
-      {/* Article title */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mb-5">
-        <div className="bg-gray-50 border-b border-gray-100 px-5 py-3">
-          <div className="font-bold text-gray-900 text-sm">{part.articleTitle}</div>
-        </div>
-        <div className="px-5 py-4">
-          <p className="leading-loose">{renderPassage()}</p>
-        </div>
-      </div>
-
-      {/* Option selectors */}
-      <div className="space-y-3 mb-6">
-        {part.questions.map((q, i) => (
-          <div key={i} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex items-center gap-3">
-            <span className="text-xs font-extrabold text-gray-400 w-7 flex-shrink-0">[{q.n}]</span>
-            <div className="flex gap-2 flex-wrap">
-              {q.opts.map((opt, j) => (
-                <button key={j} onClick={() => setSel(prev => prev.map((v,k) => k===i ? j : v))}
-                  className={`px-3 py-1.5 rounded-xl text-sm font-semibold border transition-all ${
-                    sel[i]===j ? 'bg-[#064e3b] text-white border-[#064e3b]' : 'bg-white border-gray-200 text-gray-600 hover:border-[#064e3b]/40'
-                  }`}>{ABC[j]} {opt}</button>
-              ))}
+      <div className="mb-6 grid items-start gap-5 lg:grid-cols-2">
+        <article className="rounded-[24px] border border-slate-200 bg-white shadow-sm lg:sticky lg:top-3 lg:max-h-[calc(100vh-1.5rem)] lg:overflow-y-auto">
+          <header className="border-b border-slate-100 bg-slate-50 px-6 py-5"><h3 className="text-xl font-extrabold text-slate-900">{part.articleTitle}</h3></header>
+          <div className="p-6"><p className="text-base leading-9">{renderPassage()}</p></div>
+        </article>
+        <section className="space-y-3">
+          {part.questions.map((q, i) => ({ q, i })).filter(({ i }) => visibleIndexes.includes(i)).map(({ q, i }) => (
+            <div key={i} className="rounded-[22px] border border-slate-200 bg-white p-4 shadow-sm">
+              <div className="mb-3 text-sm font-extrabold text-emerald-700">第 {q.n} 题</div>
+              <div className="grid grid-cols-3 gap-2">
+                {q.opts.map((opt, j) => (
+                  <button key={j} onClick={() => setSel(prev => prev.map((v,k) => k===i ? j : v))} className={`min-h-14 rounded-xl border px-2 py-2 text-sm font-semibold transition-all ${sel[i]===j ? 'border-[#064e3b] bg-[#064e3b] text-white' : 'border-slate-200 bg-white text-slate-700 hover:border-[#064e3b]/40'}`}><strong className="mr-1">{ABC[j]}</strong>{opt}</button>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </section>
       </div>
 
       <button onClick={() => onDone(sel)} disabled={!allDone}
@@ -1197,8 +1349,9 @@ function GapFillMCQPart({ part, isLast, onDone }) {
 }
 
 /* ── Part 5: Open gap fill ── */
-function OpenGapFillPart({ part, isLast, onDone }) {
-  const [inputs, setInputs] = useState(Array(part.questions.length).fill(''))
+function OpenGapFillPart({ part, initialAnswers, redoOnly, isLast, onDone }) {
+  const [inputs, setInputs] = useState(() => part.questions.map((_, index) => initialAnswers?.[index] ?? ''))
+  const [visibleIndexes] = useState(() => part.questions.map((_, index) => index).filter(index => !redoOnly || initialAnswers?.[index] === null || initialAnswers?.[index] === undefined || String(initialAnswers[index]).trim() === ''))
   const allFilled = inputs.every(v => v.trim())
 
   function renderPassage(text) {
@@ -1208,6 +1361,7 @@ function OpenGapFillPart({ part, isLast, onDone }) {
       if (!match) return <span key={si} className="text-sm text-gray-800">{seg}</span>
       const n  = parseInt(match[1])
       const qi = part.questions.findIndex(q => q.n === n)
+      if (redoOnly && !visibleIndexes.includes(qi)) return <span key={si} className="font-semibold text-slate-800">{inputs[qi]}</span>
       return (
         <span key={si} className="inline-flex items-center gap-0.5 mx-0.5">
           <span className="text-[10px] text-[#064e3b] font-bold">({n})</span>
@@ -1454,11 +1608,11 @@ export function WritingCard({ w, wi, storageKey }) {
   )
 }
 
-function ReadingFinalResult({ exam, allAnswers, onRestart }) {
-  const parts    = exam.reading.parts
-  const writings = exam.reading.writing
+function ReadingFinalResult({ exam, parts, allAnswers, elapsed, onRestart, onRedoWrong }) {
+  const [level, setLevel] = useExamLevel()
+  const [showReview, setShowReview] = useState(false)
 
-  const partScores = parts.map((part, pi) => {
+  const partScores = parts.filter(part => part.type !== 'writing_task').map((part, pi) => {
     const ans = allAnswers[pi] || []
 
     if (part.type === 'text_mcq') {
@@ -1524,97 +1678,51 @@ function ReadingFinalResult({ exam, allAnswers, onRestart }) {
   const total   = partScores.reduce((s, p) => s + p.total, 0)
   const correct = partScores.reduce((s, p) => s + p.correct, 0)
   const pct     = Math.round(correct / total * 100)
+  const wrongAnswers = partScores.flatMap(({ part, review }) => review.filter(item => !item.isRight).map(item => ({ part, ...item })))
+  const completedWriting = parts.filter(part => part.type === 'writing_task' && String(allAnswers[parts.indexOf(part)]?.[0] || '').trim()).length
 
   return (
-    <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="space-y-5">
-
-      {/* Score card */}
-      <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 text-center">
-        <div className="text-5xl mb-3">{pct >= 90 ? '🏆' : pct >= 75 ? '🎉' : pct >= 60 ? '👍' : '💪'}</div>
-        <div className="text-6xl font-extrabold text-gray-900 mb-1">{correct}<span className="text-3xl text-gray-300 font-normal"> / {total}</span></div>
-        <div className={`text-xl font-bold mt-2 ${pct>=90?'text-emerald-600':pct>=60?'text-[#064e3b]':'text-orange-500'}`}>正确率 {pct}%</div>
-        <div className="text-xs text-gray-400 mt-1">KET 阅读 · {exam.label}</div>
-        <div className="mt-3 text-xs text-gray-400 bg-gray-50 rounded-xl px-4 py-2 inline-block">KET 阅读满分 30 分，通过线约 18 分（60%）</div>
-      </div>
-
-      {/* Part breakdown */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-        <div className="text-xs font-bold text-gray-400 mb-3 uppercase tracking-wide">各 Part 得分</div>
-        <div className="space-y-2.5">
-          {partScores.map(({ part, correct: c, total: t }, i) => {
-            const pp = t > 0 ? Math.round(c / t * 100) : 0
-            return (
-              <div key={i} className="flex items-center gap-3">
-                <span className="text-xs font-bold text-gray-500 w-14 flex-shrink-0">Part {part.part}</span>
-                <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
-                  <motion.div initial={{ width: 0 }} animate={{ width: `${pp}%` }} transition={{ delay: i * 0.1, duration: 0.5 }}
-                    className={`h-full rounded-full ${pp>=80?'bg-emerald-400':pp>=60?'bg-amber-400':'bg-red-400'}`} />
-                </div>
-                <span className="text-xs font-bold text-gray-600 w-10 text-right flex-shrink-0">{c}/{t}</span>
-              </div>
-            )
-          })}
-        </div>
-      </div>
-
-      {/* Per-part review */}
-      {partScores.map(({ part, correct: c, total: t, review }, pi) => (
-        <div key={pi} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-          <div className="flex items-center gap-3 px-5 py-3.5 bg-gray-50 border-b border-gray-100">
-            <div className="w-7 h-7 rounded-lg bg-[#064e3b] flex items-center justify-center flex-shrink-0">
-              <span className="text-white font-extrabold text-xs">{part.part}</span>
+    <CambridgeLayout activeModule="exams" level={level} setLevel={setLevel}>
+      <main className="mx-auto max-w-4xl px-6 py-10">
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+          <div className="rounded-[28px] border border-emerald-200 bg-white p-7 text-center shadow-sm sm:p-10">
+            <div className="text-5xl">📖</div>
+            <div className="mt-4 text-xs font-extrabold tracking-[.18em] text-emerald-700">READING RESULT</div>
+            <h1 className="mt-2 text-4xl font-extrabold text-slate-950">阅读与写作模考完成</h1>
+            <div className="mt-3 text-sm font-bold text-slate-500">用时 {examDurationLabel(elapsed)}</div>
+            <div className="mt-6 text-6xl font-black text-emerald-700">{correct}<span className="text-2xl text-slate-400"> / {total}</span></div>
+            <div className="mt-2 text-sm font-extrabold text-slate-500">阅读客观题正确率 {pct}% · 写作 {completedWriting}/2 已完成</div>
+            <div className="mx-auto mt-7 grid max-w-3xl grid-cols-2 gap-2 sm:grid-cols-7">
+              {partScores.map(({ part, correct: score, total: partTotal }) => <div key={part.part} className="rounded-xl bg-slate-50 px-2 py-3"><div className="text-xs text-slate-400">Part {part.part}</div><strong className="mt-1 block text-lg text-slate-800">{score}/{partTotal}</strong></div>)}
+              {parts.filter(part => part.type === 'writing_task').map(part => <div key={part.part} className="rounded-xl bg-emerald-50 px-2 py-3"><div className="text-xs text-emerald-600">Part {part.part}</div><strong className="mt-1 block text-sm text-emerald-800">已完成</strong></div>)}
             </div>
-            <span className="font-bold text-gray-800 text-sm">{part.title}</span>
-            <span className={`ml-auto text-xs font-bold px-2.5 py-0.5 rounded-full ${c===t?'bg-emerald-100 text-emerald-700':c>=t*0.6?'bg-amber-100 text-amber-700':'bg-red-100 text-red-600'}`}>{c}/{t}</span>
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
+              <button type="button" onClick={() => setShowReview(value => !value)} className="rounded-xl bg-[#f7cd60] px-5 py-3 font-extrabold text-[#4c3a00]">{showReview ? '收起错题解析' : `查看错题与答案（${wrongAnswers.length}）`}</button>
+              {wrongAnswers.length > 0 && <button type="button" onClick={onRedoWrong} className="rounded-xl border border-emerald-600 bg-emerald-50 px-5 py-3 font-extrabold text-emerald-800">重做错题（{wrongAnswers.length}）</button>}
+              <button type="button" onClick={onRestart} className="rounded-xl border border-slate-200 px-5 py-3 font-extrabold text-slate-600">重新作答</button>
+              <Link to={`/cambridge/exams/${exam.id}`} className="rounded-xl bg-emerald-700 px-5 py-3 font-extrabold text-white">返回真题总览</Link>
+            </div>
           </div>
-          <div className="divide-y divide-gray-50">
-            {review.map((r, ri) => (
-              <div key={ri} className={`px-5 py-3.5 ${r.isRight ? '' : 'bg-red-50/40'}`}>
-                <div className="flex items-start gap-2.5">
-                  <span className={`text-sm font-extrabold mt-0.5 flex-shrink-0 w-4 ${r.isRight ? 'text-emerald-500' : 'text-red-400'}`}>{r.isRight ? '✓' : '✗'}</span>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-xs text-gray-600 mb-1.5 leading-relaxed">
-                      <span className="font-bold text-gray-800 mr-1">{r.n}.</span>{r.question}
-                    </div>
-                    <div className="flex items-center gap-2 flex-wrap">
-                      {!r.isRight && <span className="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded-lg font-semibold">你的答案：{r.userAns}</span>}
-                      <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-lg font-bold">正确：{r.correctAns}{r.correctFull ? ` · ${r.correctFull}` : ''}</span>
-                    </div>
-                    {!r.isRight && r.exp && <p className="text-xs text-gray-500 mt-1.5 leading-relaxed">{r.exp}</p>}
-                  </div>
+
+          {showReview && <section className="mt-6 rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+            <div className="text-xs font-extrabold tracking-[.16em] text-emerald-700">WRONG ANSWER REVIEW</div>
+            <h2 className="mt-1 text-2xl font-extrabold text-slate-950">错题与正确答案</h2>
+            <p className="mt-2 text-sm text-slate-500">共 {wrongAnswers.length} 道错题，按照 Part 和题号排列。</p>
+            <div className="mt-6 space-y-4">
+              {wrongAnswers.map((item, index) => <article key={`${item.part.part}-${item.n}-${index}`} className="rounded-2xl border border-rose-200 bg-rose-50/40 p-5">
+                <div className="flex flex-wrap items-center gap-3"><span className="rounded-full bg-rose-100 px-3 py-1 text-xs font-extrabold text-rose-700">Part {item.part.part} · 第 {item.n} 题</span><strong className="text-base text-slate-900">{item.question}</strong></div>
+                <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                  <div className="rounded-xl border border-rose-200 bg-white p-4"><div className="text-xs font-bold text-slate-400">你的答案</div><strong className="mt-1 block text-rose-700">{item.userAns}</strong></div>
+                  <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4"><div className="text-xs font-bold text-emerald-600">正确答案</div><strong className="mt-1 block text-emerald-800">{item.correctAns}{item.correctFull ? ` · ${item.correctFull}` : ''}</strong></div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      ))}
-
-      {/* Writing section */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-        <div className="flex items-center gap-3 px-5 py-3.5 bg-emerald-50 border-b border-emerald-100">
-          <div className="w-7 h-7 rounded-lg bg-emerald-600 flex items-center justify-center flex-shrink-0">
-            <span className="text-white text-sm">✍️</span>
-          </div>
-          <span className="font-bold text-gray-800 text-sm">Writing 写作练习</span>
-          <span className="ml-auto text-xs text-emerald-700 font-semibold bg-emerald-100 px-2 py-0.5 rounded-full">AI 评分</span>
-        </div>
-        {writings.map((w, wi) => (
-          <WritingCard key={wi} w={w} wi={wi} />
-        ))}
-      </div>
-
-      {/* Action buttons */}
-      <div className="flex gap-3 pb-4">
-        <Link to={`/cambridge/exams/${exam.id}?tab=reading`} onClick={onRestart}
-          className="flex-1 py-3.5 bg-[#064e3b] text-white font-bold rounded-2xl hover:bg-[#065f46] text-sm text-center transition-colors">
-          重新测试 →
-        </Link>
-        <Link to="/cambridge/exams"
-          className="flex-1 py-3.5 bg-white border border-gray-200 text-gray-600 font-bold rounded-2xl hover:border-gray-300 text-sm text-center transition-colors">
-          返回列表
-        </Link>
-      </div>
-    </motion.div>
+                {item.exp && <p className="mt-3 text-sm leading-6 text-slate-600">{item.exp}</p>}
+              </article>)}
+              {wrongAnswers.length === 0 && <div className="rounded-2xl bg-emerald-50 p-6 text-center font-extrabold text-emerald-700">全部答对，没有错题 🎉</div>}
+            </div>
+          </section>}
+        </motion.div>
+      </main>
+    </CambridgeLayout>
   )
 }
 

@@ -3557,6 +3557,309 @@ function ListeningPractice({ initialPart = 1 }) {
   );
 }
 
+const MOCK_LISTENING_PREFIX = "mars_ket_mock_listening_v2";
+
+function mockListeningData(setId, part) {
+  if (part === 1) return { title: "Part 1 图片选择题", type: "picture", items: OFFICIAL_PART1_SETS[setId] || KET3_TEST1_PART1 };
+  if (part === 2) return OFFICIAL_PART2_SETS[setId] || OFFICIAL_TEST1_PARTS[2];
+  if (part === 3) return OFFICIAL_PART3_SETS[setId] || OFFICIAL_TEST1_PARTS[3];
+  if (part === 4) return OFFICIAL_PART4_SETS[setId] || OFFICIAL_TEST1_PARTS[4];
+  return { title: "Part 5 配对题", instruction: "听对话，将每个人与正确选项配对。", type: "match", ...(OFFICIAL_PART5_SETS[setId] || OFFICIAL_TEST1_PARTS[5]) };
+}
+
+function normaliseMockAnswer(value) {
+  return String(value ?? "").toLowerCase().replace(/[£,\s-]/g, "");
+}
+
+function isMockAnswerRight(data, item, value) {
+  if (data.type === "blanks") return item.answer.some(answer => normaliseMockAnswer(answer) === normaliseMockAnswer(value));
+  return Number(value) === item.answer;
+}
+
+function mockAnswerLabel(data, item, value) {
+  if (value === null || value === undefined || String(value).trim() === "") return "未作答";
+  if (data.type === "blanks") return String(value);
+  const letter = String.fromCharCode(65 + Number(value));
+  if (data.type === "picture") return letter;
+  const option = data.type === "match" ? data.options?.[value] : item.opts?.[value];
+  return option ? `${letter}. ${option}` : letter;
+}
+
+function mockCorrectAnswerLabel(data, item) {
+  if (data.type === "blanks") return item.answer.join(" / ");
+  return mockAnswerLabel(data, item, item.answer);
+}
+
+function mockDurationLabel(totalSeconds) {
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+}
+
+function ListeningMockExam({ level, setLevel, setId, part, examId }) {
+  const navigate = useNavigate();
+  const data = mockListeningData(setId, part);
+  const storageKey = `${MOCK_LISTENING_PREFIX}:set-${setId}`;
+  const [attempt, setAttempt] = useState(() => {
+    try { return JSON.parse(localStorage.getItem(storageKey) || '{"parts":{}}'); } catch { return { parts: {} }; }
+  });
+  const [startedAt] = useState(() => attempt.startedAt || Date.now());
+  const [paused, setPaused] = useState(() => Boolean(attempt.pausedAt));
+  const [pausedAt, setPausedAt] = useState(() => attempt.pausedAt || null);
+  const [totalPausedMs, setTotalPausedMs] = useState(() => attempt.totalPausedMs || 0);
+  const [elapsed, setElapsed] = useState(() => Math.max(0, Math.floor(((attempt.pausedAt || Date.now()) - startedAt - (attempt.totalPausedMs || 0)) / 1000)));
+  const [finalElapsed, setFinalElapsed] = useState(() => attempt.finishedAt ? Math.max(0, Math.floor((attempt.finishedAt - startedAt - (attempt.totalPausedMs || 0)) / 1000)) : null);
+  const emptyValue = data.type === "blanks" ? "" : null;
+  const [answers, setAnswers] = useState(() => {
+    const saved = attempt.parts?.[part];
+    return saved?.length === data.items.length ? saved : Array(data.items.length).fill(emptyValue);
+  });
+  const [submitted, setSubmitted] = useState(false);
+  const [showReview, setShowReview] = useState(false);
+  const [activeMatch, setActiveMatch] = useState(() => {
+    const firstEmpty = answers.findIndex(value => value === null);
+    return firstEmpty === -1 ? 0 : firstEmpty;
+  });
+
+  useEffect(() => {
+    const next = { ...attempt, startedAt, pausedAt, totalPausedMs, parts: { ...(attempt.parts || {}), [part]: answers } };
+    setAttempt(next);
+    try { localStorage.setItem(storageKey, JSON.stringify(next)); } catch {}
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [answers]);
+
+  useEffect(() => {
+    if (submitted || paused) return undefined;
+    const timer = window.setInterval(() => setElapsed(Math.max(0, Math.floor((Date.now() - startedAt - totalPausedMs) / 1000))), 1000);
+    return () => window.clearInterval(timer);
+  }, [paused, startedAt, submitted, totalPausedMs]);
+
+  const answered = answers.filter(value => value !== null && String(value).trim() !== "").length;
+  const complete = answered === data.items.length;
+  const allData = [1, 2, 3, 4, 5].map(partId => mockListeningData(setId, partId));
+  const scoringAttempt = { ...attempt, parts: { ...(attempt.parts || {}), [part]: answers } };
+  const breakdown = allData.map((partData, index) => {
+    const values = scoringAttempt.parts?.[index + 1] || [];
+    return values.reduce((score, value, itemIndex) => score + (isMockAnswerRight(partData, partData.items[itemIndex], value) ? 1 : 0), 0);
+  });
+  const totalScore = breakdown.reduce((sum, value) => sum + value, 0);
+  const wrongAnswers = allData.flatMap((partData, partIndex) => {
+    const values = scoringAttempt.parts?.[partIndex + 1] || [];
+    return partData.items.map((item, itemIndex) => ({
+      part: partIndex + 1,
+      number: partIndex * 5 + itemIndex + 1,
+      data: partData,
+      item,
+      value: values[itemIndex],
+    })).filter(entry => !isMockAnswerRight(entry.data, entry.item, entry.value));
+  });
+
+  function choose(itemIndex, value) {
+    setAnswers(current => current.map((answer, index) => {
+      if (index === itemIndex) return value;
+      if (data.type === "match" && answer === value) return null;
+      return answer;
+    }));
+  }
+
+  function chooseMatch(value) {
+    choose(activeMatch, value);
+    const next = answers.findIndex((answer, index) => index > activeMatch && answer === null);
+    if (next !== -1) setActiveMatch(next);
+  }
+
+  function resetMock() {
+    try { localStorage.removeItem(storageKey); } catch {}
+    navigate(`/cambridge/listening?mode=mock&exam=${examId}&part=1&set=${setId}`);
+  }
+
+  function finishMock() {
+    const finishedAt = Date.now();
+    const finalPausedMs = totalPausedMs + (paused && pausedAt ? finishedAt - pausedAt : 0);
+    const next = { ...scoringAttempt, startedAt, finishedAt, pausedAt: null, totalPausedMs: finalPausedMs, completed: true, wrongCount: wrongAnswers.length, level: 'KET', examId };
+    setAttempt(next);
+    setFinalElapsed(Math.max(0, Math.floor((finishedAt - startedAt - finalPausedMs) / 1000)));
+    try { localStorage.setItem(storageKey, JSON.stringify(next)); } catch {}
+    setSubmitted(true);
+  }
+
+  function toggleTimer() {
+    const now = Date.now();
+    if (paused) {
+      const nextTotal = totalPausedMs + (pausedAt ? now - pausedAt : 0);
+      const next = { ...attempt, startedAt, pausedAt: null, totalPausedMs: nextTotal };
+      setPaused(false);
+      setPausedAt(null);
+      setTotalPausedMs(nextTotal);
+      try { localStorage.setItem(storageKey, JSON.stringify(next)); } catch {}
+      setAttempt(next);
+    } else {
+      const next = { ...attempt, startedAt, pausedAt: now, totalPausedMs };
+      setPaused(true);
+      setPausedAt(now);
+      try { localStorage.setItem(storageKey, JSON.stringify(next)); } catch {}
+      setAttempt(next);
+    }
+  }
+
+  function redoWrongAnswers() {
+    if (!wrongAnswers.length) return;
+    const parts = Object.fromEntries([1, 2, 3, 4, 5].map(partId => [partId, [...(scoringAttempt.parts?.[partId] || [])]]));
+    wrongAnswers.forEach(entry => {
+      parts[entry.part][entry.number - ((entry.part - 1) * 5) - 1] = entry.data.type === 'blanks' ? '' : null;
+    });
+    const next = { parts, startedAt: Date.now(), redo: true };
+    try { localStorage.setItem(storageKey, JSON.stringify(next)); } catch {}
+    navigate(`/cambridge/listening?mode=mock&exam=${examId}&part=${wrongAnswers[0].part}&set=${setId}&redo=${Date.now()}`);
+  }
+
+  if (submitted) return (
+    <CambridgeLayout activeModule="exams" level={level} setLevel={setLevel}>
+      <main className="mx-auto max-w-4xl px-6 py-10">
+        <div className="rounded-[28px] border border-emerald-200 bg-white p-7 text-center shadow-sm sm:p-10">
+          <div className="text-5xl">🎧</div>
+          <div className="mt-4 text-xs font-extrabold tracking-[.18em] text-emerald-700">LISTENING RESULT</div>
+          <h1 className="mt-2 text-4xl font-extrabold text-slate-950">听力模考完成</h1>
+          <div className="mt-3 text-sm font-bold text-slate-500">用时 {mockDurationLabel(finalElapsed ?? elapsed)}</div>
+          <div className="mt-6 text-6xl font-black text-emerald-700">{totalScore}<span className="text-2xl text-slate-400"> / 25</span></div>
+          <div className="mx-auto mt-7 grid max-w-2xl grid-cols-5 gap-2">
+            {breakdown.map((score, index) => <div key={index} className="rounded-xl bg-slate-50 px-2 py-3"><div className="text-xs text-slate-400">Part {index + 1}</div><strong className="mt-1 block text-lg text-slate-800">{score}/5</strong></div>)}
+          </div>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <button type="button" onClick={() => setShowReview(value => !value)} className="rounded-xl bg-[#f7cd60] px-5 py-3 font-extrabold text-[#4c3a00]">{showReview ? '收起错题解析' : `查看错题与答案（${wrongAnswers.length}）`}</button>
+            {wrongAnswers.length > 0 && <button type="button" onClick={redoWrongAnswers} className="rounded-xl border border-emerald-600 bg-emerald-50 px-5 py-3 font-extrabold text-emerald-800">重做错题（{wrongAnswers.length}）</button>}
+            <button type="button" onClick={resetMock} className="rounded-xl border border-slate-200 px-5 py-3 font-extrabold text-slate-600">重新作答</button>
+            <Link to={`/cambridge/exams/${examId}`} className="rounded-xl bg-emerald-700 px-5 py-3 font-extrabold text-white">返回真题总览</Link>
+          </div>
+        </div>
+        {showReview && (
+          <section className="mt-6 rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+            <div className="text-xs font-extrabold tracking-[.16em] text-emerald-700">WRONG ANSWER REVIEW</div>
+            <h2 className="mt-1 text-2xl font-extrabold text-slate-950">错题与正确答案</h2>
+            <p className="mt-2 text-sm text-slate-500">共 {wrongAnswers.length} 道错题，按照 Part 和题号排列。</p>
+            <div className="mt-6 space-y-4">
+              {wrongAnswers.map(entry => (
+                <article key={`${entry.part}-${entry.number}`} className="rounded-2xl border border-rose-200 bg-rose-50/40 p-5">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className="rounded-full bg-rose-100 px-3 py-1 text-xs font-extrabold text-rose-700">Part {entry.part} · 第 {entry.number} 题</span>
+                    <strong className="text-lg text-slate-900">{entry.item.q || entry.item.question}</strong>
+                  </div>
+                  {entry.data.type === 'picture' && <img src={entry.item.image} alt={`Question ${entry.number}`} className="mx-auto mt-4 max-h-[320px] w-full rounded-xl border border-slate-200 bg-white object-contain" />}
+                  <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                    <div className="rounded-xl border border-rose-200 bg-white p-4"><div className="text-xs font-bold text-slate-400">你的答案</div><strong className="mt-1 block text-rose-700">{mockAnswerLabel(entry.data, entry.item, entry.value)}</strong></div>
+                    <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4"><div className="text-xs font-bold text-emerald-600">正确答案</div><strong className="mt-1 block text-emerald-800">{mockCorrectAnswerLabel(entry.data, entry.item)}</strong></div>
+                  </div>
+                </article>
+              ))}
+              {wrongAnswers.length === 0 && <div className="rounded-2xl bg-emerald-50 p-6 text-center font-extrabold text-emerald-700">全部答对，没有错题 🎉</div>}
+            </div>
+          </section>
+        )}
+      </main>
+    </CambridgeLayout>
+  );
+
+  return (
+    <CambridgeLayout activeModule="exams" level={level} setLevel={setLevel}>
+      <nav className="border-b border-slate-100 bg-white px-6 py-4">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-2">
+          <Link to={`/cambridge/exams/${examId}`} className="mr-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm font-extrabold text-emerald-800">← 真题总览</Link>
+          <span className="mr-2 rounded-xl bg-[#064e3b] px-4 py-2.5 text-sm font-extrabold text-white">🎧 听力模考</span>
+          {[1, 2, 3, 4, 5].map(partId => {
+            const saved = attempt.parts?.[partId] || [];
+            const done = saved.length === 5 && saved.every(value => value !== null && String(value).trim() !== "");
+            return <span key={partId} className={`rounded-xl border px-4 py-2.5 text-sm font-extrabold ${partId === part ? 'border-emerald-700 bg-emerald-700 text-white' : done ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : 'border-slate-200 bg-white text-slate-400'}`}>Part {partId}{done ? ' ✓' : ''}</span>;
+          })}
+          <div className="ml-auto flex items-center gap-2">
+            <span className={`rounded-xl px-4 py-2.5 font-mono text-sm font-extrabold ${paused ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-700'}`}>⏱ {mockDurationLabel(elapsed)}</span>
+            <button type="button" onClick={toggleTimer} className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-extrabold text-slate-600 hover:border-emerald-300 hover:text-emerald-700">{paused ? '▶ 继续计时' : 'Ⅱ 暂停计时'}</button>
+          </div>
+        </div>
+      </nav>
+      <main className="mx-auto max-w-5xl px-6 py-7">
+        <div className="text-[11px] font-extrabold tracking-[.18em] text-emerald-700">LISTENING MOCK TEST · 真题 {setId}</div>
+        <h1 className="mt-1 text-4xl font-extrabold text-slate-950">{data.title}</h1>
+        <p className="mt-2 text-slate-500">{part === 1 ? '听五段短对话，从 A、B、C 三幅图片中选择正确答案。' : data.instruction}</p>
+        <div className="h-6" aria-hidden="true" />
+        <SpeedAudioPlayer src={officialListeningAudio(setId, part)} title={`真题${setId} · Part ${part} 音频`} />
+
+        {data.type === 'match' ? (
+          <div className="mt-6 grid gap-5 lg:grid-cols-[minmax(280px,.65fr)_minmax(0,1.35fr)]">
+            <section className="rounded-[24px] border border-slate-200 bg-white p-5">
+              <div className="mb-4 text-xs font-extrabold tracking-[.14em] text-emerald-700">第一步 · 选择人物</div>
+              <div className="space-y-3">
+                {data.items.map((item, index) => {
+                  const selected = activeMatch === index;
+                  const value = answers[index];
+                  return (
+                    <button key={item.q} type="button" onClick={() => setActiveMatch(index)} className={`flex w-full items-center gap-4 rounded-2xl border p-4 text-left transition ${selected ? 'border-[#e1b33a] bg-[#fff9e9] shadow-sm' : value !== null ? 'border-emerald-200 bg-emerald-50' : 'border-slate-200 hover:border-emerald-300'}`}>
+                      <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-full font-extrabold ${selected ? 'bg-[#f7cd60]' : 'bg-slate-100 text-slate-500'}`}>{21 + index}</span>
+                      <div className="min-w-0 flex-1">
+                        <strong className="text-lg text-slate-900">{item.q}</strong>
+                        <div className={`mt-1 text-sm ${value !== null ? 'font-bold text-slate-700' : 'text-slate-400'}`}>{value !== null ? `${String.fromCharCode(65 + value)}. ${data.options[value]}` : '等待匹配'}</div>
+                      </div>
+                      <span>{selected ? '→' : value !== null ? '✓' : ''}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+            <section className="flex flex-col rounded-[24px] border border-slate-200 bg-[#f8faf9] p-5">
+              <div className="mb-2 text-xs font-extrabold tracking-[.14em] text-emerald-700">第二步 · 选择选项</div>
+              <p className="mb-4 text-sm text-slate-500">正在为 <strong className="text-slate-900">{data.items[activeMatch].q}</strong> 选择答案</p>
+              <div className="grid flex-1 auto-rows-fr gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                {data.options.map((option, optionIndex) => {
+                  const chosen = answers[activeMatch] === optionIndex;
+                  const used = answers.some((answer, index) => index !== activeMatch && answer === optionIndex);
+                  return (
+                    <button key={option} type="button" onClick={() => chooseMatch(optionIndex)} className={`flex min-h-[96px] items-center gap-3 rounded-2xl border p-4 text-left transition ${chosen ? 'border-[#dfad2d] bg-[#fff3c9] text-[#5b4300]' : used ? 'border-slate-200 bg-slate-100 text-slate-500 hover:border-[#e1b33a] hover:bg-[#fff9e9]' : 'border-slate-200 bg-white hover:-translate-y-0.5 hover:border-[#e1b33a] hover:shadow-sm'}`}>
+                      <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl font-extrabold ${chosen ? 'bg-[#f7cd60]' : 'bg-emerald-50 text-emerald-700'}`}>{String.fromCharCode(65 + optionIndex)}</span>
+                      <strong>{option}</strong>
+                      {used && <span className="ml-auto text-xs">已使用 · 可改选</span>}
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+          </div>
+        ) : (
+        <div className="mt-6 space-y-4">
+          {data.items.map((item, index) => (
+            <article key={item.q || item.question} className="rounded-[22px] border border-slate-200 bg-white p-5 sm:p-6">
+              <div className="flex gap-4">
+                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#f7cd60] font-extrabold">{((part - 1) * 5) + index + 1}</span>
+                <div className="min-w-0 flex-1">
+                  <h2 className="text-lg font-extrabold text-slate-900">{item.q || item.question}</h2>
+                  {data.type === 'picture' && <img src={item.image} alt={`Question ${index + 1}`} className="mx-auto mt-4 max-h-[420px] w-full rounded-xl border border-slate-200 object-contain" />}
+                  {data.type === 'blanks' ? (
+                    <input value={answers[index]} onChange={event => choose(index, event.target.value)} placeholder="输入听到的信息" className="mt-4 h-12 w-full rounded-xl border border-slate-200 px-4 text-lg font-bold outline-none focus:border-emerald-500" />
+                  ) : (
+                    <div className="mt-4 grid gap-2 sm:grid-cols-3">
+                      {(data.type === 'picture' ? ['A', 'B', 'C'] : item.opts).map((option, optionIndex) => (
+                        <button key={option} type="button" onClick={() => choose(index, optionIndex)} className={`rounded-xl border px-4 py-3 text-left font-bold transition ${answers[index] === optionIndex ? 'border-emerald-600 bg-emerald-50 text-emerald-800' : 'border-slate-200 hover:border-emerald-300'}`}>
+                          {String.fromCharCode(65 + optionIndex)}{data.type === 'picture' ? '' : `. ${option}`}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+        )}
+
+        <section className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-[22px] bg-[#064e3b] p-5 text-white">
+          <strong>已完成 {answered} / 5</strong>
+          <button type="button" disabled={!complete} onClick={() => part < 5 ? navigate(`/cambridge/listening?mode=mock&exam=${examId}&part=${part + 1}&set=${setId}`) : finishMock()} className="rounded-xl bg-[#f7cd60] px-5 py-3 font-extrabold text-[#4c3a00] disabled:cursor-not-allowed disabled:bg-white/15 disabled:text-white/50">
+            {part < 5 ? `完成并进入 Part ${part + 1} →` : '提交听力模考并评分'}
+          </button>
+        </section>
+      </main>
+    </CambridgeLayout>
+  );
+}
+
 export default function CambridgeListening() {
   const [searchParams] = useSearchParams();
   const [level, setLevel] = useState(() => {
@@ -3574,6 +3877,8 @@ export default function CambridgeListening() {
     ? requestedSet
     : 9;
   const selectedSet = OFFICIAL_LISTENING_SETS.find((set) => set.id === setId);
+  if (searchParams.get("mode") === "mock" && part >= 1 && part <= 5)
+    return <ListeningMockExam key={`mock-${setId}-${part}-${searchParams.get("redo") || "main"}`} level={level} setLevel={setLevel} setId={setId} part={part} examId={searchParams.get("exam") || `ket-${Math.ceil(setId / 4)}-test${((setId - 1) % 4) + 1}`} />;
   if (part >= 1 && part <= 5 && !selectedSet?.readyParts?.includes(part))
     return (
       <ListeningSetChecking

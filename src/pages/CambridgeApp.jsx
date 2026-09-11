@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { EXAM_CONFIGS, getExamGrade } from '../data/cambridgeScoreTables'
 import MyLearningDashboard from './MyLearningDashboard'
@@ -26,6 +26,7 @@ const LEVELS = [
 /* ── App 外壳（左侧栏 + 顶栏）── */
 export function CambridgeLayout({ children, activeModule, level, setLevel }) {
   const navigate = useNavigate()
+  const location = useLocation()
   const current = LEVELS.find(l => l.abbr === level) || LEVELS[0]
   const [showLevelMenu, setShowLevelMenu] = useState(false)
 
@@ -34,8 +35,8 @@ export function CambridgeLayout({ children, activeModule, level, setLevel }) {
       {/* 左侧图标栏 */}
       <aside className="w-24 bg-[#064e3b] flex flex-col items-center py-4 gap-1 flex-shrink-0">
         {/* Logo → 回仪表盘 */}
-        <Link to="/cambridge" title="返回仪表盘" className="w-12 h-12 rounded-xl bg-white/15 flex items-center justify-center mb-4 flex-shrink-0 hover:bg-white/25 transition-colors">
-          <span className="text-white font-extrabold text-base">火</span>
+        <Link to="/cambridge" title="Mars Cambridge · 返回我的学习" aria-label="Mars Cambridge，返回我的学习" className="w-12 h-12 rounded-[15px] bg-[#f7cd60] flex items-center justify-center mb-4 flex-shrink-0 shadow-sm hover:bg-[#ffd96f] hover:scale-105 transition-all">
+          <span className="text-[23px] font-black leading-none tracking-[-0.06em] text-[#064e3b]">M</span>
         </Link>
         {/* 模块图标 */}
         {SIDEBAR_MODULES.map(m => (
@@ -44,7 +45,9 @@ export function CambridgeLayout({ children, activeModule, level, setLevel }) {
             title={m.label}
             className={`w-[78px] h-14 rounded-xl flex flex-col items-center justify-center gap-1 transition-all group ${
               activeModule === m.id
-                ? 'bg-white/20 text-white'
+                ? m.id === 'exams'
+                  ? 'bg-[#f7cd60] text-[#4c3a00] shadow-sm'
+                  : 'bg-white/20 text-white'
                 : 'text-white/85 hover:bg-white/10 hover:text-white'
             }`}
           >
@@ -96,6 +99,11 @@ export function CambridgeLayout({ children, activeModule, level, setLevel }) {
           <span className="text-sm font-semibold text-gray-600">
             {SIDEBAR_MODULES.find(m => m.id === activeModule)?.label} 练习
           </span>
+          {activeModule === 'exams' && location.pathname !== '/cambridge/exams' && (
+            <Link to="/cambridge/exams" className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-extrabold text-emerald-800 transition-colors hover:border-emerald-400 hover:bg-emerald-100">
+              ← 回到真题中心
+            </Link>
+          )}
 
           <div className="ml-auto flex items-center gap-3">
             <div className="flex items-center gap-1.5 text-sm text-gray-500">

@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { grammarUnitStatus } from '../utils/grammarProgress'
 
-const EXAM_IDS = ['ket-3-test1', 'ket-3-test2', 'ket-3-test3', 'ket-3-test4']
+const EXAM_IDS = Array.from({ length: 12 }, (_, index) => `ket-${Math.floor(index / 4) + 1}-test${(index % 4) + 1}`)
 
 function safeJson(key, fallback) {
   try {
@@ -27,12 +27,14 @@ function readLearningSnapshot() {
 
   let listeningDone = 0
   let listeningMistakeCount = 0
+  let listeningMistakePath = '/cambridge/listening'
   for (let setId = 1; setId <= 12; setId += 1) {
     for (let part = 1; part <= 5; part += 1) {
       const item = safeJson(`mars_ket_listening_progress_v1:set-${setId}:part-${part}`, null)
       if (!item) continue
       if (item.completed) listeningDone += 1
       listeningMistakeCount += Number(item.wrongCount || 0)
+      if (Number(item.wrongCount || 0) > 0) listeningMistakePath = `/cambridge/listening?part=${part}&set=${setId}`
       records.push({
         title: `听力练习${setId} · Part ${part}`,
         detail: item.completed ? '已完成' : '进行中',
@@ -40,6 +42,17 @@ function readLearningSnapshot() {
         path: `/cambridge/listening?part=${part}&set=${setId}`,
         progress: item.completed ? 100 : 40,
       })
+    }
+  }
+
+  for (let setId = 1; setId <= 12; setId += 1) {
+    const item = safeJson(`mars_ket_mock_listening_v2:set-${setId}`, null)
+    if (!item?.completed) continue
+    const wrongCount = Number(item.wrongCount || 0)
+    listeningMistakeCount += wrongCount
+    if (wrongCount > 0) {
+      const examId = item.examId || `ket-${Math.floor((setId - 1) / 4) + 1}-test${((setId - 1) % 4) + 1}`
+      listeningMistakePath = `/cambridge/listening?mode=mock&exam=${examId}&part=5&set=${setId}`
     }
   }
 
@@ -63,11 +76,13 @@ function readLearningSnapshot() {
   let readingUnits = 0
   let readingCompleted = 0
   let readingMistakeCount = 0
+  let readingMistakePath = '/cambridge/reading'
   let writingDrafts = 0
   EXAM_IDS.forEach((examId, index) => {
     const reading = safeJson(`mars_ket_exam_progress_v1:${examId}:reading`, null)
     if (reading) {
       readingMistakeCount += Object.values(reading.wrongCounts || {}).reduce((sum, value) => sum + Number(value || 0), 0)
+      if (Object.values(reading.wrongCounts || {}).some(value => Number(value || 0) > 0)) readingMistakePath = `/cambridge/exams/${examId}?tab=reading`
       const partNumber = Math.min(5, (reading.partIndex || 0) + 1)
       readingUnits += reading.done ? 5 : Math.max(0, partNumber - 1)
       if (reading.done) readingCompleted += 1
@@ -136,7 +151,9 @@ function readLearningSnapshot() {
     grammarMistakeCount: Object.keys(grammarMistakes).length,
     vocabMistakeCount: Array.isArray(vocabMistakes) ? vocabMistakes.length : 0,
     readingMistakeCount,
+    readingMistakePath,
     listeningMistakeCount,
+    listeningMistakePath,
     gapMistakeCount,
     speakingRatings,
     weeklyValues,
@@ -349,7 +366,7 @@ export default function MyLearningDashboard() {
               <div className="space-y-1">
                 {group.items.map(item => (
                   <button key={item.id} onClick={() => handleNav(item)}
-                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-colors ${item.id === 'home' ? 'bg-white text-[#083f32] font-bold shadow-sm' : 'text-white/72 hover:bg-white/10 hover:text-white'}`}>
+                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all ${item.id === 'home' ? 'bg-white text-[#083f32] font-bold shadow-sm' : item.id === 'exam' ? 'bg-[#f4c95d] text-[#083f32] font-extrabold shadow-md shadow-black/10 hover:bg-[#ffd96c] hover:-translate-y-0.5' : 'text-white/72 hover:bg-white/10 hover:text-white'}`}>
                     <span className="w-5 text-center">{item.icon}</span><span>{item.label}</span>
                     {item.badge && <span className="ml-auto text-[9px] font-extrabold bg-amber-300 text-amber-950 rounded px-1.5 py-0.5">{item.badge}</span>}
                   </button>
@@ -463,11 +480,11 @@ export default function MyLearningDashboard() {
                     <h3 className="mt-4 font-extrabold text-gray-900">语法错题</h3>
                     <div className="mt-1 flex items-end justify-between gap-3"><p className="text-xs leading-relaxed text-gray-500">分类复习选择题、挖空练习和改错题中的错误。</p><span className="shrink-0 font-extrabold text-emerald-800 transition group-hover:translate-x-1">{learning.grammarMistakeCount ? '开始复习 →' : '暂无错题'}</span></div>
                   </button>
-                  <button onClick={() => navigate('/cambridge/reading')} className="group rounded-2xl border border-violet-200 bg-violet-50/60 p-4 text-left transition hover:-translate-y-0.5 hover:border-violet-300 hover:shadow-sm">
+                  <button onClick={() => navigate(learning.readingMistakePath)} className="group rounded-2xl border border-violet-200 bg-violet-50/60 p-4 text-left transition hover:-translate-y-0.5 hover:border-violet-300 hover:shadow-sm">
                     <div className="flex items-center justify-between"><span className="grid h-10 w-10 place-items-center rounded-xl bg-violet-600 text-lg">📄</span><span className="rounded-full bg-white px-3 py-1 text-xs font-extrabold text-violet-800">{learning.readingMistakeCount} 题</span></div>
                     <h3 className="mt-4 font-extrabold text-gray-900">阅读错题</h3><div className="mt-1 flex items-end justify-between gap-2"><p className="text-xs leading-relaxed text-gray-500">复习真题阅读中答错的题目。</p><span className="shrink-0 font-extrabold text-violet-800 transition group-hover:translate-x-1">{learning.readingMistakeCount ? '开始复习 →' : '暂无错题'}</span></div>
                   </button>
-                  <button onClick={() => navigate('/cambridge/listening')} className="group rounded-2xl border border-cyan-200 bg-cyan-50/60 p-4 text-left transition hover:-translate-y-0.5 hover:border-cyan-300 hover:shadow-sm">
+                  <button onClick={() => navigate(learning.listeningMistakePath)} className="group rounded-2xl border border-cyan-200 bg-cyan-50/60 p-4 text-left transition hover:-translate-y-0.5 hover:border-cyan-300 hover:shadow-sm">
                     <div className="flex items-center justify-between"><span className="grid h-10 w-10 place-items-center rounded-xl bg-cyan-600 text-lg">🎧</span><span className="rounded-full bg-white px-3 py-1 text-xs font-extrabold text-cyan-800">{learning.listeningMistakeCount} 题</span></div>
                     <h3 className="mt-4 font-extrabold text-gray-900">听力错题</h3><div className="mt-1 flex items-end justify-between gap-2"><p className="text-xs leading-relaxed text-gray-500">回顾各 Part 中听辨错误的题目。</p><span className="shrink-0 font-extrabold text-cyan-800 transition group-hover:translate-x-1">{learning.listeningMistakeCount ? '开始复习 →' : '暂无错题'}</span></div>
                   </button>
@@ -504,7 +521,7 @@ export default function MyLearningDashboard() {
                 <button onClick={saveStudyPlan} className="w-full rounded-xl bg-[#0d7656] py-3 font-bold text-white">保存计划</button>
               </div>
             ) : panel === 'mistakes' ? (
-              <div className="mt-5"><div className="rounded-2xl border border-gray-100 bg-gray-50 p-5 text-sm text-gray-600">当前共有 <strong className="text-gray-900">{learning.mistakeCount}</strong> 道待复习错题，其中词汇 {learning.vocabMistakeCount} 道、语法 {learning.grammarMistakeCount} 道。</div><button onClick={() => { setPanel(null); navigate(learning.grammarMistakeCount ? '/cambridge/grammar/mistakes' : '/cambridge/words') }} disabled={!learning.mistakeCount} className="mt-4 w-full rounded-xl bg-[#0d7656] py-3 font-bold text-white disabled:bg-gray-200">{learning.mistakeCount ? '进入错题复习' : '暂时没有错题'}</button></div>
+              <div className="mt-5"><div className="rounded-2xl border border-gray-100 bg-gray-50 p-5 text-sm leading-7 text-gray-600">当前共有 <strong className="text-gray-900">{learning.mistakeCount}</strong> 项待复习：词汇 {learning.vocabMistakeCount}、语法 {learning.grammarMistakeCount}、阅读 {learning.readingMistakeCount}、听力 {learning.listeningMistakeCount}、听写 {learning.gapMistakeCount}。</div><button onClick={() => { setPanel(null); navigate(learning.readingMistakeCount ? learning.readingMistakePath : learning.listeningMistakeCount ? learning.listeningMistakePath : learning.grammarMistakeCount ? '/cambridge/grammar/mistakes' : learning.vocabMistakeCount ? '/cambridge/words?mode=review' : '/cambridge/dictation') }} disabled={!learning.mistakeCount} className="mt-4 w-full rounded-xl bg-[#0d7656] py-3 font-bold text-white disabled:bg-gray-200">{learning.mistakeCount ? '进入错题复习' : '暂时没有错题'}</button></div>
             ) : (
               <div className="mt-5"><div className="rounded-2xl border border-gray-100 bg-gray-50 p-5 text-sm text-gray-600">{learning.records.length ? `当前设备已保存 ${learning.records.length} 条练习记录。` : '当前还没有练习记录，完成练习后会自动显示。'}</div><button onClick={() => setPanel(null)} className="mt-4 w-full rounded-xl bg-[#0d7656] py-3 font-bold text-white">关闭</button></div>
             )}

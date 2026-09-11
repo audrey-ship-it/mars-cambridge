@@ -32,6 +32,70 @@ function ReferenceAnswer({ topic }) {
   )
 }
 
+const ANSWER_MATCH_STOP_WORDS = new Set(['do', 'you', 'is', 'are', 'a', 'an', 'the', 'to', 'for', 'of', 'these', 'different', 'one', 'which', 'what', 'why', 'or', 'and', 'like', 'enjoy', 'wearing', 'playing', 'going', 'doing', 'think', 'tell', 'about'])
+
+const PART2_ANSWER_OVERRIDES = {
+  'Different things to wear|Do you like shopping for clothes?': 'Yes, I do. I like shopping for clothes because I enjoy choosing new colours and styles. For example, I often go to the shopping centre with my mum at weekends.',
+  'Different things to wear|Do you like wearing sunglasses?': 'Yes, I do. I like wearing sunglasses because they protect my eyes from bright sunlight. For example, I always wear them at the beach in summer.',
+  'Different things to wear|Are trainers comfortable?': 'Yes, I think they are. Trainers are comfortable because they are light and easy to walk in. For example, I wear mine when I go to school or play sport.',
+  'Different things to wear|Do you like wearing caps?': 'Yes, I do. I like wearing caps because they keep the sun off my face. For example, I usually wear a cap when I play football outdoors.',
+  'Different things to wear|Is a watch useful?': 'Yes, I think it is. A watch is useful because it helps me manage my time. For example, I use mine to make sure I arrive at school on time.',
+  'Holidays & Travel|Where did you go on your last holiday?': 'Last summer, I went to Hainan with my family. It is a beautiful island in southern China.',
+  'Ways of getting to school|Is walking to school fun?': 'Yes, walking to school can be fun because I can talk to my friends on the way.',
+  'Ways of getting to school|Is going to school by scooter dangerous?': 'It can be dangerous if the roads are busy, so you should wear a helmet and ride carefully.',
+  'Ways of getting to school|Which way of getting to school do you like best?': 'I like walking to school best because it is healthy and my school is close to my home.',
+  'Different types of exercise|Do you enjoy exercising in the morning?': 'Yes, I do. Morning exercise gives me energy and helps me feel ready for the day.',
+  'Different outdoor activities|Which one do you like best? Why?': 'I like walking in a forest best because it is peaceful and I can enjoy nature.',
+  'Different fun activities|Which one do you like best? Why?': 'I like travelling best because I can visit new places and learn about different cultures.',
+  'Different school subjects|Which one do you like best? Why?': 'I like art best because I enjoy drawing, painting and making creative things.',
+  'Different things you do at school|Which one do you like best? Why?': 'I like making music best because it is creative and fun to do with classmates.',
+  'Different things to do on holiday|Are winter sports exciting?': 'Yes, winter sports are exciting because they are fast and you can enjoy the snow.',
+  'Different things to do on holiday|Which one do you like best? Why?': 'I like winter sports best because they are exciting and very different from my usual activities.',
+  'Different things to read|Are comics fun to read?': 'Yes, comics are fun to read because the pictures make the stories lively and easy to follow.',
+  'Different things to read|Which one do you like best? Why?': 'I like comics best because they are colourful, entertaining and easy to understand.',
+  'Different activities to do at home|Do you enjoy talking with your family?': 'Yes, I do. I enjoy talking with my family because we share news and help each other.',
+  'Different activities to do at home|Which one do you like best? Why?': 'I like cooking best because I can learn new recipes and make food for my family.',
+  'Different things to wear|Which one do you like best? Why?': 'I like trainers best because they are comfortable and useful for walking or doing sport.',
+}
+
+function structuredSpeakingAnswer(prompt, answer) {
+  if (/^(yes|no|not really|sometimes)/i.test(answer)) return answer
+  const negative = /\b(?:do not|don't|doesn't|not often|not really)\b/i.test(answer)
+  if (/^\s*do you\b/i.test(prompt)) return `${negative ? 'Not really.' : 'Yes, I do.'} ${answer}`
+  if (/^\s*are\b/i.test(prompt)) return `Yes, I think they are. ${answer}`
+  if (/^\s*is\b/i.test(prompt)) return `Yes, I think it is. ${answer}`
+  if (/^\s*would you\b/i.test(prompt)) return `Yes, I would. ${answer}`
+  return answer
+}
+
+function speakingPromptAnswers(topic) {
+  if (Array.isArray(topic.modelAnswers) && topic.modelAnswers.length) return topic.modelAnswers
+  const sentences = (String(topic.modelAnswer || '').match(/[^.!?]+[.!?]+|[^.!?]+$/g) || [])
+    .flatMap(sentence => sentence.split(/,\s+(?:and|but|while|although)\s+|;\s*/i))
+    .map(sentence => sentence.trim().replace(/^(?:and|but|while|although)\s+/i, ''))
+    .filter(Boolean)
+    .map(sentence => `${sentence.charAt(0).toUpperCase()}${sentence.slice(1).replace(/[.!?]?$/, '.')}`)
+  if (!sentences.length) return topic.cardPrompts.map(() => 'There are many possible answers. Give your opinion and add a reason.')
+
+  return topic.cardPrompts.map((prompt, promptIndex) => {
+    const reviewedAnswer = PART2_ANSWER_OVERRIDES[`${topic.theme}|${prompt}`]
+    if (reviewedAnswer) return reviewedAnswer
+    if (/^\s*(which|what .* best)/i.test(prompt)) return sentences[sentences.length - 1]
+    const words = prompt.toLowerCase().match(/[a-z]+/g)?.filter(word => word.length > 2 && !ANSWER_MATCH_STOP_WORDS.has(word)) || []
+    let bestSentence = sentences[Math.min(promptIndex, sentences.length - 1)]
+    let bestScore = -1
+    sentences.forEach(sentence => {
+      const lower = sentence.toLowerCase()
+      const score = words.reduce((total, word, wordIndex) => {
+        const singular = word.length > 3 && word.endsWith('s') ? word.slice(0, -1) : word
+        return total + (lower.includes(word) || lower.includes(singular) ? wordIndex + 1 : 0)
+      }, 0)
+      if (score > bestScore) { bestScore = score; bestSentence = sentence }
+    })
+    return bestSentence
+  })
+}
+
 export default function CambridgeSpeaking() {
   const [searchParams, setSearchParams] = useSearchParams()
   const initialPart = searchParams.get('part') === '2' ? 2 : searchParams.get('part') === '1' ? 1 : 0
@@ -196,10 +260,17 @@ export default function CambridgeSpeaking() {
               </div>
               <div className="p-6">
                 <div className="text-xs font-extrabold tracking-wide text-emerald-700">讨论问题</div>
+                <p className="mt-2 rounded-xl bg-amber-50 px-4 py-3 text-xs leading-5 text-amber-800">口语题没有唯一标准答案。下面提供的是“参考回答之一”，你可以替换观点、例子和理由。</p>
                 <ol className="mt-4 space-y-3">
-                  {topic.cardPrompts.map((question, index) => <li key={index} className="flex gap-3 rounded-xl border border-slate-200 p-3 text-sm leading-6 text-slate-700"><span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-emerald-100 text-xs font-extrabold text-emerald-700">{index + 1}</span>{question}</li>)}
+                  {topic.cardPrompts.map((question, index) => <li key={index} className="rounded-xl border border-slate-200 p-4 text-sm leading-6 text-slate-700">
+                    <div className="flex gap-3"><span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-emerald-100 text-xs font-extrabold text-emerald-700">{index + 1}</span><strong className="font-semibold text-slate-800">{question}</strong></div>
+                    <div className="ml-9 mt-3 rounded-xl border border-emerald-100 bg-emerald-50 px-4 py-3">
+                      <div className="mb-1 text-[10px] font-extrabold uppercase tracking-wider text-emerald-700">参考回答之一</div>
+                      <p className="text-sm leading-6 text-slate-700">{structuredSpeakingAnswer(question, speakingPromptAnswers(topic)[index])}</p>
+                    </div>
+                  </li>)}
                 </ol>
-                <div className="mt-5"><ReferenceAnswer topic={topic} /></div>
+                {!!topic.phrases?.length && <div className="mt-5"><div className="mb-2 text-xs font-extrabold text-slate-500">可替换表达</div><div className="flex flex-wrap gap-2">{topic.phrases.map((phrase, index) => <span key={index} className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">💬 {phrase}</span>)}</div></div>}
               </div>
             </div>
           </section>
