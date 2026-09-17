@@ -187,6 +187,33 @@ const initialTasks = [
   { id: 3, title: '听力 Part 2', detail: '1 组练习 · 预计 10 分钟', path: '/cambridge/listening?part=2&set=1', color: 'bg-cyan-500', done: false },
 ]
 
+const directTaskPaths = {
+  '复习高频词汇': '/cambridge/words?mode=reading288',
+  '复习阅读高频词': '/cambridge/words?mode=reading288',
+  '阅读 Part 3': '/cambridge/reading?part=3',
+  '听力 Part 2': '/cambridge/listening?part=2&set=1',
+  '核心词汇复习': '/cambridge/words?mode=reading288',
+  '分类词汇巩固': '/cambridge/words?mode=reading288',
+  '阅读高频词练习': '/cambridge/words?mode=reading288',
+  '继续高频词练习': '/cambridge/words?mode=reading288',
+  '学习语法要点': '/cambridge/grammar/1',
+  '完成语法选择题': '/cambridge/grammar/1',
+  '听前预测': '/cambridge/listening?part=2&set=1',
+  '完成听力真题': '/cambridge/listening?part=2&set=1',
+  '阅读词汇预热': '/cambridge/words?mode=reading288',
+  '完成阅读真题': '/cambridge/reading?part=3',
+}
+
+function taskDestination(task, learning) {
+  if (task.title === '回顾听力错题' && learning.listeningMistakeCount) return learning.listeningMistakePath
+  if (task.title === '回顾阅读错题' && learning.readingMistakeCount) return learning.readingMistakePath
+  if (task.title === '复习阅读与听力错题') {
+    if (learning.readingMistakeCount) return learning.readingMistakePath
+    if (learning.listeningMistakeCount) return learning.listeningMistakePath
+  }
+  return directTaskPaths[task.title] || task.path
+}
+
 function readTasks() {
   try {
     const saved = JSON.parse(localStorage.getItem('mars_today_tasks') || 'null')
@@ -212,9 +239,9 @@ function readStudyPlan() {
 
 const weeklyTaskTemplates = [
   { title: '阅读高频词复习', path: '/cambridge/words?mode=reading288', color: 'bg-emerald-500', focus: '阅读高频词' },
-  { title: '语法专项练习', path: '/cambridge/grammar', color: 'bg-blue-500', focus: '1 个语法单元' },
-  { title: '听力真题训练', path: '/cambridge/listening', color: 'bg-cyan-500', focus: '1 个听力 Part' },
-  { title: '阅读真题训练', path: '/cambridge/reading', color: 'bg-violet-500', focus: '1 个阅读 Part' },
+  { title: '语法专项练习', path: '/cambridge/grammar/1', color: 'bg-blue-500', focus: '1 个语法单元' },
+  { title: '听力专项训练', path: '/cambridge/listening?part=2&set=1', color: 'bg-cyan-500', focus: '1 个听力 Part' },
+  { title: '阅读专项训练', path: '/cambridge/reading?part=3', color: 'bg-violet-500', focus: '1 个阅读 Part' },
   { title: '写作输出练习', path: '/cambridge/exams/ket-3-test1?tab=writing&part=6', color: 'bg-rose-500', focus: '1 篇短写作' },
   { title: '口语表达练习', path: '/cambridge/speaking', color: 'bg-orange-500', focus: '参考与表达' },
   { title: '错题集中复习', path: '/cambridge/grammar/mistakes', color: 'bg-amber-500', focus: '本周错题' },
@@ -234,9 +261,11 @@ function generateWeeklyPlan(plan) {
 const dailyTaskTemplates = {
   '阅读高频词复习': [['阅读高频词练习', '复习 20 个高频词 · 约 10 分钟', '/cambridge/words?mode=reading288'], ['继续高频词练习', '完成下一组高频词 · 约 10 分钟', '/cambridge/words?mode=reading288'], ['词汇错题复习', '回顾今天的易错词 · 约 10 分钟', '/cambridge/words?mode=review']],
   '高频词汇复习': [['阅读高频词练习', '复习 20 个高频词 · 约 10 分钟', '/cambridge/words?mode=reading288'], ['继续高频词练习', '完成下一组高频词 · 约 10 分钟', '/cambridge/words?mode=reading288'], ['词汇错题复习', '回顾今天的易错词 · 约 10 分钟', '/cambridge/words?mode=review']],
-  '语法专项练习': [['学习语法要点', '阅读 1 个语法单元讲解 · 约 8 分钟', '/cambridge/grammar'], ['完成语法选择题', '完成 1 组选择练习 · 约 12 分钟', '/cambridge/grammar'], ['巩固语法错题', '复习本次易错题 · 约 10 分钟', '/cambridge/grammar/mistakes']],
-  '听力真题训练': [['听前预测', '浏览 1 个听力 Part 题目 · 约 5 分钟', '/cambridge/listening'], ['完成听力真题', '完成 1 个听力 Part · 约 15 分钟', '/cambridge/listening'], ['回顾听力错题', '查看答案与错题解析 · 约 10 分钟', '/cambridge/listening']],
-  '阅读真题训练': [['阅读词汇预热', '复习本篇关键表达 · 约 5 分钟', '/cambridge/reading'], ['完成阅读真题', '完成 1 个阅读 Part · 约 15 分钟', '/cambridge/reading'], ['回顾阅读错题', '查看答案与定位线索 · 约 10 分钟', '/cambridge/reading']],
+  '语法专项练习': [['学习语法要点', '阅读第 1 单元讲解 · 约 8 分钟', '/cambridge/grammar/1'], ['完成语法选择题', '完成第 1 单元练习 · 约 12 分钟', '/cambridge/grammar/1'], ['巩固语法错题', '复习本次易错题 · 约 10 分钟', '/cambridge/grammar/mistakes']],
+  '听力专项训练': [['听前预测', '浏览 Part 2 第 1 套题目 · 约 5 分钟', '/cambridge/listening?part=2&set=1'], ['完成听力练习', '完成 Part 2 第 1 套 · 约 15 分钟', '/cambridge/listening?part=2&set=1'], ['回顾听力错题', '查看答案与错题解析 · 约 10 分钟', '/cambridge/listening?part=2&set=1']],
+  '阅读专项训练': [['阅读词汇预热', '复习阅读高频词 · 约 5 分钟', '/cambridge/words?mode=reading288'], ['完成阅读练习', '完成 Part 3 练习 · 约 15 分钟', '/cambridge/reading?part=3'], ['回顾阅读错题', '查看答案与定位线索 · 约 10 分钟', '/cambridge/reading?part=3']],
+  '听力真题训练': [['听前预测', '浏览 Part 2 第 1 套题目 · 约 5 分钟', '/cambridge/listening?part=2&set=1'], ['完成听力练习', '完成 Part 2 第 1 套 · 约 15 分钟', '/cambridge/listening?part=2&set=1'], ['回顾听力错题', '查看答案与错题解析 · 约 10 分钟', '/cambridge/listening?part=2&set=1']],
+  '阅读真题训练': [['阅读词汇预热', '复习阅读高频词 · 约 5 分钟', '/cambridge/words?mode=reading288'], ['完成阅读练习', '完成 Part 3 练习 · 约 15 分钟', '/cambridge/reading?part=3'], ['回顾阅读错题', '查看答案与定位线索 · 约 10 分钟', '/cambridge/reading?part=3']],
   '写作输出练习': [['分析写作任务', '确定题目、对象和写作要点 · 约 5 分钟', '/cambridge/exams/ket-3-test1?tab=writing&part=6'], ['完成一篇短写作', '完成邮件或短文草稿 · 约 18 分钟', '/cambridge/exams/ket-3-test1?tab=writing&part=6'], ['检查并修改', '核对内容、语法和拼写 · 约 7 分钟', '/cambridge/exams/ket-3-test1?tab=writing&part=6']],
   '口语表达练习': [['熟悉口语题目', '阅读本次问题 · 约 8 分钟', '/cambridge/speaking'], ['独立口头回答', '完成 1 组口语回答 · 约 14 分钟', '/cambridge/speaking'], ['对照参考答案', '整理一个可复用表达 · 约 8 分钟', '/cambridge/speaking']],
   '错题集中复习': [['复习词汇错题', '回顾待复习词汇 · 约 10 分钟', '/cambridge/words?mode=review'], ['复习语法错题', '完成语法错题练习 · 约 10 分钟', '/cambridge/grammar/mistakes'], ['复习阅读与听力错题', '回顾本周易错题 · 约 10 分钟', '/cambridge/reading']],
@@ -428,7 +457,7 @@ export default function MyLearningDashboard() {
                 <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
                   {weeklyPlan.map(task => {
                     const current = task.id === currentWeeklyTask?.id
-                    return <button key={task.id} onClick={() => current ? navigate(tasks.find(item => !item.done)?.path || task.path) : task.done ? navigate(task.path) : notify(`请先完成${currentWeeklyTask.day}的任务`)} className={`rounded-xl border p-3 text-left transition ${task.done ? 'border-emerald-200 bg-emerald-100/70' : current ? 'border-amber-300 bg-amber-50 ring-1 ring-amber-200' : 'border-emerald-100 bg-white/80 hover:border-emerald-300 hover:bg-white'}`}>
+                    return <button key={task.id} onClick={() => current ? navigate(taskDestination(tasks.find(item => !item.done) || task, learning)) : task.done ? navigate(task.path) : notify(`请先完成${currentWeeklyTask.day}的任务`)} className={`rounded-xl border p-3 text-left transition ${task.done ? 'border-emerald-200 bg-emerald-100/70' : current ? 'border-amber-300 bg-amber-50 ring-1 ring-amber-200' : 'border-emerald-100 bg-white/80 hover:border-emerald-300 hover:bg-white'}`}>
                       <div className="flex items-center justify-between gap-2"><span className={`text-[10px] font-bold ${current ? 'text-amber-700' : 'text-emerald-600'}`}>{task.day}</span>{task.done && <span className="text-[10px] font-extrabold text-emerald-700">✓ 已完成</span>}{current && !task.done && <span className="text-[10px] font-extrabold text-amber-700">今日</span>}</div>
                       <strong className="mt-1 block text-xs text-gray-800">{task.title}</strong>
                     </button>
@@ -452,7 +481,7 @@ export default function MyLearningDashboard() {
                             <button aria-label={`切换${task.title}完成状态`} onClick={() => toggleTask(task.id)} className={`mt-0.5 w-5 h-5 rounded-full grid place-items-center flex-shrink-0 ${task.done ? 'bg-emerald-500 text-white' : 'border-2 border-gray-300'}`}>{task.done && '✓'}</button>
                             <div className="min-w-0"><div className={`text-sm font-bold ${task.done ? 'line-through text-gray-400' : 'text-gray-900'}`}>{task.title}</div><div className="text-[11px] text-gray-400 mt-1">{task.detail}</div></div>
                           </div>
-                          {!task.done && <button onClick={() => navigate(task.path)} className="mt-3 w-full py-2 rounded-lg bg-[#0d7656] text-white text-xs font-bold hover:bg-[#095f46]">开始任务 →</button>}
+                          {!task.done && <button onClick={() => navigate(taskDestination(task, learning))} className="mt-3 w-full py-2 rounded-lg bg-[#0d7656] text-white text-xs font-bold hover:bg-[#095f46]">开始任务 →</button>}
                         </div>
                       ))}
                     </div>
