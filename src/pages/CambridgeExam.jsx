@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { KET_EXAMS } from '../data/ketExamData'
 import { ketTests } from '../data/ketReadingData'
+import { KET_STANDARD_EXAM_SOURCES } from '../data/ketStandardExamSources'
 import { OFFICIAL_LISTENING_SETS } from '../data/officialListeningManifest'
 import { CambridgeLayout } from './CambridgeApp'
 
@@ -52,11 +53,7 @@ const EXAM_COLLECTIONS = [
 ]
 
 const PENDING_EXAMS = {
-  standard: Array.from({ length: 8 }, (_, index) => ({
-    id: `standard-${index + 1}`,
-    name: `标准版真题 ${index + 1}`,
-    source: `A2 KET 新题型官方真题 ${Math.floor(index / 4) + 1} · Test ${(index % 4) + 1}`,
-  })),
+  standard: KET_STANDARD_EXAM_SOURCES,
   mock: [
     ...Array.from({ length: 6 }, (_, index) => ({ id: `trainer-1-${index + 1}`, name: `Trainer 1 · Test ${index + 1}`, source: '剑桥 KET 官方模考题精讲精练 1' })),
     ...Array.from({ length: 6 }, (_, index) => ({ id: `trainer-2-${index + 1}`, name: `Trainer 2 · Test ${index + 1}`, source: '剑桥 KET 官方模考题精讲精练 2' })),
