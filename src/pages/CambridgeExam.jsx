@@ -75,6 +75,7 @@ function examSetNumber(exam) {
 ══════════════════════════════ */
 function readExamListProgress(exam) {
   const setId = examSetNumber(exam)
+  const listeningReady = OFFICIAL_LISTENING_SETS.find(set => set.id === setId)?.readyParts?.length === 5
   const listeningParts = 5
   const readingParts = exam.reading?.parts?.length || (ketTests[setId - 1] ? 5 : 0)
   const writingParts = exam.reading?.writing?.length || 0
@@ -95,10 +96,10 @@ function readExamListProgress(exam) {
         return Array.isArray(values) && values.length === 5 && values.every(value => value !== null && value !== undefined && String(value).trim() !== '')
       })
       started = started || answeredParts.some(Boolean) || Boolean(listening.startedAt)
-      completed += listening.completed ? listeningParts : answeredParts.filter(Boolean).length
+      if (listeningReady) completed += listening.completed ? listeningParts : answeredParts.filter(Boolean).length
       latest = listening.finishedAt || listening.startedAt || latest
       const nextPart = answeredParts.findIndex(done => !done) + 1 || listeningParts
-      continuePath = `/cambridge/listening?mode=mock&exam=${exam.id}&part=${nextPart}&set=${setId}`
+      if (listeningReady) continuePath = `/cambridge/listening?mode=mock&exam=${exam.id}&part=${nextPart}&set=${setId}`
     }
 
     const reading = JSON.parse(localStorage.getItem(`mars_ket_exam_progress_v1:${exam.id}:reading`) || 'null')
@@ -139,7 +140,7 @@ function readExamListProgress(exam) {
   const percent = total ? Math.min(100, Math.round(completed / total * 100)) : 0
   return {
     percent,
-    status: percent === 100 ? '已完成' : started ? '进行中' : '未开始',
+    status: !listeningReady ? '核对中' : percent === 100 ? '已完成' : started ? '进行中' : '未开始',
     continuePath,
     completed,
     total,
