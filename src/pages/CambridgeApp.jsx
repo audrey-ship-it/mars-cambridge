@@ -771,7 +771,18 @@ function WordsPractice({ level, vocabChoice, onBack }) {
     const normalizeSpelling = value => value.toLowerCase().replace(/\s+/g, '')
     const isCorrect = normalizeSpelling(answer.trim()) === normalizeSpelling(current.word)
     setCorrect(isCorrect); setChecked(true)
+    if (!isCorrect) saveSpellingMistake(current, answer.trim())
     if (isCorrect) playCorrect(); else playWrong()
+  }
+
+  function saveSpellingMistake(word, attemptedAnswer) {
+    try {
+      const saved = JSON.parse(localStorage.getItem('mars_vocab_review_queue_v1') || '[]')
+      const queue = new Map((Array.isArray(saved) ? saved : []).filter(item => item?.word).map(item => [item.word.toLowerCase(), item]))
+      const key = word.word.toLowerCase()
+      queue.set(key, { ...queue.get(key), ...word, lastAnswer: attemptedAnswer, lastWrongAt: new Date().toISOString(), mistakeType: 'spelling' })
+      localStorage.setItem('mars_vocab_review_queue_v1', JSON.stringify([...queue.values()]))
+    } catch { /* local storage may be unavailable */ }
   }
 
   function handleNext() {
@@ -797,7 +808,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
       if (result.correct) queue.delete(key)
       else {
         const source = allWords.find(w => w.word.toLowerCase() === key)
-        if (source) queue.set(key, source)
+        if (source) queue.set(key, { ...queue.get(key), ...source })
       }
     })
     try {
@@ -1104,7 +1115,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                     initial={{ opacity: 0, y: 8, scale: 0.97 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0 }}
-                    className={`flex items-center justify-center gap-3 py-3.5 px-4 rounded-2xl mb-4 font-semibold text-base ${
+                    className={`flex flex-wrap items-center justify-center gap-3 py-3.5 px-4 rounded-2xl mb-4 font-semibold text-base ${
                       correct
                         ? 'bg-emerald-50 border border-emerald-200 text-emerald-700'
                         : 'bg-red-50 border border-red-200 text-red-700'
@@ -1119,6 +1130,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                       <>
                         <span className="text-red-400 text-xl">✗</span>
                         <span>正确答案：<span className="font-extrabold tracking-widest ml-1">{current.word}</span></span>
+                        <span className="text-xs">已加入错词本</span>
                         <button onClick={() => speak(current.word)}
                           className="text-red-400 hover:text-red-600 transition-colors ml-1" aria-label="播放正确答案发音"><SpeakerIcon className="w-4 h-4"/></button>
                       </>
@@ -1138,6 +1150,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                     onClick={() => {
                       // Skip: record as wrong without showing answer screen
                       const updated = [...results, { word: current.word, chinese: current.chinese, answer: '', correct: false, usedHint: openHints.size > 0 }]
+                      saveSpellingMistake(current, '')
                       setResults(updated)
                       recordMastery(current.word, false, openHints.size > 0)
                       if (index + 1 >= words.length) {
