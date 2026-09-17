@@ -182,15 +182,19 @@ const navGroups = [
 ]
 
 const initialTasks = [
-  { id: 1, title: '复习高频词汇', detail: '20 词 · 预计 8 分钟', path: '/cambridge/words', color: 'bg-emerald-500', done: false },
-  { id: 2, title: '阅读 Part 3', detail: '1 组练习 · 预计 12 分钟', path: '/cambridge-reading', color: 'bg-violet-500', done: false },
-  { id: 3, title: '听力 Part 2', detail: '1 组练习 · 预计 10 分钟', path: '/cambridge/listening', color: 'bg-cyan-500', done: false },
+  { id: 1, title: '复习阅读高频词', detail: '20 词 · 预计 8 分钟', path: '/cambridge/words?mode=reading288', color: 'bg-emerald-500', done: false },
+  { id: 2, title: '阅读 Part 3', detail: '1 组练习 · 预计 12 分钟', path: '/cambridge/reading?part=3', color: 'bg-violet-500', done: false },
+  { id: 3, title: '听力 Part 2', detail: '1 组练习 · 预计 10 分钟', path: '/cambridge/listening?part=2&set=1', color: 'bg-cyan-500', done: false },
 ]
 
 function readTasks() {
   try {
     const saved = JSON.parse(localStorage.getItem('mars_today_tasks') || 'null')
-    return Array.isArray(saved) ? saved : initialTasks
+    if (!Array.isArray(saved)) return initialTasks
+    return saved.map(task => {
+      if (task.weekTaskId) return task
+      return initialTasks.find(item => item.id === task.id) ? { ...task, ...initialTasks.find(item => item.id === task.id), done: task.done } : task
+    })
   } catch { return initialTasks }
 }
 
@@ -207,7 +211,7 @@ function readStudyPlan() {
 }
 
 const weeklyTaskTemplates = [
-  { title: '高频词汇复习', path: '/cambridge/words', color: 'bg-emerald-500', focus: '核心词汇' },
+  { title: '阅读高频词复习', path: '/cambridge/words?mode=reading288', color: 'bg-emerald-500', focus: '阅读高频词' },
   { title: '语法专项练习', path: '/cambridge/grammar', color: 'bg-blue-500', focus: '1 个语法单元' },
   { title: '听力真题训练', path: '/cambridge/listening', color: 'bg-cyan-500', focus: '1 个听力 Part' },
   { title: '阅读真题训练', path: '/cambridge/reading', color: 'bg-violet-500', focus: '1 个阅读 Part' },
@@ -228,7 +232,8 @@ function generateWeeklyPlan(plan) {
 }
 
 const dailyTaskTemplates = {
-  '高频词汇复习': [['核心词汇复习', '复习 20 个高频词 · 约 10 分钟', '/cambridge/words'], ['分类词汇巩固', '完成 1 组分类词汇 · 约 10 分钟', '/cambridge/words'], ['词汇错题复习', '回顾今天的易错词 · 约 10 分钟', '/cambridge/words?mode=review']],
+  '阅读高频词复习': [['阅读高频词练习', '复习 20 个高频词 · 约 10 分钟', '/cambridge/words?mode=reading288'], ['继续高频词练习', '完成下一组高频词 · 约 10 分钟', '/cambridge/words?mode=reading288'], ['词汇错题复习', '回顾今天的易错词 · 约 10 分钟', '/cambridge/words?mode=review']],
+  '高频词汇复习': [['阅读高频词练习', '复习 20 个高频词 · 约 10 分钟', '/cambridge/words?mode=reading288'], ['继续高频词练习', '完成下一组高频词 · 约 10 分钟', '/cambridge/words?mode=reading288'], ['词汇错题复习', '回顾今天的易错词 · 约 10 分钟', '/cambridge/words?mode=review']],
   '语法专项练习': [['学习语法要点', '阅读 1 个语法单元讲解 · 约 8 分钟', '/cambridge/grammar'], ['完成语法选择题', '完成 1 组选择练习 · 约 12 分钟', '/cambridge/grammar'], ['巩固语法错题', '复习本次易错题 · 约 10 分钟', '/cambridge/grammar/mistakes']],
   '听力真题训练': [['听前预测', '浏览 1 个听力 Part 题目 · 约 5 分钟', '/cambridge/listening'], ['完成听力真题', '完成 1 个听力 Part · 约 15 分钟', '/cambridge/listening'], ['回顾听力错题', '查看答案与错题解析 · 约 10 分钟', '/cambridge/listening']],
   '阅读真题训练': [['阅读词汇预热', '复习本篇关键表达 · 约 5 分钟', '/cambridge/reading'], ['完成阅读真题', '完成 1 个阅读 Part · 约 15 分钟', '/cambridge/reading'], ['回顾阅读错题', '查看答案与定位线索 · 约 10 分钟', '/cambridge/reading']],
@@ -423,7 +428,7 @@ export default function MyLearningDashboard() {
                 <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
                   {weeklyPlan.map(task => {
                     const current = task.id === currentWeeklyTask?.id
-                    return <button key={task.id} onClick={() => navigate(task.path)} className={`rounded-xl border p-3 text-left transition ${task.done ? 'border-emerald-200 bg-emerald-100/70' : current ? 'border-amber-300 bg-amber-50 ring-1 ring-amber-200' : 'border-emerald-100 bg-white/80 hover:border-emerald-300 hover:bg-white'}`}>
+                    return <button key={task.id} onClick={() => current ? navigate(tasks.find(item => !item.done)?.path || task.path) : task.done ? navigate(task.path) : notify(`请先完成${currentWeeklyTask.day}的任务`)} className={`rounded-xl border p-3 text-left transition ${task.done ? 'border-emerald-200 bg-emerald-100/70' : current ? 'border-amber-300 bg-amber-50 ring-1 ring-amber-200' : 'border-emerald-100 bg-white/80 hover:border-emerald-300 hover:bg-white'}`}>
                       <div className="flex items-center justify-between gap-2"><span className={`text-[10px] font-bold ${current ? 'text-amber-700' : 'text-emerald-600'}`}>{task.day}</span>{task.done && <span className="text-[10px] font-extrabold text-emerald-700">✓ 已完成</span>}{current && !task.done && <span className="text-[10px] font-extrabold text-amber-700">今日</span>}</div>
                       <strong className="mt-1 block text-xs text-gray-800">{task.title}</strong>
                     </button>

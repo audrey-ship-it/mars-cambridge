@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CambridgeLayout } from './CambridgeApp'
 import { ketTests } from '../data/ketReadingData'
@@ -105,8 +105,12 @@ function buildBatches(partId) {
 }
 
 export default function CambridgeReading() {
+  const [searchParams] = useSearchParams()
   const [level, setLevel] = useState(() => { try { return localStorage.getItem('cambridge_level') || 'KET' } catch { return 'KET' } })
-  const [partId,       setPartId]       = useState(1)
+  const [partId,       setPartId]       = useState(() => {
+    const requested = Number(searchParams.get('part'))
+    return Number.isInteger(requested) && requested >= 1 && requested <= 5 ? requested : 1
+  })
   const [part5Mode,    setPart5Mode]    = useState('official')
   const [part5Id,      setPart5Id]      = useState(1)
   const [batchIdx,     setBatchIdx]     = useState(0)

@@ -643,15 +643,17 @@ function CollocationsContent({ onBack }) {
 
 function WordsContent({ level }) {
   const [searchParams] = useSearchParams()
+  const directMode = searchParams.get('mode')
   const reviewChoice = (() => {
-    if (searchParams.get('mode') !== 'review') return null
+    if (directMode !== 'review') return null
     try {
       const words = JSON.parse(localStorage.getItem('mars_vocab_review_queue_v1') || '[]')
       return Array.isArray(words) && words.length ? { mode: 'review', words } : null
     } catch { return null }
   })()
-  const [view, setView] = useState(reviewChoice ? 'words' : 'choose') // 'choose' | 'words' | 'collocation'
-  const [vocabChoice, setVocabChoice] = useState(reviewChoice)
+  const directChoice = directMode === 'reading288' ? { mode: 'reading288' } : reviewChoice
+  const [view, setView] = useState(directChoice ? 'words' : 'choose') // 'choose' | 'words' | 'collocation'
+  const [vocabChoice, setVocabChoice] = useState(directChoice)
 
   if (view === 'collocation') {
     return <CollocationsContent onBack={() => setView('choose')} />
