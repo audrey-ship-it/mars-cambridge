@@ -1,4 +1,4 @@
-import { ketTests } from '../src/data/ketReadingData.js'
+import { ALL_KET_READING_TESTS } from '../src/data/ketReadingCatalog.js'
 import { ketPart5Sets } from '../src/data/ketPart5Extras.js'
 import { existsSync } from 'node:fs'
 import { resolve } from 'node:path'
@@ -34,7 +34,7 @@ function checkChoice(scope, question, labels = ['A', 'B', 'C']) {
   }
 }
 
-for (const test of ketTests) {
+for (const test of ALL_KET_READING_TESTS) {
   const scope = `Test ${test.id}`
   const isScan = test.source?.format === 'source-scan'
   if (!test.source?.file || !test.source?.test || test.source?.verified !== true) {
@@ -88,7 +88,7 @@ for (const test of ketTests) {
 
 if (ketPart5Sets.length) warn('Part 5', `保留 ${ketPart5Sets.length} 套专项题库；必须与“已核验官方真题”分区显示，不得混充整套原卷`)
 
-console.log(`阅读数据审计：${ketTests.length} 套整卷，${ketPart5Sets.length} 套 Part 5 专项`)
+console.log(`阅读数据审计：${ALL_KET_READING_TESTS.length} 套整卷，${ketPart5Sets.length} 套 Part 5 专项`)
 if (warnings.length) {
   console.log(`\n警告（${warnings.length}）：`)
   warnings.forEach(item => console.log(`- ${item}`))

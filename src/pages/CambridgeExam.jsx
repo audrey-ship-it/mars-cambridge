@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { KET_EXAMS } from '../data/ketExamData'
-import { ketTests } from '../data/ketReadingData'
+import { getKetReadingTest, hasCompleteKetReadingPaper } from '../data/ketReadingCatalog'
 import { KET_STANDARD_EXAM_SOURCES } from '../data/ketStandardExamSources'
 import { OFFICIAL_LISTENING_SETS } from '../data/officialListeningManifest'
 import { CambridgeLayout } from './CambridgeApp'
@@ -74,7 +74,7 @@ function readExamListProgress(exam) {
   const setId = examSetNumber(exam)
   const listeningReady = OFFICIAL_LISTENING_SETS.find(set => set.id === setId)?.readyParts?.length === 5
   const listeningParts = 5
-  const readingParts = exam.reading?.parts?.length || (ketTests[setId - 1] ? 5 : 0)
+  const readingParts = exam.reading?.parts?.length || (hasCompleteKetReadingPaper(getKetReadingTest(exam.id)) ? 5 : 0)
   const writingParts = exam.reading?.writing?.length || 0
   const speakingTopics = exam.speaking?.parts?.flatMap(part => part.topics || []) || []
   const total = listeningParts + readingParts + writingParts + speakingTopics.length
@@ -258,8 +258,8 @@ export default function CambridgeExam() {
   const { id } = useParams()
   const [searchParams] = useSearchParams()
   const baseExam = KET_EXAMS.find(e => e.id === id)
-  const readingSet = baseExam ? ketTests[examSetNumber(baseExam) - 1] : null
-  const exam = baseExam && !baseExam.reading?.parts?.length && readingSet
+  const readingSet = baseExam ? getKetReadingTest(baseExam.id) : null
+  const exam = baseExam && !baseExam.reading?.parts?.length && hasCompleteKetReadingPaper(readingSet)
     ? { ...baseExam, reading: { ...baseExam.reading, parts: adaptReadingTest(readingSet) } }
     : baseExam
   const requestedTab = searchParams.get('tab')

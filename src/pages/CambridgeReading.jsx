@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CambridgeLayout } from './CambridgeApp'
-import { ketTests } from '../data/ketReadingData'
+import { ALL_KET_READING_TESTS } from '../data/ketReadingCatalog'
 import { ketPart5Sets, PART5_GROUPS } from '../data/ketPart5Extras'
 
 const PART_LABELS = { 1: 'Part 1', 2: 'Part 2', 3: 'Part 3', 4: 'Part 4', 5: 'Part 5' }
@@ -97,7 +97,7 @@ function HighlightableText({ text, storageKey, className = '' }) {
 
 // Build one batch per official test and preserve source-scan page metadata.
 function buildBatches(partId) {
-  return ketTests.map((t, ti) => {
+  return ALL_KET_READING_TESTS.map((t, ti) => {
     const p = t[`part${partId}`]
     if (!p) return null
     return { ...p, testTitle: t.title, source: t.source, questions: (p.questions || []).map(q => ({ ...q, _key: `${ti}_${q.id}` })) }
@@ -133,8 +133,8 @@ export default function CambridgeReading() {
   const currentBatch = batches[batchIdx] || null
 
   // ── Part 5 data ────────────────────────────────────────
-  const verifiedTests = ketTests.filter(test => test.source?.verified)
-  const officialP5Test = ketTests.find(test => test.id === part5Id && test.source?.verified)
+  const verifiedTests = ALL_KET_READING_TESTS.filter(test => test.part5 && (test.source?.verified || test.source?.verifiedParts?.includes(5)))
+  const officialP5Test = verifiedTests.find(test => test.id === part5Id)
   const p5Set  = part5Mode === 'official'
     ? (officialP5Test ? { ...officialP5Test.part5, source: officialP5Test.title } : null)
     : ketPart5Sets.find(s => s.id === part5Id)
