@@ -73,31 +73,31 @@ function examSetNumber(exam) {
    Exam List Page  /cambridge/exams
 ══════════════════════════════ */
 function readExamListProgress(exam) {
-  const officialSetId = ['ket-3-test1', 'ket-3-test2', 'ket-3-test3', 'ket-3-test4'].indexOf(exam.id) + 9
-  const listeningParts = officialSetId >= 9 ? 5 : 0
-  const readingParts = exam.reading?.parts?.length || 0
+  const setId = examSetNumber(exam)
+  const listeningParts = 5
+  const readingParts = exam.reading?.parts?.length || (ketTests[setId - 1] ? 5 : 0)
   const writingParts = exam.reading?.writing?.length || 0
   const speakingTopics = exam.speaking?.parts?.flatMap(part => part.topics || []) || []
   const total = listeningParts + readingParts + writingParts + speakingTopics.length
   let completed = 0
   let started = false
   let latest = null
-  let continuePath = exam.reading?.parts?.length
+  let continuePath = readingParts
     ? `/cambridge/exams/${exam.id}?tab=reading`
     : `/cambridge/exams/${exam.id}?tab=writing`
 
   try {
-    if (listeningParts) {
-      for (let part = 1; part <= listeningParts; part += 1) {
-        const listening = JSON.parse(localStorage.getItem(`mars_ket_listening_progress_v1:set-${officialSetId}:part-${part}`) || 'null')
-        if (!listening) continue
-        started = true
-        if (listening.completed) completed += 1
-        if (!latest || String(listening.updatedAt) > String(latest)) {
-          latest = listening.updatedAt
-          continuePath = `/cambridge/listening?part=${part}&set=${officialSetId}`
-        }
-      }
+    const listening = JSON.parse(localStorage.getItem(`mars_ket_mock_listening_v2:set-${setId}`) || 'null')
+    if (listening) {
+      const answeredParts = Array.from({ length: listeningParts }, (_, index) => {
+        const values = listening.parts?.[index + 1]
+        return Array.isArray(values) && values.length === 5 && values.every(value => value !== null && value !== undefined && String(value).trim() !== '')
+      })
+      started = started || answeredParts.some(Boolean) || Boolean(listening.startedAt)
+      completed += listening.completed ? listeningParts : answeredParts.filter(Boolean).length
+      latest = listening.finishedAt || listening.startedAt || latest
+      const nextPart = answeredParts.findIndex(done => !done) + 1 || listeningParts
+      continuePath = `/cambridge/listening?mode=mock&exam=${exam.id}&part=${nextPart}&set=${setId}`
     }
 
     const reading = JSON.parse(localStorage.getItem(`mars_ket_exam_progress_v1:${exam.id}:reading`) || 'null')

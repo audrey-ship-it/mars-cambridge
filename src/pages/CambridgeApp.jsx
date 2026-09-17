@@ -728,6 +728,8 @@ function WordsPractice({ level, vocabChoice, onBack }) {
   const [answer, setAnswer]       = useState('')
   const [checked, setChecked]     = useState(false)
   const [correct, setCorrect]     = useState(false)
+  const [wrongAttempts, setWrongAttempts] = useState(0)
+  const [firstWrongAnswer, setFirstWrongAnswer] = useState('')
   const [results, setResults]     = useState([])
   const [showResult, setShowResult] = useState(false)
   const [activePanel, setActivePanel] = useState('tips')
@@ -770,9 +772,21 @@ function WordsPractice({ level, vocabChoice, onBack }) {
     if (!answer.trim()) return
     const normalizeSpelling = value => value.toLowerCase().replace(/\s+/g, '')
     const isCorrect = normalizeSpelling(answer.trim()) === normalizeSpelling(current.word)
+    if (!isCorrect) {
+      saveSpellingMistake(current, answer.trim())
+      playWrong()
+      if (wrongAttempts === 0) {
+        setWrongAttempts(1)
+        setFirstWrongAnswer(answer.trim())
+        setOpenHints(prev => new Set([...prev, 'firstLetter']))
+        setAnswer('')
+        window.setTimeout(() => inputRef.current?.focus(), 0)
+        return
+      }
+      setWrongAttempts(attempts => attempts + 1)
+    }
     setCorrect(isCorrect); setChecked(true)
-    if (!isCorrect) saveSpellingMistake(current, answer.trim())
-    if (isCorrect) playCorrect(); else playWrong()
+    if (isCorrect) playCorrect()
   }
 
   function saveSpellingMistake(word, attemptedAnswer) {
@@ -787,15 +801,16 @@ function WordsPractice({ level, vocabChoice, onBack }) {
 
   function handleNext() {
     const usedHint = openHints.size > 0
-    const updated = [...results, { word: current.word, chinese: current.chinese, answer, correct, usedHint }]
-    recordMastery(current.word, correct, usedHint)
+    const cleanCorrect = correct && wrongAttempts === 0 && !usedHint
+    const updated = [...results, { word: current.word, chinese: current.chinese, answer: cleanCorrect ? answer : firstWrongAnswer || answer, correct: cleanCorrect, usedHint }]
+    recordMastery(current.word, cleanCorrect, usedHint)
     setResults(updated)
     if (index + 1 >= words.length) {
       finishSession(updated)
       setShowResult(true)
     } else {
       setIndex(i => i + 1)
-      setAnswer(''); setChecked(false); setCorrect(false); setOpenHints(new Set())
+      setAnswer(''); setChecked(false); setCorrect(false); setWrongAttempts(0); setFirstWrongAnswer(''); setOpenHints(new Set())
     }
   }
 
@@ -864,7 +879,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
   }
 
   function restart() {
-    setIndex(0); setAnswer(''); setChecked(false); setCorrect(false)
+    setIndex(0); setAnswer(''); setChecked(false); setCorrect(false); setWrongAttempts(0); setFirstWrongAnswer('')
     setResults([]); setShowResult(false); setActivePanel('tips'); setOpenHints(new Set())
     startRef.current = Date.now()
   }
@@ -874,7 +889,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
     const targetStart = nextStart < allWords.length ? nextStart : 0
     setBatchStart(targetStart)
     try { localStorage.setItem(batchProgressKey, String(targetStart)) } catch { /* storage may be unavailable */ }
-    setIndex(0); setAnswer(''); setChecked(false); setCorrect(false)
+    setIndex(0); setAnswer(''); setChecked(false); setCorrect(false); setWrongAttempts(0); setFirstWrongAnswer('')
     setResults([]); setShowResult(false); setActivePanel('tips'); setOpenHints(new Set())
     startRef.current = Date.now()
   }
@@ -886,7 +901,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
     vocabChoice.mode = 'review'
     vocabChoice.words = reviewItems
     setBatchStart(0)
-    setIndex(0); setAnswer(''); setChecked(false); setCorrect(false)
+    setIndex(0); setAnswer(''); setChecked(false); setCorrect(false); setWrongAttempts(0); setFirstWrongAnswer('')
     setResults([]); setShowResult(false); setActivePanel('tips'); setOpenHints(new Set())
     startRef.current = Date.now()
   }
@@ -1124,7 +1139,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                     {correct ? (
                       <>
                         <span className="text-emerald-500 text-xl">✓</span>
-                        <span>正确！</span>
+                        <span>{wrongAttempts > 0 ? '这次拼对了；错词已保留，稍后再复习一次。' : '正确！'}</span>
                       </>
                     ) : (
                       <>
@@ -1139,6 +1154,13 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                 )}
               </AnimatePresence>
 
+              {wrongAttempts === 1 && !checked && (
+                <div className="mb-4 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-center text-sm font-semibold text-amber-900" role="status">
+                  第一次拼写不正确，已加入错词本。下方已显示首字母，可以再试一次。
+                  <button type="button" onClick={() => { setCorrect(false); setChecked(true) }} className="ml-2 font-extrabold underline underline-offset-2">直接查看答案</button>
+                </div>
+              )}
+
               {/* 按钮 */}
               {!checked ? (
                 <div className="flex gap-2">
@@ -1149,8 +1171,8 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                   <button
                     onClick={() => {
                       // Skip: record as wrong without showing answer screen
-                      const updated = [...results, { word: current.word, chinese: current.chinese, answer: '', correct: false, usedHint: openHints.size > 0 }]
-                      saveSpellingMistake(current, '')
+                      const updated = [...results, { word: current.word, chinese: current.chinese, answer: firstWrongAnswer, correct: false, usedHint: openHints.size > 0 }]
+                      saveSpellingMistake(current, firstWrongAnswer)
                       setResults(updated)
                       recordMastery(current.word, false, openHints.size > 0)
                       if (index + 1 >= words.length) {
@@ -1158,7 +1180,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                         setShowResult(true)
                       } else {
                         setIndex(i => i + 1)
-                        setAnswer(''); setChecked(false); setCorrect(false); setOpenHints(new Set())
+                        setAnswer(''); setChecked(false); setCorrect(false); setWrongAttempts(0); setFirstWrongAnswer(''); setOpenHints(new Set())
                       }
                       playWrong()
                     }}
