@@ -3560,11 +3560,11 @@ function ListeningPractice({ initialPart = 1 }) {
 const MOCK_LISTENING_PREFIX = "mars_ket_mock_listening_v2";
 
 function mockListeningData(setId, part) {
-  if (part === 1) return { title: "Part 1 图片选择题", type: "picture", items: OFFICIAL_PART1_SETS[setId] || KET3_TEST1_PART1 };
-  if (part === 2) return OFFICIAL_PART2_SETS[setId] || OFFICIAL_TEST1_PARTS[2];
-  if (part === 3) return OFFICIAL_PART3_SETS[setId] || OFFICIAL_TEST1_PARTS[3];
-  if (part === 4) return OFFICIAL_PART4_SETS[setId] || OFFICIAL_TEST1_PARTS[4];
-  return { title: "Part 5 配对题", instruction: "听对话，将每个人与正确选项配对。", type: "match", ...(OFFICIAL_PART5_SETS[setId] || OFFICIAL_TEST1_PARTS[5]) };
+  if (part === 1) return OFFICIAL_PART1_SETS[setId] ? { title: "Part 1 图片选择题", type: "picture", items: OFFICIAL_PART1_SETS[setId] } : null;
+  if (part === 2) return OFFICIAL_PART2_SETS[setId] || null;
+  if (part === 3) return OFFICIAL_PART3_SETS[setId] || null;
+  if (part === 4) return OFFICIAL_PART4_SETS[setId] || null;
+  return OFFICIAL_PART5_SETS[setId] ? { title: "Part 5 配对题", instruction: "听对话，将每个人与正确选项配对。", type: "match", ...OFFICIAL_PART5_SETS[setId] } : null;
 }
 
 function normaliseMockAnswer(value) {
@@ -3877,8 +3877,11 @@ export default function CambridgeListening() {
     ? requestedSet
     : 9;
   const selectedSet = OFFICIAL_LISTENING_SETS.find((set) => set.id === setId);
-  if (searchParams.get("mode") === "mock" && part >= 1 && part <= 5)
+  if (searchParams.get("mode") === "mock" && part >= 1 && part <= 5) {
+    if ([1, 2, 3, 4, 5].some(partId => !mockListeningData(setId, partId)))
+      return <ListeningSetChecking part={part} setId={setId} level={level} setLevel={setLevel} />;
     return <ListeningMockExam key={`mock-${setId}-${part}-${searchParams.get("redo") || "main"}`} level={level} setLevel={setLevel} setId={setId} part={part} examId={searchParams.get("exam") || `ket-${Math.ceil(setId / 4)}-test${((setId - 1) % 4) + 1}`} />;
+  }
   if (part >= 1 && part <= 5 && !selectedSet?.readyParts?.includes(part))
     return (
       <ListeningSetChecking

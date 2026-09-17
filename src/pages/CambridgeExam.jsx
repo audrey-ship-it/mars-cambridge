@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { KET_EXAMS } from '../data/ketExamData'
 import { ketTests } from '../data/ketReadingData'
+import { OFFICIAL_LISTENING_SETS } from '../data/officialListeningManifest'
 import { CambridgeLayout } from './CambridgeApp'
 
 const ORDERED_KET_EXAMS = [...KET_EXAMS].sort((left, right) => {
@@ -217,8 +218,9 @@ export function ExamList() {
 function ExamOverview({ exam }) {
   const [level, setLevel] = useExamLevel()
   const setNumber = examSetNumber(exam)
+  const listeningReady = OFFICIAL_LISTENING_SETS.find(set => set.id === setNumber)?.readyParts?.length === 5
   const sections = [
-    { icon: '🎧', title: '听力', en: 'Listening', detail: '30分钟 · 5个 Part · 25道题', href: `/cambridge/listening?mode=mock&exam=${exam.id}&part=1&set=${setNumber}` },
+    { icon: '🎧', title: '听力', en: 'Listening', detail: listeningReady ? '30分钟 · 5个 Part · 25道题' : '题目与音频正在逐题核对，暂不开放整套模考', href: listeningReady ? `/cambridge/listening?mode=mock&exam=${exam.id}&part=1&set=${setNumber}` : null },
     { icon: '📖', title: '阅读与写作', en: 'Reading & Writing', detail: '60分钟 · 7个 Part · 阅读30题 + 写作2题', href: exam.reading?.parts?.length ? `/cambridge/exams/${exam.id}?tab=reading` : `/cambridge/reading?part=1&set=${setNumber}` },
     { icon: '🎙️', title: '口语', en: 'Speaking', detail: '8–10分钟 · Part 1 个人问答 · Part 2 图片讨论', href: `/cambridge/speaking?part=2&set=${setNumber}` },
   ]
@@ -232,8 +234,9 @@ function ExamOverview({ exam }) {
         <p className="mt-2 text-slate-500">{exam.title} · 按正式试卷结构完成听力、阅读与写作、口语。</p>
 
         <section className="mt-7 grid gap-4 sm:grid-cols-2">
-          {sections.map((item, index) => (
-            <Link key={item.title} to={item.href} className="group flex min-h-56 flex-col rounded-[24px] border border-slate-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md">
+          {sections.map((item, index) => {
+            const Card = item.href ? Link : 'div'
+            return <Card key={item.title} {...(item.href ? { to: item.href } : {})} className={`group flex min-h-56 flex-col rounded-[24px] border border-slate-200 bg-white p-6 shadow-sm ${item.href ? 'transition-all hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md' : 'opacity-65'}`}>
               <div className="flex items-start justify-between">
                 <span className="grid h-14 w-14 place-items-center rounded-2xl bg-emerald-50 text-2xl">{item.icon}</span>
                 <span className="text-xs font-extrabold tracking-widest text-slate-300">0{index + 1}</span>
@@ -241,9 +244,9 @@ function ExamOverview({ exam }) {
               <div className="mt-5 text-xs font-extrabold tracking-widest text-emerald-600">{item.en.toUpperCase()}</div>
               <h2 className="mt-1 text-2xl font-extrabold text-slate-900 group-hover:text-emerald-700">{item.title}</h2>
               <p className="mt-2 text-sm leading-6 text-slate-500">{item.detail}</p>
-              <span className="mt-auto pt-5 text-right text-sm font-extrabold text-emerald-700">进入{item.title} →</span>
-            </Link>
-          ))}
+              <span className="mt-auto pt-5 text-right text-sm font-extrabold text-emerald-700">{item.href ? `进入${item.title} →` : '核对中'}</span>
+            </Card>
+          })}
         </section>
       </main>
     </CambridgeLayout>
