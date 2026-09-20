@@ -8,6 +8,7 @@ export const OFFICIAL_LISTENING_SETS = [
   {id:15,book:'standard-1',test:3,label:'练习15 · 标准版 Test 3',readyParts:[1,2,3,4,5],audioPrefix:'/audio/standard-listening/book-1/test-3/part-'},
   {id:16,book:'standard-1',test:4,label:'练习16 · 标准版 Test 4',readyParts:[1,2,3,4,5],audioPrefix:'/audio/standard-listening/book-1/test-4/part-'},
   {id:17,book:'standard-2',test:1,label:'练习17 · 标准版 Test 5',readyParts:[1,2,3,4,5],audioPrefix:'/audio/standard-listening/book-2/test-1/part-'},
+  {id:18,book:'standard-2',test:2,label:'练习18 · 标准版 Test 6',readyParts:[1,2,3,4,5],audioPrefix:'/audio/standard-listening/book-2/test-2/part-'},
 ];
 
 export function officialListeningAudio(setId, part) {
