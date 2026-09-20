@@ -3,11 +3,16 @@ import { useSearchParams } from 'react-router-dom'
 import { CambridgeLayout } from './CambridgeApp'
 import { WritingCard } from './CambridgeExam'
 import { KET_EXAMS } from '../data/ketExamData'
+import { KET_STANDARD_WRITING } from '../data/ketStandardWritingData'
 
 const WRITING_SETS = [1, 2, 3].flatMap(book => [1, 2, 3, 4].map(test => {
   const exam = KET_EXAMS.find(item => item.id === `ket-${book}-test${test}`)
   return exam ? { exam, book, test } : null
-})).filter(Boolean)
+})).filter(Boolean).concat(Object.entries(KET_STANDARD_WRITING).map(([id, writing]) => ({
+  exam: { id, label: '标准版真题 1', reading: { writing } },
+  book: 'standard',
+  test: 1,
+})))
 
 const PART_INFO = {
   6: {
@@ -25,7 +30,7 @@ const PART_INFO = {
 export default function CambridgeWriting() {
   const [searchParams, setSearchParams] = useSearchParams()
   const initialPart = searchParams.get('part') === '7' ? 7 : 6
-  const initialSet = Math.min(12, Math.max(1, Number(searchParams.get('set')) || 1))
+  const initialSet = Math.min(WRITING_SETS.length, Math.max(1, Number(searchParams.get('set')) || 1))
   const [level, setLevel] = useState('KET')
   const [part, setPart] = useState(initialPart)
   const [setIndex, setSetIndex] = useState(initialSet - 1)

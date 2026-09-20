@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { KET_EXAMS } from '../data/ketExamData'
 import { getKetReadingTest, hasCompleteKetReadingPaper } from '../data/ketReadingCatalog'
 import { KET_STANDARD_EXAM_SOURCES } from '../data/ketStandardExamSources'
+import { KET_STANDARD_WRITING } from '../data/ketStandardWritingData'
 import { OFFICIAL_LISTENING_SETS } from '../data/officialListeningManifest'
 import { CambridgeLayout } from './CambridgeApp'
 
@@ -45,6 +46,20 @@ function adaptReadingTest(test) {
   ]
 }
 
+const STANDARD_READY_EXAMS = KET_STANDARD_EXAM_SOURCES.flatMap(source => {
+  const reading = getKetReadingTest(source.id)
+  const writing = KET_STANDARD_WRITING[source.id]
+  if (!hasCompleteKetReadingPaper(reading) || writing?.length !== 2) return []
+  return [{
+    id: source.id,
+    kind: 'standard',
+    title: source.source,
+    label: source.name,
+    reading: { parts: adaptReadingTest(reading), writing },
+    speaking: { parts: [] },
+  }]
+})
+
 const EXAM_COLLECTIONS = [
   { id: 'schools', label: '青少版真题', count: 12, help: 'KET for Schools 官方真题 1–3' },
   { id: 'standard', label: '标准版真题', count: 8, help: 'A2 Key 标准版官方真题 1–2' },
@@ -63,6 +78,8 @@ const PENDING_EXAMS = {
 }
 
 function examSetNumber(exam) {
+  const [, standardBook, standardTest] = exam.id.match(/^ket-standard-(\d+)-test(\d+)$/) || []
+  if (standardBook) return 12 + (Number(standardBook) - 1) * 4 + Number(standardTest)
   const [, book, test] = exam.id.match(/^ket-(\d+)-test(\d+)$/) || []
   return ((Number(book) - 1) * 4) + Number(test)
 }
@@ -73,7 +90,7 @@ function examSetNumber(exam) {
 function readExamListProgress(exam) {
   const setId = examSetNumber(exam)
   const listeningReady = OFFICIAL_LISTENING_SETS.find(set => set.id === setId)?.readyParts?.length === 5
-  const listeningParts = 5
+  const listeningParts = exam.kind === 'standard' ? 0 : 5
   const readingParts = exam.reading?.parts?.length || (hasCompleteKetReadingPaper(getKetReadingTest(exam.id)) ? 5 : 0)
   const writingParts = exam.reading?.writing?.length || 0
   const speakingTopics = exam.speaking?.parts?.flatMap(part => part.topics || []) || []
@@ -86,7 +103,7 @@ function readExamListProgress(exam) {
     : `/cambridge/exams/${exam.id}?tab=writing`
 
   try {
-    const listening = JSON.parse(localStorage.getItem(`mars_ket_mock_listening_v2:set-${setId}`) || 'null')
+    const listening = listeningParts ? JSON.parse(localStorage.getItem(`mars_ket_mock_listening_v2:set-${setId}`) || 'null') : null
     if (listening) {
       const answeredParts = Array.from({ length: listeningParts }, (_, index) => {
         const values = listening.parts?.[index + 1]
@@ -137,7 +154,7 @@ function readExamListProgress(exam) {
   const percent = total ? Math.min(100, Math.round(completed / total * 100)) : 0
   return {
     percent,
-    status: !listeningReady ? '核对中' : percent === 100 ? '已完成' : started ? '进行中' : '未开始',
+    status: exam.kind === 'standard' ? '阅读写作可练' : !listeningReady ? '核对中' : percent === 100 ? '已完成' : started ? '进行中' : '未开始',
     continuePath,
     completed,
     total,
@@ -150,7 +167,9 @@ export function ExamList() {
   const sectionSummary = () => '听力 30分钟 · 阅读与写作 60分钟 · 口语 8–10分钟'
   const displayedExams = collection === 'schools'
     ? ORDERED_KET_EXAMS.map((exam, index) => ({ exam, id: exam.id, name: `真题 ${index + 1}`, source: exam.title }))
-    : PENDING_EXAMS[collection]
+    : collection === 'standard'
+      ? PENDING_EXAMS.standard.map(item => ({ ...item, exam: STANDARD_READY_EXAMS.find(exam => exam.id === item.id) }))
+      : PENDING_EXAMS[collection]
 
   return (
     <CambridgeLayout activeModule="exams" level={level} setLevel={setLevel}>
@@ -191,7 +210,7 @@ export function ExamList() {
                 <div className="mt-5">
                   <div className="text-xl font-extrabold leading-snug text-gray-900 transition-colors group-hover:text-[#064e3b]">{item.name}</div>
                   <div className="mt-2 text-sm leading-6 text-gray-400">{item.source}</div>
-                  <div className="mt-1 text-sm leading-6 text-gray-400">{exam ? sectionSummary(exam) : '题目、答案与配套材料正在整理'}</div>
+                  <div className="mt-1 text-sm leading-6 text-gray-400">{exam?.kind === 'standard' ? '阅读写作 60分钟可练 · 听力与口语核对中' : exam ? sectionSummary(exam) : '题目、答案与配套材料正在整理'}</div>
                 </div>
                 <div className="mt-auto pt-5">
                   <div className="mb-2 flex items-center justify-between gap-3">
@@ -216,11 +235,12 @@ export function ExamList() {
 function ExamOverview({ exam }) {
   const [level, setLevel] = useExamLevel()
   const setNumber = examSetNumber(exam)
+  const isStandard = exam.kind === 'standard'
   const listeningReady = OFFICIAL_LISTENING_SETS.find(set => set.id === setNumber)?.readyParts?.length === 5
   const sections = [
     { icon: '🎧', title: '听力', en: 'Listening', detail: listeningReady ? '30分钟 · 5个 Part · 25道题' : '题目与音频正在逐题核对，暂不开放整套模考', href: listeningReady ? `/cambridge/listening?mode=mock&exam=${exam.id}&part=1&set=${setNumber}` : null },
     { icon: '📖', title: '阅读与写作', en: 'Reading & Writing', detail: '60分钟 · 7个 Part · 阅读30题 + 写作2题', href: exam.reading?.parts?.length ? `/cambridge/exams/${exam.id}?tab=reading` : `/cambridge/reading?part=1&set=${setNumber}` },
-    { icon: '🎙️', title: '口语', en: 'Speaking', detail: '8–10分钟 · Part 1 个人问答 · Part 2 图片讨论', href: `/cambridge/speaking?part=2&set=${setNumber}` },
+    { icon: '🎙️', title: '口语', en: 'Speaking', detail: isStandard ? '原卷口语材料核对中' : '8–10分钟 · Part 1 个人问答 · Part 2 图片讨论', href: isStandard ? null : `/cambridge/speaking?part=2&set=${setNumber}` },
   ]
 
   return (
@@ -228,8 +248,8 @@ function ExamOverview({ exam }) {
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <Link to="/cambridge/exams" className="text-sm font-bold text-emerald-700 hover:text-emerald-900">← 返回真题列表</Link>
         <div className="mt-5 text-[11px] font-extrabold tracking-[.18em] text-emerald-700">KET FULL PRACTICE TEST</div>
-        <h1 className="mt-1 text-3xl font-extrabold text-slate-950 sm:text-4xl">真题 {setNumber}</h1>
-        <p className="mt-2 text-slate-500">{exam.title} · 按正式试卷结构完成听力、阅读与写作、口语。</p>
+        <h1 className="mt-1 text-3xl font-extrabold text-slate-950 sm:text-4xl">{isStandard ? exam.label : `真题 ${setNumber}`}</h1>
+        <p className="mt-2 text-slate-500">{exam.title} · {isStandard ? '阅读与写作已核对；听力和口语尚未开放。' : '按正式试卷结构完成听力、阅读与写作、口语。'}</p>
 
         <section className="mt-7 grid gap-4 sm:grid-cols-2">
           {sections.map((item, index) => {
@@ -257,7 +277,7 @@ function ExamOverview({ exam }) {
 export default function CambridgeExam() {
   const { id } = useParams()
   const [searchParams] = useSearchParams()
-  const baseExam = KET_EXAMS.find(e => e.id === id)
+  const baseExam = [...KET_EXAMS, ...STANDARD_READY_EXAMS].find(e => e.id === id)
   const readingSet = baseExam ? getKetReadingTest(baseExam.id) : null
   const exam = baseExam && !baseExam.reading?.parts?.length && hasCompleteKetReadingPaper(readingSet)
     ? { ...baseExam, reading: { ...baseExam.reading, parts: adaptReadingTest(readingSet) } }
@@ -1505,8 +1525,9 @@ export function WritingCard({ w, wi, storageKey }) {
       {/* Prompt */}
       <div className="bg-gray-50 rounded-xl border border-gray-200 px-4 py-3 mb-3">
         <pre className="text-sm text-gray-700 whitespace-pre-wrap font-sans leading-relaxed mb-3">{w.prompt}</pre>
-        {w.imageSrc && (
-          <img src={w.imageSrc} alt="Story pictures" className="w-full rounded-xl border border-gray-200 select-none" draggable={false} />
+        {w.imageSrc && (w.imageCrop === 'story-strip'
+          ? <div className="aspect-[3.8/1] overflow-hidden rounded-xl border border-gray-200 bg-white"><img src={w.imageSrc} alt={w.imageDesc || 'Story pictures'} className="w-full max-w-none -translate-y-[25%] select-none" draggable={false} /></div>
+          : <img src={w.imageSrc} alt={w.imageDesc || 'Story pictures'} className="w-full rounded-xl border border-gray-200 select-none" draggable={false} />
         )}
       </div>
 
