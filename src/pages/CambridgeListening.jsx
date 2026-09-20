@@ -941,6 +941,9 @@ const KET3_TEST1_PART1 = [
 ];
 
 const OFFICIAL_PART1_SETS = {
+  16: [
+    {question:'What was the weather like for the football match?',image:'/images/listening/standard-book1-test4/q1.jpg',answer:1},{question:'What sport is the woman going to start doing soon?',image:'/images/listening/standard-book1-test4/q2.jpg',answer:2},{question:'Why was the man late for work?',image:'/images/listening/standard-book1-test4/q3.jpg',answer:2},{question:'Which food is the man eating?',image:'/images/listening/standard-book1-test4/q4.jpg',answer:0},{question:'What has the man had problems with?',image:'/images/listening/standard-book1-test4/q5.jpg',answer:0},
+  ],
   15: [
     {question:'Where will they go if it rains tomorrow?',image:'/images/listening/standard-book1-test3/q1.jpg',answer:0},{question:'Why didn’t the woman buy the book?',image:'/images/listening/standard-book1-test3/q2.jpg',answer:2},{question:'Where does the man work now?',image:'/images/listening/standard-book1-test3/q3.jpg',answer:1},{question:'Where does the man want to go?',image:'/images/listening/standard-book1-test3/q4.jpg',answer:1},{question:'What’s the man making?',image:'/images/listening/standard-book1-test3/q5.jpg',answer:1},
   ],
@@ -1472,6 +1475,8 @@ const OFFICIAL_TEST1_PARTS = {
 };
 
 const OFFICIAL_PART2_SETS = {
+  16:{title:'Part 2 信息填空题',instruction:'听当地学院介绍音乐课程，填写一个单词、数字、日期或时间。',type:'blanks',items:[
+    {q:'Music classes — Day of class:',answer:['Wednesday','wednesday'],show:'Wednesday'},{q:'Music classes — Time class starts: ___ p.m.',answer:['6.15','6:15','six fifteen','quarter past six'],show:'6:15'},{q:'Music classes — Room for beginners’ class:',answer:['E29','E-29','e29','e-29'],show:'E29'},{q:'Music classes — Teacher’s name: Mrs ___',answer:['Halliday','halliday'],show:'Halliday'},{q:'Music classes — Month of rock concert:',answer:['December','december'],show:'December'}]},
   15:{title:'Part 2 信息填空题',instruction:'听本地广播介绍一部新电影，填写一个单词、数字、日期或时间。',type:'blanks',items:[
     {q:'New film Runner — Subject of film:',answer:['doctor','a doctor'],show:'doctor'},{q:'New film Runner — Name of cinema:',answer:['Caratopia','caratopia'],show:'Caratopia'},{q:'New film Runner — Start date:',answer:['24 July','24th July','July 24','July 24th'],show:'24 July'},{q:'New film Runner — Start time: ___ p.m.',answer:['8.15','8:15','eight fifteen','quarter past eight'],show:'8:15'},{q:'New film Runner — Cost of student ticket: £',answer:['10.50','£10.50'],show:'10.50'}]},
   14: {
@@ -1645,6 +1650,8 @@ const OFFICIAL_PART2_SETS = {
 };
 
 const OFFICIAL_PART3_SETS = {
+  16:{title:'Part 3 长篇听力题',instruction:'听 Ben 和 Emma 谈论 Ben 的新公寓，选择正确答案。',type:'mcq',items:[
+    {q:'When did Ben go to live in his new flat?',opts:['two days ago','two weeks ago','two months ago'],answer:1},{q:'How is Ben’s new flat different from his old one?',opts:['It is nearer to his job.','It has better views.','It is larger.'],answer:0},{q:'Which room in the new flat does Ben like best?',opts:['the bathroom','the living room','the bedroom'],answer:1},{q:'What has Emma given Ben for his new flat?',opts:['shelves','carpets','curtains'],answer:0},{q:'Who lives in the flat next to Ben’s?',opts:['a mechanic','a journalist','a police officer'],answer:1}]},
   15:{title:'Part 3 长篇听力题',instruction:'听 Phil 和 Jess 谈论一家新体育中心，选择正确答案。',type:'mcq',items:[
     {q:'How did Jess find out about the new sports centre?',opts:['She saw a poster.','A friend of hers works there.','She heard about it on the radio.'],answer:0},{q:'What doesn’t Phil like about the sports centre?',opts:['It’s too noisy.','It’s very expensive.','It’s not big enough.'],answer:1},{q:'Phil prefers to go to the sports centre',opts:['early in the morning.','at the weekend.','during working hours.'],answer:0},{q:'Why is the new swimming pool closed at the moment?',opts:['They are cleaning it.','There’s a competition.','The water’s cold.'],answer:2},{q:'Members of the sports centre',opts:['should buy special shoes.','can get a discount in the café.','needn’t pay for exercise classes.'],answer:1}]},
   14: {
@@ -1794,6 +1801,8 @@ const OFFICIAL_PART3_SETS = {
 };
 
 const OFFICIAL_PART4_SETS = {
+  16:{title:'Part 4 短篇听力题',instruction:'听五段独立短对话或独白，选择正确答案。',type:'mcq',items:[
+    {q:'What’s the problem with the man’s computer?',opts:['The computer won’t turn off.','The keyboard isn’t working.','The screen isn’t bright enough.'],answer:2},{q:'Where are they planning to meet the woman’s brother?',opts:['at the railway station','at the airport','at their home'],answer:1},{q:'What was the last place that the explorer visited?',opts:['a mountain','a desert','an island'],answer:0},{q:'Why did the man choose this phone?',opts:['because it’s really light','because it looks modern','because it has a good camera'],answer:2},{q:'How do the colleagues feel after the meeting?',opts:['pleased','worried','tired'],answer:0}]},
   15:{title:'Part 4 短篇听力题',instruction:'听五段独立短对话或独白，选择正确答案。',type:'mcq',items:[
     {q:'Why did the woman arrive at the office late?',opts:['The road was closed.','There was a problem with her car.','She couldn’t find her car keys.'],answer:1},{q:'Where will Peter be this Saturday?',opts:['at a party','in another country','on a boat'],answer:1},{q:'What’s different about the music festival this year?',opts:['how long it is','where it is','when it is'],answer:1},{q:'Which subject did they both enjoy at school?',opts:['history','geography','science'],answer:0},{q:"What’s cheaper in the supermarket this week?",opts:['desserts','soft drinks','fruit'],answer:2}]},
   14: {
@@ -1943,6 +1952,7 @@ const OFFICIAL_PART4_SETS = {
 };
 
 const OFFICIAL_PART5_SETS = {
+  16:{options:['art equipment','bag','book','chocolate','concert ticket','jewellery','perfume','picture'],items:[{q:'Anthea',answer:5},{q:'Larry',answer:7},{q:'Kerry',answer:2},{q:'Tony',answer:3},{q:'Hannah',answer:1}]},
   15:{options:['comfortable beds','expensive','friendly staff','good food','hard to find','large bedrooms','no parking','noisy'],items:[{q:'City Hotel',answer:1},{q:'The Bridge Hotel',answer:3},{q:'Lemontree Hotel',answer:5},{q:'Greenleaf Hotel',answer:7},{q:'The International Hotel',answer:2}]},
   14: {
     options: ["acting", "art", "cycling", "making music", "photography", "reading", "travelling", "watching sport"],
