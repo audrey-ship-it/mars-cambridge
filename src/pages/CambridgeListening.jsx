@@ -941,6 +941,13 @@ const KET3_TEST1_PART1 = [
 ];
 
 const OFFICIAL_PART1_SETS = {
+  14: [
+    { question: "Where is the cup now?", image: "/images/listening/standard-book1-test2/q1.jpg", answer: 1, explanation: "杯子不在橱柜或旁边的架子上，而是在水槽旁，因此选择 B。" },
+    { question: "Who will Sally meet at the station?", image: "/images/listening/standard-book1-test2/q2.jpg", answer: 0, explanation: "Sally 要接的是年长、短头发的姐姐，因此选择 A。" },
+    { question: "What did the man learn to do at the beach?", image: "/images/listening/standard-book1-test2/q3.jpg", answer: 0, explanation: "男士在海滩学会的是沙滩排球，因此选择 A。" },
+    { question: "Where are they going to meet?", image: "/images/listening/standard-book1-test2/q4.jpg", answer: 0, explanation: "两人约在书店见面，因此选择 A。" },
+    { question: "What didn’t the man buy?", image: "/images/listening/standard-book1-test2/q5.jpg", answer: 2, explanation: "他买了护目镜和手套，但没有买围巾，因此选择 C。" },
+  ],
   13: [
     { question: "How did the woman travel to work this morning?", image: "/images/listening/standard-book1-test1/q1.jpg", answer: 2, explanation: "汽车在修理厂，她原本要坐火车，却上错公交车，最后仍乘公交车到达，因此选择 C。" },
     { question: "What will the man eat first at the restaurant?", image: "/images/listening/standard-book1-test1/q2.jpg", answer: 2, explanation: "男士主菜想吃烤鸡，但第一道菜会先喝蘑菇汤，因此选择 C。" },
@@ -1462,6 +1469,18 @@ const OFFICIAL_TEST1_PARTS = {
 };
 
 const OFFICIAL_PART2_SETS = {
+  14: {
+    title: "Part 2 信息填空题",
+    instruction: "听帆船俱乐部旅行通知，填写一个单词、数字、姓名或时间。",
+    type: "blanks",
+    items: [
+      { q: "Sailing club trip — Time to arrive back at club: ___ p.m.", answer: ["6.30", "6:30", "six thirty", "half past six", "half past 6"], show: "6:30" },
+      { q: "Sailing club trip — Name of café for lunch:", answer: ["Sky", "sky"], show: "Sky" },
+      { q: "Sailing club trip — Bring:", answer: ["swimsuit", "a swimsuit"], show: "swimsuit" },
+      { q: "Sailing club trip — Number of people:", answer: ["18", "eighteen"], show: "18" },
+      { q: "Sailing club trip — Secretary’s name: Ms ___", answer: ["Harcourt", "harcourt"], show: "Harcourt" },
+    ],
+  },
   13: {
     title: "Part 2 信息填空题",
     instruction: "听城市观光巴士的介绍，填写一个单词、数字或时间。",
@@ -1621,6 +1640,18 @@ const OFFICIAL_PART2_SETS = {
 };
 
 const OFFICIAL_PART3_SETS = {
+  14: {
+    title: "Part 3 长篇听力题",
+    instruction: "听 Victoria 和 Daniel 谈论公司的新办公楼，选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "How will staff find out about the new building?", opts: ["in an email", "at a meeting", "at a company meal"], answer: 1 },
+      { q: "Why is the company moving to a new building?", opts: ["to save money", "to be in the town centre", "to have larger offices"], answer: 0 },
+      { q: "When will staff start working in the new building?", opts: ["the end of May", "the beginning of July", "the middle of August"], answer: 2 },
+      { q: "What does Daniel think the staff will enjoy most about the new area?", opts: ["the restaurants", "the shops", "the gym"], answer: 2 },
+      { q: "What does Daniel need to order next?", opts: ["keys", "signs", "furniture"], answer: 0 },
+    ],
+  },
   13: {
     title: "Part 3 长篇听力题",
     instruction: "听 Richard 和 Barbara 谈论一家新超市，选择正确答案。",
@@ -1756,6 +1787,18 @@ const OFFICIAL_PART3_SETS = {
 };
 
 const OFFICIAL_PART4_SETS = {
+  14: {
+    title: "Part 4 短篇听力题",
+    instruction: "听五段独立短对话或独白，选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "You will hear Jen telling her friend about her favourite singer, Mikey. What’s just happened?", opts: ["Jen’s seen him on stage.", "Jen’s taken a photo of him.", "Jen’s had a conversation with him."], answer: 1 },
+      { q: "Why didn’t Alex do well in the tennis competition?", opts: ["He was thirsty.", "He was hungry.", "He was tired."], answer: 2 },
+      { q: "What advice does the man give the woman at the tourist information centre?", opts: ["Don’t miss a special exhibition.", "Don’t visit the museum today.", "Don’t buy tickets too late."], answer: 1 },
+      { q: "What didn’t the woman do at the weekend?", opts: ["watch TV", "play sport", "go shopping"], answer: 1 },
+      { q: "The man is talking about his new flat. What’s he going to do now?", opts: ["paint the flat", "turn the heating on", "move some furniture"], answer: 1 },
+    ],
+  },
   13: {
     title: "Part 4 短篇听力题",
     instruction: "听五段独立短对话或独白，选择正确答案。",
@@ -1891,6 +1934,16 @@ const OFFICIAL_PART4_SETS = {
 };
 
 const OFFICIAL_PART5_SETS = {
+  14: {
+    options: ["acting", "art", "cycling", "making music", "photography", "reading", "travelling", "watching sport"],
+    items: [
+      { q: "Jane", answer: 4 },
+      { q: "Derek", answer: 3 },
+      { q: "Mary", answer: 6 },
+      { q: "Tony", answer: 0 },
+      { q: "Sarah", answer: 7 },
+    ],
+  },
   13: {
     options: ["bookcase", "clock", "cupboard", "curtains", "lamp", "mirror", "seat", "table"],
     items: [
