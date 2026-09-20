@@ -941,6 +941,13 @@ const KET3_TEST1_PART1 = [
 ];
 
 const OFFICIAL_PART1_SETS = {
+  13: [
+    { question: "How did the woman travel to work this morning?", image: "/images/listening/standard-book1-test1/q1.jpg", answer: 2, explanation: "汽车在修理厂，她原本要坐火车，却上错公交车，最后仍乘公交车到达，因此选择 C。" },
+    { question: "What will the man eat first at the restaurant?", image: "/images/listening/standard-book1-test1/q2.jpg", answer: 2, explanation: "男士主菜想吃烤鸡，但第一道菜会先喝蘑菇汤，因此选择 C。" },
+    { question: "Which was the view from the woman’s hotel room?", image: "/images/listening/standard-book1-test1/q3.jpg", answer: 1, explanation: "酒店临海且有花园，但她的房间在另一侧、正对游泳池，因此选择 B。" },
+    { question: "Why will the man miss the concert tonight?", image: "/images/listening/standard-book1-test1/q4.jpg", answer: 1, explanation: "男士不是头痛或胃痛，而是牙齿疼，因此选择 B。" },
+    { question: "What will the woman wear for the party?", image: "/images/listening/standard-book1-test1/q5.jpg", answer: 0, explanation: "她最终接受建议，决定穿自己最喜欢的连衣裙，因此选择 A。" },
+  ],
   1: [
     { question: "How did Stan and his dad get home from the concert?", image: "/images/listening/set-01-part1/q1.jpg", answer: 2, explanation: "火车已经错过，出租车又太贵；两人最后乘公交车回家，因此选择 C。" },
     { question: "What’s the girl forgotten?", image: "/images/listening/set-01-part1/q2.jpg", answer: 2, explanation: "女孩去游泳时带了毛巾，却忘了带 swimming costume（游泳衣），因此选择 C。" },
@@ -1455,6 +1462,18 @@ const OFFICIAL_TEST1_PARTS = {
 };
 
 const OFFICIAL_PART2_SETS = {
+  13: {
+    title: "Part 2 信息填空题",
+    instruction: "听城市观光巴士的介绍，填写一个单词、数字或时间。",
+    type: "blanks",
+    items: [
+      { q: "City Bus Tours — Time last tour starts: ___ p.m.", answer: ["4.20", "4:20", "twenty past four", "four twenty"], show: "4:20" },
+      { q: "City Bus Tours — Colour of tour bus stop:", answer: ["blue"], show: "blue" },
+      { q: "City Bus Tours — Length of tour: ___ minutes", answer: ["90", "ninety"], show: "90" },
+      { q: "City Bus Tours — Where to use ticket for discount:", answer: ["museum", "the museum"], show: "museum" },
+      { q: "City Bus Tours — Place tour ends:", answer: ["theatre", "theater", "the theatre", "the theater"], show: "theatre" },
+    ],
+  },
   1: {
     title: "Part 2 信息填空题",
     instruction: "听一段关于青少年广播营的介绍，填写一个单词、数字、日期或时间。",
@@ -1602,6 +1621,18 @@ const OFFICIAL_PART2_SETS = {
 };
 
 const OFFICIAL_PART3_SETS = {
+  13: {
+    title: "Part 3 长篇听力题",
+    instruction: "听 Richard 和 Barbara 谈论一家新超市，选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "What surprised Richard when he went to the supermarket?", opts: ["its size", "the time it opens", "the number of people there"], answer: 0, explanation: "Richard 没想到超市里面这么大。" },
+      { q: "This week, there are discounts on", opts: ["meat.", "fruit.", "vegetables."], answer: 1, explanation: "每周优惠品类不同，本周是水果。" },
+      { q: "What did Richard like most about the supermarket?", opts: ["the café", "the staff", "the music"], answer: 2, explanation: "他没时间去咖啡厅，但很喜欢超市里的音乐。" },
+      { q: "What problem did Richard have at the supermarket?", opts: ["He didn’t have any cash.", "He had to wait before he could pay.", "He couldn’t use his credit card."], answer: 2, explanation: "他只能付现金，无法使用自己更习惯的信用卡。" },
+      { q: "What does Barbara say about the car park?", opts: ["It’s only for customers.", "It’s quite far from the entrance.", "It’s difficult to find."], answer: 1, explanation: "Barbara 说停车场离入口有一段距离。" },
+    ],
+  },
   12: {
     title: "Part 3 长篇听力题",
     instruction: "听 Mark 和 Jessica 谈论他们参加的音乐节，选择正确答案。",
@@ -1725,6 +1756,18 @@ const OFFICIAL_PART3_SETS = {
 };
 
 const OFFICIAL_PART4_SETS = {
+  13: {
+    title: "Part 4 短篇听力题",
+    instruction: "听五段独立短对话或独白，选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "You will hear a woman talking on the radio about her job. What’s her job?", opts: ["engineer", "mechanic", "pilot"], answer: 0 },
+      { q: "You will hear a woman talking to a friend about a film. What does she say about the film?", opts: ["It was funny.", "It was true.", "It was scary."], answer: 2 },
+      { q: "You will hear a sports coach talking to some footballers. What would the coach like them to become better at?", opts: ["running with the ball", "getting goals", "working as a team"], answer: 0 },
+      { q: "You will hear two friends talking about a website. Why does Julia prefer to buy clothes from the website?", opts: ["It offers the latest fashions.", "The discounts are excellent.", "Orders always arrive quickly."], answer: 1 },
+      { q: "You will hear two colleagues talking together. Why was the man not at the meeting this morning?", opts: ["He had to go to the dentist.", "He had other work to do.", "He wasn’t feeling well."], answer: 1 },
+    ],
+  },
   12: {
     title: "Part 4 短篇听力题",
     instruction: "听五段简短对话或独白，选择正确答案。",
@@ -1848,6 +1891,16 @@ const OFFICIAL_PART4_SETS = {
 };
 
 const OFFICIAL_PART5_SETS = {
+  13: {
+    options: ["bookcase", "clock", "cupboard", "curtains", "lamp", "mirror", "seat", "table"],
+    items: [
+      { q: "dining room", answer: 4 },
+      { q: "bathroom", answer: 6 },
+      { q: "bedroom", answer: 2 },
+      { q: "living room", answer: 0 },
+      { q: "kitchen", answer: 5 },
+    ],
+  },
   12: {
     options: ["beautiful", "big", "cold", "comfortable", "dark", "modern", "tidy", "unusual"],
     items: [
