@@ -941,6 +941,9 @@ const KET3_TEST1_PART1 = [
 ];
 
 const OFFICIAL_PART1_SETS = {
+  17: [
+    {question:'What temperature will the woman use to cook the cake?',image:'/images/listening/standard-book2-test1/q1.jpg',answer:1},{question:'What did Clara hurt when she played tennis?',image:'/images/listening/standard-book2-test1/q2.jpg',answer:0},{question:'Which photo did the man take?',image:'/images/listening/standard-book2-test1/q3.jpg',answer:1},{question:'Which was the woman’s favourite present?',image:'/images/listening/standard-book2-test1/q4.jpg',answer:0},{question:'What did Tom lose?',image:'/images/listening/standard-book2-test1/q5.jpg',answer:2},
+  ],
   16: [
     {question:'What was the weather like for the football match?',image:'/images/listening/standard-book1-test4/q1.jpg',answer:1},{question:'What sport is the woman going to start doing soon?',image:'/images/listening/standard-book1-test4/q2.jpg',answer:2},{question:'Why was the man late for work?',image:'/images/listening/standard-book1-test4/q3.jpg',answer:2},{question:'Which food is the man eating?',image:'/images/listening/standard-book1-test4/q4.jpg',answer:0},{question:'What has the man had problems with?',image:'/images/listening/standard-book1-test4/q5.jpg',answer:0},
   ],
@@ -1475,6 +1478,8 @@ const OFFICIAL_TEST1_PARTS = {
 };
 
 const OFFICIAL_PART2_SETS = {
+  17:{title:'Part 2 信息填空题',instruction:'听一段关于参加曲棍球比赛的电话留言，填写一个单词、数字、日期或时间。',type:'blanks',items:[
+    {q:'Hockey match — Day:',answer:['Friday','friday'],show:'Friday'},{q:'Hockey match — Name of village:',answer:['Ledbury','ledbury'],show:'Ledbury'},{q:'Hockey match — Travel to village by:',answer:['car','a car'],show:'car'},{q:'Hockey match — Take:',answer:['drinks','drink'],show:'drinks'},{q:'Hockey match — Time match begins:',answer:['8.45','8:45','20.45','20:45','eight forty-five','quarter to nine'],show:'8:45'}]},
   16:{title:'Part 2 信息填空题',instruction:'听当地学院介绍音乐课程，填写一个单词、数字、日期或时间。',type:'blanks',items:[
     {q:'Music classes — Day of class:',answer:['Wednesday','wednesday'],show:'Wednesday'},{q:'Music classes — Time class starts: ___ p.m.',answer:['6.15','6:15','six fifteen','quarter past six'],show:'6:15'},{q:'Music classes — Room for beginners’ class:',answer:['E29','E-29','e29','e-29'],show:'E29'},{q:'Music classes — Teacher’s name: Mrs ___',answer:['Halliday','halliday'],show:'Halliday'},{q:'Music classes — Month of rock concert:',answer:['December','december'],show:'December'}]},
   15:{title:'Part 2 信息填空题',instruction:'听本地广播介绍一部新电影，填写一个单词、数字、日期或时间。',type:'blanks',items:[
@@ -1650,6 +1655,8 @@ const OFFICIAL_PART2_SETS = {
 };
 
 const OFFICIAL_PART3_SETS = {
+  17:{title:'Part 3 长篇听力题',instruction:'听 Sue 和 Peter 谈论一家餐厅，选择正确答案。',type:'mcq',items:[
+    {q:'Why didn’t Peter go to the restaurant with Sue?',opts:['He had to do some work.','He was too ill.','He forgot to go.'],answer:0},{q:'How long has the restaurant been open?',opts:['one year','two years','five years'],answer:2},{q:'What did Sue and her friends eat at the restaurant?',opts:['steak','pizza','pasta'],answer:1},{q:'What nationality is the chef at the restaurant?',opts:['American','Spanish','Italian'],answer:0},{q:'What does Peter say about his plans to go to the restaurant?',opts:['It doesn’t matter which day he goes.','He’s afraid the restaurant will be too crowded.','He’d like Sue’s advice about the dishes.'],answer:2}]},
   16:{title:'Part 3 长篇听力题',instruction:'听 Ben 和 Emma 谈论 Ben 的新公寓，选择正确答案。',type:'mcq',items:[
     {q:'When did Ben go to live in his new flat?',opts:['two days ago','two weeks ago','two months ago'],answer:1},{q:'How is Ben’s new flat different from his old one?',opts:['It is nearer to his job.','It has better views.','It is larger.'],answer:0},{q:'Which room in the new flat does Ben like best?',opts:['the bathroom','the living room','the bedroom'],answer:1},{q:'What has Emma given Ben for his new flat?',opts:['shelves','carpets','curtains'],answer:0},{q:'Who lives in the flat next to Ben’s?',opts:['a mechanic','a journalist','a police officer'],answer:1}]},
   15:{title:'Part 3 长篇听力题',instruction:'听 Phil 和 Jess 谈论一家新体育中心，选择正确答案。',type:'mcq',items:[
@@ -1801,6 +1808,8 @@ const OFFICIAL_PART3_SETS = {
 };
 
 const OFFICIAL_PART4_SETS = {
+  17:{title:'Part 4 短篇听力题',instruction:'听五段独立短对话或独白，选择正确答案。',type:'mcq',items:[
+    {q:'What will the man and woman buy?',opts:['something to eat','something to wear','something to read'],answer:2},{q:'Why is the woman phoning her friend?',opts:['to change their plans','to ask to borrow something','to invite her for a meal'],answer:0},{q:'Who did the man see in town?',opts:['a colleague','a neighbour','an old school friend'],answer:2},{q:'Where do the friends decide to go?',opts:['to the forest','to the river','to the beach'],answer:2},{q:'Why is the museum closed now?',opts:['A special guest is visiting it.','Today is a national holiday.','They are painting it.'],answer:0}]},
   16:{title:'Part 4 短篇听力题',instruction:'听五段独立短对话或独白，选择正确答案。',type:'mcq',items:[
     {q:'What’s the problem with the man’s computer?',opts:['The computer won’t turn off.','The keyboard isn’t working.','The screen isn’t bright enough.'],answer:2},{q:'Where are they planning to meet the woman’s brother?',opts:['at the railway station','at the airport','at their home'],answer:1},{q:'What was the last place that the explorer visited?',opts:['a mountain','a desert','an island'],answer:0},{q:'Why did the man choose this phone?',opts:['because it’s really light','because it looks modern','because it has a good camera'],answer:2},{q:'How do the colleagues feel after the meeting?',opts:['pleased','worried','tired'],answer:0}]},
   15:{title:'Part 4 短篇听力题',instruction:'听五段独立短对话或独白，选择正确答案。',type:'mcq',items:[
@@ -1952,6 +1961,7 @@ const OFFICIAL_PART4_SETS = {
 };
 
 const OFFICIAL_PART5_SETS = {
+  17:{options:['badminton','fishing','football','golf','skateboarding','swimming','tennis','volleyball'],items:[{q:'Daniel',answer:1},{q:'Amira',answer:5},{q:'Kelly',answer:4},{q:'Ryan',answer:3},{q:'Valerie',answer:0}]},
   16:{options:['art equipment','bag','book','chocolate','concert ticket','jewellery','perfume','picture'],items:[{q:'Anthea',answer:5},{q:'Larry',answer:7},{q:'Kerry',answer:2},{q:'Tony',answer:3},{q:'Hannah',answer:1}]},
   15:{options:['comfortable beds','expensive','friendly staff','good food','hard to find','large bedrooms','no parking','noisy'],items:[{q:'City Hotel',answer:1},{q:'The Bridge Hotel',answer:3},{q:'Lemontree Hotel',answer:5},{q:'Greenleaf Hotel',answer:7},{q:'The International Hotel',answer:2}]},
   14: {
