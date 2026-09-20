@@ -941,6 +941,9 @@ const KET3_TEST1_PART1 = [
 ];
 
 const OFFICIAL_PART1_SETS = {
+  20: [
+    {question:'What has Paul bought Timothy for his birthday?',image:'/images/listening/standard-book2-test4/q1.jpg',answer:0},{question:'Where did John go last weekend?',image:'/images/listening/standard-book2-test4/q2.jpg',answer:0},{question:'Where’s Sally now?',image:'/images/listening/standard-book2-test4/q3.jpg',answer:2},{question:'Which sport is the woman going to do at the sports centre?',image:'/images/listening/standard-book2-test4/q4.jpg',answer:1},{question:'What has the woman bought for her new apartment?',image:'/images/listening/standard-book2-test4/q5.jpg',answer:2},
+  ],
   19: [
     {question:'Where will the friends meet tonight?',image:'/images/listening/standard-book2-test3/q1.jpg',answer:1},{question:'What did Sally eat at the restaurant?',image:'/images/listening/standard-book2-test3/q2.jpg',answer:1},{question:'What job is Tom’s sister doing this summer?',image:'/images/listening/standard-book2-test3/q3.jpg',answer:0},{question:'What exercise is the woman going to do now?',image:'/images/listening/standard-book2-test3/q4.jpg',answer:0},{question:'What’s Philip wearing?',image:'/images/listening/standard-book2-test3/q5.jpg',answer:1},
   ],
@@ -1484,6 +1487,8 @@ const OFFICIAL_TEST1_PARTS = {
 };
 
 const OFFICIAL_PART2_SETS = {
+  20:{title:'Part 2 信息填空题',instruction:'听旅游巴士司机介绍动物园参观安排，填写一个单词、数字或时间。',type:'blanks',items:[
+    {q:'Langate Animal Park — Famous for:',answer:['monkey','monkeys'],show:'monkeys'},{q:'Langate Animal Park — Good place to take photos:',answer:['river','the river'],show:'river'},{q:'Langate Animal Park — Start time of guide’s talk: ___ a.m.',answer:['10.15','10:15','ten fifteen','quarter past ten'],show:'10:15'},{q:'Langate Animal Park — Cost of lunch: €',answer:['8.99','€8.99'],show:'8.99'},{q:'Langate Animal Park — Wait for coach at entrance called:',answer:['Chepstow','chepstow'],show:'Chepstow'}]},
   19:{title:'Part 2 信息填空题',instruction:'听 Maria 留给 Bill 的生日派对留言，填写一个单词、数字或时间。',type:'blanks',items:[
     {q:'Tom’s birthday party — Time guests arrive: ___ p.m.',answer:['8','eight','8.00','8:00'],show:'8:00'},{q:'Tom’s birthday party — Address: 26 ___ Road',answer:['Ludlow','ludlow'],show:'Ludlow'},{q:'Tom’s birthday party — Food: ___ and cake',answer:['snacks','snack'],show:'snacks'},{q:'Tom’s birthday party — Type of music:',answer:['pop'],show:'pop'},{q:'Tom’s birthday party — Maria’s phone number:',answer:['07712657315','07712 657315'],show:'07712 657315'}]},
   18:{title:'Part 2 信息填空题',instruction:'听广播中的短篇故事比赛介绍，填写一个单词、数字或日期。',type:'blanks',items:[
@@ -1665,6 +1670,8 @@ const OFFICIAL_PART2_SETS = {
 };
 
 const OFFICIAL_PART3_SETS = {
+  20:{title:'Part 3 长篇听力题',instruction:'听 Sophie 和 John 讨论一年一度的邻里野餐，选择正确答案。',type:'mcq',items:[
+    {q:'What does Sophie like most about the picnic?',opts:['eating great food','spending time outdoors','becoming better friends with people'],answer:2},{q:'Where is the picnic going to be this year?',opts:['a park','a lake','a garden'],answer:0},{q:'What happened at last year’s picnic?',opts:['The weather wasn’t very good.','Some people didn’t enjoy themselves.','Some people didn’t know where to go.'],answer:2},{q:'What does Sophie want guests to bring?',opts:['something to do','something to eat with','something to barbecue'],answer:0},{q:'Which job does John say he’ll do?',opts:['speak to people','put signs in the area','send a group email'],answer:1}]},
   19:{title:'Part 3 长篇听力题',instruction:'听 Andy 和 Sara 讨论一次徒步活动，选择正确答案。',type:'mcq',items:[
     {q:'Where do they agree to meet?',opts:['at a car park','at a playground','at a bus stop'],answer:1},{q:'What will the weather be like for the walk?',opts:['sunny','windy','rainy'],answer:0},{q:'What will Sara bring?',opts:['a map','a backpack','a drink'],answer:2},{q:'What does Andy think about the Bridge Café?',opts:['The prices are low.','Its food is good.','It’s easy to get to.'],answer:1},{q:'How does Sara feel about going on the walk?',opts:['pleased to get lots of exercise','interested to see the lovely views','happy to spend time with her friend'],answer:2}]},
   18:{title:'Part 3 长篇听力题',instruction:'听 Ben 和 Lily 讨论母亲的生日安排，选择正确答案。',type:'mcq',items:[
@@ -1822,6 +1829,8 @@ const OFFICIAL_PART3_SETS = {
 };
 
 const OFFICIAL_PART4_SETS = {
+  20:{title:'Part 4 短篇听力题',instruction:'听五段独立短对话或独白，选择正确答案。',type:'mcq',items:[
+    {q:'What’s the woman’s job?',opts:['engineer','farmer','painter'],answer:0},{q:'Where did the man meet his new friend?',opts:['at work','at a party','at a sports match'],answer:0},{q:'Why do they decide to walk to the cinema?',opts:['There are no buses today.','They want some exercise.','The car isn’t working.'],answer:1},{q:'What problem did the man have on holiday?',opts:['The weather was bad.','The beach was dirty.','The hotel was noisy.'],answer:2},{q:'What did the girl like about her first Chinese lesson?',opts:['the other students','the teacher','the length of the lesson'],answer:1}]},
   19:{title:'Part 4 短篇听力题',instruction:'听五段独立短对话或独白，选择正确答案。',type:'mcq',items:[
     {q:'What do the friends agree about exercise?',opts:['Running’s hard.','Walking’s boring.','Cycling’s dangerous.'],answer:1},{q:'What did the woman want to be when she was younger?',opts:['an artist','a journalist','a cook'],answer:0},{q:'Where do the friends agree to go?',opts:['to a concert','to an exhibition','to a film'],answer:0},{q:'Why does the woman want the job?',opts:['The work is interesting.','The people are nice.','The office is near her home.'],answer:1},{q:'Why is the woman happy?',opts:['She met an old friend.','She got an exciting job.','She found a new place to live.'],answer:2}]},
   18:{title:'Part 4 短篇听力题',instruction:'听五段独立短对话或独白，选择正确答案。',type:'mcq',items:[
@@ -1979,6 +1988,7 @@ const OFFICIAL_PART4_SETS = {
 };
 
 const OFFICIAL_PART5_SETS = {
+  20:{options:['beach umbrella','blanket','football','games','photos','picnic','sunglasses','towels'],items:[{q:'Katy',answer:1},{q:'Jacob',answer:6},{q:'Suzana',answer:4},{q:'Martin',answer:5},{q:'Carla',answer:3}]},
   19:{options:['armchair','bookcase','cupboard','desk','lamp','mirror','picture','shelf'],items:[{q:'kitchen',answer:2},{q:'living room',answer:3},{q:'bedroom',answer:4},{q:'bathroom',answer:6},{q:'garage',answer:7}]},
   18:{options:['bathroom','bedroom','dining room','garden','hall','kitchen','living room','stairs'],items:[{q:'bowl',answer:0},{q:'lamp',answer:3},{q:'box',answer:5},{q:'clock',answer:1},{q:'chair',answer:4}]},
   17:{options:['badminton','fishing','football','golf','skateboarding','swimming','tennis','volleyball'],items:[{q:'Daniel',answer:1},{q:'Amira',answer:5},{q:'Kelly',answer:4},{q:'Ryan',answer:3},{q:'Valerie',answer:0}]},
