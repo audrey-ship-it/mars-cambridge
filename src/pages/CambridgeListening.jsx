@@ -941,6 +941,9 @@ const KET3_TEST1_PART1 = [
 ];
 
 const OFFICIAL_PART1_SETS = {
+  15: [
+    {question:'Where will they go if it rains tomorrow?',image:'/images/listening/standard-book1-test3/q1.jpg',answer:0},{question:'Why didn’t the woman buy the book?',image:'/images/listening/standard-book1-test3/q2.jpg',answer:2},{question:'Where does the man work now?',image:'/images/listening/standard-book1-test3/q3.jpg',answer:1},{question:'Where does the man want to go?',image:'/images/listening/standard-book1-test3/q4.jpg',answer:1},{question:'What’s the man making?',image:'/images/listening/standard-book1-test3/q5.jpg',answer:1},
+  ],
   14: [
     { question: "Where is the cup now?", image: "/images/listening/standard-book1-test2/q1.jpg", answer: 1, explanation: "杯子不在橱柜或旁边的架子上，而是在水槽旁，因此选择 B。" },
     { question: "Who will Sally meet at the station?", image: "/images/listening/standard-book1-test2/q2.jpg", answer: 0, explanation: "Sally 要接的是年长、短头发的姐姐，因此选择 A。" },
@@ -1469,6 +1472,8 @@ const OFFICIAL_TEST1_PARTS = {
 };
 
 const OFFICIAL_PART2_SETS = {
+  15:{title:'Part 2 信息填空题',instruction:'听本地广播介绍一部新电影，填写一个单词、数字、日期或时间。',type:'blanks',items:[
+    {q:'New film Runner — Subject of film:',answer:['doctor','a doctor'],show:'doctor'},{q:'New film Runner — Name of cinema:',answer:['Caratopia','caratopia'],show:'Caratopia'},{q:'New film Runner — Start date:',answer:['24 July','24th July','July 24','July 24th'],show:'24 July'},{q:'New film Runner — Start time: ___ p.m.',answer:['8.15','8:15','eight fifteen','quarter past eight'],show:'8:15'},{q:'New film Runner — Cost of student ticket: £',answer:['10.50','£10.50'],show:'10.50'}]},
   14: {
     title: "Part 2 信息填空题",
     instruction: "听帆船俱乐部旅行通知，填写一个单词、数字、姓名或时间。",
@@ -1640,6 +1645,8 @@ const OFFICIAL_PART2_SETS = {
 };
 
 const OFFICIAL_PART3_SETS = {
+  15:{title:'Part 3 长篇听力题',instruction:'听 Phil 和 Jess 谈论一家新体育中心，选择正确答案。',type:'mcq',items:[
+    {q:'How did Jess find out about the new sports centre?',opts:['She saw a poster.','A friend of hers works there.','She heard about it on the radio.'],answer:0},{q:'What doesn’t Phil like about the sports centre?',opts:['It’s too noisy.','It’s very expensive.','It’s not big enough.'],answer:1},{q:'Phil prefers to go to the sports centre',opts:['early in the morning.','at the weekend.','during working hours.'],answer:0},{q:'Why is the new swimming pool closed at the moment?',opts:['They are cleaning it.','There’s a competition.','The water’s cold.'],answer:2},{q:'Members of the sports centre',opts:['should buy special shoes.','can get a discount in the café.','needn’t pay for exercise classes.'],answer:1}]},
   14: {
     title: "Part 3 长篇听力题",
     instruction: "听 Victoria 和 Daniel 谈论公司的新办公楼，选择正确答案。",
@@ -1787,6 +1794,8 @@ const OFFICIAL_PART3_SETS = {
 };
 
 const OFFICIAL_PART4_SETS = {
+  15:{title:'Part 4 短篇听力题',instruction:'听五段独立短对话或独白，选择正确答案。',type:'mcq',items:[
+    {q:'Why did the woman arrive at the office late?',opts:['The road was closed.','There was a problem with her car.','She couldn’t find her car keys.'],answer:1},{q:'Where will Peter be this Saturday?',opts:['at a party','in another country','on a boat'],answer:1},{q:'What’s different about the music festival this year?',opts:['how long it is','where it is','when it is'],answer:1},{q:'Which subject did they both enjoy at school?',opts:['history','geography','science'],answer:0},{q:"What’s cheaper in the supermarket this week?",opts:['desserts','soft drinks','fruit'],answer:2}]},
   14: {
     title: "Part 4 短篇听力题",
     instruction: "听五段独立短对话或独白，选择正确答案。",
@@ -1934,6 +1943,7 @@ const OFFICIAL_PART4_SETS = {
 };
 
 const OFFICIAL_PART5_SETS = {
+  15:{options:['comfortable beds','expensive','friendly staff','good food','hard to find','large bedrooms','no parking','noisy'],items:[{q:'City Hotel',answer:1},{q:'The Bridge Hotel',answer:3},{q:'Lemontree Hotel',answer:5},{q:'Greenleaf Hotel',answer:7},{q:'The International Hotel',answer:2}]},
   14: {
     options: ["acting", "art", "cycling", "making music", "photography", "reading", "travelling", "watching sport"],
     items: [

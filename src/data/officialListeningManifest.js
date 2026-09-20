@@ -5,6 +5,7 @@ export const OFFICIAL_LISTENING_SETS = [
   ...[1,2,3,4].map((test,index)=>({id:index+9,book:3,test,label:`练习${index+9}`,readyParts:index===0?[1,2,3,4,5]:index===1?[1,2,3,4,5]:index===2?[1,2,3,4,5]:index===3?[1,2,3,4,5]:[1],audioPrefix:`/audio/official-listening/set-${String(index+9).padStart(2,'0')}/part-`})),
   {id:13,book:'standard-1',test:1,label:'练习13 · 标准版 Test 1',readyParts:[1,2,3,4,5],audioPrefix:'/audio/standard-listening/book-1/test-1/part-'},
   {id:14,book:'standard-1',test:2,label:'练习14 · 标准版 Test 2',readyParts:[1,2,3,4,5],audioPrefix:'/audio/standard-listening/book-1/test-2/part-'},
+  {id:15,book:'standard-1',test:3,label:'练习15 · 标准版 Test 3',readyParts:[1,2,3,4,5],audioPrefix:'/audio/standard-listening/book-1/test-3/part-'},
 ];
 
 export function officialListeningAudio(setId, part) {
