@@ -941,6 +941,9 @@ const KET3_TEST1_PART1 = [
 ];
 
 const OFFICIAL_PART1_SETS = {
+  19: [
+    {question:'Where will the friends meet tonight?',image:'/images/listening/standard-book2-test3/q1.jpg',answer:1},{question:'What did Sally eat at the restaurant?',image:'/images/listening/standard-book2-test3/q2.jpg',answer:1},{question:'What job is Tom’s sister doing this summer?',image:'/images/listening/standard-book2-test3/q3.jpg',answer:0},{question:'What exercise is the woman going to do now?',image:'/images/listening/standard-book2-test3/q4.jpg',answer:0},{question:'What’s Philip wearing?',image:'/images/listening/standard-book2-test3/q5.jpg',answer:1},
+  ],
   18: [
     {question:'How did Richard travel from the airport?',image:'/images/listening/standard-book2-test2/q1.jpg',answer:2},{question:'What is next to the woman’s new flat?',image:'/images/listening/standard-book2-test2/q2.jpg',answer:2},{question:'What job does the man do?',image:'/images/listening/standard-book2-test2/q3.jpg',answer:1},{question:'Which T-shirt does the girl decide to buy?',image:'/images/listening/standard-book2-test2/q4.jpg',answer:1},{question:'Where are the car keys?',image:'/images/listening/standard-book2-test2/q5.jpg',answer:0},
   ],
@@ -1481,6 +1484,8 @@ const OFFICIAL_TEST1_PARTS = {
 };
 
 const OFFICIAL_PART2_SETS = {
+  19:{title:'Part 2 信息填空题',instruction:'听 Maria 留给 Bill 的生日派对留言，填写一个单词、数字或时间。',type:'blanks',items:[
+    {q:'Tom’s birthday party — Time guests arrive: ___ p.m.',answer:['8','eight','8.00','8:00'],show:'8:00'},{q:'Tom’s birthday party — Address: 26 ___ Road',answer:['Ludlow','ludlow'],show:'Ludlow'},{q:'Tom’s birthday party — Food: ___ and cake',answer:['snacks','snack'],show:'snacks'},{q:'Tom’s birthday party — Type of music:',answer:['pop'],show:'pop'},{q:'Tom’s birthday party — Maria’s phone number:',answer:['07712657315','07712 657315'],show:'07712 657315'}]},
   18:{title:'Part 2 信息填空题',instruction:'听广播中的短篇故事比赛介绍，填写一个单词、数字或日期。',type:'blanks',items:[
     {q:'Short story competition — First prize:',answer:['computer','a computer'],show:'computer'},{q:'Short story competition — Number of words:',answer:['750','seven hundred and fifty'],show:'750'},{q:'Short story competition — Story must include the word:',answer:['snow'],show:'snow'},{q:'Short story competition — Last date to send story:',answer:['19 June','19th June','June 19','June 19th'],show:'19 June'},{q:'Short story competition — Upload to: ___ .com',answer:['CARROW','carrow'],show:'CARROW'}]},
   17:{title:'Part 2 信息填空题',instruction:'听一段关于参加曲棍球比赛的电话留言，填写一个单词、数字、日期或时间。',type:'blanks',items:[
@@ -1660,6 +1665,8 @@ const OFFICIAL_PART2_SETS = {
 };
 
 const OFFICIAL_PART3_SETS = {
+  19:{title:'Part 3 长篇听力题',instruction:'听 Andy 和 Sara 讨论一次徒步活动，选择正确答案。',type:'mcq',items:[
+    {q:'Where do they agree to meet?',opts:['at a car park','at a playground','at a bus stop'],answer:1},{q:'What will the weather be like for the walk?',opts:['sunny','windy','rainy'],answer:0},{q:'What will Sara bring?',opts:['a map','a backpack','a drink'],answer:2},{q:'What does Andy think about the Bridge Café?',opts:['The prices are low.','Its food is good.','It’s easy to get to.'],answer:1},{q:'How does Sara feel about going on the walk?',opts:['pleased to get lots of exercise','interested to see the lovely views','happy to spend time with her friend'],answer:2}]},
   18:{title:'Part 3 长篇听力题',instruction:'听 Ben 和 Lily 讨论母亲的生日安排，选择正确答案。',type:'mcq',items:[
     {q:'When will they go shopping for a present?',opts:['tomorrow morning','tomorrow afternoon','tomorrow evening'],answer:2},{q:'Where do they decide to go for some earrings?',opts:['a department store','the market','a jewellery shop'],answer:0},{q:'What should they do on their mum’s birthday?',opts:['have a party for her','take her out for a meal','go to the park for a barbecue'],answer:1},{q:'How does Lily feel about inviting their mum’s best friend?',opts:['excited about seeing her','worried she will not come','sure their mum will like the idea'],answer:2},{q:'What sort of drink will Ben make?',opts:['banana and cream','lemon and orange','melon and honey'],answer:0}]},
   17:{title:'Part 3 长篇听力题',instruction:'听 Sue 和 Peter 谈论一家餐厅，选择正确答案。',type:'mcq',items:[
@@ -1815,6 +1822,8 @@ const OFFICIAL_PART3_SETS = {
 };
 
 const OFFICIAL_PART4_SETS = {
+  19:{title:'Part 4 短篇听力题',instruction:'听五段独立短对话或独白，选择正确答案。',type:'mcq',items:[
+    {q:'What do the friends agree about exercise?',opts:['Running’s hard.','Walking’s boring.','Cycling’s dangerous.'],answer:1},{q:'What did the woman want to be when she was younger?',opts:['an artist','a journalist','a cook'],answer:0},{q:'Where do the friends agree to go?',opts:['to a concert','to an exhibition','to a film'],answer:0},{q:'Why does the woman want the job?',opts:['The work is interesting.','The people are nice.','The office is near her home.'],answer:1},{q:'Why is the woman happy?',opts:['She met an old friend.','She got an exciting job.','She found a new place to live.'],answer:2}]},
   18:{title:'Part 4 短篇听力题',instruction:'听五段独立短对话或独白，选择正确答案。',type:'mcq',items:[
     {q:'What was the only thing the woman liked about her holiday?',opts:['where she stayed','a place she ate at','an activity she did'],answer:0},{q:'Why is the woman upset?',opts:['Her car needs repairing.','She has lost some money.','Someone stole her bicycle.'],answer:0},{q:'What’s the main reason for the radio advertisement?',opts:['to give details about a sale','to give information about a special day','to tell people about new equipment'],answer:1},{q:'What doesn’t the boy like about his painting?',opts:['its size','its colours','its subject'],answer:0},{q:'Why does the girl like the sports blog?',opts:['the sports advice','the online competitions','the information about sports stars'],answer:2}]},
   17:{title:'Part 4 短篇听力题',instruction:'听五段独立短对话或独白，选择正确答案。',type:'mcq',items:[
@@ -1970,6 +1979,7 @@ const OFFICIAL_PART4_SETS = {
 };
 
 const OFFICIAL_PART5_SETS = {
+  19:{options:['armchair','bookcase','cupboard','desk','lamp','mirror','picture','shelf'],items:[{q:'kitchen',answer:2},{q:'living room',answer:3},{q:'bedroom',answer:4},{q:'bathroom',answer:6},{q:'garage',answer:7}]},
   18:{options:['bathroom','bedroom','dining room','garden','hall','kitchen','living room','stairs'],items:[{q:'bowl',answer:0},{q:'lamp',answer:3},{q:'box',answer:5},{q:'clock',answer:1},{q:'chair',answer:4}]},
   17:{options:['badminton','fishing','football','golf','skateboarding','swimming','tennis','volleyball'],items:[{q:'Daniel',answer:1},{q:'Amira',answer:5},{q:'Kelly',answer:4},{q:'Ryan',answer:3},{q:'Valerie',answer:0}]},
   16:{options:['art equipment','bag','book','chocolate','concert ticket','jewellery','perfume','picture'],items:[{q:'Anthea',answer:5},{q:'Larry',answer:7},{q:'Kerry',answer:2},{q:'Tony',answer:3},{q:'Hannah',answer:1}]},
