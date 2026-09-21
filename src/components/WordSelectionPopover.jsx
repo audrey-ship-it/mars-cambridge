@@ -26,17 +26,6 @@ function expandToWholeWord(range) {
   return expanded
 }
 
-function rangeAtPoint(x, y) {
-  if (!Number.isFinite(x) || !Number.isFinite(y)) return null
-  if (document.caretRangeFromPoint) return document.caretRangeFromPoint(x, y)
-  const position = document.caretPositionFromPoint?.(x, y)
-  if (!position) return null
-  const range = document.createRange()
-  range.setStart(position.offsetNode, position.offset)
-  range.collapse(true)
-  return range
-}
-
 export default function WordSelectionPopover({ source = '学习页面' }) {
   const [popup, setPopup] = useState(null)
   const [savedKeys, setSavedKeys] = useState(() => new Set())
@@ -51,15 +40,13 @@ export default function WordSelectionPopover({ source = '学习页面' }) {
 
   useEffect(() => {
     function inspectSelection(event) {
-      const point = event.changedTouches?.[0] || event
-      const x = point.clientX
-      const y = point.clientY
       const eventTarget = event.target
       window.setTimeout(() => {
         if (Date.now() < suppressSelectionUntil.current) return
         if (eventTarget?.closest?.('input, textarea, button, [contenteditable="true"], [data-no-word-select]')) return
         const selection = window.getSelection()
-        let range = selection && !selection.isCollapsed ? selection.getRangeAt(0).cloneRange() : rangeAtPoint(x, y)
+        if (!selection || selection.isCollapsed) return
+        let range = selection.getRangeAt(0).cloneRange()
         range = expandToWholeWord(range)
         if (!range) return
         const node = range.commonAncestorContainer.nodeType === Node.TEXT_NODE ? range.commonAncestorContainer.parentElement : range.commonAncestorContainer
