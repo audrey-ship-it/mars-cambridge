@@ -8,6 +8,7 @@
     "build": "vite build",
     "build:hosted": "vite build && node scripts/externalize-hosted-audio.mjs",
     "audit:reading": "node scripts/audit-reading-data.mjs",
+    "audit:words": "node scripts/audit-word-meanings.mjs",
     "lint": "eslint .",
     "preview": "vite preview"
   },

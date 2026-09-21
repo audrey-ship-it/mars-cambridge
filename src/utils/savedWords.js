@@ -1,5 +1,6 @@
-import { cambridgeWordsByLevel } from '../data/cambridgeWords'
-import { IRREGULAR_VERBS, mustSpell500, READING_FREQ_288 } from '../data/ketVocabSets'
+import { cambridgeWordsByLevel } from '../data/cambridgeWords.js'
+import { IRREGULAR_VERBS, mustSpell500, READING_FREQ_288 } from '../data/ketVocabSets.js'
+import { SITE_WORD_MEANINGS } from '../data/siteWordMeanings.js'
 
 export const SAVED_WORDS_KEY = 'mars_saved_words_v1'
 export const SAVED_WORDS_EVENT = 'mars:saved-words-changed'
@@ -9,6 +10,9 @@ const catalog = [...Object.values(cambridgeWordsByLevel).flat(), ...mustSpell500
 catalog.forEach(item => {
   const key = String(item.word || '').trim().toLowerCase()
   if (key && item.chinese && !dictionary.has(key)) dictionary.set(key, item)
+})
+Object.entries(SITE_WORD_MEANINGS).forEach(([word, item]) => {
+  if (!dictionary.has(word)) dictionary.set(word, { word, ...item })
 })
 
 const phraseOverrides = [
@@ -32,6 +36,30 @@ IRREGULAR_VERBS.forEach(verb => {
 
 const formAlternatives = {
   found: '作为动词原形还可表示：建立；创办',
+}
+
+const specialMeanings = {
+  th: '序数词词尾，表示“第……”', sth: 'something 的缩写：某事；某物', sb: 'somebody 的缩写：某人',
+  mcq: '选择题（multiple-choice question）', km: '千米；公里', kg: '千克；公斤', pt: '部分；要点（缩写）',
+  'listening-gap': '听力填空', 'source-scan': '原卷扫描', 'ket-standard': 'KET 标准题',
+  'story-page': '故事页面', 'story-strip': '连环故事', 'in-app': '应用内的',
+  "she'll": 'she will / she shall：她将会', "there'll": 'there will：将会有', "that'll": 'that will：那将会',
+  "who'd": 'who would / who had：谁会；谁已经', "who've": 'who have：哪些人已经',
+  er: '表示犹豫的语气词：呃', yt: 'YouTube 的缩写',
+}
+
+const spellingCorrections = {
+  runned: 'ran', twelveth: 'twelfth', beginned: 'began', bigest: 'biggest', difficulter: 'more difficult',
+  easyer: 'easier', eightth: 'eighth', fiveth: 'fifth', 'fourty-three': 'forty-three', getted: 'got',
+  happyest: 'happiest', heavyer: 'heavier', hoter: 'hotter', hotest: 'hottest', nineth: 'ninth',
+  openned: 'opened', playd: 'played', schoolsbag: 'schoolbag', smallly: 'small', swimmed: 'swam',
+  teethbrush: 'toothbrush', threety: 'thirty', visitted: 'visited', washd: 'washed', workt: 'worked',
+  busyest: 'busiest', cleand: 'cleaned', comfortabler: 'more comfortable', funnyest: 'funniest',
+  interestingest: 'most interesting', threeth: 'third', twoth: 'second', beautifulest: 'most beautiful',
+  difficultest: 'most difficult', expensiver: 'more expensive', famousest: 'most famous', farest: 'farthest',
+  fourst: 'fourth', goodest: 'best', interestinger: 'more interesting', manyer: 'more', manyest: 'most',
+  muchest: 'most', oneth: 'first', photoies: 'photos', sandwichies: 'sandwiches', tenst: 'tenth',
+  twentyth: 'twentieth', wellly: 'well', leavs: 'leaves', likies: 'likes', walkins: 'walk-ins',
 }
 
 export function normalizeSelection(value) {
@@ -98,6 +126,27 @@ function dictionaryEntry(word) {
   return null
 }
 
+function fallbackEntry(word) {
+  const key = word.toLowerCase()
+  if (specialMeanings[key]) return { word, lemma: key, chinese: specialMeanings[key], part: 'abbr.', phonetic: '' }
+  if (spellingCorrections[key]) {
+    return { word, lemma: key, chinese: `错误拼写；正确形式：${spellingCorrections[key]}`, part: 'spelling', phonetic: '' }
+  }
+  if (key.includes('-')) {
+    const parts = key.split('-').filter(Boolean).map(dictionaryEntry).filter(Boolean)
+    if (parts.length >= 2) {
+      return { word, lemma: key, chinese: `复合表达：${parts.map(item => item.chinese).join(' + ')}`, part: 'compound', phonetic: '' }
+    }
+  }
+  if (key.endsWith("'s")) {
+    const base = key.slice(0, -2)
+    const entry = dictionaryEntry(base)
+    if (entry) return { word, lemma: key, chinese: `${entry.chinese}的（所有格）`, part: entry.part, phonetic: '' }
+  }
+  if (/^[A-Z]/.test(word)) return { word, lemma: key, chinese: '专有名词（人名、地名或名称）', part: 'proper noun', phonetic: '' }
+  return { word, lemma: key, chinese: '题目中的特殊拼写或名称', part: 'special term', phonetic: '', fallback: true }
+}
+
 function shortMeaning(value) {
   return String(value || '').split(/[，；、（(]/)[0].replace(/……为止/g, '').trim()
 }
@@ -118,7 +167,7 @@ export function findWordMeaning(selection) {
   if (exact) return { ...exact, word: clean, kind: words.length === 1 ? 'word' : 'phrase', tokens: [] }
 
   const seen = new Set()
-  const tokens = words.map(dictionaryEntry).filter(Boolean).filter(token => {
+  const tokens = words.map(word => dictionaryEntry(word) || fallbackEntry(word)).filter(Boolean).filter(token => {
     const key = token.lemma.toLowerCase()
     if (seen.has(key)) return false
     seen.add(key)
@@ -127,7 +176,7 @@ export function findWordMeaning(selection) {
   const isSingleWord = words.length === 1
   const isPhrase = words.length > 1 && words.length <= 6
   const composedChinese = isPhrase && tokens.length === words.length ? composePhraseChinese(tokens) : ''
-  return {
+  const result = {
     word: clean,
     lemma: clean.toLowerCase(),
     chinese: composedChinese,
@@ -137,6 +186,7 @@ export function findWordMeaning(selection) {
     tokens,
     composed: Boolean(composedChinese),
   }
+  return isSingleWord && !result.chinese ? fallbackEntry(clean) : result
 }
 
 export function readSavedWords() {
