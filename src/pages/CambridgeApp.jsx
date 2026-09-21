@@ -3,6 +3,8 @@ import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'reac
 import { motion, AnimatePresence } from 'framer-motion'
 import { EXAM_CONFIGS, getExamGrade } from '../data/cambridgeScoreTables'
 import MyLearningDashboard from './MyLearningDashboard'
+import WordSelectionPopover from '../components/WordSelectionPopover'
+import { readSavedWords, SAVED_WORDS_EVENT } from '../utils/savedWords'
 
 /* ── 侧栏模块 ── */
 const SIDEBAR_MODULES = [
@@ -29,6 +31,7 @@ export function CambridgeLayout({ children, activeModule, level, setLevel }) {
   const location = useLocation()
   const current = LEVELS.find(l => l.abbr === level) || LEVELS[0]
   const [showLevelMenu, setShowLevelMenu] = useState(false)
+  const sourceLabel = `${SIDEBAR_MODULES.find(module => module.id === activeModule)?.label || 'KET'}学习`
 
   return (
     <div className="flex h-screen bg-white overflow-hidden">
@@ -122,6 +125,7 @@ export function CambridgeLayout({ children, activeModule, level, setLevel }) {
           {children}
         </main>
       </div>
+      <WordSelectionPopover source={sourceLabel} />
     </div>
   )
 }
@@ -260,15 +264,24 @@ function VocabPathIcon({ id }) {
     irregular: <><path d="M20 7h-6V1"/><path d="M20 7a9 9 0 1 0 1 9"/><path d="m8 12 3 3 5-6"/></>,
     collocations: <><path d="m9 15-2 2a4 4 0 0 1-6-6l3-3a4 4 0 0 1 6 0"/><path d="m15 9 2-2a4 4 0 0 1 6 6l-3 3a4 4 0 0 1-6 0"/><path d="m8 16 8-8"/></>,
     review: <><path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v5h5"/><path d="m9 12 2 2 4-5"/></>,
+    saved: <><path d="M6 4h12v17l-6-4-6 4V4Z"/><path d="M9 9h6M9 12h4"/></>,
   }
   return <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[id]}</svg>
 }
 
 function VocabSetChooser({ onSelect, onCollocation }) {
+  const navigate = useNavigate()
+  const [savedCount, setSavedCount] = useState(() => readSavedWords().length)
   const [showTopics, setShowTopics] = useState(false)
   const [lastResult] = useState(() => {
     try { return JSON.parse(localStorage.getItem('mars_vocab_last_result') || 'null') } catch { return null }
   })
+
+  useEffect(() => {
+    const refresh = event => setSavedCount((event.detail || readSavedWords()).length)
+    window.addEventListener(SAVED_WORDS_EVENT, refresh)
+    return () => window.removeEventListener(SAVED_WORDS_EVENT, refresh)
+  }, [])
 
   if (showTopics) {
     return (
@@ -323,6 +336,13 @@ function VocabSetChooser({ onSelect, onCollocation }) {
       subtitle: '270 组',
       desc: '通过填空练习掌握常见搭配，帮助阅读理解和写作表达。',
       action: onCollocation,
+    },
+    {
+      id: 'saved',
+      title: '我的生词库',
+      subtitle: savedCount ? `${savedCount} 个生词` : '暂无生词',
+      desc: '集中查看学习时标记的生词，可标记掌握并打印中英文版或默写版。',
+      action: () => navigate('/cambridge/words/saved'),
     },
     {
       id: 'review',

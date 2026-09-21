@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { grammarUnitStatus } from '../utils/grammarProgress'
+import { readSavedWords, SAVED_WORDS_EVENT } from '../utils/savedWords'
 
 const EXAM_IDS = Array.from({ length: 12 }, (_, index) => `ket-${Math.floor(index / 4) + 1}-test${(index % 4) + 1}`)
 
@@ -318,6 +319,7 @@ export default function MyLearningDashboard() {
   const completed = tasks.filter(t => t.done).length
   const todayProgress = Math.round(completed / tasks.length * 100)
   const [learning] = useState(readLearningSnapshot)
+  const [savedWordCount, setSavedWordCount] = useState(() => readSavedWords().length)
   const continueItem = learning.continueItem
 
   useEffect(() => {
@@ -326,6 +328,12 @@ export default function MyLearningDashboard() {
     setTasks(nextTasks)
     try { localStorage.setItem('mars_today_tasks', JSON.stringify(nextTasks)) } catch { /* storage may be unavailable */ }
   }, [studyPlan.examDate, currentWeeklyTask?.id])
+
+  useEffect(() => {
+    const refresh = event => setSavedWordCount((event.detail || readSavedWords()).length)
+    window.addEventListener(SAVED_WORDS_EVENT, refresh)
+    return () => window.removeEventListener(SAVED_WORDS_EVENT, refresh)
+  }, [])
 
   const greeting = useMemo(() => {
     const hour = new Date().getHours()
@@ -495,6 +503,13 @@ export default function MyLearningDashboard() {
                 <div className="relative grid md:grid-cols-[1fr_auto] items-center gap-5">
                   <div><div className="inline-flex items-center gap-1.5 text-[10px] font-extrabold tracking-widest uppercase bg-white/10 rounded-full px-2.5 py-1 mb-3">{continueItem ? '继续上次学习' : '开始第一次练习'}</div><h2 className="text-xl sm:text-2xl font-extrabold mb-2">{continueItem?.title || '选择一个 KET 专项开始学习'}</h2><p className="text-white/60 text-sm">{continueItem?.detail || '完成练习后，这里会自动显示最近的学习位置。'}</p>{continueItem && <div className="mt-4 max-w-md"><div className="flex justify-between text-[10px] text-white/50 mb-1.5"><span>学习进度</span><span>{continueItem.progress}%</span></div><div className="h-2 rounded-full bg-white/10 overflow-hidden"><div className="h-full bg-[#f4c95d] rounded-full" style={{ width: `${continueItem.progress}%` }} /></div></div>}</div>
                   <button onClick={() => navigate(continueItem?.path || '/cambridge/words')} className="relative px-5 py-3 rounded-xl bg-[#f4c95d] text-[#083f32] font-extrabold text-sm hover:bg-amber-300 shadow-lg">{continueItem ? '继续学习 →' : '开始学习 →'}</button>
+                </div>
+              </section>
+
+              <section className="rounded-3xl border border-emerald-200 bg-emerald-50/50 p-5 shadow-sm sm:p-6">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex items-center gap-4"><span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-[#086348] text-2xl text-white">🔖</span><div><div className="text-[10px] font-extrabold tracking-[.18em] text-emerald-700">MY WORD BANK</div><h2 className="mt-1 text-lg font-extrabold text-gray-950">我的生词库</h2><p className="mt-1 text-xs text-gray-500">已收集 {savedWordCount} 个生词，可集中复习、标记掌握或打印。</p></div></div>
+                  <button onClick={() => navigate('/cambridge/words/saved')} className="rounded-xl bg-[#086348] px-5 py-3 text-sm font-extrabold text-white transition hover:bg-[#064e3b]">查看生词库 →</button>
                 </div>
               </section>
 

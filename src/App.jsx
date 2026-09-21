@@ -11,6 +11,7 @@ import CambridgeListeningGap from './pages/CambridgeListeningGap'
 import CambridgeWriting from './pages/CambridgeWriting'
 import CambridgeSpeaking from './pages/CambridgeSpeaking'
 import CambridgeExam, { ExamList } from './pages/CambridgeExam'
+import CambridgeSavedWords from './pages/CambridgeSavedWords'
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
       <Route path="/" element={<PublicHome />} />
       <Route path="/cambridge" element={<CambridgeApp />} />
       <Route path="/cambridge/reading" element={<CambridgeReading />} />
+      <Route path="/cambridge/words/saved" element={<CambridgeSavedWords />} />
       <Route path="/cambridge/:module" element={<CambridgeApp />} />
       <Route path="/cambridge/:module/:part" element={<CambridgeApp />} />
       <Route path="/cambridge-reading" element={<CambridgeReading />} />

@@ -14,3 +14,18 @@
     box-sizing: border-box;
   }
 }
+
+.saved-word-print-sheet { display: none; }
+
+@media print {
+  @page { size: A4 portrait; margin: 14mm; }
+  body * { visibility: hidden !important; }
+  .saved-word-print-sheet, .saved-word-print-sheet * { visibility: visible !important; }
+  .saved-word-print-sheet { display: block !important; position: absolute; inset: 0; width: 100%; color: #111; background: white; font-family: Arial, sans-serif; }
+  .saved-word-print-sheet h1 { margin: 0 0 8px; font-size: 22px; }
+  .saved-word-print-sheet p { margin: 0 0 18px; font-size: 12px; }
+  .saved-word-print-sheet table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .saved-word-print-sheet th, .saved-word-print-sheet td { border: 1px solid #777; padding: 8px 10px; text-align: left; }
+  .saved-word-print-sheet th:first-child, .saved-word-print-sheet td:first-child { width: 52px; text-align: center; }
+  .saved-word-print-sheet tr { break-inside: avoid; }
+}

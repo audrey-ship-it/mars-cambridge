@@ -1,0 +1,77 @@
+import { cambridgeWordsByLevel } from '../data/cambridgeWords'
+
+export const SAVED_WORDS_KEY = 'mars_saved_words_v1'
+export const SAVED_WORDS_EVENT = 'mars:saved-words-changed'
+
+const dictionary = new Map()
+Object.values(cambridgeWordsByLevel).flat().forEach(item => {
+  const key = String(item.word || '').trim().toLowerCase()
+  if (key && item.chinese && !dictionary.has(key)) dictionary.set(key, item)
+})
+
+export function normalizeSelection(value) {
+  return String(value || '')
+    .normalize('NFKC')
+    .replace(/[‘’]/g, "'")
+    .replace(/^[^A-Za-z]+|[^A-Za-z'-]+$/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function lookupCandidates(word) {
+  const value = word.toLowerCase()
+  const candidates = [value]
+  if (value.endsWith("'s")) candidates.push(value.slice(0, -2))
+  if (value.endsWith('ies')) candidates.push(`${value.slice(0, -3)}y`)
+  if (value.endsWith('es')) candidates.push(value.slice(0, -2))
+  if (value.endsWith('s')) candidates.push(value.slice(0, -1))
+  if (value.endsWith('ing')) {
+    const stem = value.slice(0, -3)
+    candidates.push(stem, `${stem}e`)
+    if (stem.length > 2 && stem.at(-1) === stem.at(-2)) candidates.push(stem.slice(0, -1))
+  }
+  if (value.endsWith('ed')) candidates.push(value.slice(0, -2), value.slice(0, -1))
+  return [...new Set(candidates)]
+}
+
+export function findWordMeaning(selection) {
+  const clean = normalizeSelection(selection)
+  if (!clean || clean.length > 60 || !/^[A-Za-z][A-Za-z'-]*(?:\s+[A-Za-z][A-Za-z'-]*){0,3}$/.test(clean)) return null
+  for (const key of lookupCandidates(clean)) {
+    const entry = dictionary.get(key)
+    if (entry) return { word: clean, lemma: entry.word, chinese: entry.chinese, part: entry.part || '', phonetic: entry.phonetic || '' }
+  }
+  return { word: clean, lemma: clean.toLowerCase(), chinese: '', part: '', phonetic: '' }
+}
+
+export function readSavedWords() {
+  try {
+    const value = JSON.parse(localStorage.getItem(SAVED_WORDS_KEY) || '[]')
+    return Array.isArray(value) ? value : []
+  } catch { return [] }
+}
+
+function commit(words) {
+  localStorage.setItem(SAVED_WORDS_KEY, JSON.stringify(words))
+  window.dispatchEvent(new CustomEvent(SAVED_WORDS_EVENT, { detail: words }))
+  return words
+}
+
+export function saveWord(entry, source = '学习页面') {
+  const words = readSavedWords()
+  const key = entry.lemma.toLowerCase()
+  if (words.some(item => item.lemma.toLowerCase() === key)) return words
+  return commit([{ ...entry, source, status: 'learning', addedAt: new Date().toISOString() }, ...words])
+}
+
+export function removeSavedWord(lemma) {
+  return commit(readSavedWords().filter(item => item.lemma.toLowerCase() !== lemma.toLowerCase()))
+}
+
+export function updateSavedWord(lemma, changes) {
+  return commit(readSavedWords().map(item => item.lemma.toLowerCase() === lemma.toLowerCase() ? { ...item, ...changes } : item))
+}
+
+export function isWordSaved(lemma) {
+  return readSavedWords().some(item => item.lemma.toLowerCase() === lemma.toLowerCase())
+}
