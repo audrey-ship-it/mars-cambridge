@@ -1,6 +1,42 @@
 import { useEffect, useRef, useState } from 'react'
 import { findWordMeaning, isWordSaved, removeSavedWord, saveWord } from '../utils/savedWords'
 
+const WORD_CHARACTER = /[A-Za-z'-]/
+
+function expandToWholeWord(range) {
+  if (!range || range.startContainer !== range.endContainer || range.startContainer.nodeType !== Node.TEXT_NODE) return range
+  const text = range.startContainer.textContent || ''
+  let start = range.startOffset
+  let end = range.endOffset
+  const selected = text.slice(start, end)
+  if (selected && /\s/.test(selected)) return range
+
+  if (start === end && !WORD_CHARACTER.test(text[start] || '')) {
+    if (start > 0 && WORD_CHARACTER.test(text[start - 1])) start -= 1
+    else return null
+    end = start + 1
+  }
+  while (start > 0 && WORD_CHARACTER.test(text[start - 1])) start -= 1
+  while (end < text.length && WORD_CHARACTER.test(text[end])) end += 1
+  if (start === end) return null
+
+  const expanded = document.createRange()
+  expanded.setStart(range.startContainer, start)
+  expanded.setEnd(range.endContainer, end)
+  return expanded
+}
+
+function rangeAtPoint(x, y) {
+  if (!Number.isFinite(x) || !Number.isFinite(y)) return null
+  if (document.caretRangeFromPoint) return document.caretRangeFromPoint(x, y)
+  const position = document.caretPositionFromPoint?.(x, y)
+  if (!position) return null
+  const range = document.createRange()
+  range.setStart(position.offsetNode, position.offset)
+  range.collapse(true)
+  return range
+}
+
 export default function WordSelectionPopover({ source = '学习页面' }) {
   const [popup, setPopup] = useState(null)
   const [savedKeys, setSavedKeys] = useState(() => new Set())
@@ -14,22 +50,29 @@ export default function WordSelectionPopover({ source = '学习页面' }) {
   }
 
   useEffect(() => {
-    function inspectSelection() {
+    function inspectSelection(event) {
+      const point = event.changedTouches?.[0] || event
+      const x = point.clientX
+      const y = point.clientY
+      const eventTarget = event.target
       window.setTimeout(() => {
         if (Date.now() < suppressSelectionUntil.current) return
+        if (eventTarget?.closest?.('input, textarea, button, [contenteditable="true"], [data-no-word-select]')) return
         const selection = window.getSelection()
-        if (!selection || selection.isCollapsed) return
-        const node = selection.anchorNode?.parentElement
+        let range = selection && !selection.isCollapsed ? selection.getRangeAt(0).cloneRange() : rangeAtPoint(x, y)
+        range = expandToWholeWord(range)
+        if (!range) return
+        const node = range.commonAncestorContainer.nodeType === Node.TEXT_NODE ? range.commonAncestorContainer.parentElement : range.commonAncestorContainer
         if (!node || node.closest('input, textarea, button, [contenteditable="true"], [data-no-word-select]')) return
-        const entry = findWordMeaning(selection.toString())
+        const entry = findWordMeaning(range.toString())
         if (!entry) return
-        const rect = selection.getRangeAt(0).getBoundingClientRect()
+        const rect = range.getBoundingClientRect()
         const width = entry.tokens?.length ? 384 : 320
         const left = Math.min(Math.max(12, rect.left + rect.width / 2 - width / 2), window.innerWidth - width - 12)
         const top = Math.min(window.innerHeight - (entry.tokens?.length ? 390 : 190), Math.max(12, rect.bottom + 10))
         setSavedKeys(new Set([entry, ...(entry.tokens || [])].filter(item => isWordSaved(item.lemma)).map(item => item.lemma.toLowerCase())))
         setPopup({ entry, left, top })
-        selection.removeAllRanges()
+        selection?.removeAllRanges()
       }, 0)
     }
     function close(event) {
