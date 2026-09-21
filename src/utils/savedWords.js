@@ -48,6 +48,7 @@ const formAlternatives = {
 }
 
 const specialMeanings = {
+  a: '一；一个', an: '一；一个',
   th: '序数词词尾，表示“第……”', sth: 'something 的缩写：某事；某物', sb: 'somebody 的缩写：某人',
   mcq: '选择题（multiple-choice question）', km: '千米；公里', kg: '千克；公斤', pt: '部分；要点（缩写）',
   'listening-gap': '听力填空', 'source-scan': '原卷扫描', 'ket-standard': 'KET 标准题',
@@ -162,9 +163,16 @@ function shortMeaning(value) {
 }
 
 function composePhraseChinese(tokens) {
-  const first = tokens[0]?.lemma.toLowerCase()
+  const lemmas = tokens.map(token => token.lemma.toLowerCase())
+  const first = lemmas[0]
   if (first === 'until' && tokens.length >= 2) {
     return `直到${tokens.slice(1).map(token => shortMeaning(token.chinese)).join('')}`
+  }
+  if (['nearly', 'almost'].includes(first) && ['a', 'an', 'one'].includes(lemmas[1]) && tokens[2]) {
+    return `差不多一${shortMeaning(tokens[2].chinese)}`
+  }
+  if (first === 'about' && ['a', 'an', 'one'].includes(lemmas[1]) && tokens[2]) {
+    return `大约一${shortMeaning(tokens[2].chinese)}`
   }
   return ''
 }
