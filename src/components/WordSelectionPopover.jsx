@@ -29,10 +29,14 @@ export default function WordSelectionPopover({ source = '学习页面' }) {
         const top = Math.min(window.innerHeight - (entry.tokens?.length ? 390 : 190), Math.max(12, rect.bottom + 10))
         setSavedKeys(new Set([entry, ...(entry.tokens || [])].filter(item => isWordSaved(item.lemma)).map(item => item.lemma.toLowerCase())))
         setPopup({ entry, left, top })
+        selection.removeAllRanges()
       }, 0)
     }
     function close(event) {
-      if (!rootRef.current?.contains(event.target)) setPopup(null)
+      if (!rootRef.current?.contains(event.target)) {
+        window.getSelection()?.removeAllRanges()
+        setPopup(null)
+      }
     }
     document.addEventListener('mouseup', inspectSelection)
     document.addEventListener('touchend', inspectSelection)
