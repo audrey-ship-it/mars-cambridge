@@ -3,6 +3,12 @@ import { findWordMeaning, isWordSaved, removeSavedWord, saveWord } from '../util
 
 const WORD_CHARACTER = /[A-Za-z'-]/
 
+function blocksWordSelection(node) {
+  if (!node?.closest) return true
+  if (node.closest('input, textarea, [contenteditable="true"], [data-no-word-select]')) return true
+  return Boolean(node.closest('button') && !node.closest('[data-word-select]'))
+}
+
 function expandToWholeWord(range) {
   if (!range || range.startContainer !== range.endContainer || range.startContainer.nodeType !== Node.TEXT_NODE) return range
   const text = range.startContainer.textContent || ''
@@ -43,14 +49,14 @@ export default function WordSelectionPopover({ source = '学习页面' }) {
       const eventTarget = event.target
       window.setTimeout(() => {
         if (Date.now() < suppressSelectionUntil.current) return
-        if (eventTarget?.closest?.('input, textarea, button, [contenteditable="true"], [data-no-word-select]')) return
+        if (blocksWordSelection(eventTarget)) return
         const selection = window.getSelection()
         if (!selection || selection.isCollapsed) return
         let range = selection.getRangeAt(0).cloneRange()
         range = expandToWholeWord(range)
         if (!range) return
         const node = range.commonAncestorContainer.nodeType === Node.TEXT_NODE ? range.commonAncestorContainer.parentElement : range.commonAncestorContainer
-        if (!node || node.closest('input, textarea, button, [contenteditable="true"], [data-no-word-select]')) return
+        if (!node || blocksWordSelection(node)) return
         const entry = findWordMeaning(range.toString())
         if (!entry) return
         const rect = range.getBoundingClientRect()

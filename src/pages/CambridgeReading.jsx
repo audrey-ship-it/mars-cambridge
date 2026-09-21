@@ -251,6 +251,7 @@ export default function CambridgeReading() {
     }
 
     function handleClick() {
+      if (window.getSelection()?.toString().trim()) return
       if (isRetry) {
         setAnswers(a => ({ ...a, [key]: label }))
         setRetrying(r => { const n = { ...r }; delete n[key]; return n })
@@ -262,7 +263,8 @@ export default function CambridgeReading() {
     if (exam) {
       return (
         <button
-          disabled={effChk && !isRetry}
+          data-word-select
+          aria-disabled={effChk && !isRetry}
           onClick={handleClick}
           className={`flex items-center gap-3 sm:gap-5 w-full text-left py-2 transition-all ${effChk && !right && !wrong ? 'opacity-45' : ''}`}
         >
@@ -271,14 +273,15 @@ export default function CambridgeReading() {
           } flex items-center justify-center font-bold text-sm ${right ? 'text-emerald-600' : wrong ? 'text-red-500' : 'text-sky-600'}`}>
             {(right || (selected && !effChk)) ? label : ''}
           </span>
-          <span className="text-[15px] sm:text-[18px] leading-snug text-[#30284d]">{opt}</span>
+          <span className="select-text cursor-text text-[15px] sm:text-[18px] leading-snug text-[#30284d]">{opt}</span>
         </button>
       )
     }
 
     return (
       <button
-        disabled={effChk && !isRetry}
+        data-word-select
+        aria-disabled={effChk && !isRetry}
         onClick={handleClick}
         className={`flex items-center gap-3 w-full text-left px-4 py-2.5 rounded-xl border-2 transition-all ${cls}`}
       >
@@ -286,7 +289,7 @@ export default function CambridgeReading() {
           right ? 'text-emerald-600 border-emerald-300 bg-emerald-50' : wrong ? 'text-red-500 border-red-300 bg-red-50' : selected ? 'text-sky-600 border-sky-300 bg-sky-50' : 'text-slate-400 border-slate-200'
         }`}>{label}</span>
         {wrong && <span className="text-red-500 text-sm flex-shrink-0">✕</span>}
-        <span className={`${large ? 'text-[19px]' : 'text-[15px]'} text-slate-700 leading-snug`}>{opt}</span>
+        <span className={`${large ? 'text-[19px]' : 'text-[15px]'} select-text cursor-text text-slate-700 leading-snug`}>{opt}</span>
       </button>
     )
   }
