@@ -5,10 +5,18 @@ export default function WordSelectionPopover({ source = '学习页面' }) {
   const [popup, setPopup] = useState(null)
   const [saved, setSaved] = useState(false)
   const rootRef = useRef(null)
+  const suppressSelectionUntil = useRef(0)
+
+  function dismiss() {
+    suppressSelectionUntil.current = Date.now() + 250
+    window.getSelection()?.removeAllRanges()
+    setPopup(null)
+  }
 
   useEffect(() => {
     function inspectSelection() {
       window.setTimeout(() => {
+        if (Date.now() < suppressSelectionUntil.current) return
         const selection = window.getSelection()
         if (!selection || selection.isCollapsed) return
         const node = selection.anchorNode?.parentElement
@@ -42,7 +50,7 @@ export default function WordSelectionPopover({ source = '学习页面' }) {
     <div ref={rootRef} data-no-word-select style={{ left, top }} className="fixed z-[100] w-80 rounded-2xl border border-emerald-200 bg-white p-4 shadow-2xl shadow-emerald-950/15">
       <div className="flex items-start justify-between gap-3">
         <div><div className="text-xl font-extrabold text-gray-950">{entry.word}</div>{entry.part && <div className="mt-0.5 text-xs font-semibold uppercase text-gray-400">{entry.part}</div>}</div>
-        <button onClick={() => setPopup(null)} className="grid h-7 w-7 place-items-center rounded-full bg-gray-100 text-gray-500" aria-label="关闭">×</button>
+        <button onMouseDown={event => event.preventDefault()} onClick={dismiss} className="grid h-7 w-7 place-items-center rounded-full bg-gray-100 text-gray-500" aria-label="关闭">×</button>
       </div>
       <div className="mt-3 rounded-xl bg-emerald-50 px-3.5 py-3">
         <div className="text-[10px] font-extrabold tracking-widest text-emerald-700">中文翻译</div>
