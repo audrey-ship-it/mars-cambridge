@@ -1,5 +1,5 @@
 import { cambridgeWordsByLevel } from '../data/cambridgeWords'
-import { mustSpell500, READING_FREQ_288 } from '../data/ketVocabSets'
+import { IRREGULAR_VERBS, mustSpell500, READING_FREQ_288 } from '../data/ketVocabSets'
 
 export const SAVED_WORDS_KEY = 'mars_saved_words_v1'
 export const SAVED_WORDS_EVENT = 'mars:saved-words-changed'
@@ -15,6 +15,24 @@ const phraseOverrides = [
   { word: 'bring it round', part: 'phrase', chinese: '把它带过来；拿过来' },
 ]
 phraseOverrides.forEach(item => dictionary.set(item.word.toLowerCase(), item))
+
+const irregularForms = new Map()
+IRREGULAR_VERBS.forEach(verb => {
+  const base = verb.base.replace(/\(.+\)/, '')
+  const forms = new Map()
+  if (verb.past && verb.past !== '/' && verb.past !== base) forms.set(verb.past.toLowerCase(), '过去式')
+  if (verb.pp && verb.pp !== '/' && verb.pp !== base) {
+    const key = verb.pp.toLowerCase()
+    forms.set(key, forms.has(key) ? '过去式和过去分词' : '过去分词')
+  }
+  forms.forEach((formLabel, form) => {
+    if (!irregularForms.has(form)) irregularForms.set(form, { base, formLabel, chinese: verb.chinese })
+  })
+})
+
+const formAlternatives = {
+  found: '作为动词原形还可表示：建立；创办',
+}
 
 export function normalizeSelection(value) {
   return String(value || '')
@@ -42,9 +60,40 @@ function lookupCandidates(word) {
 }
 
 function dictionaryEntry(word) {
+  const irregular = irregularForms.get(word.toLowerCase())
+  if (irregular) {
+    return {
+      word,
+      lemma: word.toLowerCase(),
+      baseForm: irregular.base,
+      formNote: `${irregular.base} 的${irregular.formLabel}`,
+      alternative: formAlternatives[word.toLowerCase()] || '',
+      chinese: irregular.chinese,
+      part: 'v.',
+      phonetic: '',
+    }
+  }
+  const value = word.toLowerCase()
   for (const key of lookupCandidates(word)) {
     const entry = dictionary.get(key)
-    if (entry) return { word, lemma: entry.word, chinese: entry.chinese, part: entry.part || '', phonetic: entry.phonetic || '' }
+    if (entry) {
+      let formLabel = ''
+      if (key !== value) {
+        if (value.endsWith('ing')) formLabel = '现在分词'
+        else if (value.endsWith('ed')) formLabel = '过去式或过去分词'
+        else if (value.endsWith('s')) formLabel = String(entry.part || '').startsWith('v') ? '第三人称单数形式' : '复数形式'
+        else formLabel = '词形变化'
+      }
+      return {
+        word,
+        lemma: entry.word,
+        chinese: entry.chinese,
+        part: entry.part || '',
+        phonetic: entry.phonetic || '',
+        baseForm: formLabel ? entry.word : '',
+        formNote: formLabel ? `${entry.word} 的${formLabel}` : '',
+      }
+    }
   }
   return null
 }
@@ -75,15 +124,16 @@ export function findWordMeaning(selection) {
     seen.add(key)
     return true
   })
-  const isPhrase = words.length <= 6
+  const isSingleWord = words.length === 1
+  const isPhrase = words.length > 1 && words.length <= 6
   const composedChinese = isPhrase && tokens.length === words.length ? composePhraseChinese(tokens) : ''
   return {
     word: clean,
     lemma: clean.toLowerCase(),
     chinese: composedChinese,
-    part: isPhrase ? 'phrase' : 'sentence',
+    part: isSingleWord ? '' : isPhrase ? 'phrase' : 'sentence',
     phonetic: '',
-    kind: isPhrase ? 'phrase' : 'sentence',
+    kind: isSingleWord ? 'word' : isPhrase ? 'phrase' : 'sentence',
     tokens,
     composed: Boolean(composedChinese),
   }

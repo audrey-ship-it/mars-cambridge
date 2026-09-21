@@ -109,6 +109,8 @@ export default function WordSelectionPopover({ source = '学习页面' }) {
       <div className="mt-3 rounded-xl bg-emerald-50 px-3.5 py-3">
         <div className="text-[10px] font-extrabold tracking-widest text-emerald-700">{entry.composed ? '组合释义' : entry.kind === 'sentence' ? '句子重点词' : entry.kind === 'phrase' ? '短语释义' : '中文翻译'}</div>
         <div className="mt-1 text-base font-bold text-gray-800">{entry.chinese || (entry.kind === 'phrase' && entry.tokens?.length ? '暂未收录完整短语，请查看下方单词释义' : entry.tokens?.length ? '可选择下面的重点词加入生词库' : '词库暂未收录该词')}</div>
+        {entry.formNote && <div className="mt-2 text-xs font-bold text-emerald-700">原形：{entry.baseForm} · {entry.formNote}</div>}
+        {entry.alternative && <div className="mt-1 text-xs leading-relaxed text-gray-500">{entry.alternative}</div>}
       </div>
       {entry.tokens?.length > 0 && <div className="mt-3 space-y-2">
         {entry.tokens.map(token => {
