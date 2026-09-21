@@ -71,8 +71,8 @@ export default function WordSelectionPopover({ source = '学习页面' }) {
         <button onMouseDown={event => event.preventDefault()} onClick={dismiss} className="grid h-7 w-7 place-items-center rounded-full bg-gray-100 text-gray-500" aria-label="关闭">×</button>
       </div>
       <div className="mt-3 rounded-xl bg-emerald-50 px-3.5 py-3">
-        <div className="text-[10px] font-extrabold tracking-widest text-emerald-700">{entry.composed ? '组合释义' : entry.kind === 'sentence' ? '句子重点词' : '中文翻译'}</div>
-        <div className="mt-1 text-base font-bold text-gray-800">{entry.chinese || (entry.tokens?.length ? '可选择下面的重点词加入生词库' : '词库暂未收录该词')}</div>
+        <div className="text-[10px] font-extrabold tracking-widest text-emerald-700">{entry.composed ? '组合释义' : entry.kind === 'sentence' ? '句子重点词' : entry.kind === 'phrase' ? '短语释义' : '中文翻译'}</div>
+        <div className="mt-1 text-base font-bold text-gray-800">{entry.chinese || (entry.kind === 'phrase' && entry.tokens?.length ? '暂未收录完整短语，请查看下方单词释义' : entry.tokens?.length ? '可选择下面的重点词加入生词库' : '词库暂未收录该词')}</div>
       </div>
       {entry.tokens?.length > 0 && <div className="mt-3 space-y-2">
         {entry.tokens.map(token => {

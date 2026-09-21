@@ -11,6 +11,11 @@ catalog.forEach(item => {
   if (key && item.chinese && !dictionary.has(key)) dictionary.set(key, item)
 })
 
+const phraseOverrides = [
+  { word: 'bring it round', part: 'phrase', chinese: '把它带过来；拿过来' },
+]
+phraseOverrides.forEach(item => dictionary.set(item.word.toLowerCase(), item))
+
 export function normalizeSelection(value) {
   return String(value || '')
     .normalize('NFKC')
@@ -49,9 +54,11 @@ function shortMeaning(value) {
 }
 
 function composePhraseChinese(tokens) {
-  const meanings = tokens.map(token => shortMeaning(token.chinese))
-  if (tokens[0]?.lemma.toLowerCase() === 'until') meanings[0] = '直到'
-  return meanings.join('')
+  const first = tokens[0]?.lemma.toLowerCase()
+  if (first === 'until' && tokens.length >= 2) {
+    return `直到${tokens.slice(1).map(token => shortMeaning(token.chinese)).join('')}`
+  }
+  return ''
 }
 
 export function findWordMeaning(selection) {
@@ -69,16 +76,16 @@ export function findWordMeaning(selection) {
     return true
   })
   const isPhrase = words.length <= 6
-  const canCompose = isPhrase && tokens.length === words.length
+  const composedChinese = isPhrase && tokens.length === words.length ? composePhraseChinese(tokens) : ''
   return {
     word: clean,
     lemma: clean.toLowerCase(),
-    chinese: canCompose ? composePhraseChinese(tokens) : '',
+    chinese: composedChinese,
     part: isPhrase ? 'phrase' : 'sentence',
     phonetic: '',
     kind: isPhrase ? 'phrase' : 'sentence',
     tokens,
-    composed: canCompose,
+    composed: Boolean(composedChinese),
   }
 }
 
