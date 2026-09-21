@@ -1,10 +1,12 @@
 import { cambridgeWordsByLevel } from '../data/cambridgeWords'
+import { mustSpell500, READING_FREQ_288 } from '../data/ketVocabSets'
 
 export const SAVED_WORDS_KEY = 'mars_saved_words_v1'
 export const SAVED_WORDS_EVENT = 'mars:saved-words-changed'
 
 const dictionary = new Map()
-Object.values(cambridgeWordsByLevel).flat().forEach(item => {
+const catalog = [...Object.values(cambridgeWordsByLevel).flat(), ...mustSpell500, ...READING_FREQ_288]
+catalog.forEach(item => {
   const key = String(item.word || '').trim().toLowerCase()
   if (key && item.chinese && !dictionary.has(key)) dictionary.set(key, item)
 })
@@ -34,14 +36,50 @@ function lookupCandidates(word) {
   return [...new Set(candidates)]
 }
 
+function dictionaryEntry(word) {
+  for (const key of lookupCandidates(word)) {
+    const entry = dictionary.get(key)
+    if (entry) return { word, lemma: entry.word, chinese: entry.chinese, part: entry.part || '', phonetic: entry.phonetic || '' }
+  }
+  return null
+}
+
+function shortMeaning(value) {
+  return String(value || '').split(/[，；、（(]/)[0].replace(/……为止/g, '').trim()
+}
+
+function composePhraseChinese(tokens) {
+  const meanings = tokens.map(token => shortMeaning(token.chinese))
+  if (tokens[0]?.lemma.toLowerCase() === 'until') meanings[0] = '直到'
+  return meanings.join('')
+}
+
 export function findWordMeaning(selection) {
   const clean = normalizeSelection(selection)
-  if (!clean || clean.length > 60 || !/^[A-Za-z][A-Za-z'-]*(?:\s+[A-Za-z][A-Za-z'-]*){0,3}$/.test(clean)) return null
-  for (const key of lookupCandidates(clean)) {
-    const entry = dictionary.get(key)
-    if (entry) return { word: clean, lemma: entry.word, chinese: entry.chinese, part: entry.part || '', phonetic: entry.phonetic || '' }
+  if (!clean || clean.length > 220 || !/^[A-Za-z][A-Za-z'-]*(?:\s+[A-Za-z][A-Za-z'-]*){0,19}$/.test(clean)) return null
+  const exact = dictionaryEntry(clean)
+  const words = clean.split(' ')
+  if (exact) return { ...exact, word: clean, kind: words.length === 1 ? 'word' : 'phrase', tokens: [] }
+
+  const seen = new Set()
+  const tokens = words.map(dictionaryEntry).filter(Boolean).filter(token => {
+    const key = token.lemma.toLowerCase()
+    if (seen.has(key)) return false
+    seen.add(key)
+    return true
+  })
+  const isPhrase = words.length <= 6
+  const canCompose = isPhrase && tokens.length === words.length
+  return {
+    word: clean,
+    lemma: clean.toLowerCase(),
+    chinese: canCompose ? composePhraseChinese(tokens) : '',
+    part: isPhrase ? 'phrase' : 'sentence',
+    phonetic: '',
+    kind: isPhrase ? 'phrase' : 'sentence',
+    tokens,
+    composed: canCompose,
   }
-  return { word: clean, lemma: clean.toLowerCase(), chinese: '', part: '', phonetic: '' }
 }
 
 export function readSavedWords() {
