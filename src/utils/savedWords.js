@@ -18,8 +18,16 @@ Object.entries(SITE_WORD_MEANINGS).forEach(([word, item]) => {
 const phraseOverrides = [
   { word: 'bring it round', part: 'phrase', chinese: '把它带过来；拿过来' },
   { word: 'Los Angeles', part: 'proper noun', chinese: '洛杉矶（美国加利福尼亚州城市）' },
+  { word: 'in the US', part: 'phrase', chinese: '在美国' },
+  { word: 'the US', part: 'proper noun', chinese: '美国' },
 ]
 phraseOverrides.forEach(item => dictionary.set(item.word.toLowerCase(), item))
+
+const caseSensitiveMeanings = {
+  US: { word: 'US', part: 'abbr.', chinese: '美国（United States）' },
+  USA: { word: 'USA', part: 'abbr.', chinese: '美国（United States of America）' },
+  UK: { word: 'UK', part: 'abbr.', chinese: '英国（United Kingdom）' },
+}
 
 const irregularForms = new Map()
 IRREGULAR_VERBS.forEach(verb => {
@@ -89,6 +97,7 @@ function lookupCandidates(word) {
 }
 
 function dictionaryEntry(word) {
+  if (caseSensitiveMeanings[word]) return { ...caseSensitiveMeanings[word], lemma: word, phonetic: '' }
   const irregular = irregularForms.get(word.toLowerCase())
   if (irregular) {
     return {
