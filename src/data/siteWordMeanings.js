@@ -476,6 +476,11 @@ export const SITE_WORD_MEANINGS = {
     "phonetic": "'æmәzɒn",
     "part": ""
   },
+  "amazon river": {
+    "chinese": "亚马逊河",
+    "phonetic": "",
+    "part": ""
+  },
   "amber": {
     "chinese": "n. 琥珀, 琥珀色；a. 琥珀色的, 琥珀似的",
     "phonetic": "'æmbә",
@@ -1481,6 +1486,11 @@ export const SITE_WORD_MEANINGS = {
     "phonetic": "big",
     "part": ""
   },
+  "big time": {
+    "chinese": "n. 第一流; 巨大成功; 愉快的时光",
+    "phonetic": "biɡ taim",
+    "part": ""
+  },
   "bigger": {
     "chinese": "a. 更大的（big的比较级）",
     "phonetic": "",
@@ -1569,6 +1579,11 @@ export const SITE_WORD_MEANINGS = {
   "black": {
     "chinese": "n. 黑色, 黑颜料；a. 黑色的",
     "phonetic": "blæk",
+    "part": ""
+  },
+  "black hole": {
+    "chinese": "n. 黑洞",
+    "phonetic": "blæk həul",
     "part": ""
   },
   "blake": {
@@ -2324,6 +2339,11 @@ export const SITE_WORD_MEANINGS = {
   "caribbean": {
     "chinese": "n. 加勒比海；a. 加勒比海的, 加勒比人的",
     "phonetic": ".kæri'bi:әn",
+    "part": ""
+  },
+  "caribbean sea": {
+    "chinese": "加勒比海",
+    "phonetic": "",
     "part": ""
   },
   "carla": {
@@ -4431,6 +4451,11 @@ export const SITE_WORD_MEANINGS = {
     "phonetic": "'aifәl",
     "part": ""
   },
+  "eiffel tower": {
+    "chinese": "艾菲尔铁塔",
+    "phonetic": "",
+    "part": ""
+  },
   "eight": {
     "chinese": "num. 八, 八个",
     "phonetic": "eit",
@@ -6196,6 +6221,11 @@ export const SITE_WORD_MEANINGS = {
     "phonetic": "greit",
     "part": ""
   },
+  "great wall": {
+    "chinese": "长城",
+    "phonetic": "",
+    "part": ""
+  },
   "greatest": {
     "chinese": "[计] 最大的",
     "phonetic": "'^reitist",
@@ -6801,6 +6831,11 @@ export const SITE_WORD_MEANINGS = {
     "phonetic": "'hɒki",
     "part": ""
   },
+  "hockey team": {
+    "chinese": "曲棍球队",
+    "phonetic": "",
+    "part": ""
+  },
   "hold": {
     "chinese": "n. 把握, 把持力, 柄, 控制, 掌握, 监禁；vt. 保存, 握住, 拿住, 占据, 持有, 拥有；vi. 支持, 持续, 有效；n. 保留；[计] 保留",
     "phonetic": "hәuld",
@@ -6964,6 +6999,11 @@ export const SITE_WORD_MEANINGS = {
   "huckleberry": {
     "chinese": "n. 黑果木",
     "phonetic": "'hʌklbәri",
+    "part": ""
+  },
+  "huckleberry finn": {
+    "chinese": "费恩历险记（书名）",
+    "phonetic": "",
     "part": ""
   },
   "huge": {
@@ -8541,6 +8581,11 @@ export const SITE_WORD_MEANINGS = {
     "phonetic": "lɔ:s",
     "part": ""
   },
+  "los angeles": {
+    "chinese": "洛杉矶",
+    "phonetic": "lɔs'ændʒәlәs",
+    "part": ""
+  },
   "lose": {
     "chinese": "vt. 遗失, 损失, 丢失, 使失去, 错过, 浪费, 迷失, 使迷路, 输去, 使沉溺于；vi. 受损失, 失败",
     "phonetic": "lu:z",
@@ -8879,6 +8924,11 @@ export const SITE_WORD_MEANINGS = {
   "mark": {
     "chinese": "n. 标志, 分数, 马克, 痕迹, 斑点, 靶子, 刻度, 记号, 符号, 戳记, 标准, 起跑线；vt. 做标记于, 留意, 打分数, 表明, 标志, 记录；vi. 作记号, 记得分；[计] 标志; 标记; 传号",
     "phonetic": "mɑ:k",
+    "part": ""
+  },
+  "mark twain": {
+    "chinese": "马克·吐温",
+    "phonetic": "'mɑ:k'twein",
     "part": ""
   },
   "market": {
@@ -9271,6 +9321,11 @@ export const SITE_WORD_MEANINGS = {
     "phonetic": ".misi'sipi",
     "part": ""
   },
+  "mississippi river": {
+    "chinese": "[经] 密西西比河",
+    "phonetic": "",
+    "part": ""
+  },
   "mistake": {
     "chinese": "n. 错误, 误会；vi. 犯错, 误认；vt. 误解, 弄错；[计] 错误",
     "phonetic": "mis'teik",
@@ -9419,6 +9474,11 @@ export const SITE_WORD_MEANINGS = {
   "mount": {
     "chinese": "n. 乘骑用马, 框, 衬纸, 山；vi. 乘马, 爬上, 增长；vt. 爬上, 使上马, 装上, 装裱, 安放, 制作...的标本, 设置, 上演；[计] 安装",
     "phonetic": "maunt",
+    "part": ""
+  },
+  "mount everest": {
+    "chinese": "n. 埃佛勒斯峰",
+    "phonetic": "",
     "part": ""
   },
   "mountain": {
@@ -9766,6 +9826,16 @@ export const SITE_WORD_MEANINGS = {
     "phonetic": "nju:",
     "part": ""
   },
+  "new york": {
+    "chinese": "纽约",
+    "phonetic": "'nju: 'jɔ:k",
+    "part": ""
+  },
+  "new zealand": {
+    "chinese": "新西兰",
+    "phonetic": "nju: 'zi:lәnd",
+    "part": ""
+  },
   "newly": {
     "chinese": "adv. 重新, 最近",
     "phonetic": "'nju:li",
@@ -9859,6 +9929,11 @@ export const SITE_WORD_MEANINGS = {
   "nobel": {
     "chinese": "n. 诺贝尔",
     "phonetic": "'nәubel",
+    "part": ""
+  },
+  "nobel prize": {
+    "chinese": "诺贝尔奖",
+    "phonetic": "nәjbel 'praiz",
     "part": ""
   },
   "nobody": {
@@ -10151,6 +10226,11 @@ export const SITE_WORD_MEANINGS = {
     "phonetic": "ɒn",
     "part": ""
   },
+  "on monday": {
+    "chinese": "在星期一",
+    "phonetic": "",
+    "part": ""
+  },
   "once": {
     "chinese": "adv. 一次, 曾经, 一旦；conj. 一旦, 一经；n. 一次；a. 从前的",
     "phonetic": "wʌns",
@@ -10359,6 +10439,11 @@ export const SITE_WORD_MEANINGS = {
   "pacific": {
     "chinese": "n. 太平洋；a. 太平洋的, 太平洋沿岸的, 爱好和平的, 安静的, 平息的",
     "phonetic": "pә'sifik",
+    "part": ""
+  },
+  "pacific ocean": {
+    "chinese": "太平洋",
+    "phonetic": "",
     "part": ""
   },
   "pack": {
@@ -11556,6 +11641,11 @@ export const SITE_WORD_MEANINGS = {
     "phonetic": "kwi'bek",
     "part": ""
   },
+  "quebec city": {
+    "chinese": "魁北克市（加拿大城市）",
+    "phonetic": "",
+    "part": ""
+  },
   "queen": {
     "chinese": "n. 王后, 女王；vt. 立为女王；vi. 做女王",
     "phonetic": "'kwi:n",
@@ -12266,6 +12356,11 @@ export const SITE_WORD_MEANINGS = {
     "phonetic": "sә'hɑ:rә",
     "part": ""
   },
+  "sahara desert": {
+    "chinese": "n. 撒哈拉沙漠；北非；前进撒哈拉沙漠",
+    "phonetic": "",
+    "part": ""
+  },
   "said": {
     "chinese": "a. 上述的；say的过去式和过去分词",
     "phonetic": "sed",
@@ -12324,6 +12419,11 @@ export const SITE_WORD_MEANINGS = {
   "san": {
     "chinese": "abbr. 存储区域网（Storage Area Networking）",
     "phonetic": "sɑ:n",
+    "part": ""
+  },
+  "san francisco": {
+    "chinese": "旧金山",
+    "phonetic": ",sænfrәn'siskәu",
     "part": ""
   },
   "sandra": {
@@ -13496,6 +13596,16 @@ export const SITE_WORD_MEANINGS = {
     "phonetic": "sauθ",
     "part": ""
   },
+  "south africa": {
+    "chinese": "南非",
+    "phonetic": "",
+    "part": ""
+  },
+  "south america": {
+    "chinese": "南美",
+    "phonetic": "",
+    "part": ""
+  },
   "southern": {
     "chinese": "n. 南方人, 男风；a. 向南方的, 来自南方的",
     "phonetic": "'sʌðәn",
@@ -13504,6 +13614,11 @@ export const SITE_WORD_MEANINGS = {
   "space": {
     "chinese": "n. 位置, 空间, 距离, 太空, 空白, 间隔, (期刊等的)篇幅；vt. 隔开, 分隔；vi. 留间隔；[计] 空白, 空格校验",
     "phonetic": "speis",
+    "part": ""
+  },
+  "space travel": {
+    "chinese": "宇宙航行,太空旅行",
+    "phonetic": "",
     "part": ""
   },
   "spaces": {
@@ -13694,6 +13809,11 @@ export const SITE_WORD_MEANINGS = {
   "stanford": {
     "chinese": "n. 斯坦福（姓氏, 男子名）；斯坦福大学（美国一所大学）",
     "phonetic": "'stænfәd",
+    "part": ""
+  },
+  "stanford university": {
+    "chinese": "斯坦福大学",
+    "phonetic": "",
     "part": ""
   },
   "star": {
@@ -14586,6 +14706,11 @@ export const SITE_WORD_MEANINGS = {
     "phonetic": "ðә",
     "part": ""
   },
+  "the nobel prize": {
+    "chinese": "n. 诺贝尔奖",
+    "phonetic": "",
+    "part": ""
+  },
   "theatre": {
     "chinese": "n. 戏院, 电影院, 剧场, 全体观众, 戏剧, 戏剧效果, 阶梯式讲堂, 场所",
     "phonetic": "",
@@ -14954,6 +15079,11 @@ export const SITE_WORD_MEANINGS = {
   "toni": {
     "chinese": "n. 托妮（女子名）",
     "phonetic": "'tәuni",
+    "part": ""
+  },
+  "toni morrison": {
+    "chinese": "摩里森；托尼·莫里森",
+    "phonetic": "",
     "part": ""
   },
   "tonight": {
@@ -15451,6 +15581,16 @@ export const SITE_WORD_MEANINGS = {
     "phonetic": "ju:'naitid",
     "part": ""
   },
+  "united kingdom": {
+    "chinese": "n. 联合王国；[法] 联合王国",
+    "phonetic": "",
+    "part": ""
+  },
+  "united states": {
+    "chinese": "美国, 合众国",
+    "phonetic": "",
+    "part": ""
+  },
   "universal": {
     "chinese": "a. 全世界的, 普遍的, 宇宙的, 通用的；n. 一般概念",
     "phonetic": ".ju:ni'vә:sl",
@@ -15559,6 +15699,11 @@ export const SITE_WORD_MEANINGS = {
   "van": {
     "chinese": "n. 货车, 篷车, 先锋, 前驱, 前卫；vt. 用货车搬运；[计] 增值网",
     "phonetic": "væn",
+    "part": ""
+  },
+  "van gogh": {
+    "chinese": "n. 梵高（荷兰画家）",
+    "phonetic": "",
     "part": ""
   },
   "vanuatu": {
@@ -16036,6 +16181,11 @@ export const SITE_WORD_MEANINGS = {
     "phonetic": "west",
     "part": ""
   },
+  "west africa": {
+    "chinese": "n. 西非；今非洲西部；西部非洲",
+    "phonetic": "",
+    "part": ""
+  },
   "wet": {
     "chinese": "n. 湿气, 潮湿, 水分, 雨天；a. 湿的, 潮的, 搞错的, 下雨的, 反对禁酒的；vi. 变湿；vt. 使...湿",
     "phonetic": "wet",
@@ -16179,6 +16329,11 @@ export const SITE_WORD_MEANINGS = {
   "william": {
     "chinese": "n. 威廉（男子名）；[常作W-][美俚]钞票, 纸币",
     "phonetic": "'wiljәm",
+    "part": ""
+  },
+  "william shakespeare": {
+    "chinese": "威廉·莎士比亚（英国诗人、作家）",
+    "phonetic": "",
     "part": ""
   },
   "willing": {

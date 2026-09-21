@@ -13,6 +13,9 @@ const wanted = new Set()
 
 function collect(value) {
   if (typeof value === 'string') {
+    for (const match of value.matchAll(/\b[A-Z][A-Za-z'-]*(?:[ \t]+[A-Z][A-Za-z'-]*){1,3}\b/g)) {
+      wanted.add(match[0].toLowerCase())
+    }
     for (const match of value.matchAll(/[A-Za-z]+(?:['’-][A-Za-z]+)*/g)) {
       const word = match[0].replace('’', "'").toLowerCase()
       if (word.length > 1 && !ignored.has(word)) wanted.add(word)

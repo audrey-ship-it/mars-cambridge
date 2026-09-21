@@ -6,9 +6,16 @@ import { findWordMeaning } from '../src/utils/savedWords.js'
 const included = /^(grammar.+Questions|ket(?:Collocations|DictationData|ExamData|ExamTest\d+|ListeningData|Part5Extras|ProductiveExamData|ReadingCatalog|ReadingData|SpeakingTopicBank|StandardReadingData|StandardWritingData)|listeningGapData)\.js$/
 const ignored = new Set(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'id', 'url', 'pdf', 'mp3', 'jpg', 'jpeg', 'png', 'svg', 'ket', 'test', 'part'])
 const counts = new Map()
+const titleCasePhrases = new Set()
 
 function collect(value) {
   if (typeof value === 'string') {
+    for (const match of value.matchAll(/\b[A-Z][A-Za-z'-]*(?:[ \t]+[A-Z][A-Za-z'-]*){1,3}\b/g)) {
+      const phrase = match[0]
+      const key = phrase.toLowerCase()
+      titleCasePhrases.add(key)
+      counts.set(key, (counts.get(key) || 0) + 1)
+    }
     for (const match of value.matchAll(/[A-Za-z]+(?:['’-][A-Za-z]+)*/g)) {
       const word = match[0].replace('’', "'")
       const key = word.toLowerCase()
@@ -24,7 +31,10 @@ const files = (await readdir(resolve('src/data'))).filter(file => included.test(
 for (const file of files) collect(await import(pathToFileURL(resolve('src/data', file))))
 
 const missing = [...counts]
-  .filter(([word]) => !findWordMeaning(word)?.chinese)
+  .filter(([word]) => {
+    const selection = titleCasePhrases.has(word) ? word.replace(/\b[a-z]/g, letter => letter.toUpperCase()) : word
+    return !findWordMeaning(selection)?.chinese
+  })
   .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
 
 console.log(`划词词义审计：扫描 ${files.length} 个题库文件，发现 ${counts.size} 个不同英文词。`)

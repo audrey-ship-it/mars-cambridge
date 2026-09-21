@@ -17,6 +17,7 @@ Object.entries(SITE_WORD_MEANINGS).forEach(([word, item]) => {
 
 const phraseOverrides = [
   { word: 'bring it round', part: 'phrase', chinese: '把它带过来；拿过来' },
+  { word: 'Los Angeles', part: 'proper noun', chinese: '洛杉矶（美国加利福尼亚州城市）' },
 ]
 phraseOverrides.forEach(item => dictionary.set(item.word.toLowerCase(), item))
 
@@ -165,6 +166,10 @@ export function findWordMeaning(selection) {
   const exact = dictionaryEntry(clean)
   const words = clean.split(' ')
   if (exact) return { ...exact, word: clean, kind: words.length === 1 ? 'word' : 'phrase', tokens: [] }
+  const titleCaseName = words.length > 1 && words.every(word => /^[A-Z][A-Za-z'-]*$/.test(word))
+  if (titleCaseName) {
+    return { word: clean, lemma: clean, chinese: '专有名词（地名、机构名或名称）', part: 'proper noun', phonetic: '', kind: 'phrase', tokens: [] }
+  }
 
   const seen = new Set()
   const tokens = words.map(word => dictionaryEntry(word) || fallbackEntry(word)).filter(Boolean).filter(token => {
