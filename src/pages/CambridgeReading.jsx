@@ -2,17 +2,40 @@ import { useState, useEffect, useRef } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CambridgeLayout } from './CambridgeApp'
-import { ALL_KET_READING_TESTS } from '../data/ketReadingCatalog'
+import { getReadingTestsByLevel } from '../data/ketReadingCatalog'
 import { ketPart5Sets, PART5_GROUPS } from '../data/ketPart5Extras'
 
-const PART_LABELS = { 1: 'Part 1', 2: 'Part 2', 3: 'Part 3', 4: 'Part 4', 5: 'Part 5' }
-const PART_DESC   = { 1: '短文选义', 2: '人物配对', 3: '长文阅读', 4: '选词填空', 5: '语法填词' }
-const PART_HELP   = {
-  1: '阅读六则短通知、信息或告示，从 A、B、C 中选择正确含义。',
-  2: '阅读三段人物或地点介绍，根据题目选择 A、B 或 C。',
-  3: '阅读一篇较长文章，根据文章内容完成五道选择题。',
-  4: '阅读短文，为每个空选择最恰当的单词。',
-  5: '根据上下文，在每个空中填写一个正确的单词。'
+// KET has 5 reading parts (1-5); PET has 6 (1-6). Labels/descriptions differ by level.
+const PART_META = {
+  KET: {
+    count: 5,
+    labels: { 1: 'Part 1', 2: 'Part 2', 3: 'Part 3', 4: 'Part 4', 5: 'Part 5' },
+    desc:   { 1: '短文选义', 2: '人物配对', 3: '长文阅读', 4: '选词填空', 5: '语法填词' },
+    help:   {
+      1: '阅读六则短通知、信息或告示，从 A、B、C 中选择正确含义。',
+      2: '阅读三段人物或地点介绍，根据题目选择 A、B 或 C。',
+      3: '阅读一篇较长文章，根据文章内容完成五道选择题。',
+      4: '阅读短文，为每个空选择最恰当的单词。',
+      5: '根据上下文，在每个空中填写一个正确的单词。',
+    },
+  },
+  PET: {
+    count: 6,
+    labels: { 1: 'Part 1', 2: 'Part 2', 3: 'Part 3', 4: 'Part 4', 5: 'Part 5', 6: 'Part 6' },
+    desc:   { 1: '短文选义', 2: '人物配对', 3: '长文阅读', 4: '选句填空', 5: '选词填空', 6: '语法填词' },
+    help:   {
+      1: '阅读五则短通知、信息或告示，从 A、B、C 中选择正确含义。',
+      2: '阅读五个人物需求与八个课程/地点介绍，为每个人选择最适合的一项。',
+      3: '阅读一篇较长文章，根据文章内容完成五道选择题（A/B/C/D）。',
+      4: '阅读一篇被抽走五个句子的文章，从 A–H 中选择正确句子填空。',
+      5: '阅读短文，为每个空选择最恰当的单词（A/B/C/D）。',
+      6: '根据上下文，在每个空中填写一个正确的单词。',
+    },
+  },
+}
+
+function partMeta(level) {
+  return PART_META[level] || PART_META.KET
 }
 function HighlightableText({ text, storageKey, className = '' }) {
   const boxRef = useRef(null)
@@ -96,8 +119,9 @@ function HighlightableText({ text, storageKey, className = '' }) {
 }
 
 // Build one batch per official test and preserve source-scan page metadata.
-function buildBatches(partId) {
-  return ALL_KET_READING_TESTS.map((t, ti) => {
+function buildBatches(level, partId) {
+  const tests = getReadingTestsByLevel(level)
+  return tests.map((t, ti) => {
     const p = t[`part${partId}`]
     if (!p) return null
     return { ...p, testTitle: t.title, source: t.source, questions: (p.questions || []).map(q => ({ ...q, _key: `${ti}_${q.id}` })) }
@@ -107,9 +131,11 @@ function buildBatches(partId) {
 export default function CambridgeReading() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [level, setLevel] = useState(() => { try { return localStorage.getItem('cambridge_level') || 'KET' } catch { return 'KET' } })
+  useEffect(() => { try { localStorage.setItem('cambridge_level', level) } catch { /* storage unavailable */ } }, [level])
   const [partId,       setPartId]       = useState(() => {
     const requested = Number(searchParams.get('part'))
-    return Number.isInteger(requested) && requested >= 1 && requested <= 5 ? requested : 1
+    const maxPart = partMeta(localStorage.getItem('cambridge_level') || 'KET').count
+    return Number.isInteger(requested) && requested >= 1 && requested <= maxPart ? requested : 1
   })
   const [part5Mode,    setPart5Mode]    = useState('official')
   const [part5Id,      setPart5Id]      = useState(1)
@@ -126,14 +152,14 @@ export default function CambridgeReading() {
   const [timerOn,  setTimerOn] = useState(false)
   const timerRef = useRef(null)
 
-  const isPart5 = partId === 5
+  const isPart5 = level === 'KET' && partId === 5
 
-  // ── Batches for Parts 1-4 ──────────────────────────────
-  const batches      = isPart5 ? [] : buildBatches(partId)
+  // ── Batches for Parts 1-4 (and PET Parts 1-6) ──────────
+  const batches      = isPart5 ? [] : buildBatches(level, partId)
   const currentBatch = batches[batchIdx] || null
 
-  // ── Part 5 data ────────────────────────────────────────
-  const verifiedTests = ALL_KET_READING_TESTS.filter(test => test.part5 && (test.source?.verified || test.source?.verifiedParts?.includes(5)))
+  // ── Part 5 data (KET open cloze only) ──────────────────
+  const verifiedTests = getReadingTestsByLevel(level).filter(test => test.part5 && (test.source?.verified || test.source?.verifiedParts?.includes(5)))
   const officialP5Test = verifiedTests.find(test => test.id === part5Id)
   const p5Set  = part5Mode === 'official'
     ? (officialP5Test ? { ...officialP5Test.part5, source: officialP5Test.title } : null)
@@ -162,6 +188,12 @@ export default function CambridgeReading() {
     setRetrying({})
     setShowAns({})
   }, [partId, batchIdx])
+
+  // ── Clamp partId when level changes (PET has 6 parts, KET has 5) ──
+  useEffect(() => {
+    const max = partMeta(level).count
+    if (partId > max) { setPartId(1); setBatchIdx(0) }
+  }, [level])
 
   useEffect(() => {
     setP5Checked(false)
@@ -441,12 +473,12 @@ export default function CambridgeReading() {
         <h1 className="mt-2 text-3xl font-extrabold text-slate-950 sm:text-4xl">我的阅读中心</h1>
         <p className="mt-3 text-slate-500">按题型选择专项练习；同一套题也可以在真题模考中完成。</p>
         <section className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {[1, 2, 3, 4, 5].map(pid => (
+          {Array.from({ length: partMeta(level).count }, (_, i) => i + 1).map(pid => (
             <button key={pid} type="button" onClick={() => { setPartId(pid); setBatchIdx(0); setSearchParams({ part: String(pid) }) }}
               className="group flex min-h-44 flex-col rounded-[22px] border border-slate-200 bg-white p-6 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-sky-300 hover:shadow-md">
               <span className="text-xs font-extrabold tracking-widest text-sky-700">PART {pid}</span>
-              <h2 className="mt-3 text-xl font-extrabold text-slate-900">{PART_DESC[pid]}</h2>
-              <p className="mt-2 text-sm leading-6 text-slate-500">{PART_HELP[pid]}</p>
+              <h2 className="mt-3 text-xl font-extrabold text-slate-900">{partMeta(level).desc[pid]}</h2>
+              <p className="mt-2 text-sm leading-6 text-slate-500">{partMeta(level).help[pid]}</p>
               <span className="mt-auto pt-4 text-right text-sm font-extrabold text-sky-700">开始练习 →</span>
             </button>
           ))}
@@ -464,7 +496,7 @@ export default function CambridgeReading() {
             ← 我的阅读中心
           </Link>
           <span className="mr-1 text-slate-300">›</span>
-          {[1,2,3,4,5].map(pid => (
+          {Array.from({ length: partMeta(level).count }, (_, i) => i + 1).map(pid => (
             <button key={pid} onClick={() => { setPartId(pid); setBatchIdx(0) }}
               aria-current={partId === pid ? 'page' : undefined}
               className={`rounded-xl border px-4 py-2.5 text-sm font-extrabold transition ${
@@ -479,9 +511,9 @@ export default function CambridgeReading() {
       <main className="mx-auto max-w-6xl px-4 sm:px-6 py-7">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <div className="text-[11px] font-extrabold tracking-[.18em] text-sky-700">KET READING</div>
-            <h1 className="mt-1 text-3xl sm:text-4xl font-extrabold">{PART_LABELS[partId]} {PART_DESC[partId]}</h1>
-            <p className="mt-2 text-slate-500">{PART_HELP[partId]}</p>
+            <div className="text-[11px] font-extrabold tracking-[.18em] text-sky-700">{level} READING</div>
+            <h1 className="mt-1 text-3xl sm:text-4xl font-extrabold">{partMeta(level).labels[partId]} {partMeta(level).desc[partId]}</h1>
+            <p className="mt-2 text-slate-500">{partMeta(level).help[partId]}</p>
           </div>
           <div className="flex items-center gap-3 rounded-2xl border border-sky-200 bg-sky-50 px-4 py-3">
             <button onClick={() => setTimerOn(t => !t)}
@@ -818,8 +850,8 @@ export default function CambridgeReading() {
                   </div>
                 )}
 
-                {/* ── PART 3 ── */}
-                {partId === 3 && currentBatch && !currentBatch.scanPages && (
+                {/* ── PART 3 (and PET Part 5 MCQ cloze) ── */}
+                {(partId === 3 || (level === 'PET' && partId === 5)) && currentBatch && !currentBatch.scanPages && (
                   <div className="grid grid-cols-2 gap-5">
                     <div className="min-w-0 bg-gray-50 rounded-xl border border-gray-100 p-5 overflow-y-auto"
                       style={{ maxHeight: '70vh' }}>
@@ -833,7 +865,7 @@ export default function CambridgeReading() {
                           {currentBatch.author}
                         </p>
                       )}
-                      <HighlightableText text={currentBatch.passage} storageKey={`part3-${batchIdx}`}
+                      <HighlightableText text={currentBatch.passage || (currentBatch.passage_segments || []).join('\n')} storageKey={`part3-${batchIdx}`}
                         className="text-[19px] text-gray-700 leading-9 whitespace-pre-line" />
                     </div>
                     <div className="min-w-0 space-y-4 overflow-y-auto" style={{ maxHeight: '70vh' }}>
@@ -876,7 +908,9 @@ export default function CambridgeReading() {
                       </div>
                     </div>
                     <div className="min-w-0 max-h-[70vh] space-y-3 overflow-y-auto pr-1">
-                      {currentBatch.questions.map((q, qi) => (
+                      {currentBatch.questions.map((q, qi) => {
+                        const opts = q.options || Object.fromEntries((currentBatch.options || []).map(o => [o.label, o.text]))
+                        return (
                         <motion.div key={q._key}
                           initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: qi * 0.04 }}
@@ -894,13 +928,14 @@ export default function CambridgeReading() {
                             }`}>({q.id})</span>
                           </div>
                           <div className="space-y-2">
-                            {Object.entries(q.options).map(([label, opt]) => (
+                            {Object.entries(opts).map(([label, opt]) => (
                               <MCOption key={label} q={q} opt={opt} label={label} />
                             ))}
                             <WrongActions q={q} />
                           </div>
                         </motion.div>
-                      ))}
+                        )
+                      })}
                     </div>
                   </div>
                 )}
@@ -984,6 +1019,47 @@ export default function CambridgeReading() {
                             />
                             {p5Checked && !ok && (
                               <span className="text-xs text-emerald-600 font-semibold flex-shrink-0">{q.answers[0]}</span>
+                            )}
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* ── PET PART 6 (open cloze) ── */}
+                {level === 'PET' && partId === 6 && currentBatch && !currentBatch.scanPages && (
+                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 items-start">
+                    <div className="min-w-0 space-y-4">
+                      {currentBatch.title && (
+                        <h3 className="mb-2 text-center text-2xl font-extrabold text-gray-900">{currentBatch.title}</h3>
+                      )}
+                      <div className="bg-gray-50 border border-gray-100 rounded-xl p-5">
+                        <p className="text-[18px] text-gray-700 leading-9 whitespace-pre-line">
+                          {(currentBatch.passage_segments || []).join('\n')}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 xl:sticky xl:top-5">
+                      {currentBatch.questions.map(q => {
+                        const ua = answers[q._key] || ''
+                        const ok = batchChecked ? isCorrect14(q) : null
+                        return (
+                          <div key={q._key} className={`flex items-center gap-2 border rounded-xl px-3 py-2.5 transition-all ${
+                            !batchChecked ? 'border-gray-200 focus-within:border-violet-400'
+                            : ok       ? 'border-emerald-300 bg-emerald-50'
+                                       : 'border-red-300 bg-red-50'
+                          }`}>
+                            <span className={`text-xs font-extrabold w-7 flex-shrink-0 ${
+                              batchChecked ? ok ? 'text-emerald-600' : 'text-red-500' : 'text-violet-600'
+                            }`}>({q.id})</span>
+                            <input type="text" disabled={batchChecked} value={ua}
+                              onChange={e => setAnswers(a => ({ ...a, [q._key]: e.target.value }))}
+                              className="min-w-0 flex-1 bg-transparent text-base focus:outline-none text-gray-700 placeholder:text-gray-300"
+                              placeholder="填词…"
+                            />
+                            {batchChecked && !ok && (
+                              <span className="text-xs text-emerald-600 font-semibold flex-shrink-0">{q.answer}</span>
                             )}
                           </div>
                         )

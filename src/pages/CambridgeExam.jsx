@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { KET_EXAMS } from '../data/ketExamData'
 import { getKetReadingTest, hasCompleteKetReadingPaper } from '../data/ketReadingCatalog'
@@ -18,14 +18,12 @@ const examDurationLabel = totalSeconds => `${String(Math.floor(totalSeconds / 60
 const answerIndex = value => Math.max(0, 'ABC'.indexOf(value))
 
 function useExamLevel() {
-  const navigate = useNavigate()
   const [level, setLevelState] = useState(() => {
     try { return localStorage.getItem('cambridge_level') || 'KET' } catch { return 'KET' }
   })
   function setLevel(nextLevel) {
     setLevelState(nextLevel)
     try { localStorage.setItem('cambridge_level', nextLevel) } catch { /* local storage may be unavailable */ }
-    if (nextLevel !== 'KET') navigate(`/cambridge/${nextLevel.toLowerCase()}`)
   }
   return [level, setLevel]
 }
@@ -175,11 +173,25 @@ export function ExamList() {
     <CambridgeLayout activeModule="exams" level={level} setLevel={setLevel}>
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <div className="mb-6">
-          <span className="text-xs font-bold bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">A2 KET</span>
-          <h1 className="text-2xl font-bold text-gray-900 mt-2 mb-1">KET 官方真题</h1>
+          <span className="text-xs font-bold bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">{level === 'KET' ? 'A2 KET' : level === 'PET' ? 'B1 PET' : level}</span>
+          <h1 className="text-2xl font-bold text-gray-900 mt-2 mb-1">{level} 官方真题</h1>
           <p className="text-sm text-gray-500">每套真题按正式考试分为听力、阅读与写作、口语三张试卷</p>
         </div>
 
+        {level !== 'KET' && (
+          <section className="mb-6 rounded-[22px] border border-amber-200 bg-amber-50 p-6">
+            <h2 className="text-lg font-bold text-amber-900">{level} 模考正在筹备中</h2>
+            <p className="mt-2 text-sm text-amber-800">
+              {level} 全套模考（听力、阅读、写作、口语）正在逐步录入。目前已开放 {level} 阅读专项练习，欢迎先到阅读中心练习。
+            </p>
+            <Link to="/cambridge/reading?view=center" className="mt-4 inline-flex rounded-xl bg-amber-600 px-5 py-2.5 text-sm font-bold text-white hover:bg-amber-500">
+              进入 {level} 阅读练习 →
+            </Link>
+          </section>
+        )}
+
+        {level === 'KET' && (
+        <div>
         <section className="mb-6 rounded-[22px] border border-gray-200 bg-white p-4 shadow-sm">
           <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
             {EXAM_COLLECTIONS.map(item => (
@@ -227,6 +239,8 @@ export function ExamList() {
           )})}
 
         </div>
+        </div>
+        )}
       </main>
     </CambridgeLayout>
   )
