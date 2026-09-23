@@ -4,7 +4,9 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { grammarUnitStatus } from '../utils/grammarProgress'
 import { readSavedWords, SAVED_WORDS_EVENT } from '../utils/savedWords'
 
-const EXAM_IDS = Array.from({ length: 12 }, (_, index) => `ket-${Math.floor(index / 4) + 1}-test${(index % 4) + 1}`)
+const EXAM_IDS = Array.from({ length: 20 }, (_, index) => index < 12
+  ? `ket-${Math.floor(index / 4) + 1}-test${(index % 4) + 1}`
+  : `ket-standard-${Math.floor((index - 12) / 4) + 1}-test${((index - 12) % 4) + 1}`)
 
 function safeJson(key, fallback) {
   try {
@@ -29,7 +31,7 @@ function readLearningSnapshot() {
   let listeningDone = 0
   let listeningMistakeCount = 0
   let listeningMistakePath = '/cambridge/listening'
-  for (let setId = 1; setId <= 12; setId += 1) {
+  for (let setId = 1; setId <= 20; setId += 1) {
     for (let part = 1; part <= 5; part += 1) {
       const item = safeJson(`mars_ket_listening_progress_v1:set-${setId}:part-${part}`, null)
       if (!item) continue
@@ -46,13 +48,13 @@ function readLearningSnapshot() {
     }
   }
 
-  for (let setId = 1; setId <= 12; setId += 1) {
+  for (let setId = 1; setId <= 20; setId += 1) {
     const item = safeJson(`mars_ket_mock_listening_v2:set-${setId}`, null)
     if (!item?.completed) continue
     const wrongCount = Number(item.wrongCount || 0)
     listeningMistakeCount += wrongCount
     if (wrongCount > 0) {
-      const examId = item.examId || `ket-${Math.floor((setId - 1) / 4) + 1}-test${((setId - 1) % 4) + 1}`
+      const examId = item.examId || EXAM_IDS[setId - 1]
       listeningMistakePath = `/cambridge/listening?mode=mock&exam=${examId}&part=5&set=${setId}`
     }
   }
@@ -206,12 +208,11 @@ const directTaskPaths = {
 }
 
 function taskDestination(task, learning) {
-  if (task.title === '回顾听力错题' && learning.listeningMistakeCount) return learning.listeningMistakePath
-  if (task.title === '回顾阅读错题' && learning.readingMistakeCount) return learning.readingMistakePath
-  if (task.title === '复习阅读与听力错题') {
-    if (learning.readingMistakeCount) return learning.readingMistakePath
-    if (learning.listeningMistakeCount) return learning.listeningMistakePath
-  }
+  if (task.title.includes('词汇错题')) return '/cambridge/mistakes?type=words'
+  if (task.title.includes('语法错题')) return '/cambridge/mistakes?type=grammar'
+  if (task.title.includes('阅读错题')) return '/cambridge/mistakes?type=reading'
+  if (task.title.includes('听力错题')) return '/cambridge/mistakes?type=listening'
+  if (task.title.includes('错题')) return `/cambridge/mistakes?type=${learning.readingMistakeCount ? 'reading' : learning.listeningMistakeCount ? 'listening' : learning.grammarMistakeCount ? 'grammar' : learning.vocabMistakeCount ? 'words' : 'dictation'}`
   return directTaskPaths[task.title] || task.path
 }
 
@@ -515,29 +516,29 @@ export default function MyLearningDashboard() {
 
               <section className="rounded-3xl border border-gray-200/80 bg-white p-5 shadow-sm sm:p-6">
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-                  <div><div className="text-[10px] font-extrabold tracking-[.18em] text-amber-700">MISTAKE REVIEW</div><h2 className="mt-1 text-lg font-extrabold">错题学习</h2><p className="mt-1 text-xs text-gray-400">按类别集中复习答错的内容，掌握后自动移出错题本。</p></div>
+                  <div><div className="text-[10px] font-extrabold tracking-[.18em] text-amber-700">MISTAKE REVIEW</div><h2 className="mt-1 text-lg font-extrabold">错题学习</h2><p className="mt-1 text-xs text-gray-400">按类别集中查看已保存的错题；暂无错题时会显示空列表。</p></div>
                   <span className="text-xs font-bold text-amber-700">共 {learning.mistakeCount} 项待复习</span>
                 </div>
                 <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
-                  <button onClick={() => navigate('/cambridge/words?mode=review')} className="group rounded-2xl border border-amber-200 bg-amber-50/60 p-4 text-left transition hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-sm">
+                  <button onClick={() => navigate('/cambridge/mistakes?type=words')} className="group rounded-2xl border border-amber-200 bg-amber-50/60 p-4 text-left transition hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-sm">
                     <div className="flex items-center justify-between"><span className="grid h-10 w-10 place-items-center rounded-xl bg-[#f4c95d] text-lg">📖</span><span className="rounded-full bg-white px-3 py-1 text-xs font-extrabold text-amber-800">{learning.vocabMistakeCount} 词</span></div>
                     <h3 className="mt-4 font-extrabold text-gray-900">词汇错题</h3>
                     <div className="mt-1 flex items-end justify-between gap-3"><p className="text-xs leading-relaxed text-gray-500">复习拼错或跳过的单词，答对后移出错词列表。</p><span className="shrink-0 font-extrabold text-amber-800 transition group-hover:translate-x-1">{learning.vocabMistakeCount ? '开始复习 →' : '暂无错题'}</span></div>
                   </button>
-                  <button onClick={() => navigate('/cambridge/grammar/mistakes')} className="group rounded-2xl border border-emerald-200 bg-emerald-50/60 p-4 text-left transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-sm">
+                  <button onClick={() => navigate('/cambridge/mistakes?type=grammar')} className="group rounded-2xl border border-emerald-200 bg-emerald-50/60 p-4 text-left transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-sm">
                     <div className="flex items-center justify-between"><span className="grid h-10 w-10 place-items-center rounded-xl bg-emerald-600 text-lg">📐</span><span className="rounded-full bg-white px-3 py-1 text-xs font-extrabold text-emerald-800">{learning.grammarMistakeCount} 题</span></div>
                     <h3 className="mt-4 font-extrabold text-gray-900">语法错题</h3>
                     <div className="mt-1 flex items-end justify-between gap-3"><p className="text-xs leading-relaxed text-gray-500">分类复习选择题、挖空练习和改错题中的错误。</p><span className="shrink-0 font-extrabold text-emerald-800 transition group-hover:translate-x-1">{learning.grammarMistakeCount ? '开始复习 →' : '暂无错题'}</span></div>
                   </button>
-                  <button onClick={() => navigate(learning.readingMistakePath)} className="group rounded-2xl border border-violet-200 bg-violet-50/60 p-4 text-left transition hover:-translate-y-0.5 hover:border-violet-300 hover:shadow-sm">
+                  <button onClick={() => navigate('/cambridge/mistakes?type=reading')} className="group rounded-2xl border border-violet-200 bg-violet-50/60 p-4 text-left transition hover:-translate-y-0.5 hover:border-violet-300 hover:shadow-sm">
                     <div className="flex items-center justify-between"><span className="grid h-10 w-10 place-items-center rounded-xl bg-violet-600 text-lg">📄</span><span className="rounded-full bg-white px-3 py-1 text-xs font-extrabold text-violet-800">{learning.readingMistakeCount} 题</span></div>
                     <h3 className="mt-4 font-extrabold text-gray-900">阅读错题</h3><div className="mt-1 flex items-end justify-between gap-2"><p className="text-xs leading-relaxed text-gray-500">复习真题阅读中答错的题目。</p><span className="shrink-0 font-extrabold text-violet-800 transition group-hover:translate-x-1">{learning.readingMistakeCount ? '开始复习 →' : '暂无错题'}</span></div>
                   </button>
-                  <button onClick={() => navigate(learning.listeningMistakePath)} className="group rounded-2xl border border-cyan-200 bg-cyan-50/60 p-4 text-left transition hover:-translate-y-0.5 hover:border-cyan-300 hover:shadow-sm">
+                  <button onClick={() => navigate('/cambridge/mistakes?type=listening')} className="group rounded-2xl border border-cyan-200 bg-cyan-50/60 p-4 text-left transition hover:-translate-y-0.5 hover:border-cyan-300 hover:shadow-sm">
                     <div className="flex items-center justify-between"><span className="grid h-10 w-10 place-items-center rounded-xl bg-cyan-600 text-lg">🎧</span><span className="rounded-full bg-white px-3 py-1 text-xs font-extrabold text-cyan-800">{learning.listeningMistakeCount} 题</span></div>
                     <h3 className="mt-4 font-extrabold text-gray-900">听力错题</h3><div className="mt-1 flex items-end justify-between gap-2"><p className="text-xs leading-relaxed text-gray-500">回顾各 Part 中听辨错误的题目。</p><span className="shrink-0 font-extrabold text-cyan-800 transition group-hover:translate-x-1">{learning.listeningMistakeCount ? '开始复习 →' : '暂无错题'}</span></div>
                   </button>
-                  <button onClick={() => navigate('/cambridge/dictation')} className="group rounded-2xl border border-rose-200 bg-rose-50/60 p-4 text-left transition hover:-translate-y-0.5 hover:border-rose-300 hover:shadow-sm">
+                  <button onClick={() => navigate('/cambridge/mistakes?type=dictation')} className="group rounded-2xl border border-rose-200 bg-rose-50/60 p-4 text-left transition hover:-translate-y-0.5 hover:border-rose-300 hover:shadow-sm">
                     <div className="flex items-center justify-between"><span className="grid h-10 w-10 place-items-center rounded-xl bg-rose-500 text-lg">⌨️</span><span className="rounded-full bg-white px-3 py-1 text-xs font-extrabold text-rose-800">{learning.gapMistakeCount} 处</span></div>
                     <h3 className="mt-4 font-extrabold text-gray-900">听写错题</h3><div className="mt-1 flex items-end justify-between gap-2"><p className="text-xs leading-relaxed text-gray-500">重听并改正漏填、拼写错误。</p><span className="shrink-0 font-extrabold text-rose-800 transition group-hover:translate-x-1">{learning.gapMistakeCount ? '开始复习 →' : '暂无错题'}</span></div>
                   </button>
@@ -570,7 +571,7 @@ export default function MyLearningDashboard() {
                 <button onClick={saveStudyPlan} className="w-full rounded-xl bg-[#0d7656] py-3 font-bold text-white">保存计划</button>
               </div>
             ) : panel === 'mistakes' ? (
-              <div className="mt-5"><div className="rounded-2xl border border-gray-100 bg-gray-50 p-5 text-sm leading-7 text-gray-600">当前共有 <strong className="text-gray-900">{learning.mistakeCount}</strong> 项待复习：词汇 {learning.vocabMistakeCount}、语法 {learning.grammarMistakeCount}、阅读 {learning.readingMistakeCount}、听力 {learning.listeningMistakeCount}、听写 {learning.gapMistakeCount}。</div><button onClick={() => { setPanel(null); navigate(learning.readingMistakeCount ? learning.readingMistakePath : learning.listeningMistakeCount ? learning.listeningMistakePath : learning.grammarMistakeCount ? '/cambridge/grammar/mistakes' : learning.vocabMistakeCount ? '/cambridge/words?mode=review' : '/cambridge/dictation') }} disabled={!learning.mistakeCount} className="mt-4 w-full rounded-xl bg-[#0d7656] py-3 font-bold text-white disabled:bg-gray-200">{learning.mistakeCount ? '进入错题复习' : '暂时没有错题'}</button></div>
+              <div className="mt-5"><div className="rounded-2xl border border-gray-100 bg-gray-50 p-5 text-sm leading-7 text-gray-600">当前共有 <strong className="text-gray-900">{learning.mistakeCount}</strong> 项待复习：词汇 {learning.vocabMistakeCount}、语法 {learning.grammarMistakeCount}、阅读 {learning.readingMistakeCount}、听力 {learning.listeningMistakeCount}、听写 {learning.gapMistakeCount}。</div><button onClick={() => { setPanel(null); navigate(`/cambridge/mistakes?type=${learning.readingMistakeCount ? 'reading' : learning.listeningMistakeCount ? 'listening' : learning.grammarMistakeCount ? 'grammar' : learning.vocabMistakeCount ? 'words' : 'dictation'}`) }} disabled={!learning.mistakeCount} className="mt-4 w-full rounded-xl bg-[#0d7656] py-3 font-bold text-white disabled:bg-gray-200">{learning.mistakeCount ? '进入错题复习' : '暂时没有错题'}</button></div>
             ) : (
               <div className="mt-5"><div className="rounded-2xl border border-gray-100 bg-gray-50 p-5 text-sm text-gray-600">{learning.records.length ? `当前设备已保存 ${learning.records.length} 条练习记录。` : '当前还没有练习记录，完成练习后会自动显示。'}</div><button onClick={() => setPanel(null)} className="mt-4 w-full rounded-xl bg-[#0d7656] py-3 font-bold text-white">关闭</button></div>
             )}

@@ -3725,7 +3725,7 @@ function ListeningPractice({ initialPart = 1 }) {
 
 const MOCK_LISTENING_PREFIX = "mars_ket_mock_listening_v2";
 
-function mockListeningData(setId, part) {
+export function mockListeningData(setId, part) {
   if (part === 1) return OFFICIAL_PART1_SETS[setId] ? { title: "Part 1 图片选择题", type: "picture", items: OFFICIAL_PART1_SETS[setId] } : null;
   if (part === 2) return OFFICIAL_PART2_SETS[setId] || null;
   if (part === 3) return OFFICIAL_PART3_SETS[setId] || null;
@@ -3737,7 +3737,7 @@ function normaliseMockAnswer(value) {
   return String(value ?? "").toLowerCase().replace(/[£,\s-]/g, "");
 }
 
-function isMockAnswerRight(data, item, value) {
+export function isMockAnswerRight(data, item, value) {
   if (data.type === "blanks") return item.answer.some(answer => normaliseMockAnswer(answer) === normaliseMockAnswer(value));
   return Number(value) === item.answer;
 }
@@ -3780,11 +3780,15 @@ function ListeningMockExam({ level, setLevel, setId, part, examId }) {
     const saved = attempt.parts?.[part];
     return saved?.length === data.items.length ? saved : Array(data.items.length).fill(emptyValue);
   });
-  const [submitted, setSubmitted] = useState(false);
-  const [showReview, setShowReview] = useState(false);
+  const redoTargets = Array.isArray(attempt.redoTargets) ? attempt.redoTargets : null;
+  const visibleIndexes = data.items.map((_, index) => index).filter(index => !redoTargets || redoTargets.some(target => target.part === part && target.index === index));
+  const redoParts = redoTargets ? [...new Set(redoTargets.map(target => target.part))].sort((left, right) => left - right) : [1, 2, 3, 4, 5];
+  const nextPart = redoParts.find(partId => partId > part);
+  const [submitted, setSubmitted] = useState(() => attempt.completed === true);
+  const [showReview, setShowReview] = useState(() => new URLSearchParams(window.location.search).get('review') === '1');
   const [activeMatch, setActiveMatch] = useState(() => {
-    const firstEmpty = answers.findIndex(value => value === null);
-    return firstEmpty === -1 ? 0 : firstEmpty;
+    const firstEmpty = visibleIndexes.find(index => answers[index] === null);
+    return firstEmpty ?? visibleIndexes[0] ?? 0;
   });
 
   useEffect(() => {
@@ -3800,8 +3804,8 @@ function ListeningMockExam({ level, setLevel, setId, part, examId }) {
     return () => window.clearInterval(timer);
   }, [paused, startedAt, submitted, totalPausedMs]);
 
-  const answered = answers.filter(value => value !== null && String(value).trim() !== "").length;
-  const complete = answered === data.items.length;
+  const answered = visibleIndexes.filter(index => answers[index] !== null && String(answers[index]).trim() !== "").length;
+  const complete = answered === visibleIndexes.length;
   const allData = [1, 2, 3, 4, 5].map(partId => mockListeningData(setId, partId));
   const scoringAttempt = { ...attempt, parts: { ...(attempt.parts || {}), [part]: answers } };
   const breakdown = allData.map((partData, index) => {
@@ -3817,8 +3821,9 @@ function ListeningMockExam({ level, setLevel, setId, part, examId }) {
       data: partData,
       item,
       value: values[itemIndex],
-    })).filter(entry => !isMockAnswerRight(entry.data, entry.item, entry.value));
+    })).filter((entry, itemIndex) => (!redoTargets || redoTargets.some(target => target.part === partIndex + 1 && target.index === itemIndex)) && !isMockAnswerRight(entry.data, entry.item, entry.value));
   });
+  const redoScore = redoTargets ? redoTargets.length - wrongAnswers.length : null;
 
   function choose(itemIndex, value) {
     setAnswers(current => current.map((answer, index) => {
@@ -3829,8 +3834,9 @@ function ListeningMockExam({ level, setLevel, setId, part, examId }) {
   }
 
   function chooseMatch(value) {
+    if (redoTargets && answers.some((answer, index) => index !== activeMatch && answer === value)) return;
     choose(activeMatch, value);
-    const next = answers.findIndex((answer, index) => index > activeMatch && answer === null);
+    const next = visibleIndexes.find(index => index > activeMatch && answers[index] === null);
     if (next !== -1) setActiveMatch(next);
   }
 
@@ -3874,7 +3880,18 @@ function ListeningMockExam({ level, setLevel, setId, part, examId }) {
     wrongAnswers.forEach(entry => {
       parts[entry.part][entry.number - ((entry.part - 1) * 5) - 1] = entry.data.type === 'blanks' ? '' : null;
     });
-    const next = { parts, startedAt: Date.now(), redo: true };
+    const next = {
+      parts,
+      startedAt: Date.now(),
+      redoTargets: wrongAnswers.map(entry => ({ part: entry.part, index: entry.number - ((entry.part - 1) * 5) - 1 })),
+      originalResult: scoringAttempt.originalResult || {
+        parts: scoringAttempt.parts,
+        startedAt: scoringAttempt.startedAt,
+        finishedAt: scoringAttempt.finishedAt,
+        totalPausedMs: scoringAttempt.totalPausedMs,
+        score: totalScore,
+      },
+    };
     try { localStorage.setItem(storageKey, JSON.stringify(next)); } catch {}
     navigate(`/cambridge/listening?mode=mock&exam=${examId}&part=${wrongAnswers[0].part}&set=${setId}&redo=${Date.now()}`);
   }
@@ -3885,11 +3902,12 @@ function ListeningMockExam({ level, setLevel, setId, part, examId }) {
         <div className="rounded-[28px] border border-emerald-200 bg-white p-7 text-center shadow-sm sm:p-10">
           <div className="text-5xl">🎧</div>
           <div className="mt-4 text-xs font-extrabold tracking-[.18em] text-emerald-700">LISTENING RESULT</div>
-          <h1 className="mt-2 text-4xl font-extrabold text-slate-950">听力模考完成</h1>
+          <h1 className="mt-2 text-4xl font-extrabold text-slate-950">{redoTargets ? '错题重做完成' : '听力模考完成'}</h1>
           <div className="mt-3 text-sm font-bold text-slate-500">用时 {mockDurationLabel(finalElapsed ?? elapsed)}</div>
-          <div className="mt-6 text-6xl font-black text-emerald-700">{totalScore}<span className="text-2xl text-slate-400"> / 25</span></div>
+          <div className="mt-6 text-6xl font-black text-emerald-700">{redoTargets ? redoScore : totalScore}<span className="text-2xl text-slate-400"> / {redoTargets ? redoTargets.length : 25}</span></div>
+          {redoTargets && <p className="mt-3 text-sm text-slate-500">原整套成绩 {scoringAttempt.originalResult?.score ?? '—'}/25 已保留</p>}
           <div className="mx-auto mt-7 grid max-w-2xl grid-cols-5 gap-2">
-            {breakdown.map((score, index) => <div key={index} className="rounded-xl bg-slate-50 px-2 py-3"><div className="text-xs text-slate-400">Part {index + 1}</div><strong className="mt-1 block text-lg text-slate-800">{score}/5</strong></div>)}
+            {breakdown.map((score, index) => <div key={index} className="rounded-xl bg-slate-50 px-2 py-3"><div className="text-xs text-slate-400">Part {index + 1}</div><strong className="mt-1 block text-lg text-slate-800">{redoTargets ? `${redoTargets.filter(target => target.part === index + 1).length - wrongAnswers.filter(entry => entry.part === index + 1).length}/${redoTargets.filter(target => target.part === index + 1).length}` : `${score}/5`}</strong></div>)}
           </div>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <button type="button" onClick={() => setShowReview(value => !value)} className="rounded-xl bg-[#f7cd60] px-5 py-3 font-extrabold text-[#4c3a00]">{showReview ? '收起错题解析' : `查看错题与答案（${wrongAnswers.length}）`}</button>
@@ -3931,9 +3949,10 @@ function ListeningMockExam({ level, setLevel, setId, part, examId }) {
         <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-2">
           <Link to={`/cambridge/exams/${examId}`} className="mr-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm font-extrabold text-emerald-800">← 真题总览</Link>
           <span className="mr-2 rounded-xl bg-[#064e3b] px-4 py-2.5 text-sm font-extrabold text-white">🎧 听力模考</span>
-          {[1, 2, 3, 4, 5].map(partId => {
+          {redoParts.map(partId => {
             const saved = attempt.parts?.[partId] || [];
-            const done = saved.length === 5 && saved.every(value => value !== null && String(value).trim() !== "");
+            const indexes = redoTargets ? redoTargets.filter(target => target.part === partId).map(target => target.index) : [0, 1, 2, 3, 4];
+            const done = indexes.every(index => saved[index] !== null && saved[index] !== undefined && String(saved[index]).trim() !== "");
             return <span key={partId} className={`rounded-xl border px-4 py-2.5 text-sm font-extrabold ${partId === part ? 'border-emerald-700 bg-emerald-700 text-white' : done ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : 'border-slate-200 bg-white text-slate-400'}`}>Part {partId}{done ? ' ✓' : ''}</span>;
           })}
           <div className="ml-auto flex items-center gap-2">
@@ -3943,7 +3962,7 @@ function ListeningMockExam({ level, setLevel, setId, part, examId }) {
         </div>
       </nav>
       <main className="mx-auto max-w-5xl px-6 py-7">
-        <div className="text-[11px] font-extrabold tracking-[.18em] text-emerald-700">LISTENING MOCK TEST · 真题 {setId}</div>
+        <div className="text-[11px] font-extrabold tracking-[.18em] text-emerald-700">{redoTargets ? 'WRONG ANSWER REDO' : 'LISTENING MOCK TEST'} · 真题 {setId}</div>
         <h1 className="mt-1 text-4xl font-extrabold text-slate-950">{data.title}</h1>
         <p className="mt-2 text-slate-500">{part === 1 ? '听五段短对话，从 A、B、C 三幅图片中选择正确答案。' : data.instruction}</p>
         <div className="h-6" aria-hidden="true" />
@@ -3954,7 +3973,8 @@ function ListeningMockExam({ level, setLevel, setId, part, examId }) {
             <section className="rounded-[24px] border border-slate-200 bg-white p-5">
               <div className="mb-4 text-xs font-extrabold tracking-[.14em] text-emerald-700">第一步 · 选择人物</div>
               <div className="space-y-3">
-                {data.items.map((item, index) => {
+                {visibleIndexes.map(index => {
+                  const item = data.items[index];
                   const selected = activeMatch === index;
                   const value = answers[index];
                   return (
@@ -3978,10 +3998,10 @@ function ListeningMockExam({ level, setLevel, setId, part, examId }) {
                   const chosen = answers[activeMatch] === optionIndex;
                   const used = answers.some((answer, index) => index !== activeMatch && answer === optionIndex);
                   return (
-                    <button key={option} type="button" onClick={() => chooseMatch(optionIndex)} className={`flex min-h-[96px] items-center gap-3 rounded-2xl border p-4 text-left transition ${chosen ? 'border-[#dfad2d] bg-[#fff3c9] text-[#5b4300]' : used ? 'border-slate-200 bg-slate-100 text-slate-500 hover:border-[#e1b33a] hover:bg-[#fff9e9]' : 'border-slate-200 bg-white hover:-translate-y-0.5 hover:border-[#e1b33a] hover:shadow-sm'}`}>
+                    <button key={option} type="button" disabled={Boolean(redoTargets && used)} onClick={() => chooseMatch(optionIndex)} className={`flex min-h-[96px] items-center gap-3 rounded-2xl border p-4 text-left transition ${chosen ? 'border-[#dfad2d] bg-[#fff3c9] text-[#5b4300]' : used ? 'border-slate-200 bg-slate-100 text-slate-500 hover:border-[#e1b33a] hover:bg-[#fff9e9]' : 'border-slate-200 bg-white hover:-translate-y-0.5 hover:border-[#e1b33a] hover:shadow-sm'}`}>
                       <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl font-extrabold ${chosen ? 'bg-[#f7cd60]' : 'bg-emerald-50 text-emerald-700'}`}>{String.fromCharCode(65 + optionIndex)}</span>
                       <strong>{option}</strong>
-                      {used && <span className="ml-auto text-xs">已使用 · 可改选</span>}
+                      {used && <span className="ml-auto text-xs">{redoTargets ? '已用于其他题' : '已使用 · 可改选'}</span>}
                     </button>
                   );
                 })}
@@ -3990,7 +4010,9 @@ function ListeningMockExam({ level, setLevel, setId, part, examId }) {
           </div>
         ) : (
         <div className="mt-6 space-y-4">
-          {data.items.map((item, index) => (
+          {visibleIndexes.map(index => {
+            const item = data.items[index];
+            return (
             <article key={item.q || item.question} className="rounded-[22px] border border-slate-200 bg-white p-5 sm:p-6">
               <div className="flex gap-4">
                 <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#f7cd60] font-extrabold">{((part - 1) * 5) + index + 1}</span>
@@ -4011,14 +4033,15 @@ function ListeningMockExam({ level, setLevel, setId, part, examId }) {
                 </div>
               </div>
             </article>
-          ))}
+          );
+          })}
         </div>
         )}
 
         <section className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-[22px] bg-[#064e3b] p-5 text-white">
-          <strong>已完成 {answered} / 5</strong>
-          <button type="button" disabled={!complete} onClick={() => part < 5 ? navigate(`/cambridge/listening?mode=mock&exam=${examId}&part=${part + 1}&set=${setId}`) : finishMock()} className="rounded-xl bg-[#f7cd60] px-5 py-3 font-extrabold text-[#4c3a00] disabled:cursor-not-allowed disabled:bg-white/15 disabled:text-white/50">
-            {part < 5 ? `完成并进入 Part ${part + 1} →` : '提交听力模考并评分'}
+          <strong>已完成 {answered} / {visibleIndexes.length}</strong>
+          <button type="button" disabled={!complete} onClick={() => nextPart ? navigate(`/cambridge/listening?mode=mock&exam=${examId}&part=${nextPart}&set=${setId}`) : finishMock()} className="rounded-xl bg-[#f7cd60] px-5 py-3 font-extrabold text-[#4c3a00] disabled:cursor-not-allowed disabled:bg-white/15 disabled:text-white/50">
+            {nextPart ? `完成并进入 Part ${nextPart} →` : redoTargets ? '提交错题重做并评分' : '提交听力模考并评分'}
           </button>
         </section>
       </main>

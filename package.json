@@ -9,7 +9,9 @@
     "build:hosted": "vite build && node scripts/externalize-hosted-audio.mjs",
     "backup": "bash scripts/backup-project.sh",
     "audit:reading": "node scripts/audit-reading-data.mjs",
+    "audit:standard-listening": "node scripts/audit-standard-listening.mjs",
     "audit:words": "node scripts/audit-word-meanings.mjs",
+    "test:mistakes": "node scripts/test-mistake-collections.mjs",
     "lint": "eslint .",
     "preview": "vite preview"
   },

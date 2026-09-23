@@ -105,7 +105,7 @@ function buildBatches(partId) {
 }
 
 export default function CambridgeReading() {
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const [level, setLevel] = useState(() => { try { return localStorage.getItem('cambridge_level') || 'KET' } catch { return 'KET' } })
   const [partId,       setPartId]       = useState(() => {
     const requested = Number(searchParams.get('part'))
@@ -434,11 +434,33 @@ export default function CambridgeReading() {
   }
 
   // ── Render ─────────────────────────────────────────────
+  if (searchParams.get('view') === 'center') return (
+    <CambridgeLayout activeModule="reading" level={level} setLevel={setLevel}>
+      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+        <div className="text-xs font-extrabold tracking-[.18em] text-sky-700">KET READING PRACTICE</div>
+        <h1 className="mt-2 text-3xl font-extrabold text-slate-950 sm:text-4xl">我的阅读中心</h1>
+        <p className="mt-3 text-slate-500">按题型选择专项练习；同一套题也可以在真题模考中完成。</p>
+        <section className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {[1, 2, 3, 4, 5].map(pid => (
+            <button key={pid} type="button" onClick={() => { setPartId(pid); setBatchIdx(0); setSearchParams({ part: String(pid) }) }}
+              className="group flex min-h-44 flex-col rounded-[22px] border border-slate-200 bg-white p-6 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-sky-300 hover:shadow-md">
+              <span className="text-xs font-extrabold tracking-widest text-sky-700">PART {pid}</span>
+              <h2 className="mt-3 text-xl font-extrabold text-slate-900">{PART_DESC[pid]}</h2>
+              <p className="mt-2 text-sm leading-6 text-slate-500">{PART_HELP[pid]}</p>
+              <span className="mt-auto pt-4 text-right text-sm font-extrabold text-sky-700">开始练习 →</span>
+            </button>
+          ))}
+        </section>
+        <Link to="/cambridge/exams" className="mt-8 inline-flex rounded-xl border border-emerald-200 bg-emerald-50 px-5 py-3 text-sm font-extrabold text-emerald-800 hover:border-emerald-400">进入真题模考 →</Link>
+      </main>
+    </CambridgeLayout>
+  )
+
   return (
     <CambridgeLayout activeModule="reading" level={level} setLevel={setLevel}>
       <nav className="border-b border-slate-100 bg-white px-4 sm:px-6 py-4">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-2.5">
-          <Link to="/cambridge/reading" className="mr-1 rounded-xl border border-sky-300 bg-sky-50 px-4 py-2.5 text-sm font-extrabold text-sky-800">
+          <Link to="/cambridge/reading?view=center" className="mr-1 rounded-xl border border-sky-300 bg-sky-50 px-4 py-2.5 text-sm font-extrabold text-sky-800">
             ← 我的阅读中心
           </Link>
           <span className="mr-1 text-slate-300">›</span>

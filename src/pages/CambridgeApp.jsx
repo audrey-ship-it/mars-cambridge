@@ -44,7 +44,7 @@ export function CambridgeLayout({ children, activeModule, level, setLevel }) {
         {/* 模块图标 */}
         {SIDEBAR_MODULES.map(m => (
           <button key={m.id}
-            onClick={() => navigate(m.id === 'grammar' ? '/cambridge/grammar' : m.id === 'listening' ? '/cambridge/listening' : m.id === 'exams' ? '/cambridge/exams' : `/cambridge/${m.path}`)}
+            onClick={() => navigate(m.id === 'grammar' ? '/cambridge/grammar' : m.id === 'listening' ? '/cambridge/listening' : m.id === 'reading' ? '/cambridge/reading?view=center' : m.id === 'exams' ? '/cambridge/exams' : `/cambridge/${m.path}`)}
             title={m.label}
             className={`w-[78px] h-14 rounded-xl flex flex-col items-center justify-center gap-1 transition-all group ${
               activeModule === m.id

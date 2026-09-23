@@ -16,7 +16,7 @@ KET 已形成词汇、语法、听力、阅读、写作、口语、模考、错�
 题库状态不是“20 套全部完整”：
 
 - 青少版真题：12 套，完成度较高；
-- 标准版真题：8 套，目前阅读写作可练，听力与口语仍处于核对/补录阶段。
+- 标准版真题：8 套，阅读写作和听力均可练；听力的 200 道题、40 个音频及答案已逐套核对并完成整套流程测试；口语视觉材料已定位，尚待结构化接入。
 
 ## 本地运行
 
@@ -29,6 +29,7 @@ npm run dev
 
 ```bash
 npm run audit:reading
+npm run audit:standard-listening
 npm run audit:words
 npm run lint
 npm run build

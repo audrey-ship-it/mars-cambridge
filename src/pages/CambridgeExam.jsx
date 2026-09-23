@@ -90,7 +90,7 @@ function examSetNumber(exam) {
 function readExamListProgress(exam) {
   const setId = examSetNumber(exam)
   const listeningReady = OFFICIAL_LISTENING_SETS.find(set => set.id === setId)?.readyParts?.length === 5
-  const listeningParts = exam.kind === 'standard' ? 0 : 5
+  const listeningParts = listeningReady ? 5 : 0
   const readingParts = exam.reading?.parts?.length || (hasCompleteKetReadingPaper(getKetReadingTest(exam.id)) ? 5 : 0)
   const writingParts = exam.reading?.writing?.length || 0
   const speakingTopics = exam.speaking?.parts?.flatMap(part => part.topics || []) || []
@@ -154,7 +154,7 @@ function readExamListProgress(exam) {
   const percent = total ? Math.min(100, Math.round(completed / total * 100)) : 0
   return {
     percent,
-    status: exam.kind === 'standard' ? '阅读写作可练' : !listeningReady ? '核对中' : percent === 100 ? '已完成' : started ? '进行中' : '未开始',
+    status: !listeningReady ? '核对中' : percent === 100 ? '已完成' : started ? '进行中' : '未开始',
     continuePath,
     completed,
     total,
@@ -210,7 +210,7 @@ export function ExamList() {
                 <div className="mt-5">
                   <div className="text-xl font-extrabold leading-snug text-gray-900 transition-colors group-hover:text-[#064e3b]">{item.name}</div>
                   <div className="mt-2 text-sm leading-6 text-gray-400">{item.source}</div>
-                  <div className="mt-1 text-sm leading-6 text-gray-400">{exam?.kind === 'standard' ? '阅读写作 60分钟可练 · 听力与口语核对中' : exam ? sectionSummary(exam) : '题目、答案与配套材料正在整理'}</div>
+                  <div className="mt-1 text-sm leading-6 text-gray-400">{exam?.kind === 'standard' ? '听力 30分钟 · 阅读与写作 60分钟 · 口语待录入' : exam ? sectionSummary(exam) : '题目、答案与配套材料正在整理'}</div>
                 </div>
                 <div className="mt-auto pt-5">
                   <div className="mb-2 flex items-center justify-between gap-3">
@@ -249,7 +249,7 @@ function ExamOverview({ exam }) {
         <Link to="/cambridge/exams" className="text-sm font-bold text-emerald-700 hover:text-emerald-900">← 返回真题列表</Link>
         <div className="mt-5 text-[11px] font-extrabold tracking-[.18em] text-emerald-700">KET FULL PRACTICE TEST</div>
         <h1 className="mt-1 text-3xl font-extrabold text-slate-950 sm:text-4xl">{isStandard ? exam.label : `真题 ${setNumber}`}</h1>
-        <p className="mt-2 text-slate-500">{exam.title} · {isStandard ? '阅读与写作已核对；听力和口语尚未开放。' : '按正式试卷结构完成听力、阅读与写作、口语。'}</p>
+        <p className="mt-2 text-slate-500">{exam.title} · {isStandard ? '听力和阅读与写作已核对；口语尚未开放。' : '按正式试卷结构完成听力、阅读与写作、口语。'}</p>
 
         <section className="mt-7 grid gap-4 sm:grid-cols-2">
           {sections.map((item, index) => {
@@ -1005,7 +1005,7 @@ function ReadingExam({ exam, section, onSection }) {
   function handlePartDone(answers) {
     const updated = { ...allAnswers, [partIndex]: answers }
     const wrongCounts = Object.fromEntries(Object.entries(updated).filter(([index]) => Number(index) < readingParts.length).map(([index, values]) => [index, countReadingMistakes(parts[Number(index)], values)]))
-    const nextPartIndex = parts.findIndex((candidate, index) => index > partIndex && (
+    const nextPartIndex = parts.findIndex((candidate, index) => index > partIndex && (!redoOnly || index < readingParts.length) && (
       !updated[index] || candidate.questions.some((_, questionIndex) => updated[index][questionIndex] === null || updated[index][questionIndex] === undefined || String(updated[index][questionIndex]).trim() === '')
     ))
     setAllAnswers(updated)
@@ -1034,7 +1034,7 @@ function ReadingExam({ exam, section, onSection }) {
           initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}>
           {redoOnly && <div className="mb-4 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-3 text-sm font-extrabold text-amber-800">错题重做模式 · 本页只显示上次答错的题</div>}
-          <ReadingPartRouter part={part} initialAnswers={allAnswers[partIndex]} redoOnly={redoOnly} isLast={partIndex + 1 >= parts.length} onDone={handlePartDone} />
+          <ReadingPartRouter part={part} initialAnswers={allAnswers[partIndex]} redoOnly={redoOnly} isLast={redoOnly ? !readingParts.some((candidate, index) => index > partIndex && candidate.questions.some((_, questionIndex) => allAnswers[index]?.[questionIndex] === null || allAnswers[index]?.[questionIndex] === undefined || String(allAnswers[index][questionIndex]).trim() === '')) : partIndex + 1 >= parts.length} onDone={handlePartDone} />
         </motion.div>
       </AnimatePresence>
     </ExamShell>
@@ -1632,7 +1632,7 @@ export function WritingCard({ w, wi, storageKey }) {
 
 function ReadingFinalResult({ exam, parts, allAnswers, elapsed, onRestart, onRedoWrong }) {
   const [level, setLevel] = useExamLevel()
-  const [showReview, setShowReview] = useState(false)
+  const [showReview, setShowReview] = useState(() => new URLSearchParams(window.location.search).get('review') === '1')
 
   const partScores = parts.filter(part => part.type !== 'writing_task').map((part, pi) => {
     const ans = allAnswers[pi] || []
