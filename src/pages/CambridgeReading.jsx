@@ -833,7 +833,7 @@ export default function CambridgeReading() {
                                   <span className="font-bold text-slate-800 text-lg">{p.name}</span>
                                 </div>
                                 <p className="text-[15px] leading-6 text-slate-700 mb-4">{p.text}</p>
-                                <div className="flex flex-wrap gap-2">
+                                <div className="grid grid-cols-8 gap-1.5">
                                   {currentBatch.options.map(o => {
                                     const selected = answers[q._key] === o.label
                                     let cls = 'border-gray-200 text-gray-400 hover:border-violet-300 hover:text-violet-600 hover:bg-violet-50'
@@ -853,7 +853,7 @@ export default function CambridgeReading() {
                                             setAnswers(a => ({ ...a, [q._key]: o.label }))
                                           }
                                         }}
-                                        className={`w-10 h-10 rounded-lg border-2 font-bold text-base transition-all ${cls}`}
+                                        className={`w-full aspect-square min-w-0 rounded-lg border-2 font-bold text-sm transition-all ${cls}`}
                                       >{o.label}</button>
                                     )
                                   })}
