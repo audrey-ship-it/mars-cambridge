@@ -331,8 +331,7 @@ function PetExamOverview({ testN }) {
   useEffect(() => { if (level !== 'PET') navigate('/cambridge/exams', { replace: true }) }, [level, navigate])
   const sections = [
     { icon: '🎧', title: '听力', en: 'Listening', detail: '约30分钟 · 4个 Part · 25道题', href: `/cambridge/listening?view=pet&petTest=${testN}&petPart=1` },
-    { icon: '📖', title: '阅读', en: 'Reading', detail: '45分钟 · 6个 Part · 32道题', href: `/cambridge/reading?part=1&test=${testN}` },
-    { icon: '✍️', title: '写作', en: 'Writing', detail: '45分钟 · Part 1 邮件 · Part 2 故事或文章', href: `/cambridge/writing?view=pet&petTest=${testN}&petTab=0` },
+    { icon: '📖', title: '阅读与写作', en: 'Reading & Writing', detail: '阅读45分钟 · 6个 Part · 32道题；写作45分钟 · Part 1 邮件 · Part 2 故事或文章', href: `/cambridge/reading?part=1&test=${testN}` },
     { icon: '🎙️', title: '口语', en: 'Speaking', detail: '12–17分钟 · 4个 Part', href: `/cambridge/speaking?view=pet&petTest=${testN}&petTab=1` },
   ]
 
@@ -342,9 +341,9 @@ function PetExamOverview({ testN }) {
         <Link to="/cambridge/exams" className="text-sm font-bold text-violet-700 hover:text-violet-900">← 返回模拟题列表</Link>
         <div className="mt-5 text-[11px] font-extrabold tracking-[.18em] text-violet-700">PET FULL PRACTICE TEST</div>
         <h1 className="mt-1 text-3xl font-extrabold text-slate-950 sm:text-4xl">模拟题 {testN}</h1>
-        <p className="mt-2 text-slate-500">PET 全真模拟试题（8套） · 听力、阅读、写作、口语均已核对。</p>
+        <p className="mt-2 text-slate-500">PET 全真模拟试题（8套） · 听力、阅读与写作、口语均已核对。</p>
 
-        <section className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <section className="mt-7 grid gap-4 sm:grid-cols-3">
           {sections.map((item, index) => {
             const Card = item.href ? Link : 'div'
             return <Card key={item.title} {...(item.href ? { to: item.href } : {})} className={`group flex min-h-56 flex-col rounded-[24px] border border-slate-200 bg-white p-6 shadow-sm ${item.href ? 'transition-all hover:-translate-y-0.5 hover:border-violet-300 hover:shadow-md' : 'opacity-65'}`}>
