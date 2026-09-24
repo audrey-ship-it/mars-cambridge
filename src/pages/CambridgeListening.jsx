@@ -906,14 +906,6 @@ const LISTENING_ENTRIES = [
     desc: "根据人物、地点、活动或物品信息完成对应关系。",
     meta: "信息匹配 · 5 题",
   },
-  {
-    id: "pet-mocks",
-    number: "PET",
-    mark: "B1",
-    title: "PET 听力模考（8 套）",
-    desc: "PET 全真模拟试题，4 Parts 共 25 题：图片选择、情景选择、笔记填空与长访谈。",
-    meta: "B1 PET · 8 套 · 真录音",
-  },
 ];
 
 const KET3_TEST1_PART1 = [
@@ -2476,7 +2468,6 @@ function ListeningCentre({ level, setLevel }) {
   function openEntry(id) {
     if (id === "dictation") navigate("/cambridge/dictation");
     else if (id === "common") navigate("/cambridge/listening?view=common");
-    else if (id === "pet-mocks") navigate("/cambridge/listening?view=pet");
     else navigate(`/cambridge/listening?part=${id.slice(-1)}`);
   }
   return (
@@ -4062,6 +4053,114 @@ function ListeningMockExam({ level, setLevel, setId, part, examId }) {
 const PET_PART_START = { 1: 1, 2: 8, 3: 14, 4: 20 };
 const PET_PREFIX = "mars_pet_listening_v1";
 
+/* PET 听力中心：8 套模考入口卡片，按 level=PET 显示 */
+function readPetListeningProgress(testN) {
+  let checked = 0;
+  let total = 0;
+  try {
+    [1, 2, 3, 4].forEach((part) => {
+      const saved = JSON.parse(
+        localStorage.getItem(`${PET_PREFIX}:test${testN}:part${part}`) || "null",
+      );
+      if (!saved?.checked?.length) return;
+      total += saved.checked.length;
+      checked += saved.checked.filter(Boolean).length;
+    });
+  } catch {
+    /* storage may be unavailable */
+  }
+  const percent = total ? Math.round((checked / total) * 100) : 0;
+  return {
+    percent,
+    status: checked === 0 ? "未开始" : checked === total ? "已完成" : "进行中",
+  };
+}
+
+function PetListeningCentre({ level, setLevel }) {
+  const navigate = useNavigate();
+  return (
+    <CambridgeLayout activeModule="listening" level={level} setLevel={setLevel}>
+      <main className="mx-auto min-h-full max-w-7xl px-6 py-6 lg:px-9">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <div className="text-[11px] font-extrabold tracking-[.18em] text-violet-700">
+              B1 PET LISTENING
+            </div>
+            <div className="mt-1 flex items-baseline gap-4">
+              <h1 className="text-4xl font-extrabold tracking-tight text-gray-950">
+                我的听力中心
+              </h1>
+              <p className="hidden text-base text-gray-500 md:block">
+                PET 全真模拟试题 8 套，每套 4 Parts 共 25 题。
+              </p>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-2 lg:w-[350px]">
+            <div className="rounded-xl border border-gray-200 bg-white px-4 py-3">
+              <span className="text-xs text-gray-500">本周练习</span>
+              <strong className="float-right text-xl text-gray-950">0</strong>
+            </div>
+            <div className="rounded-xl border border-gray-200 bg-white px-4 py-3">
+              <span className="text-xs text-gray-500">最近正确率</span>
+              <strong className="float-right text-xl text-gray-950">—</strong>
+            </div>
+          </div>
+        </div>
+        <div className="mt-6 grid gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
+          {PET_LISTENING.map((test, index) => {
+            const testN = index + 1;
+            const progress = readPetListeningProgress(testN);
+            return (
+              <motion.button
+                key={testN}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.04 }}
+                onClick={() =>
+                  navigate(
+                    `/cambridge/listening?view=pet&petTest=${testN}&petPart=1`,
+                  )
+                }
+                className="relative flex min-h-[215px] flex-col overflow-hidden rounded-[22px] border border-gray-200 bg-white p-6 text-left transition-all hover:-translate-y-0.5 hover:border-violet-300 hover:shadow-md"
+              >
+                <div className="absolute inset-x-0 top-0 h-1.5 bg-violet-700" />
+                <div className="flex items-start justify-between">
+                  <span className="grid h-12 w-12 place-items-center rounded-2xl bg-violet-700 text-lg font-extrabold text-white">
+                    B1
+                  </span>
+                  <span className="text-[11px] font-extrabold tracking-[.14em] text-gray-300">
+                    Test {testN}
+                  </span>
+                </div>
+                <h2 className="mt-5 text-2xl font-extrabold text-gray-950">
+                  Test {testN} · 听力模考
+                </h2>
+                <p className="mt-2 text-sm leading-relaxed text-gray-500">
+                  4 Parts · 25 题 · 真录音
+                </p>
+                <div className="mt-auto flex items-center justify-between pt-5 text-sm">
+                  <span
+                    className={`rounded-full px-2.5 py-1 text-xs font-bold ${
+                      progress.status === "已完成"
+                        ? "bg-violet-100 text-violet-700"
+                        : progress.status === "进行中"
+                          ? "bg-amber-100 text-amber-800"
+                          : "bg-gray-100 text-gray-500"
+                    }`}
+                  >
+                    {progress.status} {progress.percent > 0 ? `${progress.percent}%` : ""}
+                  </span>
+                  <span className="font-extrabold text-violet-700">进入 →</span>
+                </div>
+              </motion.button>
+            );
+          })}
+        </div>
+      </main>
+    </CambridgeLayout>
+  );
+}
+
 function PetListeningPractice({ level, setLevel }) {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -4392,6 +4491,8 @@ export default function CambridgeListening() {
     return <ListeningCommonPoints level={level} setLevel={setLevel} />;
   if (searchParams.get("view") === "pet")
     return <PetListeningPractice level={level} setLevel={setLevel} />;
+  if (level === "PET")
+    return <PetListeningCentre level={level} setLevel={setLevel} />;
   const part = Number(searchParams.get("part"));
   const requestedSet = Number(searchParams.get("set"));
   const setId = OFFICIAL_LISTENING_SETS.some((set) => set.id === requestedSet)

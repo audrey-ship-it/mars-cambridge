@@ -34,14 +34,92 @@ const PET_TABS = [
   { id: 2, label: 'Part 2 · 故事' },
 ]
 
-function PetWritingPractice() {
+const PET_PART_INFO = {
+  0: { title: 'Part 1 邮件写作', help: '阅读情境邮件和旁批，写一封约 100 词的回信，必须用上全部四个旁批。' },
+  1: { title: 'Part 2 文章写作', help: 'Part 2 二选一：为杂志写一篇约 100 词的文章，回答题目中的问题。' },
+  2: { title: 'Part 2 故事写作', help: 'Part 2 二选一：以给定句子开头，写一篇约 100 词的故事。' },
+}
+
+/* PET 写作中心：与 KET 写作中心同构，Part 标签 + Test 选择器 + WritingCard */
+function PetWritingCentre({ level, setLevel }) {
+  const [testN, setTestN] = useState(1)
+  const [petTab, setPetTab] = useState(0)
+  const test = petWritingTests[testN - 1]
+  const item = test.items[petTab]
+
+  return (
+    <CambridgeLayout activeModule="writing" level={level} setLevel={setLevel}>
+      <nav className="border-b border-slate-100 bg-white px-4 py-4 sm:px-6">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-2.5">
+          <div className="mr-1 rounded-xl border border-violet-300 bg-violet-50 px-4 py-2.5 text-sm font-extrabold text-violet-800">
+            我的写作中心
+          </div>
+          <span className="mr-1 text-slate-300">›</span>
+          {PET_TABS.map(tab => (
+            <button key={tab.id} type="button" onClick={() => setPetTab(tab.id)}
+              aria-current={petTab === tab.id ? 'page' : undefined}
+              className={`rounded-xl border px-4 py-2.5 text-sm font-extrabold transition ${
+                petTab === tab.id
+                  ? 'border-violet-600 bg-violet-600 text-white shadow-sm'
+                  : 'border-slate-200 bg-white text-slate-500 hover:border-violet-300 hover:text-violet-700'
+              }`}>
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      </nav>
+
+      <main className="mx-auto max-w-6xl px-4 py-7 sm:px-6">
+        <div>
+          <div className="text-[11px] font-extrabold tracking-[.18em] text-violet-700">B1 PET WRITING</div>
+          <h1 className="mt-1 text-3xl font-extrabold text-slate-950 sm:text-4xl">{PET_PART_INFO[petTab].title}</h1>
+          <p className="mt-2 text-slate-500">{PET_PART_INFO[petTab].help}</p>
+        </div>
+
+        <section className="mt-6 rounded-[24px] border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <strong className="text-sm text-slate-700">选择练习</strong>
+            <span className="text-xs text-slate-400">共 {petWritingTests.length} 套 · 当前为 Test {testN}</span>
+          </div>
+          <div className="grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-8">
+            {petWritingTests.map((t, index) => (
+              <button key={t.meta.id} type="button" onClick={() => setTestN(index + 1)}
+                aria-current={testN === index + 1 ? 'page' : undefined}
+                title={`Test ${index + 1} · ${PET_TABS[petTab].label}`}
+                className={`rounded-xl border px-3 py-3 text-sm font-extrabold transition ${
+                  testN === index + 1
+                    ? 'border-violet-600 bg-violet-600 text-white shadow-sm'
+                    : 'border-violet-100 bg-violet-50 text-violet-800 hover:border-violet-300'
+                }`}>
+                {index + 1}
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-6 overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-sm">
+          <div className="border-b border-slate-100 px-5 py-4 text-xs font-semibold text-slate-400">
+            Test {testN} · {test.meta.collection}
+          </div>
+          <WritingCard
+            key={`${test.meta.id}-${petTab}`}
+            w={item}
+            wi={0}
+            storageKey={`mars_pet_writing_v1:test${testN}:item${petTab}:draft`}
+          />
+        </section>
+      </main>
+    </CambridgeLayout>
+  )
+}
+
+function PetWritingPractice({ level, setLevel }) {
   const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
   const testN = Math.min(8, Math.max(1, Number(searchParams.get('petTest')) || 1))
   const tabId = Math.min(2, Math.max(0, Number(searchParams.get('petTab')) || 0))
   const test = petWritingTests[testN - 1]
   const item = test.items[tabId]
-  const [level, setLevel] = useState('PET')
 
   function setParam(key, value) {
     const next = new URLSearchParams(searchParams)
@@ -54,9 +132,9 @@ function PetWritingPractice() {
       <nav className="flex flex-wrap items-center gap-3 border-b border-slate-100 bg-white px-4 py-4 sm:px-6">
         <button
           type="button"
-          onClick={() => navigate(`/cambridge/exams/pet-mock-${testN}`)}
+          onClick={() => navigate('/cambridge/writing')}
           className="rounded-xl border border-violet-300 bg-violet-50 px-4 py-2.5 text-sm font-extrabold text-violet-800">
-          ← 返回模拟题 {testN}
+          ← 我的写作中心
         </button>
         <span className="text-slate-300">›</span>
         <span className="text-sm font-extrabold text-slate-600">PET 写作 · Test {testN}</span>
@@ -135,7 +213,10 @@ export default function CambridgeWriting() {
   const [searchParams, setSearchParams] = useSearchParams()
   const initialPart = searchParams.get('part') === '7' ? 7 : 6
   const initialSet = Math.min(WRITING_SETS.length, Math.max(1, Number(searchParams.get('set')) || 1))
-  const [level, setLevel] = useState('KET')
+  const [level, setLevel] = useState(() => {
+    try { return localStorage.getItem('cambridge_level') || 'KET' } catch { return 'KET' }
+  })
+  useEffect(() => { try { localStorage.setItem('cambridge_level', level) } catch { /* storage unavailable */ } }, [level])
   const [part, setPart] = useState(initialPart)
   const [setIndex, setSetIndex] = useState(initialSet - 1)
   const selected = WRITING_SETS[setIndex]
@@ -149,7 +230,8 @@ export default function CambridgeWriting() {
     setSearchParams({ part: String(part), set: String(setIndex + 1) }, { replace: true })
   }, [part, setIndex, setSearchParams, searchParams])
 
-  if (searchParams.get('view') === 'pet') return <PetWritingPractice />
+  if (searchParams.get('view') === 'pet') return <PetWritingPractice level={level} setLevel={setLevel} />
+  if (level === 'PET') return <PetWritingCentre level={level} setLevel={setLevel} />
 
   return (
     <CambridgeLayout activeModule="writing" level={level} setLevel={setLevel}>
