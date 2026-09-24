@@ -139,7 +139,10 @@ export default function CambridgeReading() {
   })
   const [part5Mode,    setPart5Mode]    = useState('official')
   const [part5Id,      setPart5Id]      = useState(1)
-  const [batchIdx,     setBatchIdx]     = useState(0)
+  const [batchIdx,     setBatchIdx]     = useState(() => {
+    const requestedTest = Number(searchParams.get('test'))
+    return Number.isInteger(requestedTest) && requestedTest >= 1 ? requestedTest - 1 : 0
+  })
   const [answers,      setAnswers]      = useState({})
   const [batchChecked, setBatchChecked] = useState(false)
   const [retrying,     setRetrying]     = useState({})  // _key → true

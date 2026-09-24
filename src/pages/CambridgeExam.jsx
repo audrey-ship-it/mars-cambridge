@@ -75,6 +75,18 @@ const PENDING_EXAMS = {
   sample: [{ id: 'official-sample-1', name: '官方样题 1', source: 'A2 Key 官方样题' }],
 }
 
+/* PET mock tests — 《PET 全真模拟试题（8套）》 */
+const PET_EXAM_COLLECTIONS = [
+  { id: 'petmock', label: '全真模拟题', count: 8, help: 'PET 全真模拟试题（8套）' },
+]
+
+const PET_EXAM_ITEMS = Array.from({ length: 8 }, (_, index) => ({
+  id: `pet-mock-${index + 1}`,
+  petN: index + 1,
+  name: `模拟题 ${index + 1}`,
+  source: 'PET 全真模拟试题（8套）',
+}))
+
 function examSetNumber(exam) {
   const [, standardBook, standardTest] = exam.id.match(/^ket-standard-(\d+)-test(\d+)$/) || []
   if (standardBook) return 12 + (Number(standardBook) - 1) * 4 + Number(standardTest)
@@ -159,26 +171,52 @@ function readExamListProgress(exam) {
   }
 }
 
+/* PET card progress: listening answers are persisted per part (25 questions). */
+function readPetExamListProgress(testN) {
+  let checked = 0
+  let total = 0
+  try {
+    ;[1, 2, 3, 4].forEach(part => {
+      const saved = JSON.parse(localStorage.getItem(`mars_pet_listening_v1:test${testN}:part${part}`) || 'null')
+      if (!saved?.checked?.length) return
+      total += saved.checked.length
+      checked += saved.checked.filter(Boolean).length
+    })
+  } catch { /* storage may be unavailable */ }
+  const percent = total ? Math.round(checked / total * 100) : 0
+  return {
+    percent,
+    status: checked === 0 ? '未开始' : checked === total ? '已完成' : '进行中',
+  }
+}
+
 export function ExamList() {
   const [level, setLevel] = useExamLevel()
-  const [collection, setCollection] = useState('schools')
+  const isPet = level === 'PET'
+  const [collection, setCollection] = useState(() => (isPet ? 'petmock' : 'schools'))
+  useEffect(() => { setCollection(isPet ? 'petmock' : 'schools') }, [isPet])
   const sectionSummary = () => '听力 30分钟 · 阅读与写作 60分钟 · 口语 8–10分钟'
-  const displayedExams = collection === 'schools'
-    ? ORDERED_KET_EXAMS.map((exam, index) => ({ exam, id: exam.id, name: `真题 ${index + 1}`, source: exam.title }))
-    : collection === 'standard'
-      ? PENDING_EXAMS.standard.map(item => ({ ...item, exam: STANDARD_READY_EXAMS.find(exam => exam.id === item.id) }))
-      : PENDING_EXAMS[collection]
+  const petSummary = () => '听力约30分钟 · 阅读与写作各45分钟 · 口语12–17分钟'
+  const displayedExams = isPet
+    ? PET_EXAM_ITEMS
+    : collection === 'schools'
+      ? ORDERED_KET_EXAMS.map((exam, index) => ({ exam, id: exam.id, name: `真题 ${index + 1}`, source: exam.title }))
+      : collection === 'standard'
+        ? PENDING_EXAMS.standard.map(item => ({ ...item, exam: STANDARD_READY_EXAMS.find(exam => exam.id === item.id) }))
+        : PENDING_EXAMS[collection]
+
+  const collections = isPet ? PET_EXAM_COLLECTIONS : EXAM_COLLECTIONS
 
   return (
     <CambridgeLayout activeModule="exams" level={level} setLevel={setLevel}>
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <div className="mb-6">
-          <span className="text-xs font-bold bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">{level === 'KET' ? 'A2 KET' : level === 'PET' ? 'B1 PET' : level}</span>
-          <h1 className="text-2xl font-bold text-gray-900 mt-2 mb-1">{level} 官方真题</h1>
-          <p className="text-sm text-gray-500">每套真题按正式考试分为听力、阅读与写作、口语三张试卷</p>
+          <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${isPet ? 'bg-violet-100 text-violet-700' : 'bg-emerald-100 text-emerald-700'}`}>{level === 'KET' ? 'A2 KET' : level === 'PET' ? 'B1 PET' : level}</span>
+          <h1 className="text-2xl font-bold text-gray-900 mt-2 mb-1">{isPet ? 'PET 全真模考' : `${level} 官方真题`}</h1>
+          <p className="text-sm text-gray-500">{isPet ? '每套模拟题按正式考试分为听力、阅读、写作、口语四个部分' : '每套真题按正式考试分为听力、阅读与写作、口语三张试卷'}</p>
         </div>
 
-        {level !== 'KET' && (
+        {level !== 'KET' && !isPet && (
           <section className="mb-6 rounded-[22px] border border-amber-200 bg-amber-50 p-6">
             <h2 className="text-lg font-bold text-amber-900">{level} 模考正在筹备中</h2>
             <p className="mt-2 text-sm text-amber-800">
@@ -190,15 +228,15 @@ export function ExamList() {
           </section>
         )}
 
-        {level === 'KET' && (
+        {(level === 'KET' || isPet) && (
         <div>
         <section className="mb-6 rounded-[22px] border border-gray-200 bg-white p-4 shadow-sm">
           <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
-            {EXAM_COLLECTIONS.map(item => (
+            {collections.map(item => (
               <button key={item.id} type="button" onClick={() => setCollection(item.id)} aria-current={collection === item.id ? 'page' : undefined}
-                className={`rounded-2xl border px-4 py-3 text-left transition ${collection === item.id ? 'border-emerald-600 bg-emerald-600 text-white shadow-sm' : 'border-gray-200 bg-white text-gray-600 hover:border-emerald-300'}`}>
+                className={`rounded-2xl border px-4 py-3 text-left transition ${collection === item.id ? `border-${isPet ? 'violet' : 'emerald'}-600 bg-${isPet ? 'violet' : 'emerald'}-600 text-white shadow-sm` : `border-gray-200 bg-white text-gray-600 hover:border-${isPet ? 'violet' : 'emerald'}-300`}`}>
                 <span className="block text-sm font-extrabold">{item.label} · {item.count}套</span>
-                <span className={`mt-1 block text-[11px] leading-4 ${collection === item.id ? 'text-emerald-100' : 'text-gray-400'}`}>{item.help}</span>
+                <span className={`mt-1 block text-[11px] leading-4 ${collection === item.id ? (isPet ? 'text-violet-100' : 'text-emerald-100') : 'text-gray-400'}`}>{item.help}</span>
               </button>
             ))}
           </div>
@@ -206,23 +244,25 @@ export function ExamList() {
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {displayedExams.map(item => {
-            const exam = item.exam
-            const progress = exam ? readExamListProgress(exam) : { status: '待录入', completed: 0, total: 0, percent: 0 }
+            const exam = isPet ? { id: item.id } : item.exam
+            const progress = isPet
+              ? readPetExamListProgress(item.petN)
+              : exam ? readExamListProgress(exam) : { status: '待录入', completed: 0, total: 0, percent: 0 }
             const Card = exam ? Link : 'div'
             return (
             <Card key={item.id} {...(exam ? { to: `/cambridge/exams/${exam.id}` } : {})}
-              className={`group block aspect-square rounded-[22px] border border-gray-200 bg-white p-5 shadow-sm lg:p-6 ${exam ? 'transition-all hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md' : 'opacity-75'}`}>
+              className={`group block aspect-square rounded-[22px] border border-gray-200 bg-white p-5 shadow-sm lg:p-6 ${exam ? `transition-all hover:-translate-y-0.5 hover:border-${isPet ? 'violet' : 'emerald'}-300 hover:shadow-md` : 'opacity-75'}`}>
               <div className="flex h-full flex-col">
                 <div className="flex items-start justify-between gap-3">
-                  <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-[#064e3b]">
+                  <div className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl ${isPet ? 'bg-violet-700' : 'bg-[#064e3b]'}`}>
                     <span className="text-xl text-white">📝</span>
                   </div>
-                  <span className={`rounded-full px-2.5 py-1 text-xs font-bold ${progress.status === '已完成' ? 'bg-emerald-100 text-emerald-700' : progress.status === '进行中' ? 'bg-amber-100 text-amber-800' : 'bg-gray-100 text-gray-500'}`}>{progress.status}</span>
+                  <span className={`rounded-full px-2.5 py-1 text-xs font-bold ${progress.status === '已完成' ? `${isPet ? 'bg-violet-100 text-violet-700' : 'bg-emerald-100 text-emerald-700'}` : progress.status === '进行中' ? 'bg-amber-100 text-amber-800' : 'bg-gray-100 text-gray-500'}`}>{progress.status}</span>
                 </div>
                 <div className="mt-5">
-                  <div className="text-xl font-extrabold leading-snug text-gray-900 transition-colors group-hover:text-[#064e3b]">{item.name}</div>
-                  <div className="mt-2 text-sm leading-6 text-gray-400">{item.source}</div>
-                  <div className="mt-1 text-sm leading-6 text-gray-400">{exam?.kind === 'standard' ? '听力 30分钟 · 阅读与写作 60分钟 · 口语待录入' : exam ? sectionSummary(exam) : '题目、答案与配套材料正在整理'}</div>
+                  <div className={`text-xl font-extrabold leading-snug text-gray-900 transition-colors ${isPet ? 'group-hover:text-violet-800' : 'group-hover:text-[#064e3b]'}`}>{item.name}</div>
+                  <div className="mt-2 text-sm text-gray-400">{item.source}</div>
+                  <div className="mt-1 text-sm text-gray-400">{isPet ? petSummary() : exam?.kind === 'standard' ? '听力 30分钟 · 阅读与写作 60分钟 · 口语待录入' : exam ? sectionSummary(exam) : '题目、答案与配套材料正在整理'}</div>
                 </div>
                 <div className="mt-auto pt-5">
                   <div className="mb-2 flex items-center justify-between gap-3">
@@ -230,9 +270,9 @@ export function ExamList() {
                     <span className="whitespace-nowrap text-xs font-bold text-gray-500">{exam ? `${progress.percent}%` : '尚未开放'}</span>
                   </div>
                   <div className="h-1.5 overflow-hidden rounded-full bg-gray-100">
-                    <div className="h-full rounded-full bg-[#0d7656]" style={{ width: `${progress.percent}%` }} />
+                    <div className={`h-full rounded-full ${isPet ? 'bg-violet-600' : 'bg-[#0d7656]'}`} style={{ width: `${progress.percent}%` }} />
                   </div>
-                  <div className={`mt-4 text-right text-sm font-extrabold ${exam ? 'text-[#0d7656]' : 'text-gray-400'}`}>{exam ? '进入真题 →' : '整理中'}</div>
+                  <div className={`mt-4 text-right text-sm font-extrabold ${exam ? (isPet ? 'text-violet-700' : 'text-[#0d7656]') : 'text-gray-400'}`}>{exam ? (isPet ? '进入模拟题 →' : '进入真题 →') : '整理中'}</div>
                 </div>
               </div>
             </Card>
@@ -285,12 +325,65 @@ function ExamOverview({ exam }) {
   )
 }
 
+function PetExamOverview({ testN }) {
+  const [level, setLevel] = useExamLevel()
+  const sections = [
+    { icon: '🎧', title: '听力', en: 'Listening', detail: '约30分钟 · 4个 Part · 25道题', href: `/cambridge/listening?view=pet&petTest=${testN}&petPart=1` },
+    { icon: '📖', title: '阅读', en: 'Reading', detail: '45分钟 · 6个 Part · 32道题', href: `/cambridge/reading?part=1&test=${testN}` },
+    { icon: '✍️', title: '写作', en: 'Writing', detail: '45分钟 · Part 1 邮件 · Part 2 故事或文章（核对中）', href: null },
+    { icon: '🎙️', title: '口语', en: 'Speaking', detail: '12–17分钟 · 4个 Part（核对中）', href: null },
+  ]
+
+  return (
+    <CambridgeLayout activeModule="exams" level={level} setLevel={setLevel}>
+      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+        <Link to="/cambridge/exams" className="text-sm font-bold text-violet-700 hover:text-violet-900">← 返回模拟题列表</Link>
+        <div className="mt-5 text-[11px] font-extrabold tracking-[.18em] text-violet-700">PET FULL PRACTICE TEST</div>
+        <h1 className="mt-1 text-3xl font-extrabold text-slate-950 sm:text-4xl">模拟题 {testN}</h1>
+        <p className="mt-2 text-slate-500">PET 全真模拟试题（8套） · 听力和阅读已核对；写作、口语尚未开放。</p>
+
+        <section className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {sections.map((item, index) => {
+            const Card = item.href ? Link : 'div'
+            return <Card key={item.title} {...(item.href ? { to: item.href } : {})} className={`group flex min-h-56 flex-col rounded-[24px] border border-slate-200 bg-white p-6 shadow-sm ${item.href ? 'transition-all hover:-translate-y-0.5 hover:border-violet-300 hover:shadow-md' : 'opacity-65'}`}>
+              <div className="flex items-start justify-between">
+                <span className="grid h-14 w-14 place-items-center rounded-2xl bg-violet-50 text-2xl">{item.icon}</span>
+                <span className="text-xs font-extrabold tracking-widest text-slate-300">0{index + 1}</span>
+              </div>
+              <div className="mt-5 text-xs font-extrabold tracking-widest text-violet-600">{item.en.toUpperCase()}</div>
+              <h2 className="mt-1 text-2xl font-extrabold text-slate-900 group-hover:text-violet-700">{item.title}</h2>
+              <p className="mt-2 text-sm leading-6 text-slate-500">{item.detail}</p>
+              <span className="mt-auto pt-5 text-right text-sm font-extrabold text-violet-700">{item.href ? `进入${item.title} →` : '核对中'}</span>
+            </Card>
+          })}
+        </section>
+      </main>
+    </CambridgeLayout>
+  )
+}
+
 /* ══════════════════════════════
    Root Exam Page — section switcher
 ══════════════════════════════ */
 export default function CambridgeExam() {
   const { id } = useParams()
   const [searchParams] = useSearchParams()
+  const petIdMatch = id?.match(/^pet-mock-(\d+)$/)
+  if (petIdMatch) {
+    const testN = Number(petIdMatch[1])
+    if (testN < 1 || testN > 8) {
+      return (
+        <div className="min-h-screen bg-[#f8f9fc] flex items-center justify-center">
+          <div className="text-center">
+            <div className="text-4xl mb-4">🔒</div>
+            <h2 className="text-xl font-bold text-gray-800 mb-2">找不到该试卷</h2>
+            <Link to="/cambridge/exams" className="text-[#064e3b] text-sm font-semibold hover:underline">返回模拟题列表</Link>
+          </div>
+        </div>
+      )
+    }
+    return <PetExamOverview testN={testN} />
+  }
   const baseExam = [...KET_EXAMS, ...STANDARD_READY_EXAMS].find(e => e.id === id)
   const readingSet = baseExam ? getKetReadingTest(baseExam.id) : null
   const exam = baseExam && !baseExam.reading?.parts?.length && hasCompleteKetReadingPaper(readingSet)
