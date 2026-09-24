@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { KET_LISTENING_DATA } from "../data/ketListeningData";
+import { petListeningTests as PET_LISTENING } from "../data/petListeningData";
 import {
   OFFICIAL_LISTENING_SETS,
   officialListeningAudio,
@@ -904,6 +905,14 @@ const LISTENING_ENTRIES = [
     title: "Part 5 信息匹配题",
     desc: "根据人物、地点、活动或物品信息完成对应关系。",
     meta: "信息匹配 · 5 题",
+  },
+  {
+    id: "pet-mocks",
+    number: "PET",
+    mark: "B1",
+    title: "PET 听力模考（8 套）",
+    desc: "PET 全真模拟试题，4 Parts 共 25 题：图片选择、情景选择、笔记填空与长访谈。",
+    meta: "B1 PET · 8 套 · 真录音",
   },
 ];
 
@@ -2467,6 +2476,7 @@ function ListeningCentre({ level, setLevel }) {
   function openEntry(id) {
     if (id === "dictation") navigate("/cambridge/dictation");
     else if (id === "common") navigate("/cambridge/listening?view=common");
+    else if (id === "pet-mocks") navigate("/cambridge/listening?view=pet");
     else navigate(`/cambridge/listening?part=${id.slice(-1)}`);
   }
   return (
@@ -4049,6 +4059,326 @@ function ListeningMockExam({ level, setLevel, setId, part, examId }) {
   );
 }
 
+const PET_PART_START = { 1: 1, 2: 8, 3: 14, 4: 20 };
+const PET_PREFIX = "mars_pet_listening_v1";
+
+function PetListeningPractice({ level, setLevel }) {
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const testN = Math.min(8, Math.max(1, Number(searchParams.get("petTest")) || 1));
+  const part = Math.min(4, Math.max(1, Number(searchParams.get("petPart")) || 1));
+  const test = PET_LISTENING[testN - 1];
+  const data = test.parts[part];
+  const count = data.items.length;
+
+  const storageKey = `${PET_PREFIX}:test${testN}:part${part}`;
+  const emptyValue = data.type === "blanks" ? "" : null;
+  const [answers, setAnswers] = useState(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem(storageKey) || "null");
+      if (saved?.answers?.length === count) return saved.answers;
+    } catch {
+      /* localStorage unavailable */
+    }
+    return Array(count).fill(emptyValue);
+  });
+  const [checked, setChecked] = useState(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem(storageKey) || "null");
+      if (saved?.checked?.length === count) return saved.checked;
+    } catch {
+      /* localStorage unavailable */
+    }
+    return Array(count).fill(false);
+  });
+  useEffect(() => {
+    try {
+      localStorage.setItem(storageKey, JSON.stringify({ answers, checked }));
+    } catch {
+      /* localStorage unavailable */
+    }
+  }, [answers, checked, storageKey]);
+
+  const normalise = (v) =>
+    String(v).toLowerCase().replace(/[£,\s-/.]/g, "");
+  const isRight = (item, v) =>
+    data.type === "blanks"
+      ? item.answer.some((a) => normalise(a) === normalise(v))
+      : Number(v) === item.answer;
+
+  function choose(index, value) {
+    setAnswers((v) => v.map((x, i) => (i === index ? value : x)));
+    setChecked((v) => v.map((x, i) => (i === index ? true : x)));
+  }
+  function resetPart() {
+    setAnswers(Array(count).fill(emptyValue));
+    setChecked(Array(count).fill(false));
+  }
+
+  const completed = checked.filter(Boolean).length;
+  const score = data.items.reduce(
+    (s, item, i) => s + (checked[i] && isRight(item, answers[i]) ? 1 : 0),
+    0,
+  );
+
+  function setParam(key, value) {
+    const next = new URLSearchParams(searchParams);
+    next.set(key, value);
+    setSearchParams(next, { replace: true });
+  }
+
+  return (
+    <CambridgeLayout activeModule="listening" level={level} setLevel={setLevel}>
+      <nav className="flex items-center gap-3 border-b border-gray-100 bg-white px-6 py-3 text-sm">
+        <button
+          onClick={() => navigate("/cambridge/listening")}
+          className="rounded-xl border border-violet-200 bg-violet-50 px-4 py-2.5 font-extrabold text-violet-700"
+        >
+          ← 我的听力中心
+        </button>
+        <span className="text-gray-300">›</span>
+        <span className="font-extrabold text-gray-700">
+          Test {testN} · Part {part}
+        </span>
+      </nav>
+
+      {/* Test selector */}
+      <div className="bg-white border-b border-gray-100">
+        <div className="mx-auto max-w-5xl px-6 py-3">
+          <div className="flex flex-wrap gap-2">
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((t) => (
+              <button
+                key={t}
+                onClick={() => setParam("petTest", t)}
+                className={`h-9 w-9 rounded-lg text-sm font-extrabold transition ${
+                  t === testN
+                    ? "bg-violet-600 text-white"
+                    : "bg-violet-50 text-violet-500 hover:bg-violet-100"
+                }`}
+              >
+                {t}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Part tabs */}
+      <div className="bg-white border-b border-gray-100">
+        <div className="mx-auto max-w-5xl px-6">
+          <div className="flex">
+            {[1, 2, 3, 4].map((p) => (
+              <button
+                key={p}
+                onClick={() => setParam("petPart", p)}
+                className={`flex-1 py-3 text-sm font-semibold border-b-2 transition-colors ${
+                  part === p
+                    ? "border-violet-600 text-violet-700"
+                    : "border-transparent text-gray-400 hover:text-gray-600"
+                }`}
+              >
+                Part {p}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <main className="mx-auto max-w-5xl px-6 py-7">
+        <div className="text-[11px] font-extrabold tracking-[.18em] text-violet-700">
+          B1 PET · MOCK TEST
+        </div>
+        <div className="mt-1 flex items-end justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-extrabold">{data.title}</h1>
+            <p className="mt-1 text-gray-500">{data.instruction}</p>
+          </div>
+          <button
+            onClick={resetPart}
+            className="shrink-0 rounded-xl border border-gray-200 px-4 py-2.5 text-sm font-bold text-gray-500 hover:border-violet-300 hover:text-violet-600"
+          >
+            重置本 Part
+          </button>
+        </div>
+
+        <div className="mt-6">
+          <SpeedAudioPlayer
+            src={data.audio}
+            title={`Test ${testN} · Part ${part}`}
+            eyebrow="PET LISTENING"
+          />
+        </div>
+
+        <div className="mt-6 space-y-4">
+          {data.items.map((item, index) => {
+            const done = checked[index];
+            const right = done && isRight(item, answers[index]);
+            const qNo = PET_PART_START[part] + index;
+            return (
+              <article
+                key={qNo}
+                className={`rounded-[22px] border bg-white p-5 md:p-6 ${
+                  done
+                    ? right
+                      ? "border-emerald-400"
+                      : "border-rose-300"
+                    : "border-gray-200"
+                }`}
+              >
+                <div className="flex gap-4">
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-violet-100 font-extrabold text-violet-700">
+                    {qNo}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <h2 className="text-lg font-extrabold leading-7">{item.q}</h2>
+
+                    {data.type === "blanks" && (
+                      <div className="mt-4 flex gap-3">
+                        <input
+                          value={answers[index] ?? ""}
+                          onChange={(e) => {
+                            setAnswers((v) =>
+                              v.map((x, i) => (i === index ? e.target.value : x)),
+                            );
+                            setChecked((v) =>
+                              v.map((x, i) => (i === index ? false : x)),
+                            );
+                          }}
+                          className="h-12 min-w-0 flex-1 rounded-xl border border-gray-200 px-4 text-lg font-bold outline-none focus:border-violet-500"
+                          placeholder="输入听到的信息（1-2 个词或数字）"
+                        />
+                        <button
+                          disabled={!String(answers[index] ?? "").trim()}
+                          onClick={() =>
+                            setChecked((v) =>
+                              v.map((x, i) => (i === index ? true : x)),
+                            )
+                          }
+                          className="rounded-xl bg-violet-600 px-5 font-extrabold text-white disabled:bg-gray-200"
+                        >
+                          检查
+                        </button>
+                      </div>
+                    )}
+
+                    {data.type === "image_mcq" && (
+                      <div className="mt-4">
+                        <img
+                          src={item.image}
+                          alt={`Q${qNo} options`}
+                          className="w-full rounded-xl border border-gray-200 bg-white"
+                        />
+                        <div className="mt-3 grid grid-cols-3 gap-2">
+                          {[0, 1, 2].map((oi) => {
+                            const sel = answers[index] === oi;
+                            return (
+                              <button
+                                key={oi}
+                                onClick={() => choose(index, oi)}
+                                className={`h-11 rounded-xl border-2 text-base font-extrabold transition ${
+                                  sel
+                                    ? right
+                                      ? "border-emerald-500 bg-emerald-50 text-emerald-700"
+                                      : "border-violet-600 bg-violet-50 text-violet-700"
+                                    : "border-gray-200 text-gray-500 hover:border-violet-300 hover:text-violet-600"
+                                }`}
+                              >
+                                {LABELS[oi]}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    {data.type === "mcq" && (
+                      <div className="mt-4 grid gap-2">
+                        {item.opts.map((opt, oi) => {
+                          const sel = answers[index] === oi;
+                          let cls =
+                            "border-gray-200 bg-white hover:border-violet-300 hover:bg-violet-50/60";
+                          if (sel)
+                            cls = right
+                              ? "border-emerald-400 bg-emerald-50"
+                              : "border-violet-500 bg-violet-50";
+                          return (
+                            <button
+                              key={oi}
+                              onClick={() => choose(index, oi)}
+                              className={`flex items-center gap-3 rounded-xl border px-4 py-3 text-left font-bold transition ${cls}`}
+                            >
+                              <span
+                                className={`grid h-7 w-7 shrink-0 place-items-center rounded-full text-xs font-extrabold ${
+                                  sel
+                                    ? right
+                                      ? "bg-emerald-500 text-white"
+                                      : "bg-violet-600 text-white"
+                                    : "bg-gray-100 text-gray-500"
+                                }`}
+                              >
+                                {LABELS[oi]}
+                              </span>
+                              <span className="text-sm font-medium text-gray-800">
+                                {opt}
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+
+                    {done && (
+                      <div
+                        className={`mt-4 rounded-xl px-4 py-3 text-sm leading-6 ${
+                          right
+                            ? "bg-emerald-50 text-emerald-800"
+                            : "bg-rose-50 text-rose-700"
+                        }`}
+                      >
+                        <strong>{right ? "✓ 回答正确！" : "再听一次。"}</strong>
+                        {!right && (
+                          <span className="ml-2">
+                            正确答案：
+                            {data.type === "blanks"
+                              ? item.show
+                              : `${LABELS[item.answer]}`}
+                          </span>
+                        )}
+                        {item.explanation && (
+                          <p className="mt-1">{item.explanation}</p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+
+        <section className="mt-6 rounded-[22px] bg-violet-700 p-5 text-white">
+          <div className="flex justify-between">
+            <strong>
+              已检查 {completed} / {count}
+            </strong>
+            {completed === count && (
+              <strong className="text-2xl text-amber-200">
+                正确 {score} / {count}
+              </strong>
+            )}
+          </div>
+          <div className="mt-3 h-2 rounded-full bg-white/10">
+            <div
+              className="h-full rounded-full bg-amber-300 transition-all"
+              style={{ width: `${(completed / count) * 100}%` }}
+            />
+          </div>
+        </section>
+      </main>
+    </CambridgeLayout>
+  );
+}
+
 export default function CambridgeListening() {
   const [searchParams] = useSearchParams();
   const [level, setLevel] = useState(() => {
@@ -4060,6 +4390,8 @@ export default function CambridgeListening() {
   });
   if (searchParams.get("view") === "common")
     return <ListeningCommonPoints level={level} setLevel={setLevel} />;
+  if (searchParams.get("view") === "pet")
+    return <PetListeningPractice level={level} setLevel={setLevel} />;
   const part = Number(searchParams.get("part"));
   const requestedSet = Number(searchParams.get("set"));
   const setId = OFFICIAL_LISTENING_SETS.some((set) => set.id === requestedSet)
