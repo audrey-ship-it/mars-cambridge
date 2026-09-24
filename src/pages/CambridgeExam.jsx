@@ -7,6 +7,7 @@ import { KET_STANDARD_EXAM_SOURCES } from '../data/ketStandardExamSources'
 import { KET_STANDARD_WRITING } from '../data/ketStandardWritingData'
 import { OFFICIAL_LISTENING_SETS } from '../data/officialListeningManifest'
 import { CambridgeLayout } from './CambridgeApp'
+import { PetListeningExam, PetReadingExam, PetWritingExam, PetSpeakingExam } from './PetExam'
 
 const ORDERED_KET_EXAMS = [...KET_EXAMS].sort((left, right) => {
   const [, leftBook, leftTest] = left.id.match(/^ket-(\d+)-test(\d+)$/) || []
@@ -330,9 +331,10 @@ function PetExamOverview({ testN }) {
   const navigate = useNavigate()
   useEffect(() => { if (level !== 'PET') navigate('/cambridge/exams', { replace: true }) }, [level, navigate])
   const sections = [
-    { icon: '🎧', title: '听力', en: 'Listening', detail: '约30分钟 · 4个 Part · 25道题', href: `/cambridge/listening?view=pet&petTest=${testN}&petPart=1` },
-    { icon: '📖', title: '阅读与写作', en: 'Reading & Writing', detail: '阅读45分钟 · 6个 Part · 32道题；写作45分钟 · Part 1 邮件 · Part 2 故事或文章', href: `/cambridge/reading?part=1&test=${testN}` },
-    { icon: '🎙️', title: '口语', en: 'Speaking', detail: '12–17分钟 · 4个 Part', href: `/cambridge/speaking?view=pet&petTest=${testN}&petTab=1` },
+    { icon: '🎧', title: '听力', en: 'Listening', detail: '约30分钟 · 4个 Part · 25道题', href: `/cambridge/exams/pet-mock-${testN}?tab=listening` },
+    { icon: '📖', title: '阅读', en: 'Reading', detail: '45分钟 · 6个 Part · 32道客观题，自动评分与错题重做', href: `/cambridge/exams/pet-mock-${testN}?tab=reading` },
+    { icon: '✍️', title: '写作', en: 'Writing', detail: '45分钟 · Part 1 邮件（必做）· Part 2 文章或故事（二选一）', href: `/cambridge/exams/pet-mock-${testN}?tab=writing` },
+    { icon: '🎙️', title: '口语', en: 'Speaking', detail: '12–17分钟 · 4个 Part · 含参考答案与 TTS 朗读', href: `/cambridge/exams/pet-mock-${testN}?tab=speaking` },
   ]
 
   return (
@@ -343,7 +345,7 @@ function PetExamOverview({ testN }) {
         <h1 className="mt-1 text-3xl font-extrabold text-slate-950 sm:text-4xl">模拟题 {testN}</h1>
         <p className="mt-2 text-slate-500">PET 全真模拟试题（8套） · 听力、阅读与写作、口语均已核对。</p>
 
-        <section className="mt-7 grid gap-4 sm:grid-cols-3">
+        <section className="mt-7 grid gap-4 sm:grid-cols-2">
           {sections.map((item, index) => {
             const Card = item.href ? Link : 'div'
             return <Card key={item.title} {...(item.href ? { to: item.href } : {})} className={`group flex min-h-56 flex-col rounded-[24px] border border-slate-200 bg-white p-6 shadow-sm ${item.href ? 'transition-all hover:-translate-y-0.5 hover:border-violet-300 hover:shadow-md' : 'opacity-65'}`}>
@@ -383,6 +385,11 @@ export default function CambridgeExam() {
         </div>
       )
     }
+    const petTab = searchParams.get('tab')
+    if (petTab === 'listening') return <PetListeningExam testN={testN} />
+    if (petTab === 'reading')   return <PetReadingExam testN={testN} />
+    if (petTab === 'writing')   return <PetWritingExam testN={testN} />
+    if (petTab === 'speaking')  return <PetSpeakingExam testN={testN} />
     return <PetExamOverview testN={testN} />
   }
   const baseExam = [...KET_EXAMS, ...STANDARD_READY_EXAMS].find(e => e.id === id)
