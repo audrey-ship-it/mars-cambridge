@@ -789,7 +789,84 @@ export default function CambridgeReading() {
                 )}
 
                 {/* ── PART 2 ── */}
-                {partId === 2 && currentBatch && !currentBatch.scanPages && (
+                {partId === 2 && currentBatch && !currentBatch.scanPages && (() => {
+                  // PET Part 2: people = 5 question-people (Q6-10), options = 8 courses (A-H)
+                  // KET Part 2: people = passages (A-C), questions = questions with text
+                  const isPetPart2 = Array.isArray(currentBatch.options) && currentBatch.options.length > 0
+                  if (isPetPart2) {
+                    const personToQ = {}
+                    for (const q of currentBatch.questions) personToQ[String(q.id)] = q
+                    return (
+                      <div className="grid grid-cols-[minmax(0,1.25fr)_minmax(400px,.75fr)] gap-8 items-start">
+                        {/* LEFT: 8 course options (A-H) */}
+                        <div className="max-h-[125vh] space-y-4 overflow-y-auto pr-2 sticky top-5">
+                          {currentBatch.options.map(o => (
+                            <div key={o.label} className="bg-slate-50 rounded-2xl border border-slate-200 p-6">
+                              <div className="flex items-center gap-3 mb-3">
+                                <span className="w-9 h-9 bg-violet-600 text-white text-base font-extrabold rounded-full flex items-center justify-center flex-shrink-0">{o.label}</span>
+                                <span className="font-bold text-slate-800 text-xl">{o.name}</span>
+                              </div>
+                              <HighlightableText text={o.text} storageKey={`part2-${currentBatch.title}-${o.label}`}
+                                className="text-[17px] text-slate-700 leading-8" />
+                            </div>
+                          ))}
+                        </div>
+                        {/* RIGHT: 5 people (Q6-10) with descriptions + A-H buttons */}
+                        <div className="space-y-4 sticky top-5">
+                          {currentBatch.people.map((p, pi) => {
+                            const q = personToQ[String(p.label)]
+                            if (!q) return null
+                            const sel = answers[q._key]
+                            const effChk = batchChecked && !retrying[q._key]
+                            return (
+                              <motion.div key={q._key}
+                                initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: pi * 0.03 }}
+                                className="border border-slate-200 rounded-xl px-5 py-4 hover:bg-slate-50/70 transition-colors"
+                              >
+                                <div className="flex items-center gap-3 mb-2">
+                                  <span className={`w-7 h-7 flex-shrink-0 rounded-full flex items-center justify-center text-xs font-extrabold transition-colors ${
+                                    effChk
+                                      ? isCorrect14(q) ? 'bg-emerald-500 text-white' : 'bg-red-400 text-white'
+                                      : sel ? 'bg-violet-600 text-white' : 'bg-violet-100 text-violet-600'
+                                  }`}>{q.id}</span>
+                                  <span className="font-bold text-slate-800 text-lg">{p.name}</span>
+                                </div>
+                                <p className="text-[15px] leading-6 text-slate-700 mb-4">{p.text}</p>
+                                <div className="flex flex-wrap gap-2">
+                                  {currentBatch.options.map(o => {
+                                    const selected = answers[q._key] === o.label
+                                    let cls = 'border-gray-200 text-gray-400 hover:border-violet-300 hover:text-violet-600 hover:bg-violet-50'
+                                    if (selected && !effChk) cls = 'border-violet-500 bg-violet-50 text-violet-700'
+                                    if (effChk) {
+                                      if (o.label === q.answer) cls = 'border-emerald-500 bg-emerald-50 text-emerald-700'
+                                      else if (selected)        cls = 'border-red-400 bg-red-50 text-red-600'
+                                      else                      cls = 'border-gray-100 text-gray-300'
+                                    }
+                                    return (
+                                      <button key={o.label} disabled={effChk && !retrying[q._key]}
+                                        onClick={() => {
+                                          if (retrying[q._key]) {
+                                            setAnswers(a => ({ ...a, [q._key]: o.label }))
+                                            setRetrying(r => { const n = { ...r }; delete n[q._key]; return n })
+                                          } else if (!effChk) {
+                                            setAnswers(a => ({ ...a, [q._key]: o.label }))
+                                          }
+                                        }}
+                                        className={`w-10 h-10 rounded-lg border-2 font-bold text-base transition-all ${cls}`}
+                                      >{o.label}</button>
+                                    )
+                                  })}
+                                </div>
+                              </motion.div>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    )
+                  }
+                  // KET Part 2 (original behavior)
+                  return (
                   <div className="grid grid-cols-[minmax(0,1.25fr)_minmax(400px,.75fr)] gap-8 items-start">
                     <div className="max-h-[125vh] space-y-4 overflow-y-auto pr-2 sticky top-5">
                       {(currentBatch.people || []).map(p => (
@@ -848,7 +925,8 @@ export default function CambridgeReading() {
                       ))}
                     </div>
                   </div>
-                )}
+                  )
+                })()}
 
                 {/* ── PART 3 (and PET Part 5 MCQ cloze) ── */}
                 {(partId === 3 || (level === 'PET' && partId === 5)) && currentBatch && !currentBatch.scanPages && (
