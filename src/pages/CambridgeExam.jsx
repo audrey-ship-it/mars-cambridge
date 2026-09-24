@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Link, useParams, useSearchParams } from 'react-router-dom'
+import { Link, useParams, useSearchParams, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { KET_EXAMS } from '../data/ketExamData'
 import { getKetReadingTest, hasCompleteKetReadingPaper } from '../data/ketReadingCatalog'
@@ -327,6 +327,8 @@ function ExamOverview({ exam }) {
 
 function PetExamOverview({ testN }) {
   const [level, setLevel] = useExamLevel()
+  const navigate = useNavigate()
+  useEffect(() => { if (level !== 'PET') navigate('/cambridge/exams', { replace: true }) }, [level, navigate])
   const sections = [
     { icon: '🎧', title: '听力', en: 'Listening', detail: '约30分钟 · 4个 Part · 25道题', href: `/cambridge/listening?view=pet&petTest=${testN}&petPart=1` },
     { icon: '📖', title: '阅读', en: 'Reading', detail: '45分钟 · 6个 Part · 32道题', href: `/cambridge/reading?part=1&test=${testN}` },
