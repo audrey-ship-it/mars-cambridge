@@ -184,6 +184,107 @@ if (mode === 'images') {
   }
 }
 
+if (mode === 'layout') {
+  // layout <page1based>: dump merged text lines with top-left coords (px space)
+  const p = Number(process.argv[3])
+  const scale = Number(process.argv[4] || 2)
+  const page = await doc.getPage(p)
+  const vp = page.getViewport({ scale })
+  const tc = await page.getTextContent()
+  const lines = []
+  for (const it of tc.items) {
+    if (!it.str.trim()) continue
+    const [x, y] = [it.transform[4], it.transform[5]]
+    // PDF origin bottom-left -> px top-left
+    const top = vp.height - (y + it.height) * scale
+    const left = x * scale
+    lines.push({ top, left, h: it.height * scale, str: it.str })
+  }
+  lines.sort((a, b) => a.top - b.top || a.left - b.left)
+  let row = null
+  for (const ln of lines) {
+    if (!row || Math.abs(ln.top - row.top) > ln.h * 0.7) {
+      row = { top: ln.top, parts: [] }
+      console.log(`\ny=${ln.top.toFixed(1)}`)
+    }
+    process.stdout.write(`${ln.left.toFixed(0)}:${ln.str} `)
+  }
+  console.log('')
+}
+
+if (mode === 'speaking') {
+  // speaking <testN> -> Part 2 photographs + Part 3 situation picture
+  // under public/images/pet/speaking/testN/{photo-a,photo-b,task}.png
+  const { mkdirSync, writeFileSync } = await import('node:fs')
+  const testN = Number(process.argv[3] || 1)
+  const ocrScale = 2
+  const fullScale = 2408 / 577.92
+  const factor = fullScale / ocrScale
+  const outDir = `d:/workspace_sunny/mars-cambridge/public/images/pet/speaking/test${testN}`
+  mkdirSync(outDir, { recursive: true })
+
+  const worker = await createWorker('eng')
+
+  async function ocrLines(pdfPage) {
+    const page = await doc.getPage(pdfPage)
+    const vp = page.getViewport({ scale: ocrScale })
+    const c = createCanvas(Math.floor(vp.width), Math.floor(vp.height))
+    await page.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise
+    const { data } = await worker.recognize(c.toBuffer('image/png'), {}, { blocks: true })
+    const lines = []
+    for (const block of data.blocks || []) {
+      for (const par of block.paragraphs) {
+        for (const line of par.lines) {
+          lines.push({ y: (line.bbox.y0 + line.bbox.y1) / 2, y0: line.bbox.y0, y1: line.bbox.y1, txt: line.text.trim() })
+        }
+      }
+    }
+    return { c, lines }
+  }
+
+  // ---- Part 2 page: two photographs ----
+  const p2pageNum = 20 * testN + 7
+  const { c: c2, lines: l2 } = await ocrLines(p2pageNum)
+  const please = l2.filter(x => /please tell us|tell us what you can see/i.test(x.txt))
+  const thanks = l2.filter(x => /thank you/i.test(x.txt))
+  console.log(`test${testN} p2: please=${please.map(x => x.y0.toFixed(0))} thanks=${thanks.map(x => x.y0.toFixed(0))}`)
+  if (please.length < 2 || thanks.length < 2) {
+    console.log('FAILED anchors; lines:', l2.map(x => x.txt).join(' | '))
+    process.exit(1)
+  }
+  // generous bands (cropTrim + photoBounds tighten them)
+  const bands = [
+    [please[0].y0 + 10, thanks[0].y0 - 4],
+    [please[1].y0 + 10, thanks[thanks.length - 1].y0 - 4],
+  ]
+  for (let i = 0; i < 2; i++) {
+    const b = inkRect(c2.getContext('2d'), c2.width, c2.height, bands[i][0], bands[i][1])
+    const out = `${outDir}/${i === 0 ? 'photo-a' : 'photo-b'}.png`
+    const strip = cropTrim(c2.getContext('2d'), c2.width, c2.height, b.x, b.y, b.w, b.h, 22)
+    writeFileSync(out, strip.toBuffer('image/png'))
+    console.log('wrote', out, strip.width, strip.height)
+  }
+
+  // ---- Part 3 page: situation picture at top ----
+  const p3pageNum = 20 * testN + 8
+  const { c: c3, lines: l3 } = await ocrLines(p3pageNum)
+  const talk = l3.find(x => /talk together/i.test(x.txt))
+  const part4 = l3.find(x => /part\s*4/i.test(x.txt))
+  console.log(`test${testN} p3: talk=${talk?.y0.toFixed(0)} part4=${part4?.y0.toFixed(0)}`)
+  if (!talk || !part4) {
+    console.log('FAILED anchors; lines:', l3.map(x => x.txt).join(' | '))
+    process.exit(1)
+  }
+  const bt = inkRect(c3.getContext('2d'), c3.width, c3.height, talk.y1 + 10, part4.y0 - 6,
+    { ct: 0.04, rt: 0.03, gx: 80, gy: 120 })
+  const out = `${outDir}/task.png`
+  const strip = cropTrim(c3.getContext('2d'), c3.width, c3.height, bt.x, bt.y, bt.w, bt.h, 22)
+  writeFileSync(out, strip.toBuffer('image/png'))
+  console.log('wrote', out, strip.width, strip.height)
+
+  await worker.terminate()
+}
+
 async function readFile(path) {
   const { readFile: rf } = await import('node:fs/promises')
   return rf(path)
@@ -202,6 +303,56 @@ function rowInk(ctx, w, h) {
     rows[y] = c / w
   }
   return rows
+}
+
+// Find the largest ink rectangle inside a vertical band via projection
+// profiles, bridging small white gaps. thresholds are dark fractions.
+function inkRect(ctx, w, h, y0, y1, { ct = 0.22, rt = 0.12, gx = 24, gy = 16 } = {}) {
+  const sy = Math.max(0, Math.floor(y0))
+  const ey = Math.min(h, Math.floor(y1))
+  const sh = ey - sy
+  const d = ctx.getImageData(0, sy, w, sh).data
+  const colInk = new Float64Array(w)
+  for (let y = 0; y < sh; y++) {
+    const base = y * w * 4
+    for (let x = 0; x < w; x++) {
+      if (d[base + x * 4] < 205) colInk[x]++
+    }
+  }
+  for (let x = 0; x < w; x++) colInk[x] /= sh
+  const cx = longestRun(colInk.map(v => v > ct), gx)
+  // rows inside the column run
+  const rowInk = new Float64Array(sh)
+  const cw = cx.e - cx.s + 1
+  for (let y = 0; y < sh; y++) {
+    const base = y * w * 4
+    let c = 0
+    for (let x = cx.s; x <= cx.e; x++) if (d[base + x * 4] < 205) c++
+    rowInk[y] = c / cw
+  }
+  const ry = longestRun(rowInk.map(v => v > rt), gy)
+  return { x: cx.s, y: sy + ry.s, w: cw, h: ry.e - ry.s + 1 }
+}
+
+// longest true-run, bridging false gaps up to bridge cells
+function longestRun(hits, bridge) {
+  let best = null, cur = null
+  for (let i = 0; i <= hits.length; i++) {
+    if (i < hits.length && hits[i]) {
+      if (!cur) cur = { s: i, e: i }
+      else cur.e = i
+    } else if (cur) {
+      // look ahead across a short gap
+      let j = cur.e + 1
+      while (j < hits.length && !hits[j] && j - cur.e <= bridge) j++
+      if (j < hits.length && hits[j]) { cur.e = j; i = j }
+      else {
+        if (!best || cur.e - cur.s > best.e - best.s) best = cur
+        cur = null
+      }
+    }
+  }
+  return best || { s: 0, e: hits.length - 1 }
 }
 
 // crop a region, trim white borders, return a padded canvas

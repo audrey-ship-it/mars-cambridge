@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { CambridgeLayout } from './CambridgeApp'
 import { WritingCard } from './CambridgeExam'
 import { KET_EXAMS } from '../data/ketExamData'
 import { KET_STANDARD_WRITING } from '../data/ketStandardWritingData'
+import { petWritingTests } from '../data/petWritingData'
 
 const WRITING_SETS = [1, 2, 3].flatMap(book => [1, 2, 3, 4].map(test => {
   const exam = KET_EXAMS.find(item => item.id === `ket-${book}-test${test}`)
@@ -27,6 +28,109 @@ const PART_INFO = {
   },
 }
 
+const PET_TABS = [
+  { id: 0, label: 'Part 1 · 邮件' },
+  { id: 1, label: 'Part 2 · 文章' },
+  { id: 2, label: 'Part 2 · 故事' },
+]
+
+function PetWritingPractice() {
+  const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const testN = Math.min(8, Math.max(1, Number(searchParams.get('petTest')) || 1))
+  const tabId = Math.min(2, Math.max(0, Number(searchParams.get('petTab')) || 0))
+  const test = petWritingTests[testN - 1]
+  const item = test.items[tabId]
+  const [level, setLevel] = useState('PET')
+
+  function setParam(key, value) {
+    const next = new URLSearchParams(searchParams)
+    next.set(key, String(value))
+    setSearchParams(next, { replace: true })
+  }
+
+  return (
+    <CambridgeLayout activeModule="writing" level={level} setLevel={setLevel}>
+      <nav className="flex flex-wrap items-center gap-3 border-b border-slate-100 bg-white px-4 py-4 sm:px-6">
+        <button
+          type="button"
+          onClick={() => navigate(`/cambridge/exams/pet-mock-${testN}`)}
+          className="rounded-xl border border-violet-300 bg-violet-50 px-4 py-2.5 text-sm font-extrabold text-violet-800">
+          ← 返回模拟题 {testN}
+        </button>
+        <span className="text-slate-300">›</span>
+        <span className="text-sm font-extrabold text-slate-600">PET 写作 · Test {testN}</span>
+      </nav>
+
+      {/* Test selector */}
+      <div className="border-b border-slate-100 bg-white">
+        <div className="mx-auto max-w-6xl px-4 py-3 sm:px-6">
+          <div className="flex flex-wrap gap-2">
+            {petWritingTests.map((t, index) => (
+              <button
+                key={t.meta.id}
+                type="button"
+                onClick={() => setParam('petTest', index + 1)}
+                className={`h-9 w-9 rounded-lg text-sm font-extrabold transition ${
+                  index + 1 === testN
+                    ? 'bg-violet-600 text-white'
+                    : 'bg-violet-50 text-violet-500 hover:bg-violet-100'
+                }`}>
+                {index + 1}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Tabs */}
+      <div className="border-b border-slate-100 bg-white">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="flex gap-2 overflow-x-auto py-3">
+            {PET_TABS.map(tab => (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setParam('petTab', tab.id)}
+                className={`whitespace-nowrap rounded-xl border px-4 py-2.5 text-sm font-extrabold transition ${
+                  tab.id === tabId
+                    ? 'border-violet-600 bg-violet-600 text-white shadow-sm'
+                    : 'border-slate-200 bg-white text-slate-500 hover:border-violet-300 hover:text-violet-700'
+                }`}>
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <main className="mx-auto max-w-6xl px-4 py-7 sm:px-6">
+        <div className="text-[11px] font-extrabold tracking-[.18em] text-violet-700">PET WRITING</div>
+        <h1 className="mt-1 text-3xl font-extrabold text-slate-950 sm:text-4xl">{item.title}</h1>
+        <p className="mt-2 text-slate-500">
+          {tabId === 0
+            ? '阅读情境邮件和旁批，写一封约 100 词的回信，必须用上全部四个旁批。'
+            : tabId === 1
+              ? 'Part 2 二选一：为杂志写一篇约 100 词的文章，回答题目中的问题。'
+              : 'Part 2 二选一：以给定句子开头，写一篇约 100 词的故事。'}
+        </p>
+
+        <section className="mt-6 overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-sm">
+          <div className="border-b border-slate-100 px-5 py-4 text-xs font-semibold text-slate-400">
+            Test {testN} · {test.meta.collection}
+          </div>
+          <WritingCard
+            key={`${test.meta.id}-${tabId}`}
+            w={item}
+            wi={0}
+            storageKey={`mars_pet_writing_v1:test${testN}:item${tabId}:draft`}
+          />
+        </section>
+      </main>
+    </CambridgeLayout>
+  )
+}
+
 export default function CambridgeWriting() {
   const [searchParams, setSearchParams] = useSearchParams()
   const initialPart = searchParams.get('part') === '7' ? 7 : 6
@@ -41,8 +145,11 @@ export default function CambridgeWriting() {
   )
 
   useEffect(() => {
+    if (searchParams.get('view') === 'pet') return
     setSearchParams({ part: String(part), set: String(setIndex + 1) }, { replace: true })
-  }, [part, setIndex, setSearchParams])
+  }, [part, setIndex, setSearchParams, searchParams])
+
+  if (searchParams.get('view') === 'pet') return <PetWritingPractice />
 
   return (
     <CambridgeLayout activeModule="writing" level={level} setLevel={setLevel}>

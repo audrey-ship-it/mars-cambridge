@@ -1,0 +1,724 @@
+// PET Writing — 8 mock tests from 《PET 全真模拟试题（8套）》
+// Part 1 email using all notes (~100 words); Part 2 choose article OR story (~100 words).
+// Model answers are original B1 teaching examples, not purported official answer-key text.
+// Fields per item (consumed by WritingCard):
+//   part, q?, type ('guided_writing'|'article'|'story_writing'), title,
+//   minWords, prompt, modelAnswer, tips, contentKeywords?
+
+export const petWritingTests = [
+  {
+    meta: {
+      id: 'pet-mock-1-writing',
+      title: 'PET 全真模拟试题 1 · Writing',
+      level: 'PET',
+      collection: 'PET 全真模拟试题（8套）',
+      paper: 'Writing',
+      pages: '19–20',
+      source: 'PET 全真模拟试题（8套）',
+      answerSource: '原创教学范文',
+      verified: true,
+    },
+    items: [
+      {
+        part: 1,
+        type: 'guided_writing',
+        title: 'Part 1 · 邮件写作',
+        minWords: 100,
+        prompt: `Read this email from your friend Amy and the notes you have made.
+
+From: Amy
+Subject: Food in your country
+
+Hi (your name),
+My Geography teacher has asked me to prepare a presentation on what people eat abroad, so I hope you can help me to find out about food in your country.
+        —— glad to help
+Can you tell me something interesting about what people eat where you live?
+        —— name a couple of dishes
+I think it would be great if I could add some photos of these foods, too. Do you have any interesting pictures you have taken yourself?
+        —— offer to send pictures
+Finally, I'd like to cook something easy to bring to class. The recipes are easy to find but I don't know which one to choose...
+        —— suggest your favourite local food
+That's all for now. Write soon!
+Amy
+
+Write your email to Amy using all the notes.`,
+        modelAnswer: `Hi Amy,
+Thanks for your email — I'd be really glad to help you with your presentation!
+Where I live, people eat lots of rice and noodles. Two popular dishes are dumplings and fried rice. Dumplings are small pieces of meat and vegetables in a thin pastry, and we usually eat them at Chinese New Year.
+I took some photos of these dishes last weekend, so I can send them to you if you like.
+For something easy to cook, I'd suggest fried rice: you only need rice, eggs and a few vegetables. I'm sure your classmates will love it!
+Best wishes,
+Li Hua`,
+        tips: ['开头先表示乐意帮忙', '说出两道菜并简单介绍', '主动提出发照片', '建议一道容易做的本地菜', '100词左右，注意称呼和署名'],
+        contentKeywords: ['glad', 'help', 'dumplings', 'fried rice', 'noodles', 'photos', 'send', 'suggest', 'easy', 'cook', 'hi', 'best wishes'],
+      },
+      {
+        part: 2,
+        q: 2,
+        type: 'article',
+        title: 'Part 2 · 文章写作（二选一）',
+        minWords: 100,
+        prompt: `You see this advertisement in a fitness magazine.
+
+HEALTH AND SPORT
+What do you do to keep fit?
+Is physical exercise enough to be healthy? Why / Why not?
+Write an article answering these questions and we will put the best one in next month's issue.
+
+Write your article.`,
+        modelAnswer: `Keeping fit is important to me. I try to do some exercise almost every day: I usually go for a thirty-minute run before school, and at the weekend I play basketball with my friends in the park.
+In my opinion, however, physical exercise alone is not enough to be healthy. We also need to eat well, which means lots of fruit and vegetables and not too much sugar or fast food. Sleeping for eight hours a night and drinking plenty of water are important too.
+To sum up, exercise, good food and enough sleep together make a healthy lifestyle.`,
+        tips: ['回答三个问题：怎么健身、运动是否足够、原因', '用 In my opinion / To sum up 组织观点', '说明饮食和睡眠同样重要', '100词左右'],
+        contentKeywords: ['exercise', 'fit', 'run', 'healthy', 'food', 'vegetables', 'sleep', 'opinion', 'because', 'important', 'lifestyle'],
+      },
+      {
+        part: 2,
+        q: 3,
+        type: 'story_writing',
+        title: 'Part 2 · 故事写作（二选一）',
+        minWords: 100,
+        prompt: `Your English teacher has asked you to write a story.
+Your story must begin with this sentence.
+
+When I opened the door, all I could see was a parcel on the doormat.
+
+Write your story.`,
+        modelAnswer: `When I opened the door, all I could see was a parcel on the doormat. I picked it up carefully and took it into the kitchen. It was quite heavy, and there was no name on it.
+I opened it slowly. Inside, I found a beautiful wooden music box with a letter. The letter said that the box was a birthday present from my grandmother, who lived far away and could not visit us.
+When I turned the key, it played my favourite song. I felt very happy and immediately called my grandmother to say thank you.`,
+        tips: ['必须以给定句子开头', '用一般过去时', '写清包裹里有什么、谁寄来的', '加入感受和结尾', '100词左右'],
+        contentKeywords: ['parcel', 'opened', 'kitchen', 'found', 'letter', 'present', 'grandmother', 'felt', 'called', 'thank', 'suddenly', 'when', 'finally'],
+      },
+    ],
+  },
+  {
+    meta: {
+      id: 'pet-mock-2-writing',
+      title: 'PET 全真模拟试题 2 · Writing',
+      level: 'PET',
+      collection: 'PET 全真模拟试题（8套）',
+      paper: 'Writing',
+      pages: '39–40',
+      source: 'PET 全真模拟试题（8套）',
+      answerSource: '原创教学范文',
+      verified: true,
+    },
+    items: [
+      {
+        part: 1,
+        type: 'guided_writing',
+        title: 'Part 1 · 邮件写作',
+        minWords: 100,
+        prompt: `Read this email from your English cousin and the notes you have made.
+
+From: Christine
+Subject: Coming to England this summer
+
+Dear (your name),
+I'm so glad that you are coming to England this summer!
+        —— me too
+Dad and I will pick you up from the airport, so let me know what time your plane lands.
+When you arrive, we could either go to eat at a new Japanese restaurant or we could eat at home. What would you prefer?
+        —— give details
+As you are here for a week, we'll have plenty of time. What sort of activities do you want to do during your stay?
+        —— explain
+I can't wait to see you! Write soon,
+        —— suggest
+Love
+Christine
+
+Write your email to your English cousin using all the notes.`,
+        modelAnswer: `Dear Christine,
+Thanks for your email. I'm so excited too — I can't wait to come to England!
+My plane lands at six o'clock in the evening on 12th July, so you and your dad can pick me up then.
+For dinner, I'd prefer to eat at home, if that's OK. I always feel tired after a long flight, and I'd love to try your mum's cooking!
+During the week, I'd really like to visit London, see the British Museum and walk along the beach near your town.
+I also suggest we spend one day just relaxing and watching films at home.
+See you soon!
+Love,
+Li Hua`,
+        tips: ['开头回应对方的兴奋之情（me too）', '告知航班到达的具体时间，方便接机', '就日餐店还是家里吃饭给出选择并说明细节（give details）', '解释自己想参加的活动（explain）', '结尾提出一项建议（suggest），100词左右，注意 Dear/Love 的称呼'],
+        contentKeywords: ['excited', 'plane lands', '12th july', 'prefer', 'at home', 'tired', 'activities', 'london', 'beach', 'suggest', 'relaxing', 'love'],
+      },
+      {
+        part: 2,
+        q: 2,
+        type: 'article',
+        title: 'Part 2 · 文章写作（二选一）',
+        minWords: 100,
+        prompt: `You see this advertisement on a website.
+
+COMPUTER GAMES
+Do you enjoy playing computer games?
+Which is your favourite one?
+What do you like about it?
+Write an article answering these questions and we will publish the best one in next month's issue.
+
+Write your article.`,
+        modelAnswer: `Yes, I really enjoy playing computer games, although I only play at the weekend because I have lots of homework during the week.
+My favourite game is Minecraft. In this game, you build your own world using different blocks, and there are no fixed rules, so you can be really creative.
+What I like most is that I can play online with my friends. Last Saturday, for example, we built a huge castle together and it was great fun. I also like the music, which is really relaxing.
+In my opinion, games are enjoyable as long as you don't play for too long.`,
+        tips: ['依次回答三个问题：是否喜欢、最爱的游戏、喜欢的理由', '说明玩游戏的时间安排，体现节制', '用具体例子（如和朋友一起建造城堡）支撑理由', '用 In my opinion 结尾补充看法', '100词左右'],
+        contentKeywords: ['enjoy', 'computer games', 'weekend', 'favourite', 'minecraft', 'blocks', 'creative', 'online', 'friends', 'castle', 'fun', 'opinion'],
+      },
+      {
+        part: 2,
+        q: 3,
+        type: 'story_writing',
+        title: 'Part 2 · 故事写作（二选一）',
+        minWords: 100,
+        prompt: `Your English teacher has asked you to write a story.
+Your story must begin with this sentence.
+
+I sat on the bus with the kitten in my arms, wondering how to convince mum and dad to keep him.
+
+Write your story.`,
+        modelAnswer: `I sat on the bus with the kitten in my arms, wondering how to convince mum and dad to keep him. I had found him alone in a box near the bus stop, crying softly.
+When I got home, I gave the kitten a warm bath and fed him some milk. Then I carried him into the living room, where mum and dad were watching TV. At first, they looked serious, but when the little kitten jumped onto dad's knee and fell asleep, dad smiled.
+'Can we keep him, please?' I asked. Mum looked at dad, then at the kitten, and finally nodded. I felt so happy!`,
+        tips: ['必须逐字使用给定开头句', '全文以一般过去时为主', '按时间顺序写发现小猫、回家说服父母的过程', '用 At first / finally 等词制造情节起伏', '写出结局和心情，100词左右'],
+        contentKeywords: ['bus', 'kitten', 'convince', 'found', 'box', 'bath', 'milk', 'serious', 'jumped', 'asleep', 'smiled', 'finally'],
+      },
+    ],
+  },
+  {
+    meta: {
+      id: 'pet-mock-3-writing',
+      title: 'PET 全真模拟试题 3 · Writing',
+      level: 'PET',
+      collection: 'PET 全真模拟试题（8套）',
+      paper: 'Writing',
+      pages: '59–60',
+      source: 'PET 全真模拟试题（8套）',
+      answerSource: '原创教学范文',
+      verified: true,
+    },
+    items: [
+      {
+        part: 1,
+        type: 'guided_writing',
+        title: 'Part 1 · 邮件写作',
+        minWords: 100,
+        prompt: `Read this email from your Uncle George (your mother's brother) and the notes you have made.
+
+From: Uncle George
+Subject: Your mum's birthday
+
+Dear (your name),
+I've got some ideas about how to celebrate your mum's birthday next Saturday.
+There is a fantastic park near my house. How about having a day out there? We could have a picnic with the whole family (all your cousins are free that day)!
+        —— great
+What type of food do you think we should take?
+        —— suggest
+Would you like Aunt Sarah to make the birthday cake, or is it better to buy one?
+        —— explain
+We need to get your mum a present too. What do you think she would like?
+        —— tell Uncle George
+Reply soon!
+Uncle George
+
+Write your email to your Uncle George using all the notes.`,
+        modelAnswer: `Dear Uncle George,
+Thanks for your email. A day out in the park is a great idea, and I'm sure all my cousins will love it too!
+For the picnic, I suggest we take easy food that people can eat with their hands, like chicken sandwiches, fruit salad and crisps. We should also bring some juice and water.
+About the cake, I think Aunt Sarah should make it because homemade chocolate cake always tastes much better than one from a shop, and Mum loves it.
+For a present, Mum really enjoys reading, so a new book by her favourite writer would be perfect.
+See you on Saturday!
+Love,
+Li Hua`,
+        tips: ['开头先称赞公园野餐的主意', '建议适合野餐、方便手拿的食物', '解释蛋糕让 Aunt Sarah 做还是买，并说明原因', '告诉叔叔妈妈会喜欢什么礼物', '100词左右，注意邮件称呼和署名'],
+        contentKeywords: ['great', 'picnic', 'suggest', 'sandwiches', 'fruit', 'juice', 'cake', 'homemade', 'explain', 'present', 'book', 'dear', 'love'],
+      },
+      {
+        part: 2,
+        q: 2,
+        type: 'article',
+        title: 'Part 2 · 文章写作（二选一）',
+        minWords: 100,
+        prompt: `You see this announcement on the school notice board.
+
+Articles wanted!
+What's your favourite possession?
+Write an article describing your favourite possession.
+When did you get it? Was it a present?
+Why is it special to you?
+The best article we receive will win a prize of £5!
+
+Write your article.`,
+        modelAnswer: `My favourite possession is my old blue bicycle. I have had it for almost three years.
+I got it on my thirteenth birthday. It was a present from my parents, and my grandfather helped them choose it, so it is very special to me.
+I ride it to school every day, and at weekends I often cycle to the park with my friends. It is fast and comfortable, and it keeps me fit.
+Last month I fell off and broke a pedal, but my father repaired it the same day. I hope I can keep it for many more years, because riding it always makes me feel free and happy.`,
+        tips: ['回答全部要点：物品、何时得到、是否礼物、为何特别', '按"来历→用途→一件小事"的顺序组织', '描述用途用一般现在时，回忆得到用一般过去时', '加入个人感受作为结尾', '100词左右'],
+        contentKeywords: ['possession', 'bicycle', 'present', 'parents', 'grandfather', 'special', 'ride', 'school', 'weekends', 'fit', 'repaired', 'happy'],
+      },
+      {
+        part: 2,
+        q: 3,
+        type: 'story_writing',
+        title: 'Part 2 · 故事写作（二选一）',
+        minWords: 100,
+        prompt: `Your class is collecting stories in English for a book that will be sold locally.
+Your story must begin with this sentence.
+
+It was the most dangerous game they had ever played.
+
+Write your story.`,
+        modelAnswer: `It was the most dangerous game they had ever played. My friends and I were exploring an old wooden bridge near the lake when Tom dared everyone to cross it.
+The bridge looked safe at first, but half-way across I heard a loud noise, and some of the wood began to break under our feet. "Go back!" shouted Tom. We turned slowly and held each other's hands. My heart was beating fast, but step by step we returned to the grass.
+When we were safe, nobody spoke for a minute. Then Tom said quietly, "Let's never do that again," and we all promised never to play such a dangerous game.`,
+        tips: ['必须逐字以给定句子开头', '用一般过去时叙述危险经历', '写清游戏是什么、发生了什么危险', '描述动作顺序和紧张的感受', '结尾交代结果或教训，100词左右'],
+        contentKeywords: ['dangerous', 'game', 'bridge', 'lake', 'cross', 'wood', 'break', 'shouted', 'heart', 'safe', 'promised', 'never'],
+      },
+    ],
+  },
+  {
+    meta: {
+      id: 'pet-mock-4-writing',
+      title: 'PET 全真模拟试题 4 · Writing',
+      level: 'PET',
+      collection: 'PET 全真模拟试题（8套）',
+      paper: 'Writing',
+      pages: '79–80',
+      source: 'PET 全真模拟试题（8套）',
+      answerSource: '原创教学范文',
+      verified: true,
+    },
+    items: [
+      {
+        part: 1,
+        type: 'guided_writing',
+        title: 'Part 1 · 邮件写作',
+        minWords: 100,
+        prompt: `Read this email from your e-pal Aidan and the notes you have made.
+
+From: Aidan
+Subject: School in your country
+
+Hi (your name),
+I'm going to spend a year in your country and learn the language. Since I'll have to go to school there, I'd like to know what it's like to be a student there.
+        —— great
+Here in Canada I'm in Year 9 and I study many interesting subjects like English, French, Maths and Social Sciences. Can you tell me about the subjects you study at secondary school?
+        —— explain
+Also, what time does school start and finish in your country? Do you go to school on Saturdays?
+        —— give details
+I'm also on my school's hockey team and I love sports. What kind of sports do you practise at school? Which do you think I would prefer?
+        —— suggest
+Thank you so much for your help. Bye for now!
+Aidan
+
+Write your email to your friend Aidan using all the notes.`,
+        modelAnswer: `Hi Aidan,
+Thanks for your email. I think it's great that you're coming to spend a year here — you'll love it!
+At my secondary school we study Chinese, Maths, English, Physics, History and Geography. We also have IT, PE and Art. My favourite subject is English because our teacher is really funny.
+School starts at eight o'clock in the morning and finishes at half past four in the afternoon. We don't go to school on Saturdays, so we have the weekend free.
+At school we play basketball, table tennis and badminton. Since you love team sports, I suggest you join the basketball team. I'm sure you'll be really good at it!
+Best wishes,
+Li Hua`,
+        tips: ['开头先对他来中国学习一年表示高兴（great）', '解释自己在中学学习的主要科目（explain）', '详细说明上学和放学时间，以及周六是否上课（give details）', '介绍学校的运动项目，并建议他会喜欢的一项（suggest）', '100词左右，注意邮件称呼和署名'],
+        contentKeywords: ['great', 'subjects', 'chinese', 'maths', 'english', 'physics', 'starts', 'finishes', 'saturdays', 'sports', 'basketball', 'suggest'],
+      },
+      {
+        part: 2,
+        q: 2,
+        type: 'article',
+        title: 'Part 2 · 文章写作（二选一）',
+        minWords: 100,
+        prompt: `You see this notice in a bookshop.
+
+THE JOYS OF READING
+What sort of books do you enjoy reading?
+Can reading help you to improve your life?
+Why / Why not?
+Write an article answering these questions and we will publish the best one in the bookshop's weekly magazine.
+
+Write your article.`,
+        modelAnswer: `I love reading, and I usually read for about an hour before I go to bed. My favourite sorts of books are adventure stories and science fiction. I enjoy them because they take me to exciting worlds and I never know what will happen next. I also sometimes read books about history.
+In my opinion, reading can really improve your life. Firstly, it helps you learn new words and become better at writing. Secondly, you can learn interesting facts about the world without leaving your room. For example, I learnt a lot about ancient Egypt from a book last month.
+That's why I think everyone should read more.`,
+        tips: ['依次回答：喜欢什么类型的书、阅读能否改善生活、原因', '用 Firstly / Secondly 分条说明理由', '举一个具体事例（如从历史书中学到知识）', '结尾用 That\'s why... 总结观点', '100词左右'],
+        contentKeywords: ['reading', 'books', 'adventure', 'science fiction', 'history', 'opinion', 'improve', 'words', 'writing', 'facts', 'example', 'egypt'],
+      },
+      {
+        part: 2,
+        q: 3,
+        type: 'story_writing',
+        title: 'Part 2 · 故事写作（二选一）',
+        minWords: 100,
+        prompt: `You must write a story for your English teacher.
+Your story must begin with this sentence.
+
+Mary picked up the bottle from the sand and saw there was a message in it.
+
+Write your story.`,
+        modelAnswer: `Mary picked up the bottle from the sand and saw there was a message in it. She was walking along the beach with her dog when she found it, half buried in the wet sand.
+She opened the bottle carefully and took out a yellow piece of paper. In childish writing, it said, "If you find this, please write to me! My name is Jack and I live by the sea." There was an address at the bottom.
+When Mary got home, she wrote a letter to Jack. A week later, Jack replied, and they soon became good friends. Mary still keeps the old bottle on her desk.`,
+        tips: ['必须逐字使用给定开头句', '全文以一般过去时为主', '按“发现漂流瓶→读到字条→书信往来”的顺序叙述', '写清字条内容、人物和结局', '100词左右'],
+        contentKeywords: ['bottle', 'sand', 'message', 'beach', 'dog', 'buried', 'paper', 'jack', 'address', 'letter', 'friends', 'keeps'],
+      },
+    ],
+  },
+  {
+    meta: {
+      id: 'pet-mock-5-writing',
+      title: 'PET 全真模拟试题 5 · Writing',
+      level: 'PET',
+      collection: 'PET 全真模拟试题（8套）',
+      paper: 'Writing',
+      pages: '99–100',
+      source: 'PET 全真模拟试题（8套）',
+      answerSource: '原创教学范文',
+      verified: true,
+    },
+    items: [
+      {
+        part: 1,
+        type: 'guided_writing',
+        title: 'Part 1 · 邮件写作',
+        minWords: 100,
+        prompt: `Read this email from your friend Harry and the notes you have made.
+
+From: Harry
+Subject: My birthday party
+
+Dear (your name),
+It's my birthday next Saturday and I want to invite you to my party!
+        —— thank Harry
+I'm having the party at my house at 8 p.m., but we don't have much space. Do you think I should invite the whole class, or can I just ask my best friends?
+        —— tell Harry
+I know you have good taste in music, so I wanted to ask you to give me some ideas! I really like rock music. What kind of music do you think we should play?
+        —— give opinion
+My mum wants to know what she needs to buy for the party. What kind of food do you think we should have?
+        —— suggest
+Reply soon!
+Harry
+
+Write your email to your friend Harry using all the notes.`,
+        modelAnswer: `Dear Harry,
+Thanks so much for inviting me to your birthday party — I'd love to come! It sounds fantastic, and I'm sure it will be a great night.
+About who to invite, I think you should just ask your best friends. Your house isn't very big, and a smaller group will feel more relaxed.
+For the music, some rock songs are great for a party, but I'd also play a few pop songs, because almost everyone can dance to them.
+For food, I suggest pizza and crisps with some orange juice. They are easy to eat and nobody will need plates.
+See you on Saturday!
+Best wishes,
+Li Hua`,
+        tips: ['开头先感谢 Harry 的邀请', '告诉 Harry 只邀请好朋友即可，因为家里空间有限', '就音乐给出观点：摇滚之外加几首流行歌，方便大家跳舞', '建议简单方便、无需餐盘的派对食物', '100词左右，注意 Dear/Best wishes 的称呼和署名'],
+        contentKeywords: ['harry', 'birthday', 'party', 'thank', 'best friends', 'space', 'rock', 'pop', 'music', 'suggest', 'pizza', 'dear'],
+      },
+      {
+        part: 2,
+        q: 2,
+        type: 'article',
+        title: 'Part 2 · 文章写作（二选一）',
+        minWords: 100,
+        prompt: `You see this announcement on the school notice board.
+
+Articles wanted!
+How can students improve their English?
+Write an article about your experience of learning English.
+How long have you studied it?
+What do you find easy and difficult?
+What advice can you give students to help them learn better?
+We'll publish the best articles in the next edition of our school magazine!
+
+Write your article.`,
+        modelAnswer: `I have studied English for about six years, since I was nine, and these days I really enjoy it.
+For me, speaking and reading are quite easy. I often read online articles about sport, and I can usually understand most of the words. However, listening is still difficult, because native speakers talk so fast, and I sometimes worry about making mistakes.
+My advice is to watch English films with subtitles and to learn five new words every day. Students should also try to speak in class as often as possible, even if they feel shy.
+If you keep practising, I'm sure your English will improve!`,
+        tips: ['按题目提示组织：学了多久、觉得容易什么、困难什么、给出建议', '描述个人学习经历，注意现在完成时与一般现在时的配合', '用 However 转折引出听力难点', '用 My advice is... 提出具体可行的建议', '100词左右'],
+        contentKeywords: ['english', 'studied', 'six years', 'speaking', 'reading', 'easy', 'listening', 'difficult', 'advice', 'films', 'subtitles', 'words'],
+      },
+      {
+        part: 2,
+        q: 3,
+        type: 'story_writing',
+        title: 'Part 2 · 故事写作（二选一）',
+        minWords: 100,
+        prompt: `Your class is collecting stories in English for a book that will be sold locally.
+Your story must begin with this sentence.
+
+The wind was strong and the rain was terrible.
+
+Write your story.`,
+        modelAnswer: `The wind was strong and the rain was terrible. I was walking home from school alone when I suddenly heard a small cry behind a bus stop.
+I looked down and saw a wet little dog, shaking with cold. I took off my jacket, picked him up and carried him home. My mum dried him with a towel and gave him some warm food.
+That evening, we saw posters all over town for a lost dog called Max. I called the number, and ten minutes later a worried boy arrived with his parents. When Max jumped into his arms, everyone smiled. I felt proud of what I had done.`,
+        tips: ['必须逐字以给定句子开头', '全文以一般过去时为主', '按时间顺序写发现小狗、带回家照顾、归还主人的过程', '用天气和小狗的状态烘托气氛', '结尾写出自己的感受，100词左右'],
+        contentKeywords: ['wind', 'rain', 'cry', 'dog', 'jacket', 'towel', 'posters', 'max', 'called', 'boy', 'jumped', 'proud'],
+      },
+    ],
+  },
+  {
+    meta: {
+      id: 'pet-mock-6-writing',
+      title: 'PET 全真模拟试题 6 · Writing',
+      level: 'PET',
+      collection: 'PET 全真模拟试题（8套）',
+      paper: 'Writing',
+      pages: '119–120',
+      source: 'PET 全真模拟试题（8套）',
+      answerSource: '原创教学范文',
+      verified: true,
+    },
+    items: [
+      {
+        part: 1,
+        type: 'guided_writing',
+        title: 'Part 1 · 邮件写作',
+        minWords: 100,
+        prompt: `Read this email from Aunt Daphne and the notes you have made.
+
+From: Aunt Daphne
+Subject: Advice on new smartphone
+
+Dear (your name),
+Yesterday I dropped my mobile phone by accident and it isn't working anymore.
+Sorry, but anyway I need to get a new one, but Tom says I'd better buy an older smartphone. What do you think?
+        —— give your opinion
+Anyway, I have no idea about new models and their technology. What should I ask for when I go to the shop?
+        —— suggest
+Well, I really hope to hear from you soon. I'm in a hurry because I have no other phone at home, that's why I'm writing to you!
+Write soon,
+        —— offer to go with her
+Love
+Aunt Daphne
+
+Write your email to your Aunt Daphne using all the notes.`,
+        modelAnswer: `Dear Aunt Daphne,
+I'm sorry to hear that you dropped your phone and it isn't working anymore!
+In my opinion, I wouldn't buy an older phone. A new mid-range smartphone doesn't cost much more, but it's much safer and will last for several years.
+When you go to the shop, I suggest you ask for a model with a big screen, a good camera and a battery that lasts all day. Don't forget to ask about the memory and the price, too.
+I have no classes on Saturday, so I'd love to go with you and help you choose. I'm sure we'll find the perfect phone!
+Write soon,
+Love,
+Li Hua`,
+        tips: ['开头先为她摔坏手机感到难过', '就 Tom 的建议给出观点：不推荐旧手机，建议买中端新机', '建议她到店里询问屏幕、摄像头、电池续航和内存', '主动提出周六陪她一起去店里挑选', '100词左右，注意 Dear/Love 的称呼和署名'],
+        contentKeywords: ['sorry', 'opinion', 'older', 'mid-range', 'smartphone', 'suggest', 'screen', 'camera', 'battery', 'memory', 'go with', 'love'],
+      },
+      {
+        part: 2,
+        q: 2,
+        type: 'article',
+        title: 'Part 2 · 文章写作（二选一）',
+        minWords: 100,
+        prompt: `You see this ad in a wildlife magazine.
+
+ARE YOU GREEN?
+Do you think people should recycle more?
+Why / Why not?
+What do you do to help the environment?
+Write an article answering these questions.
+The best article will win a £100 prize
+and be published on the school's One
+Earth website next month.
+
+Write your article.`,
+        modelAnswer: `Yes, I strongly believe people should recycle much more than they do now. Recycling means less rubbish, cleaner streets and fewer trees cut down, and it also saves energy. If everyone recycled, there would be less pollution in our rivers and in the air.
+Personally, I do several things to help the environment. At home, I put paper, plastic and glass in different recycling bins, and I always take a cloth bag to the supermarket instead of taking plastic bags. I also try to save water by turning off the tap while I brush my teeth.
+In my opinion, small everyday actions can really make a difference.`,
+        tips: ['明确表态人们应该更多回收利用，并说明原因（减少垃圾、节约能源、减少污染）', '结合题目要求，写出自己为环保做的具体事情', '举例尽量具体：分类回收、自带布袋、节约用水', '用 In my opinion 结尾总结观点', '100词左右'],
+        contentKeywords: ['recycle', 'environment', 'rubbish', 'trees', 'energy', 'pollution', 'bins', 'paper', 'plastic', 'cloth bag', 'save water', 'opinion'],
+      },
+      {
+        part: 2,
+        q: 3,
+        type: 'story_writing',
+        title: 'Part 2 · 故事写作（二选一）',
+        minWords: 100,
+        prompt: `You must write a story for your English teacher.
+Your story must begin with this sentence.
+
+It was a beautiful summer afternoon and
+the sun was shining when we set off.
+
+Write your story.`,
+        modelAnswer: `It was a beautiful summer afternoon and the sun was shining when we set off. My friends and I had decided to cycle to the lake for a picnic.
+Everything was perfect until, half-way there, I heard a noise and my front tyre went flat. We stopped in a small village, and a kind old man who lived there invited us into his garden. He repaired the tyre for us and gave us cold lemonade while we waited.
+When we finally reached the lake, the sun was going down, but we still had our picnic and swam in the warm water. It turned out to be our best trip.`,
+        tips: ['必须逐字以给定句子开头', '全文以一般过去时（含过去完成时）叙述', '写清出发去哪、途中遇到什么意外、如何解决', '用 until / when / finally 串联情节', '结尾交代结果和感受，100词左右'],
+        contentKeywords: ['summer', 'sun', 'set off', 'cycle', 'lake', 'picnic', 'tyre', 'flat', 'village', 'repaired', 'lemonade', 'finally'],
+      },
+    ],
+  },
+  {
+    meta: {
+      id: 'pet-mock-7-writing',
+      title: 'PET 全真模拟试题 7 · Writing',
+      level: 'PET',
+      collection: 'PET 全真模拟试题（8套）',
+      paper: 'Writing',
+      pages: '139–140',
+      source: 'PET 全真模拟试题（8套）',
+      answerSource: '原创教学范文',
+      verified: true,
+    },
+    items: [
+      {
+        part: 1,
+        type: 'guided_writing',
+        title: 'Part 1 · 邮件写作',
+        minWords: 100,
+        prompt: `Read this email from your friend Zac and the notes you have made.
+
+From: Zac
+Subject: Summer job at a campsite
+
+Hi (your name),
+School is almost over and I'd like to apply for a summer job at a campsite. I could have fun and also save money for my holiday in August!
+        —— great idea
+How do you think I should apply? Should I send them an email or phone them to have an interview?
+        —— tell him
+What should I wear to the interview? I'm asking you because you told me you had an interview last summer so I hope you can help me.
+        —— suggest
+Unfortunately, I have no work experience so I really don't know how to prepare for the interview. Have you got any idea?
+        —— suggest
+Write soon and have a nice weekend!
+Zac
+
+Write your email to your friend Zac using all the notes.`,
+        modelAnswer: `Hi Zac,
+Thanks for your email. A summer job at a campsite is a great idea — you'll have fun and save money too!
+I think you should phone them. It's more personal than an email, and you can ask for an interview at the same time.
+For the interview, I suggest wearing clean trousers and a shirt. You don't need a suit, but you should look smart.
+Don't worry about having no work experience. Before the interview, make a list of your strengths, like being good with people and working in a team. You can also mention that you play sports and help at school events. Remember to arrive a few minutes early.
+Good luck!
+Best wishes,
+Li Hua`,
+        tips: ['开头先称赞营地暑期工作的想法很棒（great idea）', '明确告诉 Zac 该打电话还是写邮件申请（tell him）', '建议面试时的着装，整洁得体即可（suggest）', '针对没有工作经验，建议列出个人优点并提前准备（suggest）', '100词左右，注意 Hi/Best wishes 的称呼和署名'],
+        contentKeywords: ['zac', 'great idea', 'phone', 'email', 'interview', 'trousers', 'shirt', 'smart', 'work experience', 'strengths', 'team', 'early'],
+      },
+      {
+        part: 2,
+        q: 2,
+        type: 'article',
+        title: 'Part 2 · 文章写作（二选一）',
+        minWords: 100,
+        prompt: `You see this ad on a website.
+Do you often use social media?
+Are social networks a good way to make friends?
+Why/Why not?
+Send us your article answering these questions and we will post the best one on our website.
+
+Write your article.`,
+        modelAnswer: `Yes, I use social media almost every day. I usually spend about twenty minutes on apps like Instagram after finishing my homework, mostly to watch videos or message my classmates.
+In my opinion, social networks are not the best way to make real friends. Firstly, it is much easier to talk honestly when you meet someone face to face. Secondly, some people online are not who they say they are, which can be dangerous.
+However, social media is great for keeping in touch with friends from school or my old neighbourhood. For me, real friendships are built by spending time together, not online.`,
+        tips: ['依次回答三个问题：是否常用社交媒体、是否适合交友、原因', '先说明自己使用社交媒体的习惯，再用 In my opinion 表明观点', '用 Firstly / Secondly 分条说明理由，如面对面交流更真诚、网络身份有风险', '结尾补充社交媒体适合与老朋友保持联系，观点更全面', '100词左右'],
+        contentKeywords: ['social media', 'apps', 'instagram', 'networks', 'friends', 'opinion', 'firstly', 'face to face', 'dangerous', 'keeping in touch', 'friendships', 'online'],
+      },
+      {
+        part: 2,
+        q: 3,
+        type: 'story_writing',
+        title: 'Part 2 · 故事写作（二选一）',
+        minWords: 100,
+        prompt: `You must write a story for your English teacher.
+Your story must begin with this sentence.
+
+I was reading in my bedroom when the light suddenly went out.
+
+Write your story.`,
+        modelAnswer: `I was reading in my bedroom when the light suddenly went out. At first, I couldn't see anything, and the house was completely silent. Then I heard a strange noise downstairs, and my heart started beating fast.
+I took my phone, turned on its light and walked slowly down the stairs. The noise grew louder. In the kitchen, I found my little brother holding a torch and a cake with ten candles. "Happy birthday!" he shouted. Our parents appeared behind him, smiling.
+I had completely forgotten it was my birthday. I laughed, and we ate the cake together by candlelight.`,
+        tips: ['必须逐字以给定句子开头', '全文以一般过去时为主', '写清灯灭后听到的声音和下楼查看的过程', '用 At first / Then 制造悬念，结尾安排意外惊喜', '100词左右'],
+        contentKeywords: ['went out', 'silent', 'noise', 'heart', 'phone', 'stairs', 'torch', 'cake', 'candles', 'birthday', 'parents', 'candlelight'],
+      },
+    ],
+  },
+  {
+    meta: {
+      id: 'pet-mock-8-writing',
+      title: 'PET 全真模拟试题 8 · Writing',
+      level: 'PET',
+      collection: 'PET 全真模拟试题（8套）',
+      paper: 'Writing',
+      pages: '159–160',
+      source: 'PET 全真模拟试题（8套）',
+      answerSource: '原创教学范文',
+      verified: true,
+    },
+    items: [
+      {
+        part: 1,
+        type: 'guided_writing',
+        title: 'Part 1 · 邮件写作',
+        minWords: 100,
+        prompt: `Read this email from your English teacher, Miss Blair, and the notes you have made.
+
+From: Miss Blair
+Subject: Pop Art exhibition
+
+Dear Class,
+I'd like to take you to the Pop Art exhibition in the city centre next week.
+        —— great
+The best days to visit would be either Saturday or Sunday afternoon. Which day would you prefer?
+        —— give preference
+Lunch is included and we'll eat in a local restaurant. What sort of food should we have?
+        —— say which and explain
+If the weather is good, we can go to the park later. What activities or games do you like to do?
+        —— tell Miss Blair
+Reply soon!
+Carol Blair
+
+Write your email to Miss Blair using all the notes.`,
+        modelAnswer: `Dear Miss Blair,
+Thank you for your email. I think the Pop Art exhibition is a great idea, and I'm really looking forward to it!
+I would prefer to go on Saturday afternoon, because on Sunday I usually visit my grandparents with my family.
+For lunch, I'd like to have pizza, please. Almost everyone in our class likes it, and an Italian restaurant near the gallery is quick and cheap.
+If we go to the park later, I'd love to play football or frisbee with my classmates. We could also take some photos, which would be good fun.
+Thank you for organising this trip!
+Best wishes,
+Li Hua`,
+        tips: ['开头先对参观波普艺术展表示赞同（great）', '说明周六还是周日下午更合适，给出偏好（give preference）', '说出想吃的食物并解释原因（say which and explain）', '告诉老师自己在公园想做的活动或游戏（tell Miss Blair）', '100词左右，注意邮件称呼和署名'],
+        contentKeywords: ['great', 'exhibition', 'prefer', 'saturday', 'sunday', 'pizza', 'italian', 'park', 'football', 'frisbee', 'photos', 'best wishes'],
+      },
+      {
+        part: 2,
+        q: 2,
+        type: 'article',
+        title: 'Part 2 · 文章写作（二选一）',
+        minWords: 100,
+        prompt: `You see this announcement in a local newspaper.
+
+NEWS
+ARTICLES WANTED
+What was your best holiday?
+Write an article telling us about the best holiday you've ever had!
+Where did you go? Who were you with?
+Why did you enjoy it so much?
+Your article may be published in this school newsletter!
+
+Write your article.`,
+        modelAnswer: `The best holiday I've ever had was last summer, when I went to a small island with my family.
+We stayed for a week in a house near the beach. Every morning, my brother and I swam in the clear blue sea, and in the afternoons we explored the island on rented bikes. One day, we took a boat trip and saw colourful fish and a dolphin!
+I enjoyed it so much because life there was slow and relaxing, and we spent all day outside together. In the evenings, we ate fresh fish by the harbour and watched the sun go down. I will never forget that wonderful week.`,
+        tips: ['依次回答去了哪里、和谁一起、为什么如此开心', '全文以一般过去时为主，按"上午→下午→晚上"安排一天的活动', '加入具体细节，如划船时看到彩色的鱼和海豚', '结尾表达难忘之情', '100词左右'],
+        contentKeywords: ['best holiday', 'island', 'family', 'beach', 'swam', 'rented bikes', 'boat trip', 'dolphin', 'relaxing', 'fresh fish', 'harbour', 'sun'],
+      },
+      {
+        part: 2,
+        q: 3,
+        type: 'story_writing',
+        title: 'Part 2 · 故事写作（二选一）',
+        minWords: 100,
+        prompt: `Your English teacher has asked you to write a story.
+Your story must begin with this sentence.
+
+Alex stood up, grabbed his phone and ran out of the room.
+
+Write your story.`,
+        modelAnswer: `Alex stood up, grabbed his phone and ran out of the room. His mother and I looked at each other in surprise.
+Ten minutes earlier, Alex had received a strange message saying that his dog, Buster, was seen running along the main road. Without saying a word, he jumped on his bike and rode towards town.
+I followed him in the car. At last, near the petrol station, we saw Buster sitting under a tree, safe and sound. When Alex called his name, the dog ran towards him, wagging his tail.
+"Don't ever run away again," Alex said quietly, holding Buster tightly. On the way home, he never stopped smiling.`,
+        tips: ['必须逐字以给定句子开头', '用一般过去时（含过去完成时）写清他为什么跑出去', '按时间顺序写接到消息、骑车寻找、找到狗的过程', '加入对话、动作和心情', '100词左右'],
+        contentKeywords: ['phone', 'ran out', 'message', 'dog', 'buster', 'bike', 'followed', 'petrol station', 'safe and sound', 'wagging', 'tail', 'smiling'],
+      },
+    ],
+  },
+]

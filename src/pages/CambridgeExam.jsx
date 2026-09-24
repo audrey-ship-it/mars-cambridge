@@ -330,8 +330,8 @@ function PetExamOverview({ testN }) {
   const sections = [
     { icon: '🎧', title: '听力', en: 'Listening', detail: '约30分钟 · 4个 Part · 25道题', href: `/cambridge/listening?view=pet&petTest=${testN}&petPart=1` },
     { icon: '📖', title: '阅读', en: 'Reading', detail: '45分钟 · 6个 Part · 32道题', href: `/cambridge/reading?part=1&test=${testN}` },
-    { icon: '✍️', title: '写作', en: 'Writing', detail: '45分钟 · Part 1 邮件 · Part 2 故事或文章（核对中）', href: null },
-    { icon: '🎙️', title: '口语', en: 'Speaking', detail: '12–17分钟 · 4个 Part（核对中）', href: null },
+    { icon: '✍️', title: '写作', en: 'Writing', detail: '45分钟 · Part 1 邮件 · Part 2 故事或文章', href: `/cambridge/writing?view=pet&petTest=${testN}&petTab=0` },
+    { icon: '🎙️', title: '口语', en: 'Speaking', detail: '12–17分钟 · 4个 Part', href: `/cambridge/speaking?view=pet&petTest=${testN}&petTab=1` },
   ]
 
   return (
@@ -340,7 +340,7 @@ function PetExamOverview({ testN }) {
         <Link to="/cambridge/exams" className="text-sm font-bold text-violet-700 hover:text-violet-900">← 返回模拟题列表</Link>
         <div className="mt-5 text-[11px] font-extrabold tracking-[.18em] text-violet-700">PET FULL PRACTICE TEST</div>
         <h1 className="mt-1 text-3xl font-extrabold text-slate-950 sm:text-4xl">模拟题 {testN}</h1>
-        <p className="mt-2 text-slate-500">PET 全真模拟试题（8套） · 听力和阅读已核对；写作、口语尚未开放。</p>
+        <p className="mt-2 text-slate-500">PET 全真模拟试题（8套） · 听力、阅读、写作、口语均已核对。</p>
 
         <section className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {sections.map((item, index) => {
@@ -1546,7 +1546,7 @@ function OpenGapFillPart({ part, initialAnswers, redoOnly, isLast, onDone }) {
 function scoreWriting(text, w) {
   const words = text.trim().split(/\s+/).filter(Boolean)
   const wc = words.length
-  const minWords = w.type === 'story_writing' ? 35 : 25
+  const minWords = w.minWords || (w.type === 'story_writing' ? 35 : 25)
 
   // ── 1. Word count (0–5)
   const wcScore = wc === 0 ? 0 : wc < minWords ? Math.round((wc / minWords) * 3) : wc >= minWords * 2.5 ? 5 : Math.min(5, 3 + Math.round(((wc - minWords) / (minWords * 1.5)) * 2))
@@ -1577,9 +1577,9 @@ function scoreWriting(text, w) {
 
   // ── 4. Content coverage (0–5)
   const lower = text.toLowerCase()
-  const kw = w.type === 'guided_writing'
+  const kw = w.contentKeywords || (w.type === 'guided_writing'
     ? ['cinema', 'film', 'movie', 'saturday', 'weekend', 'invite', 'join', 'enjoy', 'like', 'watch', 'dear', 'hi', 'best', 'wishes']
-    : ['suddenly', 'then', 'after', 'finally', 'so', 'but', 'was', 'were', 'walked', 'ran', 'fell', 'looked', 'climbed', 'kicked', 'park', 'ball', 'tree', 'girl']
+    : ['suddenly', 'then', 'after', 'finally', 'so', 'but', 'was', 'were', 'walked', 'ran', 'fell', 'looked', 'climbed', 'kicked', 'park', 'ball', 'tree', 'girl'])
   const hits = kw.filter(k => lower.includes(k)).length
   const covScore = Math.min(5, Math.round((hits / (kw.length * 0.5)) * 5))
 
@@ -1611,7 +1611,7 @@ export function WritingCard({ w, wi, storageKey }) {
   }, [storageKey, text])
 
   const words = text.trim().split(/\s+/).filter(Boolean).length
-  const minWords = w.type === 'story_writing' ? 35 : 25
+  const minWords = w.minWords || (w.type === 'story_writing' ? 35 : 25)
   const canGrade = words >= 5
   const modelAnswer = w.type === 'guided_writing' && /(?:See you|Best wishes|Love|Bye)[,!]?\s*$/i.test(w.modelAnswer)
     ? `${w.modelAnswer}\nAlex`

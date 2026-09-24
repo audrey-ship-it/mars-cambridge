@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { CambridgeLayout } from './CambridgeApp'
 import { KET_EXAMS } from '../data/ketExamData'
 import { KET_SPEAKING_PART1_TOPICS } from '../data/ketSpeakingTopicBank'
+import { petSpeakingTests } from '../data/petSpeakingData'
 
 const SPEAKING_SETS = [1, 2, 3].flatMap(book => [1, 2, 3, 4].map(test => {
   const exam = KET_EXAMS.find(item => item.id === `ket-${book}-test${test}`)
@@ -96,6 +97,219 @@ function speakingPromptAnswers(topic) {
   })
 }
 
+const PET_SPEAKING_TABS = [
+  { id: 1, label: 'Part 1 · 个人问答' },
+  { id: 2, label: 'Part 2 · 图片描述' },
+  { id: 3, label: 'Part 3 · 协作讨论' },
+  { id: 4, label: 'Part 4 · 深入讨论' },
+]
+
+function PetReference({ text }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="mt-3">
+      <button
+        type="button"
+        onClick={() => setOpen(v => !v)}
+        className="text-xs font-extrabold text-violet-700 hover:text-violet-900">
+        {open ? '▾ 收起参考答案' : '▸ 查看参考答案'}
+      </button>
+      {open && (
+        <div className="mt-2 rounded-xl border border-violet-200 bg-violet-50 px-4 py-3">
+          <div className="mb-1 text-[10px] font-extrabold uppercase tracking-wider text-violet-700">参考回答之一</div>
+          <p className="text-sm leading-7 text-slate-700">{text}</p>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function PetQAItem({ index, q, modelAnswer }) {
+  return (
+    <li className="rounded-xl border border-slate-200 p-4">
+      <div className="flex gap-3">
+        <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-violet-100 text-xs font-extrabold text-violet-700">{index + 1}</span>
+        <strong className="text-sm font-semibold leading-6 text-slate-800">{q}</strong>
+      </div>
+      <div className="ml-9"><PetReference text={modelAnswer} /></div>
+    </li>
+  )
+}
+
+function PetSpeakingPractice() {
+  const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const testN = Math.min(8, Math.max(1, Number(searchParams.get('petTest')) || 1))
+  const tabId = Math.min(4, Math.max(1, Number(searchParams.get('petTab')) || 1))
+  const test = petSpeakingTests[testN - 1]
+  const part = test.parts[tabId]
+  const [level, setLevel] = useState('PET')
+
+  function setParam(key, value) {
+    const next = new URLSearchParams(searchParams)
+    next.set(key, String(value))
+    setSearchParams(next, { replace: true })
+  }
+
+  return (
+    <CambridgeLayout activeModule="speaking" level={level} setLevel={setLevel}>
+      <nav className="flex flex-wrap items-center gap-3 border-b border-slate-100 bg-white px-4 py-4 sm:px-6">
+        <button
+          type="button"
+          onClick={() => navigate(`/cambridge/exams/pet-mock-${testN}`)}
+          className="rounded-xl border border-violet-300 bg-violet-50 px-4 py-2.5 text-sm font-extrabold text-violet-800">
+          ← 返回模拟题 {testN}
+        </button>
+        <span className="text-slate-300">›</span>
+        <span className="text-sm font-extrabold text-slate-600">PET 口语 · Test {testN}</span>
+      </nav>
+
+      {/* Test selector */}
+      <div className="border-b border-slate-100 bg-white">
+        <div className="mx-auto max-w-6xl px-4 py-3 sm:px-6">
+          <div className="flex flex-wrap gap-2">
+            {petSpeakingTests.map((t, index) => (
+              <button
+                key={t.meta.id}
+                type="button"
+                onClick={() => setParam('petTest', index + 1)}
+                className={`h-9 w-9 rounded-lg text-sm font-extrabold transition ${
+                  index + 1 === testN
+                    ? 'bg-violet-600 text-white'
+                    : 'bg-violet-50 text-violet-500 hover:bg-violet-100'
+                }`}>
+                {index + 1}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Part tabs */}
+      <div className="border-b border-slate-100 bg-white">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="flex gap-2 overflow-x-auto py-3">
+            {PET_SPEAKING_TABS.map(tab => (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setParam('petTab', tab.id)}
+                className={`whitespace-nowrap rounded-xl border px-4 py-2.5 text-sm font-extrabold transition ${
+                  tab.id === tabId
+                    ? 'border-violet-600 bg-violet-600 text-white shadow-sm'
+                    : 'border-slate-200 bg-white text-slate-500 hover:border-violet-300 hover:text-violet-700'
+                }`}>
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <main className="mx-auto max-w-6xl px-4 py-7 sm:px-6">
+        <div className="text-[11px] font-extrabold tracking-[.18em] text-violet-700">PET SPEAKING</div>
+        <h1 className="mt-1 text-3xl font-extrabold text-slate-950 sm:text-4xl">{part.title}</h1>
+        <p className="mt-2 text-slate-500">
+          {part.duration && <span className="mr-2 rounded-full bg-violet-100 px-2.5 py-0.5 text-xs font-bold text-violet-700">{part.duration}</span>}
+          {part.instruction}
+        </p>
+
+        {tabId === 1 && (
+          <div className="mt-6 space-y-6">
+            <section className="rounded-[24px] border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+              <h2 className="text-lg font-extrabold text-slate-900">第一阶段 · 固定问题</h2>
+              <p className="mt-1 text-xs text-slate-500">两位考生都会被问到，回答要自然完整。</p>
+              <ol className="mt-4 space-y-3">
+                {part.phase1.map((item, index) => <PetQAItem key={index} index={index} {...item} />)}
+              </ol>
+            </section>
+            <section className="rounded-[24px] border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+              <h2 className="text-lg font-extrabold text-slate-900">第二阶段 · 个性化问题</h2>
+              <p className="mt-1 text-xs text-slate-500">考官分别向两位考生提问，回答中补充理由和例子。</p>
+              <ol className="mt-4 space-y-3">
+                {part.phase2.map((item, index) => <PetQAItem key={index} index={index} {...item} />)}
+              </ol>
+            </section>
+          </div>
+        )}
+
+        {tabId === 2 && (
+          <div className="mt-6 grid gap-6 lg:grid-cols-2">
+            {part.photos.map(photo => (
+              <section key={photo.label} className="overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-sm">
+                <div className="bg-slate-50 p-4">
+                  <div className="mb-2 flex items-center justify-between">
+                    <span className="rounded-full bg-violet-100 px-3 py-1 text-xs font-extrabold text-violet-700">考生 {photo.label}</span>
+                    <span className="text-xs text-slate-400">主题：{photo.topic}</span>
+                  </div>
+                  <img
+                    src={photo.image}
+                    alt={`Part 2 photograph ${photo.label}: ${photo.topic}`}
+                    className="max-h-[380px] w-full rounded-2xl border border-slate-200 bg-white object-contain"
+                  />
+                </div>
+                <div className="p-5 sm:p-6">
+                  <div className="flex flex-wrap gap-2">
+                    {photo.points.map((point, index) => (
+                      <span key={index} className="rounded-full border border-violet-200 bg-violet-50 px-3 py-1 text-xs font-semibold text-violet-700">{point}</span>
+                    ))}
+                  </div>
+                  <PetReference text={photo.modelAnswer} />
+                </div>
+              </section>
+            ))}
+          </div>
+        )}
+
+        {tabId === 3 && (
+          <section className="mt-6 overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-sm">
+            <div className="grid items-start lg:grid-cols-2">
+              <div className="border-b border-slate-100 bg-slate-50 p-5 lg:border-b-0 lg:border-r">
+                <img
+                  src={part.image}
+                  alt="Part 3 collaborative task picture"
+                  className="max-h-[620px] w-full rounded-2xl border border-slate-200 bg-white object-contain"
+                />
+              </div>
+              <div className="p-6">
+                <div className="rounded-xl bg-amber-50 px-4 py-3 text-xs leading-5 text-amber-800">
+                  情境：{part.situation}
+                </div>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {part.options.map((option, index) => (
+                    <span key={index} className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-600">{option}</span>
+                  ))}
+                </div>
+                <div className="mt-4 rounded-xl border border-violet-200 bg-violet-50 p-4">
+                  <div className="mb-2 text-[10px] font-extrabold uppercase tracking-wider text-violet-700">示范对话</div>
+                  <p className="whitespace-pre-line text-sm leading-7 text-slate-700">{part.modelDialogue}</p>
+                </div>
+                <div className="mt-4">
+                  <div className="mb-2 text-xs font-extrabold text-slate-500">讨论要点</div>
+                  <ul className="space-y-1.5">
+                    {part.tips.map((tip, index) => (
+                      <li key={index} className="flex gap-2 text-sm leading-6 text-slate-600"><span className="text-violet-500">✓</span>{tip}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {tabId === 4 && (
+          <section className="mt-6 rounded-[24px] border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+            <p className="text-xs text-slate-500">口语题没有唯一标准答案，参考回答均按"直接回答 + 理由 + 例子/细节"的 B1 层级结构编写。</p>
+            <ol className="mt-4 space-y-3">
+              {part.questions.map((item, index) => <PetQAItem key={index} index={index} {...item} />)}
+            </ol>
+          </section>
+        )}
+      </main>
+    </CambridgeLayout>
+  )
+}
+
 export default function CambridgeSpeaking() {
   const [searchParams, setSearchParams] = useSearchParams()
   const initialPart = searchParams.get('part') === '2' ? 2 : searchParams.get('part') === '1' ? 1 : 0
@@ -119,15 +333,18 @@ export default function CambridgeSpeaking() {
     : '')
 
   useEffect(() => {
+    if (searchParams.get('view') === 'pet') return
     const nextParams = part === 0
       ? {}
       : part === 1
       ? { part: '1', topic: selectedTopic.id }
       : { part: '2', set: String(setIndex + 1) }
     setSearchParams(nextParams, { replace: true })
-  }, [part, setIndex, selectedTopic, setSearchParams])
+  }, [part, setIndex, selectedTopic, setSearchParams, searchParams])
 
   useEffect(() => setQuestionIndex(0), [part, setIndex, topicIndex])
+
+  if (searchParams.get('view') === 'pet') return <PetSpeakingPractice />
 
   return (
     <CambridgeLayout activeModule="speaking" level={level} setLevel={setLevel}>
