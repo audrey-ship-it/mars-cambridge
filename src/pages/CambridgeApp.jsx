@@ -70,7 +70,7 @@ export function CambridgeLayout({ children, activeModule, level, setLevel }) {
       {/* 主区域 */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* 顶栏 */}
-        <header className="h-14 border-b border-gray-100 flex items-center px-6 gap-4 flex-shrink-0 bg-white">
+        <header className="h-14 border-b border-gray-100 flex items-center px-3 sm:px-6 gap-2 sm:gap-4 flex-shrink-0 bg-white">
           {/* 级别选择 */}
           <div className="relative">
             <button
@@ -109,7 +109,7 @@ export function CambridgeLayout({ children, activeModule, level, setLevel }) {
           )}
 
           <div className="ml-auto flex items-center gap-3">
-            <div className="flex items-center gap-1.5 text-sm text-gray-500">
+            <div className="hidden sm:flex items-center gap-1.5 text-sm text-gray-500">
               <span>🔥</span>
               <span className="font-semibold text-gray-800">7</span>
               <span>天连续</span>

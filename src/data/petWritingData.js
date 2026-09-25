@@ -1,4 +1,4 @@
-// PET Writing — 8 mock tests from 《PET 全真模拟试题（8套）》
+// PET Writing — 8 mock tests from 《PET 全真模拟试题（8套）》+ Test 1–4 from《PET 青少版官方真题 3》
 // Part 1 email using all notes (~100 words); Part 2 choose article OR story (~100 words).
 // Model answers are original B1 teaching examples, not purported official answer-key text.
 // Fields per item (consumed by WritingCard):
@@ -718,6 +718,362 @@ I followed him in the car. At last, near the petrol station, we saw Buster sitti
 "Don't ever run away again," Alex said quietly, holding Buster tightly. On the way home, he never stopped smiling.`,
         tips: ['必须逐字以给定句子开头', '用一般过去时（含过去完成时）写清他为什么跑出去', '按时间顺序写接到消息、骑车寻找、找到狗的过程', '加入对话、动作和心情', '100词左右'],
         contentKeywords: ['phone', 'ran out', 'message', 'dog', 'buster', 'bike', 'followed', 'petrol station', 'safe and sound', 'wagging', 'tail', 'smiling'],
+      },
+    ],
+  },
+  {
+    meta: {
+      id: 'pet-mock-9-writing',
+      title: 'PET 青少版官方真题 3 · Test 1 · Writing',
+      level: 'PET',
+      collection: 'PET 青少版官方真题 3（2025 新增）',
+      paper: 'Writing',
+      pages: '18–19',
+      source: 'PET3 - Test 1 完整试卷（含口语图片）.pdf',
+      answerSource: '原创教学范文',
+      verified: true,
+    },
+    items: [
+      {
+        part: 1,
+        type: 'guided_writing',
+        title: 'Part 1 · 邮件写作',
+        minWords: 100,
+        prompt: `Read this email from your English-speaking friend, Bailey, and the notes you have made.
+
+From: Bailey
+Subject: Space Museum
+
+Hi,
+I'm really pleased you're coming to the Space Museum with me and my family next weekend.
+        —— Me too!
+As well as seeing the exhibition, we can do a special activity: we can make a model of a rocket, or try on some space suits. Which would you prefer?
+        —— Tell Bailey
+A real astronaut will be at the museum! We can send a question to the museum in advance and the astronaut will answer it on the day of our visit. Can you think of a good question?
+        —— My question: ...
+Would you like to have dinner with us afterwards?
+Let me know!
+Bailey
+
+Write your email to Bailey using all the notes.`,
+        modelAnswer: `Hi Bailey,
+Thanks for your email. I'm really excited about next weekend too – I can't wait to visit the Space Museum with your family!
+I'd prefer to make a model of a rocket, please. I've always loved building things, and I think trying on space suits might feel a bit strange.
+Here's my question for the astronaut: "How long does it take to travel to the International Space Station?" I'd love to know the answer.
+Thank you so much for inviting me to dinner afterwards. I'd really like that!
+See you soon,
+Li Hua`,
+        tips: ['四个批注必须全部回应：表达同样期待、说明活动偏好并给理由、写出给宇航员的问题、感谢晚餐邀请', '语气友好，开头称呼 Bailey、结尾署名', '活动偏好可用 I\'d prefer to ... because ...', '100词左右'],
+        contentKeywords: ['excited', 'rocket', 'space suits', 'prefer', 'question', 'astronaut', 'thank', 'dinner', 'hi', 'see you soon'],
+      },
+      {
+        part: 2,
+        q: 2,
+        type: 'article',
+        title: 'Part 2 · 文章写作（二选一）',
+        minWords: 100,
+        prompt: `You see this announcement on an English-language website for young people.
+
+Articles wanted!
+Spending time outdoors
+How much time do you spend outdoors?
+How important is it for people to spend some of their free time outdoors?
+What kind of outdoor activities are most fun for people to do together? Why?
+We will publish the best articles answering these questions.
+
+Write your article.`,
+        modelAnswer: `I spend quite a lot of time outdoors. On weekdays, I usually walk to school and play in the garden after I finish my homework, and at the weekend I often go to the park with my friends.
+In my opinion, it's really important to spend time outside. Fresh air and exercise are good for our health, and being outdoors always makes me feel happier and less stressed, especially after a busy day at school.
+The most fun activities to do together are team games like football or basketball, because everyone can join in and they teach us to work with other people. Cycling trips are great too.
+All in all, being outdoors is good for both our bodies and our friendships.`,
+        tips: ['依次回答三个问题：自己户外时间多少、为什么重要、什么集体活动最有趣及原因', '用 In my opinion / All in all 串联观点', '给出健康、心情等理由', '100词左右'],
+        contentKeywords: ['outdoors', 'park', 'friends', 'exercise', 'health', 'important', 'football', 'team', 'because', 'opinion'],
+      },
+      {
+        part: 2,
+        q: 3,
+        type: 'story_writing',
+        title: 'Part 2 · 故事写作（二选一）',
+        minWords: 100,
+        prompt: `Your English teacher has asked you to write a story.
+Your story must begin with this sentence.
+
+When Pat opened the book, an old letter fell out of it.
+
+Write your story.`,
+        modelAnswer: `When Pat opened the book, an old letter fell out of it. She picked it up and saw that it was addressed to her grandmother, so she took it downstairs to the kitchen.
+Her grandmother was making tea. When she read the letter, she smiled. It had been written more than fifty years earlier by her best friend at school, who had moved to another country with her family. In the letter, the friend described the day they spent at the seaside together.
+"I'd completely forgotten about it," her grandmother said quietly. After they finished reading, she put the letter carefully back inside the book and gave Pat a big hug.`,
+        tips: ['必须逐字以给定句子开头', '用一般过去时，写清信是谁写的、内容是什么', '加入奶奶的动作、语言和心情', '结尾自然收束', '100词左右'],
+        contentKeywords: ['letter', 'book', 'grandmother', 'read', 'smiled', 'friend', 'seaside', 'forgotten', 'hug', 'when'],
+      },
+    ],
+  },
+  {
+    meta: {
+      id: 'pet-mock-10-writing',
+      title: 'PET 青少版官方真题 3 · Test 2 · Writing',
+      level: 'PET',
+      collection: 'PET 青少版官方真题 3（2025 新增）',
+      paper: 'Writing',
+      pages: '36–37',
+      source: 'PET3 - Test 2 完整试卷（含口语图片）.pdf',
+      answerSource: '原创教学范文',
+      verified: true,
+    },
+    items: [
+      {
+        part: 1,
+        type: 'guided_writing',
+        title: 'Part 1 · 邮件写作',
+        minWords: 100,
+        prompt: `Read this email from your English teacher, Mr Allen, and the notes you have made.
+
+From: Mr Allen
+To: All students
+Subject: New chess club
+
+Dear students,
+Some of you have asked me about starting up a chess club at school. I'm happy to organise this.
+        —— Thank Mr Allen
+I think all students should be able to join the club, not just people who already know how to play chess. Do you agree?
+        —— Tell Mr Allen
+When would it be better to have this club: at weekends or during the week?
+        —— Explain
+I'd like some students to design posters to advertise the club. Can you stay after school on Wednesday to help with this?
+        —— No, because...
+Let me know,
+Ken Allen
+
+Write your email to Mr Allen using all the notes.`,
+        modelAnswer: `Dear Mr Allen,
+Thank you very much for organising a chess club. I'm really pleased, because I've wanted to learn for a long time!
+I completely agree that everyone should be able to join. Beginners like me need a chance to learn, and more experienced students can help us and make new friends.
+In my opinion, it would be better to have the club during the week, because at weekends many students spend time with their families or do other activities.
+I'm sorry, but I can't stay after school on Wednesday to design posters, because I have a piano lesson then. I could help on another day, though.
+Best wishes,
+Li Hua`,
+        tips: ['四个批注全部回应：感谢老师、同意初学者加入并说明、解释时间偏好及原因、礼貌拒绝周三并给理由', '对老师语气礼貌，用 Dear Mr Allen / Best wishes', '拒绝时可另提替代方案', '100词左右'],
+        contentKeywords: ['thank', 'chess', 'agree', 'beginners', 'learn', 'during the week', 'because', "can't", 'wednesday', 'best wishes'],
+      },
+      {
+        part: 2,
+        q: 2,
+        type: 'article',
+        title: 'Part 2 · 文章写作（二选一）',
+        minWords: 100,
+        prompt: `You see this announcement on an English-language website for young people.
+
+Articles wanted!
+A famous person
+Tell us about a famous person that you like – for example, someone you follow online, an actor, a sportsperson or someone else.
+Why do you like this person?
+Do you think this person has an easy life? Why?
+We'll publish the best articles answering these questions.
+
+Write your article.`,
+        modelAnswer: `A famous person I really admire is Liu Yang, the Chinese astronaut.
+I like her because she is brave and extremely hard-working. She trained for many years before she became the first Chinese woman in space, and she always remained calm and determined. She also encourages young people, especially girls, to study science.
+However, I don't think she has an easy life. Astronauts have to be away from their families for months, and their training is difficult and sometimes dangerous. They also have a lot of responsibility.
+For these reasons, I think Liu Yang is an amazing person, and she will always be one of my heroes.`,
+        tips: ['写清人物身份、喜欢的原因（品格+具体事例）、生活是否容易及理由', '用 However 转折讨论其生活', '可用 For these reasons 结尾', '100词左右'],
+        contentKeywords: ['famous', 'admire', 'because', 'brave', 'hard-working', 'astronaut', 'however', 'difficult', 'reasons'],
+      },
+      {
+        part: 2,
+        q: 3,
+        type: 'story_writing',
+        title: 'Part 2 · 故事写作（二选一）',
+        minWords: 100,
+        prompt: `Your English teacher has asked you to write a story.
+Your story must begin with this sentence.
+
+Amy had always wanted to go inside the old house and now she had the chance.
+
+Write your story.`,
+        modelAnswer: `Amy had always wanted to go inside the old house and now she had the chance. Her uncle had just bought it, and he asked her to help him look around before the builders arrived.
+When she pushed open the front door, the house was cold and full of dust. She walked slowly upstairs. In one of the bedrooms, she found an old wooden box under the bed. Inside were some children's toys, a hand-drawn map and a photograph of a young girl.
+Amy took the box downstairs and showed it to her uncle. They decided to find out more about the family who had lived there. Amy couldn't wait to visit the old house again.`,
+        tips: ['必须逐字以给定句子开头', '用一般过去时，写清她为什么有机会进去、在里面发现了什么', '按"进门→上楼→发现→下楼"的顺序写', '加入期待再访的结尾', '100词左右'],
+        contentKeywords: ['old house', 'uncle', 'upstairs', 'bedroom', 'box', 'found', 'photograph', 'showed', 'decided', 'when'],
+      },
+    ],
+  },
+  {
+    meta: {
+      id: 'pet-mock-11-writing',
+      title: 'PET 青少版官方真题 3 · Test 3 · Writing',
+      level: 'PET',
+      collection: 'PET 青少版官方真题 3（2025 新增）',
+      paper: 'Writing',
+      pages: '54–55',
+      source: 'PET3 - Test 3 完整试卷（含口语图片）.pdf',
+      answerSource: '原创教学范文',
+      verified: true,
+    },
+    items: [
+      {
+        part: 1,
+        type: 'guided_writing',
+        title: 'Part 1 · 邮件写作',
+        minWords: 100,
+        prompt: `Read this email from your English teacher, Mr Burton, and the notes you have made.
+
+From: Mr Burton
+Subject: Healthy Living Day
+
+Dear Student
+Next month, our school's having a Healthy Living Day. All the students will do activities about having a healthy life.
+        —— Good idea!
+I'd like our class to make a video in English, either about healthy food or about sport and exercise. Which would be better?
+        —— Explain
+For the video, students will need to do things like find information or use the video camera. We'll need at least one presenter, too. How can you help?
+        —— Tell Mr Burton
+I'm having a meeting about Healthy Living Day after school this Tuesday. Can you come?
+        —— Sorry, but...
+Best wishes
+Daniel Burton
+
+Write your email to Mr Burton using all the notes.`,
+        modelAnswer: `Dear Mr Burton,
+Thank you for your email. I think the Healthy Living Day is a great idea, and I'm really looking forward to it!
+In my opinion, a video about healthy food would be better. Many students eat too many snacks and don't know how to cook simple, healthy meals, so the video could really help them.
+I'd be happy to be one of the presenters. I enjoy speaking in front of the class, and I can also help find information online.
+I'm sorry, but I can't come to the meeting this Tuesday because I have a basketball match after school. Please send me an email and tell me what I've missed.
+Best wishes,
+Li Hua`,
+        tips: ['四个批注全部回应：称赞活动、解释选食物还是运动并说明、告诉老师自己能帮什么、礼貌拒绝周二并给理由', '用 Dear Mr Burton / Best wishes', '说明能承担的具体任务（presenter / find information）', '100词左右'],
+        contentKeywords: ['great idea', 'healthy food', 'video', 'because', 'presenter', 'help', "can't", 'tuesday', 'best wishes'],
+      },
+      {
+        part: 2,
+        q: 2,
+        type: 'article',
+        title: 'Part 2 · 文章写作（二选一）',
+        minWords: 100,
+        prompt: `You see this announcement in an English-language magazine for young people.
+
+Articles wanted!
+Education in the future
+How different will education be in the future? For example, will students go to a school to study, or will they do online lessons at home?
+Will students study the same subjects as they do now? Why?
+We'll publish the best articles answering these questions.
+
+Write your article.`,
+        modelAnswer: `I think education will be quite different in the future. Students will probably do more lessons online at home, using computers or tablets to watch videos, send homework and talk to their teachers. This will be useful for students who live far away, or when they can't go to school.
+However, I don't think schools will disappear completely, because students also need to meet friends, play sport together and learn in groups.
+As for subjects, I believe students will still study maths, languages and science, since these skills will always be important. But there will probably be more lessons about technology and the environment.
+In conclusion, learning will change, but schools and familiar subjects will remain.`,
+        tips: ['回答两个问题：学习方式会怎样变化、科目是否相同及原因', '先让步（线上更多）再转折（学校不会消失）', '用 As for subjects / In conclusion 组织', '100词左右'],
+        contentKeywords: ['future', 'online', 'school', 'students', 'however', 'subjects', 'science', 'technology', 'conclusion'],
+      },
+      {
+        part: 2,
+        q: 3,
+        type: 'story_writing',
+        title: 'Part 2 · 故事写作（二选一）',
+        minWords: 100,
+        prompt: `Your English teacher has asked you to write a story.
+Your story must begin with this sentence.
+
+As Marc got out of the car, he started to feel both excited and nervous.
+
+Write your story.`,
+        modelAnswer: `As Marc got out of the car, he started to feel both excited and nervous. It was the morning of the national tennis final, and his dad had driven him to the sports centre early.
+Inside, hundreds of players and their families were walking around. Marc took a deep breath and went to find his coach. They warmed up together, and slowly his nervousness disappeared.
+When his match began, Marc played better than ever. He hit every ball carefully and managed to win the final game.
+As he received his medal, he looked at his dad, who was smiling and taking photos. Marc already felt excited about next year's competition.`,
+        tips: ['必须逐字以给定句子开头', '用一般过去时，写清他去参加什么活动、紧张如何消失、结果如何', '加入深呼吸、热身等细节', '结尾回扣心情', '100词左右'],
+        contentKeywords: ['nervous', 'tennis', 'coach', 'match', 'won', 'medal', 'smiling', 'excited', 'when', 'as'],
+      },
+    ],
+  },
+  {
+    meta: {
+      id: 'pet-mock-12-writing',
+      title: 'PET 青少版官方真题 3 · Test 4 · Writing',
+      level: 'PET',
+      collection: 'PET 青少版官方真题 3（2025 新增）',
+      paper: 'Writing',
+      pages: '72–73',
+      source: 'PET3 - Test 4 完整试卷（含口语图片）.pdf',
+      answerSource: '原创教学范文',
+      verified: true,
+    },
+    items: [
+      {
+        part: 1,
+        type: 'guided_writing',
+        title: 'Part 1 · 邮件写作',
+        minWords: 100,
+        prompt: `Read this email from Sam Taylor, the organiser of a writing competition for a magazine, and the notes you have made.
+
+From: Sam Taylor
+Subject: Competition
+
+Hello,
+I'm delighted to tell you that you've won our story-writing competition!
+        —— Great!
+As a prize, you and your family can choose to go to a seaside resort for a week, or stay in a city-centre hotel for a week. Which would you prefer?
+        —— Explain
+We'd like to publish your story in our magazine next month. Are you happy for us to do that?
+        —— Tell Sam
+We're organising a dinner for people who did well in the competition. It's on the 21st of next month. Can you come?
+        —— Yes, but...
+Best wishes,
+Sam
+
+Write your email to Sam Taylor using all the notes.`,
+        modelAnswer: `Dear Sam,
+Thank you for your email. I'm so happy to hear that I've won the story-writing competition – it's amazing news!
+My family and I would prefer to go to a seaside resort for a week. We all love swimming and walking by the sea, and it's a better place to relax than a busy city centre.
+Yes, I'd be really pleased for you to publish my story in the magazine next month. It's exciting to think that lots of people will read it!
+I can come to the dinner on the 21st, but I might arrive a little late because I have a maths class that afternoon.
+Best wishes,
+Li Hua`,
+        tips: ['四个批注全部回应：表达惊喜、解释奖品偏好及理由、告诉 Sam 同意发表、接受晚宴但说明可能迟到', '用 Dear Sam / Best wishes', '偏好可用 would prefer to ... because ...', '100词左右'],
+        contentKeywords: ['great', 'won', 'seaside', 'prefer', 'because', 'publish', 'story', 'yes', 'dinner', 'late'],
+      },
+      {
+        part: 2,
+        q: 2,
+        type: 'article',
+        title: 'Part 2 · 文章写作（二选一）',
+        minWords: 100,
+        prompt: `You see this announcement in an English-language magazine for young people.
+
+Articles wanted!
+Wild animals
+Is there a wild animal that you are particularly interested in? Why?
+What do you think are the best ways of protecting wild animals and the places where they live?
+The best articles answering these questions will appear in the magazine.
+
+Write your article.`,
+        modelAnswer: `The wild animal I'm most interested in is the giant panda. Pandas live in the mountains of China, and I've always loved them because they look so cute and they are very gentle. Sadly, they are also quite rare, so they need our protection.
+In my opinion, the best way to protect wild animals is to look after the places where they live. Governments should create more national parks where hunting is forbidden, and stop cutting down forests or polluting rivers.
+Scientists can also help by studying animals and breeding them in special centres, while zoos should teach people about the dangers they face.
+If everyone works together, I believe animals like the giant panda will have a safer future.`,
+        tips: ['回答两个问题：最感兴趣的动物及原因、保护动物和栖息地的方法', '可提国家公园、禁止捕猎、科学研究等具体措施', '用 In my opinion / If ... 组织观点', '100词左右'],
+        contentKeywords: ['panda', 'interested', 'because', 'protect', 'national parks', 'hunting', 'forests', 'scientists', 'future'],
+      },
+      {
+        part: 2,
+        q: 3,
+        type: 'story_writing',
+        title: 'Part 2 · 故事写作（二选一）',
+        minWords: 100,
+        prompt: `Your English teacher has asked you to write a story.
+Your story must begin with this sentence.
+
+I saw that the new student was looking a bit worried, and I knew exactly how to help.
+
+Write your story.`,
+        modelAnswer: `I saw that the new student was looking a bit worried, and I knew exactly how to help. It was his first day at our school, and he was standing alone in the playground with a map in his hand.
+I walked over and introduced myself. He was trying to find Room 14 for his maths lesson, so I offered to show him the way. As we walked, I told him about the school and introduced him to some of my friends.
+Later that day, he sat with us at lunchtime and seemed much happier.
+"I was really nervous this morning," he said with a smile. I was glad I had gone over to say hello, and we have been good friends ever since.`,
+        tips: ['必须逐字以给定句子开头', '用一般过去时，写清新学生在担心什么、你怎样帮他', '加入对话和动作', '结尾写两人成为朋友', '100词左右'],
+        contentKeywords: ['worried', 'new student', 'helped', 'introduced', 'showed', 'friends', 'happier', 'glad', 'when', 'since'],
       },
     ],
   },

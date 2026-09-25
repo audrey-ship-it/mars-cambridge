@@ -62,134 +62,110 @@ function useExamLevel() {
    PET 听力 Part 渲染组件
 ══════════════════════════════ */
 
-/* Part 1 · 图片选择 (image_mcq, 3 options A/B/C, answer 为索引) */
+/* Part 1 · 图片选择 (image_mcq, 3 options A/B/C, answer 为索引)
+   KET 模式：作答中只记录选择，不即时评分；交卷后统一在最终结果页出分 */
 function PetListeningPictureMCQ({ part, isLast, onDone }) {
   const [answers, setAnswers] = useState(() => Array(part.items.length).fill(null))
-  const [checked, setChecked] = useState(false)
 
-  function pick(i, idx) { if (checked) return; setAnswers(a => { const n = [...a]; n[i] = idx; return n }) }
-
-  function submit() {
-    setChecked(true)
-    onDone(answers)
-  }
+  function pick(i, idx) { setAnswers(a => { const n = [...a]; n[i] = idx; return n }) }
 
   return (
     <div>
       <div className="space-y-5">
-        {part.items.map((item, i) => {
-          const correct = checked && answers[i] === item.answer
-          return (
-            <div key={i} className={`rounded-2xl border p-4 ${checked ? correct ? 'border-emerald-300 bg-emerald-50' : 'border-rose-300 bg-rose-50' : 'border-slate-200'}`}>
-              <div className="flex items-center gap-2 mb-3">
-                <span className="grid h-7 w-7 place-items-center rounded-full bg-violet-600 text-xs font-extrabold text-white">{i + 1}</span>
-                <p className="text-sm font-semibold text-slate-800">{item.q}</p>
-              </div>
-              <div className="grid grid-cols-3 gap-3">
-                {ABC.map((label, idx) => {
-                  const selected = answers[i] === idx
-                  return (
-                    <button key={label} type="button" disabled={checked} onClick={() => pick(i, idx)}
-                      className={`rounded-xl border-2 p-2 text-center transition ${checked && item.answer === idx ? 'border-emerald-500 bg-emerald-100' : checked && selected ? 'border-rose-400 bg-rose-100' : selected ? 'border-violet-500 bg-violet-50' : 'border-slate-200 hover:border-violet-300'}`}>
-                      <img src={item.image} alt={`选项 ${label}`} className="mx-auto h-32 w-auto object-contain" />
-                      <div className="mt-1 text-xs font-bold text-slate-600">{label}</div>
-                    </button>
-                  )
-                })}
-              </div>
-              {checked && !correct && <p className="mt-2 text-xs text-rose-600">正确：{ABC[item.answer]} · {item.explanation}</p>}
-              {checked && correct && <p className="mt-2 text-xs text-emerald-700">{item.explanation}</p>}
+        {part.items.map((item, i) => (
+          <div key={i} className="rounded-2xl border border-slate-200 p-4">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="grid h-7 w-7 place-items-center rounded-full bg-violet-600 text-xs font-extrabold text-white">{i + 1}</span>
+              <p className="text-sm font-semibold text-slate-800">{item.q}</p>
             </div>
-          )
-        })}
+            {/* 题目整图（含 A/B/C 三幅图）只渲染一次，铺满宽度，与 KET 一致 */}
+            <img src={item.image} alt={`第 ${i + 1} 题选项图`} className="mx-auto w-full rounded-xl border border-slate-200 bg-white object-contain" />
+            <div className="mt-3 grid gap-2 sm:grid-cols-3">
+              {ABC.map((label, idx) => {
+                const selected = answers[i] === idx
+                return (
+                  <button key={label} type="button" onClick={() => pick(i, idx)}
+                    className={`rounded-xl border-2 px-4 py-3 text-base font-extrabold transition ${selected ? 'border-violet-600 bg-violet-50 text-violet-700' : 'border-slate-200 text-slate-500 hover:border-violet-300 hover:text-violet-600'}`}>
+                    {label}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        ))}
       </div>
       <div className="mt-6 text-right">
-        <button type="button" disabled={answers.some(a => a === null)} onClick={submit}
+        <button type="button" disabled={answers.some(a => a === null)} onClick={() => onDone(answers)}
           className="rounded-xl bg-violet-600 px-6 py-3 text-sm font-extrabold text-white disabled:bg-slate-200 disabled:text-slate-400">
-          {isLast ? '提交并查看结果' : '完成本 Part →'}
+          {isLast ? '提交答卷 →' : `完成并进入 Part ${part.part + 1} →`}
         </button>
       </div>
     </div>
   )
 }
 
-/* Part 2/4 · 三选一 MCQ (mcq, 3 options, answer 为索引) */
+/* Part 2/4 · 三选一 MCQ (mcq, 3 options, answer 为索引)
+   KET 模式：作答中只记录选择，不即时评分；交卷后统一在最终结果页出分 */
 function PetListeningMCQ({ part, isLast, onDone }) {
   const [answers, setAnswers] = useState(() => Array(part.items.length).fill(null))
-  const [checked, setChecked] = useState(false)
 
-  function pick(i, idx) { if (checked) return; setAnswers(a => { const n = [...a]; n[i] = idx; return n }) }
-
-  function submit() { setChecked(true); onDone(answers) }
+  function pick(i, idx) { setAnswers(a => { const n = [...a]; n[i] = idx; return n }) }
 
   return (
     <div>
       <div className="space-y-4">
-        {part.items.map((item, i) => {
-          const correct = checked && answers[i] === item.answer
-          return (
-            <div key={i} className={`rounded-2xl border p-4 ${checked ? correct ? 'border-emerald-300 bg-emerald-50' : 'border-rose-300 bg-rose-50' : 'border-slate-200'}`}>
-              <div className="flex items-center gap-2 mb-3">
-                <span className="grid h-7 w-7 place-items-center rounded-full bg-violet-600 text-xs font-extrabold text-white">{i + 1}</span>
-                <p className="text-sm font-semibold text-slate-800">{item.q}</p>
-              </div>
-              <div className="grid gap-2 sm:grid-cols-3">
-                {item.opts.map((opt, idx) => {
-                  const selected = answers[i] === idx
-                  return (
-                    <button key={idx} type="button" disabled={checked} onClick={() => pick(i, idx)}
-                      className={`rounded-xl border-2 px-3 py-2.5 text-left text-sm font-semibold transition ${checked && item.answer === idx ? 'border-emerald-500 bg-emerald-100 text-emerald-800' : checked && selected ? 'border-rose-400 bg-rose-100 text-rose-700' : selected ? 'border-violet-500 bg-violet-50 text-violet-800' : 'border-slate-200 text-slate-700 hover:border-violet-300'}`}>
-                      <strong className="mr-1">{ABC[idx]}.</strong>{opt}
-                    </button>
-                  )
-                })}
-              </div>
-              {checked && !correct && <p className="mt-2 text-xs text-rose-600">正确：{ABC[item.answer]} · {item.explanation}</p>}
-              {checked && correct && <p className="mt-2 text-xs text-emerald-700">{item.explanation}</p>}
+        {part.items.map((item, i) => (
+          <div key={i} className="rounded-2xl border border-slate-200 p-4">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="grid h-7 w-7 place-items-center rounded-full bg-violet-600 text-xs font-extrabold text-white">{i + 1}</span>
+              <p className="text-sm font-semibold text-slate-800">{item.q}</p>
             </div>
-          )
-        })}
+            <div className="grid gap-2 sm:grid-cols-3">
+              {item.opts.map((opt, idx) => {
+                const selected = answers[i] === idx
+                return (
+                  <button key={idx} type="button" onClick={() => pick(i, idx)}
+                    className={`rounded-xl border-2 px-3 py-2.5 text-left text-sm font-semibold transition ${selected ? 'border-violet-500 bg-violet-50 text-violet-800' : 'border-slate-200 text-slate-700 hover:border-violet-300'}`}>
+                    <strong className="mr-1">{ABC[idx]}.</strong>{opt}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        ))}
       </div>
       <div className="mt-6 text-right">
-        <button type="button" disabled={answers.some(a => a === null)} onClick={submit}
+        <button type="button" disabled={answers.some(a => a === null)} onClick={() => onDone(answers)}
           className="rounded-xl bg-violet-600 px-6 py-3 text-sm font-extrabold text-white disabled:bg-slate-200 disabled:text-slate-400">
-          {isLast ? '提交并查看结果' : '完成本 Part →'}
+          {isLast ? '提交答卷 →' : `完成并进入 Part ${part.part + 1} →`}
         </button>
       </div>
     </div>
   )
 }
 
-/* Part 3 · 笔记填空 (blanks, answer 为接受答案数组) */
+/* Part 3 · 笔记填空 (blanks, answer 为接受答案数组)
+   KET 模式：作答中只记录输入，不即时评分；交卷后统一在最终结果页出分 */
 function PetListeningBlanks({ part, isLast, onDone }) {
   const [answers, setAnswers] = useState(() => Array(part.items.length).fill(''))
-  const [checked, setChecked] = useState(false)
 
-  function set(i, v) { if (checked) return; setAnswers(a => { const n = [...a]; n[i] = v; return n }) }
-
-  function submit() { setChecked(true); onDone(answers) }
+  function set(i, v) { setAnswers(a => { const n = [...a]; n[i] = v; return n }) }
 
   return (
     <div>
       <div className="space-y-3">
-        {part.items.map((item, i) => {
-          const userAns = (answers[i] || '').trim().toLowerCase()
-          const correct = checked && (item.answer || []).some(a => a.trim().toLowerCase() === userAns)
-          return (
-            <div key={i} className={`rounded-xl border p-3 ${checked ? correct ? 'border-emerald-300 bg-emerald-50' : 'border-rose-300 bg-rose-50' : 'border-slate-200'}`}>
-              <label className="block text-xs font-semibold text-slate-600">{item.q}</label>
-              <input type="text" disabled={checked} value={answers[i]} onChange={e => set(i, e.target.value)}
-                className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold focus:border-violet-500 focus:outline-none" />
-              {checked && !correct && <p className="mt-1 text-xs text-rose-600">正确：{item.show || item.answer[0]} · {item.explanation}</p>}
-              {checked && correct && <p className="mt-1 text-xs text-emerald-700">{item.explanation}</p>}
-            </div>
-          )
-        })}
+        {part.items.map((item, i) => (
+          <div key={i} className="rounded-xl border border-slate-200 p-3">
+            <label className="block text-xs font-semibold text-slate-600">{item.q}</label>
+            <input type="text" value={answers[i]} onChange={e => set(i, e.target.value)}
+              className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold focus:border-violet-500 focus:outline-none" />
+          </div>
+        ))}
       </div>
       <div className="mt-6 text-right">
-        <button type="button" disabled={answers.some(a => !a.trim())} onClick={submit}
+        <button type="button" disabled={answers.some(a => !a.trim())} onClick={() => onDone(answers)}
           className="rounded-xl bg-violet-600 px-6 py-3 text-sm font-extrabold text-white disabled:bg-slate-200 disabled:text-slate-400">
-          {isLast ? '提交并查看结果' : '完成本 Part →'}
+          {isLast ? '提交答卷 →' : `完成并进入 Part ${part.part + 1} →`}
         </button>
       </div>
     </div>

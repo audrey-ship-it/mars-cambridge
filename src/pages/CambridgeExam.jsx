@@ -76,17 +76,44 @@ const PENDING_EXAMS = {
   sample: [{ id: 'official-sample-1', name: '官方样题 1', source: 'A2 Key 官方样题' }],
 }
 
-/* PET mock tests — 《PET 全真模拟试题（8套）》 */
+/* PET — 与 KET 对齐的三个分类。
+   schools 含《青少版官方真题 3（2025 新增）》4 个完整 Test（petN 9–12）
+   与 8 个占位；standard 整卷未录入；mock 含全真模拟 8 套（整卷可考）。 */
 const PET_EXAM_COLLECTIONS = [
-  { id: 'petmock', label: '全真模拟题', count: 8, help: 'PET 全真模拟试题（8套）' },
+  { id: 'schools', label: '青少版真题', count: 12, help: 'PET for Schools 官方真题 1–3' },
+  { id: 'standard', label: '标准版真题', count: 8, help: 'B1 Preliminary 标准版官方真题 1–2' },
+  { id: 'mock', label: '模拟题', count: 8, help: '全真模拟试题' },
 ]
 
-const PET_EXAM_ITEMS = Array.from({ length: 8 }, (_, index) => ({
-  id: `pet-mock-${index + 1}`,
-  petN: index + 1,
-  name: `模拟题 ${index + 1}`,
-  source: 'PET 全真模拟试题（8套）',
-}))
+const PET_EXAM_ITEMS = {
+  schools: [
+    // 已录入的完整试卷排在目录最前面
+    ...Array.from({ length: 4 }, (_, index) => ({
+      id: `pet-mock-${index + 9}`,
+      petN: index + 9,
+      full: true,
+      name: `青少版真题3 · Test ${index + 1}`,
+      source: 'PET 青少版官方真题 3（2025 新增）',
+    })),
+    ...Array.from({ length: 8 }, (_, index) => ({
+      id: `pet-schools-${index + 1}`,
+      name: `青少版真题 ${index + 1}`,
+      source: 'PET for Schools 官方真题',
+    })),
+  ],
+  standard: Array.from({ length: 8 }, (_, index) => ({
+    id: `pet-standard-${index + 1}`,
+    name: `标准版真题 ${index + 1}`,
+    source: 'B1 Preliminary 标准版官方真题',
+  })),
+  mock: Array.from({ length: 8 }, (_, index) => ({
+    id: `pet-mock-${index + 1}`,
+    petN: index + 1,
+    full: true,
+    name: `模拟题 ${index + 1}`,
+    source: 'PET 全真模拟试题（8套）',
+  })),
+}
 
 function examSetNumber(exam) {
   const [, standardBook, standardTest] = exam.id.match(/^ket-standard-(\d+)-test(\d+)$/) || []
@@ -194,12 +221,12 @@ function readPetExamListProgress(testN) {
 export function ExamList() {
   const [level, setLevel] = useExamLevel()
   const isPet = level === 'PET'
-  const [collection, setCollection] = useState(() => (isPet ? 'petmock' : 'schools'))
-  useEffect(() => { setCollection(isPet ? 'petmock' : 'schools') }, [isPet])
+  const [collection, setCollection] = useState(() => (isPet ? 'mock' : 'schools'))
+  useEffect(() => { setCollection(isPet ? 'mock' : 'schools') }, [isPet])
   const sectionSummary = () => '听力 30分钟 · 阅读与写作 60分钟 · 口语 8–10分钟'
   const petSummary = () => '听力约30分钟 · 阅读与写作各45分钟 · 口语12–17分钟'
   const displayedExams = isPet
-    ? PET_EXAM_ITEMS
+    ? PET_EXAM_ITEMS[collection]
     : collection === 'schools'
       ? ORDERED_KET_EXAMS.map((exam, index) => ({ exam, id: exam.id, name: `真题 ${index + 1}`, source: exam.title }))
       : collection === 'standard'
@@ -245,14 +272,18 @@ export function ExamList() {
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {displayedExams.map(item => {
-            const exam = isPet ? { id: item.id } : item.exam
+            const petFull = isPet && item.full
+            const exam = isPet ? (petFull ? { id: item.id } : null) : item.exam
+            const linkTo = isPet
+              ? (petFull ? `/cambridge/exams/${item.id}` : null)
+              : (exam ? `/cambridge/exams/${exam.id}` : null)
             const progress = isPet
-              ? readPetExamListProgress(item.petN)
+              ? (petFull ? readPetExamListProgress(item.petN) : { status: '待录入', completed: 0, total: 0, percent: 0 })
               : exam ? readExamListProgress(exam) : { status: '待录入', completed: 0, total: 0, percent: 0 }
-            const Card = exam ? Link : 'div'
+            const Card = linkTo ? Link : 'div'
             return (
-            <Card key={item.id} {...(exam ? { to: `/cambridge/exams/${exam.id}` } : {})}
-              className={`group block aspect-square rounded-[22px] border border-gray-200 bg-white p-5 shadow-sm lg:p-6 ${exam ? `transition-all hover:-translate-y-0.5 hover:border-${isPet ? 'violet' : 'emerald'}-300 hover:shadow-md` : 'opacity-75'}`}>
+            <Card key={item.id} {...(linkTo ? { to: linkTo } : {})}
+              className={`group block aspect-square rounded-[22px] border border-gray-200 bg-white p-5 shadow-sm lg:p-6 ${linkTo ? `transition-all hover:-translate-y-0.5 hover:border-${isPet ? 'violet' : 'emerald'}-300 hover:shadow-md` : 'opacity-75'}`}>
               <div className="flex h-full flex-col">
                 <div className="flex items-start justify-between gap-3">
                   <div className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl ${isPet ? 'bg-violet-700' : 'bg-[#064e3b]'}`}>
@@ -263,17 +294,17 @@ export function ExamList() {
                 <div className="mt-5">
                   <div className={`text-xl font-extrabold leading-snug text-gray-900 transition-colors ${isPet ? 'group-hover:text-violet-800' : 'group-hover:text-[#064e3b]'}`}>{item.name}</div>
                   <div className="mt-2 text-sm text-gray-400">{item.source}</div>
-                  <div className="mt-1 text-sm text-gray-400">{isPet ? petSummary() : exam?.kind === 'standard' ? '听力 30分钟 · 阅读与写作 60分钟 · 口语待录入' : exam ? sectionSummary(exam) : '题目、答案与配套材料正在整理'}</div>
+                  <div className="mt-1 text-sm text-gray-400">{isPet ? (petFull ? petSummary() : '题目、答案与配套材料正在整理') : exam?.kind === 'standard' ? '听力 30分钟 · 阅读与写作 60分钟 · 口语待录入' : exam ? sectionSummary(exam) : '题目、答案与配套材料正在整理'}</div>
                 </div>
                 <div className="mt-auto pt-5">
                   <div className="mb-2 flex items-center justify-between gap-3">
                     <span className="text-xs font-semibold text-gray-400">练习进度</span>
-                    <span className="whitespace-nowrap text-xs font-bold text-gray-500">{exam ? `${progress.percent}%` : '尚未开放'}</span>
+                    <span className="whitespace-nowrap text-xs font-bold text-gray-500">{petFull ? `${progress.percent}%` : isPet ? '尚未开放' : exam ? `${progress.percent}%` : '尚未开放'}</span>
                   </div>
                   <div className="h-1.5 overflow-hidden rounded-full bg-gray-100">
                     <div className={`h-full rounded-full ${isPet ? 'bg-violet-600' : 'bg-[#0d7656]'}`} style={{ width: `${progress.percent}%` }} />
                   </div>
-                  <div className={`mt-4 text-right text-sm font-extrabold ${exam ? (isPet ? 'text-violet-700' : 'text-[#0d7656]') : 'text-gray-400'}`}>{exam ? (isPet ? '进入模拟题 →' : '进入真题 →') : '整理中'}</div>
+                  <div className={`mt-4 text-right text-sm font-extrabold ${linkTo ? (isPet ? 'text-violet-700' : 'text-[#0d7656]') : 'text-gray-400'}`}>{petFull ? '进入模拟题 →' : isPet ? '整理中' : exam ? '进入真题 →' : '整理中'}</div>
                 </div>
               </div>
             </Card>
@@ -342,8 +373,10 @@ function PetExamOverview({ testN }) {
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <Link to="/cambridge/exams" className="text-sm font-bold text-violet-700 hover:text-violet-900">← 返回模拟题列表</Link>
         <div className="mt-5 text-[11px] font-extrabold tracking-[.18em] text-violet-700">PET FULL PRACTICE TEST</div>
-        <h1 className="mt-1 text-3xl font-extrabold text-slate-950 sm:text-4xl">模拟题 {testN}</h1>
-        <p className="mt-2 text-slate-500">PET 全真模拟试题（8套） · 听力、阅读与写作、口语均已核对。</p>
+        <h1 className="mt-1 text-3xl font-extrabold text-slate-950 sm:text-4xl">{testN > 8 ? `青少版真题3 · Test ${testN - 8}` : `模拟题 ${testN}`}</h1>
+        <p className="mt-2 text-slate-500">{testN > 8
+          ? 'PET 青少版官方真题 3（2025 新增） · 听力、阅读、写作、口语均已核对。'
+          : 'PET 全真模拟试题（8套） · 听力、阅读与写作、口语均已核对。'}</p>
 
         <section className="mt-7 grid gap-4 sm:grid-cols-2">
           {sections.map((item, index) => {
@@ -374,7 +407,7 @@ export default function CambridgeExam() {
   const petIdMatch = id?.match(/^pet-mock-(\d+)$/)
   if (petIdMatch) {
     const testN = Number(petIdMatch[1])
-    if (testN < 1 || testN > 8) {
+    if (testN < 1 || testN > 12) {
       return (
         <div className="min-h-screen bg-[#f8f9fc] flex items-center justify-center">
           <div className="text-center">
