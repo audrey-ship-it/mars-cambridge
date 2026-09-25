@@ -1907,7 +1907,7 @@ export default function CambridgeApp() {
   // module 是级别 slug（ket/pet/fce/cae/cpe）→ 显示该级别仪表盘
   const levelFromSlug = module ? LEVEL_SLUGS[module.toLowerCase()] : null
   if (!module || levelFromSlug) {
-    return <MyLearningDashboard />
+    return <MyLearningDashboard level={levelFromSlug || level} />
   }
 
   const content = module === 'words'

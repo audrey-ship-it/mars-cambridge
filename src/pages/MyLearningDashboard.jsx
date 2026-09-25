@@ -308,7 +308,16 @@ function ProgressRing({ value }) {
   )
 }
 
-export default function MyLearningDashboard() {
+// 级别文案映射（与 PublicHome 级别列表一致）
+const LEVEL_PILL = { KET: 'A2 Key (KET)', PET: 'B1 Preliminary (PET)', FCE: 'B2 First (FCE)', CAE: 'C1 Advanced (CAE)', CPE: 'C2 Proficiency (CPE)' }
+
+export default function MyLearningDashboard({ level = 'KET' }) {
+  const abbr = LEVEL_PILL[level] ? level : 'KET'
+  const levelPill = LEVEL_PILL[abbr]
+  const nav = useMemo(() => navGroups.map(group => ({
+    ...group,
+    items: group.items.map(item => item.id === 'exam' ? { ...item, label: `${abbr} 模考` } : item),
+  })), [abbr])
   const navigate = useNavigate()
   const [tasks, setTasks] = useState(readTasks)
   const [panel, setPanel] = useState(null)
@@ -400,10 +409,10 @@ export default function MyLearningDashboard() {
       <aside className="hidden lg:flex w-[230px] bg-[#083f32] text-white flex-col fixed inset-y-0 left-0 z-40">
         <Link aria-label="返回 Mars Cambridge 首页" to="/" className="h-20 px-6 flex items-center gap-3 border-b border-white/10 text-left hover:bg-white/[.04] transition-colors">
           <div className="w-10 h-10 rounded-2xl bg-[#f4c95d] text-[#083f32] grid place-items-center font-extrabold text-lg shadow-lg shadow-black/10">M</div>
-          <div><div className="font-extrabold tracking-tight">Mars Cambridge</div><div className="text-[10px] text-white/45 tracking-[0.18em] uppercase">KET Learning</div></div>
+          <div><div className="font-extrabold tracking-tight">Mars Cambridge</div><div className="text-[10px] text-white/45 tracking-[0.18em] uppercase">{abbr} Learning</div></div>
         </Link>
         <nav className="flex-1 overflow-y-auto px-3 py-5 space-y-5">
-          {navGroups.map((group, index) => (
+          {nav.map((group, index) => (
             <div key={index}>
               {group.label && <div className="px-3 mb-2 text-[10px] uppercase tracking-[0.2em] text-white/35 font-bold">{group.label}</div>}
               <div className="space-y-1">
@@ -429,9 +438,9 @@ export default function MyLearningDashboard() {
       <main className="flex-1 lg:ml-[230px] min-w-0">
         <header className="h-16 bg-white/90 backdrop-blur border-b border-gray-200/70 sticky top-0 z-30 px-4 sm:px-7 flex items-center">
           <Link aria-label="返回 Mars Cambridge 首页" to="/" className="lg:hidden w-9 h-9 rounded-xl bg-[#083f32] text-white grid place-items-center font-extrabold mr-3">M</Link>
-          <div><div className="font-extrabold text-base">我的学习</div><div className="text-[11px] text-gray-400 hidden sm:block">专注 KET，每天进步一点点</div></div>
+          <div><div className="font-extrabold text-base">我的学习</div><div className="text-[11px] text-gray-400 hidden sm:block">专注 {abbr}，每天进步一点点</div></div>
           <div className="ml-auto flex items-center gap-2 sm:gap-4">
-            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold"><span className="w-2 h-2 rounded-full bg-emerald-500" />A2 Key (KET)</div>
+            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold"><span className="w-2 h-2 rounded-full bg-emerald-500" />{levelPill}</div>
             <div className="flex items-center gap-1.5 text-xs text-gray-500"><span>🔥</span><strong className="text-gray-900">{learning.streak}</strong> 天连续</div>
             <div className="w-9 h-9 rounded-full bg-amber-100 text-amber-800 grid place-items-center font-extrabold text-sm">学</div>
             <button aria-label="打开学习导航" onClick={() => setMobileNavOpen(true)} className="lg:hidden h-9 w-9 rounded-xl border border-gray-200 bg-white text-lg text-gray-700">☰</button>
@@ -440,7 +449,7 @@ export default function MyLearningDashboard() {
 
         <div className="max-w-[1280px] mx-auto p-4 sm:p-7">
           <section className="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
-            <div><p className="text-sm text-emerald-700 font-bold mb-1">{greeting}，同学 👋</p><h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">今天也继续向 KET 目标前进</h1></div>
+            <div><p className="text-sm text-emerald-700 font-bold mb-1">{greeting}，同学 👋</p><h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">今天也继续向 {abbr} 目标前进</h1></div>
           </section>
 
           <section className="relative mb-6 overflow-hidden rounded-3xl border border-emerald-200 bg-emerald-50/80 p-5 text-gray-900 shadow-sm sm:p-6">
@@ -502,7 +511,7 @@ export default function MyLearningDashboard() {
               <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0c5e48] to-[#083f32] text-white p-6 sm:p-7 shadow-lg shadow-emerald-950/10">
                 <div className="absolute -right-10 -top-16 w-64 h-64 rounded-full border-[42px] border-white/5" />
                 <div className="relative grid md:grid-cols-[1fr_auto] items-center gap-5">
-                  <div><div className="inline-flex items-center gap-1.5 text-[10px] font-extrabold tracking-widest uppercase bg-white/10 rounded-full px-2.5 py-1 mb-3">{continueItem ? '继续上次学习' : '开始第一次练习'}</div><h2 className="text-xl sm:text-2xl font-extrabold mb-2">{continueItem?.title || '选择一个 KET 专项开始学习'}</h2><p className="text-white/60 text-sm">{continueItem?.detail || '完成练习后，这里会自动显示最近的学习位置。'}</p>{continueItem && <div className="mt-4 max-w-md"><div className="flex justify-between text-[10px] text-white/50 mb-1.5"><span>学习进度</span><span>{continueItem.progress}%</span></div><div className="h-2 rounded-full bg-white/10 overflow-hidden"><div className="h-full bg-[#f4c95d] rounded-full" style={{ width: `${continueItem.progress}%` }} /></div></div>}</div>
+                  <div><div className="inline-flex items-center gap-1.5 text-[10px] font-extrabold tracking-widest uppercase bg-white/10 rounded-full px-2.5 py-1 mb-3">{continueItem ? '继续上次学习' : '开始第一次练习'}</div><h2 className="text-xl sm:text-2xl font-extrabold mb-2">{continueItem?.title || `选择一个 ${abbr} 专项开始学习`}</h2><p className="text-white/60 text-sm">{continueItem?.detail || '完成练习后，这里会自动显示最近的学习位置。'}</p>{continueItem && <div className="mt-4 max-w-md"><div className="flex justify-between text-[10px] text-white/50 mb-1.5"><span>学习进度</span><span>{continueItem.progress}%</span></div><div className="h-2 rounded-full bg-white/10 overflow-hidden"><div className="h-full bg-[#f4c95d] rounded-full" style={{ width: `${continueItem.progress}%` }} /></div></div>}</div>
                   <button onClick={() => navigate(continueItem?.path || '/cambridge/words')} className="relative px-5 py-3 rounded-xl bg-[#f4c95d] text-[#083f32] font-extrabold text-sm hover:bg-amber-300 shadow-lg">{continueItem ? '继续学习 →' : '开始学习 →'}</button>
                 </div>
               </section>
@@ -552,8 +561,8 @@ export default function MyLearningDashboard() {
       <AnimatePresence>
         {mobileNavOpen && <motion.div className="fixed inset-0 z-50 bg-black/35 backdrop-blur-sm lg:hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setMobileNavOpen(false)}>
           <motion.aside initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }} transition={{ type: 'spring', damping: 28, stiffness: 260 }} onClick={event => event.stopPropagation()} className="ml-auto flex h-full w-[min(86vw,360px)] flex-col bg-white p-5 shadow-2xl">
-            <div className="flex items-center justify-between"><div><span className="text-xs font-bold text-emerald-700">KET LEARNING</span><h2 className="mt-1 text-xl font-extrabold">学习导航</h2></div><button aria-label="关闭学习导航" onClick={() => setMobileNavOpen(false)} className="h-9 w-9 rounded-full bg-gray-100 text-xl text-gray-500">×</button></div>
-            <nav className="mt-6 flex-1 overflow-y-auto space-y-5">{navGroups.slice(1).map((group, index) => <div key={index}><div className="mb-2 text-[10px] font-extrabold uppercase tracking-[.18em] text-gray-400">{group.label}</div><div className="grid grid-cols-2 gap-2">{group.items.map(item => <button key={item.id} onClick={() => { setMobileNavOpen(false); handleNav(item) }} className="flex items-center gap-2 rounded-xl border border-gray-200 bg-gray-50 px-3 py-3 text-left text-sm font-bold text-gray-700"><span>{item.icon}</span><span>{item.label}</span>{item.badge && <span className="ml-auto rounded bg-amber-200 px-1 text-[8px]">{item.badge}</span>}</button>)}</div></div>)}</nav>
+            <div className="flex items-center justify-between"><div><span className="text-xs font-bold text-emerald-700">{abbr} LEARNING</span><h2 className="mt-1 text-xl font-extrabold">学习导航</h2></div><button aria-label="关闭学习导航" onClick={() => setMobileNavOpen(false)} className="h-9 w-9 rounded-full bg-gray-100 text-xl text-gray-500">×</button></div>
+            <nav className="mt-6 flex-1 overflow-y-auto space-y-5">{nav.slice(1).map((group, index) => <div key={index}><div className="mb-2 text-[10px] font-extrabold uppercase tracking-[.18em] text-gray-400">{group.label}</div><div className="grid grid-cols-2 gap-2">{group.items.map(item => <button key={item.id} onClick={() => { setMobileNavOpen(false); handleNav(item) }} className="flex items-center gap-2 rounded-xl border border-gray-200 bg-gray-50 px-3 py-3 text-left text-sm font-bold text-gray-700"><span>{item.icon}</span><span>{item.label}</span>{item.badge && <span className="ml-auto rounded bg-amber-200 px-1 text-[8px]">{item.badge}</span>}</button>)}</div></div>)}</nav>
           </motion.aside>
         </motion.div>}
       </AnimatePresence>
