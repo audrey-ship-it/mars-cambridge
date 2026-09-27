@@ -165,8 +165,9 @@ const PET_PENDING_ITEMS = {
     })),
     ...Array.from({ length: 6 }, (_, index) => ({
       id: `pet-trainer2-${index + 1}`,
+      full: true,
       name: `Trainer 2 · Test ${index + 1}`,
-      source: 'PET Trainer 2',
+      source: 'PET Trainer 2（2024 新题型）· 听力/阅读/写作/口语完整',
     })),
     ...Array.from({ length: 3 }, (_, index) => ({
       id: `pet-booster-${index + 1}`,
@@ -435,7 +436,7 @@ function PetExamOverview({ testN, kind = 'mock' }) {
   const [level, setLevel] = useExamLevel()
   const navigate = useNavigate()
   useEffect(() => { if (level !== 'PET') navigate('/cambridge/exams', { replace: true }) }, [level, navigate])
-  const pid = kind === 'sample' ? `pet-sample-${testN}` : kind === 'standard' ? `pet-standard-${testN}` : kind === 'trainer1' ? `pet-trainer1-${testN}` : `pet-mock-${testN}`
+  const pid = kind === 'sample' ? `pet-sample-${testN}` : kind === 'standard' ? `pet-standard-${testN}` : kind === 'trainer1' ? `pet-trainer1-${testN}` : kind === 'trainer2' ? `pet-trainer2-${testN}` : `pet-mock-${testN}`
   const sections = [
     { icon: '🎧', title: '听力', en: 'Listening', detail: '约30分钟 · 4个 Part · 25道题', href: `/cambridge/exams/${pid}?tab=listening` },
     { icon: '📖', title: '阅读', en: 'Reading', detail: '45分钟 · 6个 Part · 32道客观题，自动评分与错题重做', href: `/cambridge/exams/${pid}?tab=reading` },
@@ -449,14 +450,18 @@ function PetExamOverview({ testN, kind = 'mock' }) {
       ? `标准版真题 ${testN > 4 ? 2 : 1} · Test ${testN > 4 ? testN - 4 : testN}`
       : kind === 'trainer1'
         ? `Trainer 1 · Test ${testN}`
-        : testN > 16 ? `青少版真题 2 · Test ${testN - 16}` : testN > 12 ? `青少版真题 1 · Test ${testN - 12}` : testN > 8 ? `青少版真题3 · Test ${testN - 8}` : `模拟题 ${testN}`
+        : kind === 'trainer2'
+          ? `Trainer 2 · Test ${testN}`
+          : testN > 16 ? `青少版真题 2 · Test ${testN - 16}` : testN > 12 ? `青少版真题 1 · Test ${testN - 12}` : testN > 8 ? `青少版真题3 · Test ${testN - 8}` : `模拟题 ${testN}`
   const description = kind === 'sample'
     ? 'B1 Preliminary 官方样题 · 听力、阅读、写作、口语均已核对。'
     : kind === 'standard'
       ? `B1 Preliminary 标准版官方真题 ${testN > 4 ? 2 : 1} · 听力、阅读、写作、口语均已核对。`
       : kind === 'trainer1'
         ? 'PET Trainer 1（2020 新题型）· 听力、阅读、写作、口语均已核对。'
-        : testN > 16
+        : kind === 'trainer2'
+          ? 'PET Trainer 2（2024 新题型）· 听力、阅读、写作、口语均已核对。'
+          : testN > 16
         ? 'PET 青少版官方真题 2（新题型） · 听力、阅读、写作、口语均已核对。'
         : testN > 12
           ? 'PET 青少版官方真题 1（新题型） · 听力、阅读、写作、口语均已核对。'
@@ -468,7 +473,7 @@ function PetExamOverview({ testN, kind = 'mock' }) {
     <CambridgeLayout activeModule="exams" level={level} setLevel={setLevel}>
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <Link to="/cambridge/exams" className="text-sm font-bold text-violet-700 hover:text-violet-900">← 返回试卷列表</Link>
-        <div className="mt-5 text-[11px] font-extrabold tracking-[.18em] text-violet-700">{kind === 'sample' ? 'PET OFFICIAL SAMPLE TEST' : kind === 'standard' ? 'PET OFFICIAL STANDARD TEST' : kind === 'trainer1' ? 'PET TRAINER 1 · FULL PRACTICE TEST' : 'PET FULL PRACTICE TEST'}</div>
+        <div className="mt-5 text-[11px] font-extrabold tracking-[.18em] text-violet-700">{kind === 'sample' ? 'PET OFFICIAL SAMPLE TEST' : kind === 'standard' ? 'PET OFFICIAL STANDARD TEST' : kind === 'trainer1' ? 'PET TRAINER 1 · FULL PRACTICE TEST' : kind === 'trainer2' ? 'PET TRAINER 2 · FULL PRACTICE TEST' : 'PET FULL PRACTICE TEST'}</div>
         <h1 className="mt-1 text-3xl font-extrabold text-slate-950 sm:text-4xl">{title}</h1>
         <p className="mt-2 text-slate-500">{description}</p>
 
@@ -502,11 +507,12 @@ export default function CambridgeExam() {
   const petSampleMatch = id?.match(/^pet-sample-(\d+)$/)
   const petStandardMatch = id?.match(/^pet-standard-(\d+)$/)
   const petTrainer1Match = id?.match(/^pet-trainer1-(\d+)$/)
-  const petMatch = petMockMatch || petSampleMatch || petStandardMatch || petTrainer1Match
+  const petTrainer2Match = id?.match(/^pet-trainer2-(\d+)$/)
+  const petMatch = petMockMatch || petSampleMatch || petStandardMatch || petTrainer1Match || petTrainer2Match
   if (petMatch) {
     const testN = Number(petMatch[1])
-    const kind = petSampleMatch ? 'sample' : petStandardMatch ? 'standard' : petTrainer1Match ? 'trainer1' : 'mock'
-    const maxN = kind === 'sample' ? 3 : kind === 'standard' ? 8 : kind === 'trainer1' ? 6 : 20
+    const kind = petSampleMatch ? 'sample' : petStandardMatch ? 'standard' : petTrainer1Match ? 'trainer1' : petTrainer2Match ? 'trainer2' : 'mock'
+    const maxN = kind === 'sample' ? 3 : kind === 'standard' ? 8 : kind === 'trainer1' ? 6 : kind === 'trainer2' ? 6 : 20
     if (testN < 1 || testN > maxN) {
       return (
         <div className="min-h-screen bg-[#f8f9fc] flex items-center justify-center">

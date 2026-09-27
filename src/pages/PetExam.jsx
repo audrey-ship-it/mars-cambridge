@@ -23,9 +23,13 @@ import { PET_TRAINER1_LISTENING } from '../data/petTrainer1Listening'
 import { PET_READING_TRAINER1 } from '../data/petReadingTrainer1'
 import { PET_WRITING_TRAINER1 } from '../data/petWritingTrainer1'
 import { PET_SPEAKING_TRAINER1 } from '../data/petSpeakingTrainer1'
+import { PET_TRAINER2_LISTENING } from '../data/petTrainer2Listening'
+import { PET_READING_TRAINER2 } from '../data/petReadingTrainer2'
+import { PET_WRITING_TRAINER2 } from '../data/petWritingTrainer2'
+import { PET_SPEAKING_TRAINER2 } from '../data/petSpeakingTrainer2'
 
-// 试卷类型：mock=模拟题（pet-mock-N），sample=官方样题（pet-sample-N），standard=标准版真题（pet-standard-N），trainer1=Trainer 1（pet-trainer1-N）
-const paperId = (kind, n) => (kind === 'sample' ? `pet-sample-${n}` : kind === 'standard' ? `pet-standard-${n}` : kind === 'trainer1' ? `pet-trainer1-${n}` : `pet-mock-${n}`)
+// 试卷类型：mock=模拟题（pet-mock-N），sample=官方样题（pet-sample-N），standard=标准版真题（pet-standard-N），trainer1=Trainer 1（pet-trainer1-N），trainer2=Trainer 2（pet-trainer2-N）
+const paperId = (kind, n) => (kind === 'sample' ? `pet-sample-${n}` : kind === 'standard' ? `pet-standard-${n}` : kind === 'trainer1' ? `pet-trainer1-${n}` : kind === 'trainer2' ? `pet-trainer2-${n}` : `pet-mock-${n}`)
 const resolvePetPaper = (kind, skill, n) => {
   if (kind === 'sample') {
     return { listening: PET_LISTENING_SAMPLES, reading: PET_READING_SAMPLES, writing: PET_WRITING_SAMPLES, speaking: PET_SPEAKING_SAMPLES }[skill][n - 1]
@@ -35,6 +39,9 @@ const resolvePetPaper = (kind, skill, n) => {
   }
   if (kind === 'trainer1') {
     return { listening: PET_TRAINER1_LISTENING, reading: PET_READING_TRAINER1, writing: PET_WRITING_TRAINER1, speaking: PET_SPEAKING_TRAINER1 }[skill][n - 1]
+  }
+  if (kind === 'trainer2') {
+    return { listening: PET_TRAINER2_LISTENING, reading: PET_READING_TRAINER2, writing: PET_WRITING_TRAINER2, speaking: PET_SPEAKING_TRAINER2 }[skill][n - 1]
   }
   return { listening: petListeningTests, reading: petReadingTests, writing: petWritingTests, speaking: petSpeakingTests }[skill][n - 1]
 }
@@ -430,7 +437,7 @@ export function PetWritingExam({ testN, kind = 'mock' }) {
   const test = resolvePetPaper(kind, 'writing', testN)
   const item = test.items[tabId]
   const [level, setLevel] = useExamLevel()
-  const draftKeyPrefix = kind === 'sample' ? 'mars_pet_sample_writing_v1' : kind === 'standard' ? 'mars_pet_standard_writing_v1' : kind === 'trainer1' ? 'mars_pet_trainer1_writing_v1' : 'mars_pet_exam_writing_v1'
+  const draftKeyPrefix = kind === 'sample' ? 'mars_pet_sample_writing_v1' : kind === 'standard' ? 'mars_pet_standard_writing_v1' : kind === 'trainer1' ? 'mars_pet_trainer1_writing_v1' : kind === 'trainer2' ? 'mars_pet_trainer2_writing_v1' : 'mars_pet_exam_writing_v1'
 
   return (
     <CambridgeLayout activeModule="exams" level={level} setLevel={setLevel}>
@@ -1133,7 +1140,9 @@ export function PetReadingExam({ testN, kind = 'mock' }) {
       ? `mars_pet_standard_progress_v1:test${testN}:reading`
       : kind === 'trainer1'
         ? `mars_pet_trainer1_progress_v1:test${testN}:reading`
-        : `mars_pet_exam_progress_v1:test${testN}:reading`
+        : kind === 'trainer2'
+          ? `mars_pet_trainer2_progress_v1:test${testN}:reading`
+          : `mars_pet_exam_progress_v1:test${testN}:reading`
   const [savedProgress] = useState(() => {
     try {
       const value = JSON.parse(localStorage.getItem(progressKey) || 'null')
