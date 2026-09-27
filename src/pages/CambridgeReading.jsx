@@ -132,6 +132,64 @@ export default function CambridgeReading() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [level, setLevel] = useState(() => { try { return localStorage.getItem('cambridge_level') || 'KET' } catch { return 'KET' } })
   useEffect(() => { try { localStorage.setItem('cambridge_level', level) } catch { /* storage unavailable */ } }, [level])
+
+  // Reading accent follows the level theme: PET = violet (same as its other modules), KET = emerald (green).
+  const isPet = level === 'PET'
+  const AC = isPet ? {
+    solid: 'bg-violet-600',
+    solidBorder: 'border-violet-600',
+    text: 'text-violet-600',
+    strongText: 'text-violet-700',
+    hoverStrongText: 'hover:text-violet-700',
+    softBg: 'bg-violet-50',
+    bubbleBg: 'bg-violet-100',
+    cardHover: 'hover:border-violet-300',
+    optionIdle: 'border-slate-200 bg-white hover:border-violet-400 hover:bg-violet-50',
+    optionSel: 'border-violet-600 bg-violet-50',
+    optionCircle: 'border-violet-600 bg-violet-50 hover:bg-violet-100',
+    optionLabelSel: 'text-violet-600 border-violet-300 bg-violet-50',
+    centrePill: 'border-violet-300 bg-violet-50 text-violet-800 hover:bg-violet-100',
+    pillActive: 'border-violet-600 bg-violet-600 text-white shadow-sm',
+    pillIdle: 'border-slate-200 bg-white text-slate-500 hover:border-violet-300 hover:text-violet-700',
+    chipActive: 'border-violet-600 bg-violet-600 text-white shadow-sm',
+    chipIdle: 'border-violet-100 bg-violet-50 text-violet-800 hover:border-violet-300',
+    timerBox: 'border-violet-200 bg-violet-50',
+    timerOn: 'bg-violet-600 text-white',
+    timerOff: 'bg-white text-violet-600 shadow-sm',
+    sideOn: 'bg-violet-100 text-violet-700',
+    sideOff: 'bg-slate-50 text-slate-500 hover:bg-violet-50 hover:text-violet-700',
+    scanSel: 'border-violet-600 bg-violet-50 text-violet-700',
+    scanIdle: 'border-slate-200 text-slate-500 hover:border-violet-300',
+    badgeOn: 'bg-violet-600 text-white',
+    badgeOff: 'bg-violet-100 text-violet-700',
+  } : {
+    solid: 'bg-emerald-600',
+    solidBorder: 'border-emerald-600',
+    text: 'text-emerald-600',
+    strongText: 'text-emerald-700',
+    hoverStrongText: 'hover:text-emerald-700',
+    softBg: 'bg-emerald-50',
+    bubbleBg: 'bg-emerald-100',
+    cardHover: 'hover:border-emerald-300',
+    optionIdle: 'border-slate-200 bg-white hover:border-emerald-400 hover:bg-emerald-50',
+    optionSel: 'border-emerald-600 bg-emerald-50',
+    optionCircle: 'border-emerald-600 bg-emerald-50 hover:bg-emerald-100',
+    optionLabelSel: 'text-emerald-600 border-emerald-300 bg-emerald-50',
+    centrePill: 'border-emerald-300 bg-emerald-50 text-emerald-800 hover:bg-emerald-100',
+    pillActive: 'border-emerald-600 bg-emerald-600 text-white shadow-sm',
+    pillIdle: 'border-slate-200 bg-white text-slate-500 hover:border-emerald-300 hover:text-emerald-700',
+    chipActive: 'border-emerald-600 bg-emerald-600 text-white shadow-sm',
+    chipIdle: 'border-emerald-100 bg-emerald-50 text-emerald-800 hover:border-emerald-300',
+    timerBox: 'border-emerald-200 bg-emerald-50',
+    timerOn: 'bg-emerald-600 text-white',
+    timerOff: 'bg-white text-emerald-600 shadow-sm',
+    sideOn: 'bg-emerald-100 text-emerald-700',
+    sideOff: 'bg-slate-50 text-slate-500 hover:bg-emerald-50 hover:text-emerald-700',
+    scanSel: 'border-emerald-600 bg-emerald-50 text-emerald-700',
+    scanIdle: 'border-slate-200 text-slate-500 hover:border-emerald-300',
+    badgeOn: 'bg-emerald-600 text-white',
+    badgeOff: 'bg-emerald-100 text-emerald-700',
+  }
   const [partId,       setPartId]       = useState(() => {
     const requested = Number(searchParams.get('part'))
     const maxPart = partMeta(localStorage.getItem('cambridge_level') || 'KET').count
@@ -277,8 +335,8 @@ export default function CambridgeReading() {
     const right    = effChk && label === q.answer
     const wrong    = effChk && selected && label !== q.answer
 
-    let cls = 'border-slate-200 bg-white hover:border-sky-400 hover:bg-sky-50'
-    if (selected && !effChk) cls = 'border-sky-500 bg-sky-50'
+    let cls = AC.optionIdle
+    if (selected && !effChk) cls = AC.optionSel
     if (effChk) {
       if (right)        cls = 'border-emerald-500 bg-emerald-50'
       else if (wrong)   cls = 'border-red-400 bg-red-50'
@@ -304,8 +362,8 @@ export default function CambridgeReading() {
           className={`flex items-center gap-3 sm:gap-5 w-full text-left py-2 transition-all ${effChk && !right && !wrong ? 'opacity-45' : ''}`}
         >
           <span className={`w-9 h-9 sm:w-11 sm:h-11 flex-shrink-0 border-2 shadow-sm transition-colors ${
-            right ? 'border-emerald-500 bg-emerald-50' : wrong ? 'border-red-400 bg-red-50' : selected ? 'border-sky-500 bg-sky-50' : 'border-sky-500 bg-sky-50 hover:bg-sky-100'
-          } flex items-center justify-center font-bold text-sm ${right ? 'text-emerald-600' : wrong ? 'text-red-500' : 'text-sky-600'}`}>
+            right ? 'border-emerald-500 bg-emerald-50' : wrong ? 'border-red-400 bg-red-50' : selected ? AC.optionSel : AC.optionCircle
+          } flex items-center justify-center font-bold text-sm ${right ? 'text-emerald-600' : wrong ? 'text-red-500' : AC.text}`}>
             {(right || (selected && !effChk)) ? label : ''}
           </span>
           <span className="select-text cursor-text text-[15px] sm:text-[18px] leading-snug text-[#30284d]">{opt}</span>
@@ -321,7 +379,7 @@ export default function CambridgeReading() {
         className={`flex items-center gap-3 w-full text-left px-4 py-2.5 rounded-xl border-2 transition-all ${cls}`}
       >
         <span className={`font-bold text-sm w-7 h-7 rounded-full border flex items-center justify-center flex-shrink-0 ${
-          right ? 'text-emerald-600 border-emerald-300 bg-emerald-50' : wrong ? 'text-red-500 border-red-300 bg-red-50' : selected ? 'text-sky-600 border-sky-300 bg-sky-50' : 'text-slate-400 border-slate-200'
+          right ? 'text-emerald-600 border-emerald-300 bg-emerald-50' : wrong ? 'text-red-500 border-red-300 bg-red-50' : selected ? AC.optionLabelSel : 'text-slate-400 border-slate-200'
         }`}>{label}</span>
         {wrong && <span className="text-red-500 text-sm flex-shrink-0">✕</span>}
         <span className={`${large ? 'text-[19px]' : 'text-[15px]'} select-text cursor-text text-slate-700 leading-snug`}>{opt}</span>
@@ -385,7 +443,7 @@ export default function CambridgeReading() {
       <div className="mx-auto max-w-[330px] rounded-[30px] border-[7px] border-slate-800 bg-slate-50 px-4 pb-7 pt-3 shadow-[0_16px_35px_rgba(15,23,42,.15)]">
         <div className="mx-auto mb-7 h-1.5 w-16 rounded-full bg-slate-600" />
         <div className="mb-3 text-center text-xs font-bold text-slate-500">{q.from || 'Message'}</div>
-        <div className="rounded-[20px_20px_6px_20px] bg-sky-100 px-5 py-5 text-left shadow-sm">{text}</div>
+        <div className={`rounded-[20px_20px_6px_20px] ${AC.bubbleBg} px-5 py-5 text-left shadow-sm`}>{text}</div>
       </div>
     )
 
@@ -471,22 +529,34 @@ export default function CambridgeReading() {
   // ── Render ─────────────────────────────────────────────
   if (searchParams.get('view') === 'center') return (
     <CambridgeLayout activeModule="reading" level={level} setLevel={setLevel}>
+      <nav className="border-b border-slate-100 bg-white px-4 sm:px-6 py-4">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-2.5">
+          <span className={`mr-1 rounded-xl border ${AC.solidBorder} ${AC.solid} px-4 py-2.5 text-sm font-extrabold text-white shadow-sm`}>
+            我的阅读中心
+          </span>
+          {Array.from({ length: partMeta(level).count }, (_, i) => i + 1).map(pid => (
+            <button key={pid} onClick={() => { setPartId(pid); setBatchIdx(0); setSearchParams({ part: String(pid) }) }}
+              className={`rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-extrabold text-slate-500 transition ${AC.cardHover} ${AC.hoverStrongText}`}
+            >Part {pid}</button>
+          ))}
+        </div>
+      </nav>
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-        <div className="text-xs font-extrabold tracking-[.18em] text-sky-700">KET READING PRACTICE</div>
+        <div className={`text-xs font-extrabold tracking-[.18em] ${AC.strongText}`}>{level} READING PRACTICE</div>
         <h1 className="mt-2 text-3xl font-extrabold text-slate-950 sm:text-4xl">我的阅读中心</h1>
         <p className="mt-3 text-slate-500">按题型选择专项练习；同一套题也可以在真题模考中完成。</p>
         <section className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: partMeta(level).count }, (_, i) => i + 1).map(pid => (
             <button key={pid} type="button" onClick={() => { setPartId(pid); setBatchIdx(0); setSearchParams({ part: String(pid) }) }}
-              className="group flex min-h-44 flex-col rounded-[22px] border border-slate-200 bg-white p-6 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-sky-300 hover:shadow-md">
-              <span className="text-xs font-extrabold tracking-widest text-sky-700">PART {pid}</span>
+              className={`group flex min-h-44 flex-col rounded-[22px] border border-slate-200 bg-white p-6 text-left shadow-sm transition hover:-translate-y-0.5 ${AC.cardHover} hover:shadow-md`}>
+              <span className={`text-xs font-extrabold tracking-widest ${AC.strongText}`}>PART {pid}</span>
               <h2 className="mt-3 text-xl font-extrabold text-slate-900">{partMeta(level).desc[pid]}</h2>
               <p className="mt-2 text-sm leading-6 text-slate-500">{partMeta(level).help[pid]}</p>
-              <span className="mt-auto pt-4 text-right text-sm font-extrabold text-sky-700">开始练习 →</span>
+              <span className={`mt-auto pt-4 text-right text-sm font-extrabold ${AC.strongText}`}>开始练习 →</span>
             </button>
           ))}
         </section>
-        <Link to="/cambridge/exams" className="mt-8 inline-flex rounded-xl border border-emerald-200 bg-emerald-50 px-5 py-3 text-sm font-extrabold text-emerald-800 hover:border-emerald-400">进入真题模考 →</Link>
+        <Link to="/cambridge/exams" className={`mt-8 inline-flex rounded-xl border px-5 py-3 text-sm font-extrabold transition ${AC.timerBox} ${AC.strongText} ${AC.cardHover}`}>进入真题模考 →</Link>
       </main>
     </CambridgeLayout>
   )
@@ -495,17 +565,15 @@ export default function CambridgeReading() {
     <CambridgeLayout activeModule="reading" level={level} setLevel={setLevel}>
       <nav className="border-b border-slate-100 bg-white px-4 sm:px-6 py-4">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-2.5">
-          <Link to="/cambridge/reading?view=center" className="mr-1 rounded-xl border border-sky-300 bg-sky-50 px-4 py-2.5 text-sm font-extrabold text-sky-800">
-            ← 我的阅读中心
-          </Link>
-          <span className="mr-1 text-slate-300">›</span>
+          <button type="button" onClick={() => setSearchParams({ view: 'center' })}
+            className={`mr-1 rounded-xl border px-4 py-2.5 text-sm font-extrabold transition ${AC.centrePill}`}>
+            我的阅读中心
+          </button>
           {Array.from({ length: partMeta(level).count }, (_, i) => i + 1).map(pid => (
             <button key={pid} onClick={() => { setPartId(pid); setBatchIdx(0) }}
               aria-current={partId === pid ? 'page' : undefined}
               className={`rounded-xl border px-4 py-2.5 text-sm font-extrabold transition ${
-                partId === pid
-                  ? 'border-sky-500 bg-sky-500 text-white shadow-sm'
-                  : 'border-slate-200 bg-white text-slate-500 hover:border-sky-300 hover:text-sky-700'
+                partId === pid ? AC.pillActive : AC.pillIdle
               }`}
             >Part {pid}</button>
           ))}
@@ -514,13 +582,13 @@ export default function CambridgeReading() {
       <main className="mx-auto max-w-6xl px-4 sm:px-6 py-7">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <div className="text-[11px] font-extrabold tracking-[.18em] text-sky-700">{level} READING</div>
+            <div className={`text-[11px] font-extrabold tracking-[.18em] ${AC.strongText}`}>{level} READING</div>
             <h1 className="mt-1 text-3xl sm:text-4xl font-extrabold">{partMeta(level).labels[partId]} {partMeta(level).desc[partId]}</h1>
             <p className="mt-2 text-slate-500">{partMeta(level).help[partId]}</p>
           </div>
-          <div className="flex items-center gap-3 rounded-2xl border border-sky-200 bg-sky-50 px-4 py-3">
+          <div className={`flex items-center gap-3 rounded-2xl border px-4 py-3 ${AC.timerBox}`}>
             <button onClick={() => setTimerOn(t => !t)}
-              className={`rounded-xl px-4 py-2 font-mono text-sm font-bold transition ${timerOn ? 'bg-sky-500 text-white' : 'bg-white text-slate-600 shadow-sm'}`}>
+              className={`rounded-xl px-4 py-2 font-mono text-sm font-bold transition ${timerOn ? AC.timerOn : AC.timerOff}`}>
               ⏱ {fmtTime(timer)}
             </button>
             <div className="min-w-20 text-right text-xs text-slate-500">
@@ -541,9 +609,7 @@ export default function CambridgeReading() {
                 <button key={i} onClick={() => setBatchIdx(i)}
                   aria-current={batchIdx === i ? 'page' : undefined}
                   className={`rounded-xl border px-3 py-3 text-sm font-extrabold transition ${
-                    batchIdx === i
-                      ? 'border-sky-500 bg-sky-500 text-white shadow-sm'
-                      : 'border-sky-100 bg-sky-50 text-sky-800 hover:border-sky-300'
+                    batchIdx === i ? AC.chipActive : AC.chipIdle
                   }`}
                 >{i + 1}</button>
               ))}
@@ -563,8 +629,8 @@ export default function CambridgeReading() {
                   aria-current={part5Mode === 'official' && part5Id === test.id ? 'page' : undefined}
                   className={`rounded-xl border px-3 py-3 text-sm font-extrabold transition ${
                     part5Mode === 'official' && part5Id === test.id
-                      ? 'border-sky-500 bg-sky-500 text-white shadow-sm'
-                      : 'border-sky-100 bg-sky-50 text-sky-800 hover:border-sky-300'
+                      ? 'border-emerald-600 bg-emerald-600 text-white shadow-sm'
+                      : 'border-emerald-100 bg-emerald-50 text-emerald-800 hover:border-emerald-300'
                   }`}
                 >{test.id}</button>
               ))}
@@ -582,8 +648,8 @@ export default function CambridgeReading() {
             <p className="text-[11px] font-bold text-slate-400 tracking-widest mb-2">计时器</p>
             <button onClick={() => setTimerOn(t => !t)}
               className={`w-full flex items-center justify-center gap-1.5 py-2 rounded-xl font-mono font-bold text-sm transition-all ${
-                timerOn ? timer < 300 ? 'bg-red-100 text-red-600' : 'bg-sky-100 text-sky-700'
-                        : 'bg-slate-50 text-slate-500 hover:bg-sky-50 hover:text-sky-700'
+                timerOn ? timer < 300 ? 'bg-red-100 text-red-600' : AC.sideOn
+                        : AC.sideOff
               }`}>
               ⏱ {fmtTime(timer)}
             </button>
@@ -594,7 +660,7 @@ export default function CambridgeReading() {
                   <span>{batchAnswered}/{batchQs.length}</span>
                 </div>
                 <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-sky-500 rounded-full transition-all"
+                  <div className={`h-full ${AC.solid} rounded-full transition-all`}
                     style={{ width: batchQs.length ? `${batchAnswered/batchQs.length*100}%` : '0%' }} />
                 </div>
               </div>
@@ -705,9 +771,9 @@ export default function CambridgeReading() {
                 {/* Official source-scan layout: original paper on the left, answer sheet on the right. */}
                 {partId < 5 && currentBatch?.scanPages && (
                   <div>
-                    <div className="mb-5 flex flex-wrap items-center justify-between gap-2 rounded-xl bg-emerald-50 px-4 py-3 text-sm">
-                      <strong className="text-emerald-900">{currentBatch.testTitle}</strong>
-                      <span className="text-emerald-700">已按原书页面核验 · 左侧可放大查看</span>
+                    <div className={`mb-5 flex flex-wrap items-center justify-between gap-2 rounded-xl px-4 py-3 text-sm ${AC.softBg}`}>
+                      <strong className={AC.strongText}>{currentBatch.testTitle}</strong>
+                      <span className={AC.strongText}>已按原书页面核验 · 左侧可放大查看</span>
                     </div>
                     <div className="space-y-8">
                       {currentBatch.scanPages.map((src, pageIndex) => {
@@ -739,8 +805,8 @@ export default function CambridgeReading() {
                                     className={`h-11 flex-1 rounded-lg border-2 text-base font-extrabold transition ${
                                       correct ? 'border-emerald-500 bg-emerald-100 text-emerald-800'
                                         : batchChecked && selected ? 'border-red-400 bg-red-100 text-red-700'
-                                        : selected ? 'border-sky-500 bg-sky-50 text-sky-700'
-                                        : 'border-slate-200 text-slate-500 hover:border-sky-300'
+                                        : selected ? AC.scanSel
+                                        : AC.scanIdle
                                     }`}>{label}</button>
                                 )
                               })}
@@ -772,7 +838,7 @@ export default function CambridgeReading() {
                             <span className={`w-7 h-7 flex-shrink-0 rounded-full flex items-center justify-center text-xs font-extrabold transition-colors ${
                               batchChecked && !retrying[q._key]
                                 ? isCorrect14(q) ? 'bg-emerald-500 text-white' : 'bg-red-400 text-white'
-                                : answers[q._key] ? 'bg-sky-500 text-white' : 'bg-sky-100 text-sky-700'
+                                : answers[q._key] ? AC.badgeOn : AC.badgeOff
                             }`}>{q.id}</span>
                           </div>
                           <Part1Stimulus q={q} />
@@ -1047,7 +1113,7 @@ export default function CambridgeReading() {
                               <span className="mb-2 block text-sm font-extrabold text-slate-600">第 {q.id} 题</span>
                               <div className="flex items-center gap-2">
                                 <input value={ua} disabled={p5Checked} onChange={e => setAnswers(a => ({ ...a, [q.id]: e.target.value }))}
-                                  className="min-w-0 flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2.5 outline-none focus:border-sky-400" placeholder="填写一个单词" />
+                                  className="min-w-0 flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2.5 outline-none focus:border-emerald-400" placeholder="填写一个单词" />
                                 {p5Checked && !ok && <span className="text-xs font-bold text-emerald-700">{q.answers[0]}</span>}
                               </div>
                             </label>
@@ -1086,12 +1152,12 @@ export default function CambridgeReading() {
                         const ok = p5Checked ? isP5Correct(q) : null
                         return (
                           <div key={q.id} className={`flex items-center gap-2 border rounded-xl px-3 py-2.5 transition-all ${
-                            !p5Checked ? 'border-gray-200 focus-within:border-violet-400'
+                            !p5Checked ? 'border-gray-200 focus-within:border-emerald-400'
                             : ok       ? 'border-emerald-300 bg-emerald-50'
                                        : 'border-red-300 bg-red-50'
                           }`}>
                             <span className={`text-xs font-extrabold w-7 flex-shrink-0 ${
-                              p5Checked ? ok ? 'text-emerald-600' : 'text-red-500' : 'text-violet-600'
+                              p5Checked ? ok ? 'text-emerald-600' : 'text-red-500' : 'text-emerald-600'
                             }`}>({q.id})</span>
                             <input type="text" disabled={p5Checked} value={ua}
                               onChange={e => setAnswers(a => ({ ...a, [q.id]: e.target.value }))}

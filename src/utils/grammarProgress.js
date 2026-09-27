@@ -1,4 +1,8 @@
-const KEY = 'mars_grammar_progress_v1'
+const KEYS = {
+  KET: 'mars_grammar_progress_v1',
+  PET: 'mars_grammar_progress_pet_v1',
+}
+const storageKey = level => (level === 'PET' ? KEYS.PET : KEYS.KET)
 export const GRAMMAR_MODES = ['questions', 'blanks', 'corrections']
 
 function normalizeRecord(value) {
@@ -9,9 +13,9 @@ function normalizeRecord(value) {
   return { ...value, started, completed }
 }
 
-export function readGrammarProgress() {
+export function readGrammarProgress(level = 'KET') {
   try {
-    const raw = JSON.parse(localStorage.getItem(KEY) || '{}')
+    const raw = JSON.parse(localStorage.getItem(storageKey(level)) || '{}')
     return Object.fromEntries(Object.entries(raw).map(([unit, value]) => [unit, normalizeRecord(value)]))
   } catch { return {} }
 }
@@ -28,22 +32,22 @@ export function grammarUnitStatus(progress, unitNum) {
   }
 }
 
-function updateMode(unitNum, mode, complete) {
+function updateMode(unitNum, mode, complete, level = 'KET') {
   if (!GRAMMAR_MODES.includes(mode)) return
   try {
-    const progress = readGrammarProgress()
+    const progress = readGrammarProgress(level)
     const record = normalizeRecord(progress[unitNum])
     const started = [...new Set([...record.started, mode])]
     const completed = complete ? [...new Set([...record.completed, mode])] : record.completed
     progress[unitNum] = { started, completed, updatedAt: new Date().toISOString() }
-    localStorage.setItem(KEY, JSON.stringify(progress))
+    localStorage.setItem(storageKey(level), JSON.stringify(progress))
   } catch { /* local storage may be unavailable */ }
 }
 
-export function markGrammarModeStarted(unitNum, mode) {
-  updateMode(unitNum, mode, false)
+export function markGrammarModeStarted(unitNum, mode, level = 'KET') {
+  updateMode(unitNum, mode, false, level)
 }
 
-export function markGrammarModeCompleted(unitNum, mode) {
-  updateMode(unitNum, mode, true)
+export function markGrammarModeCompleted(unitNum, mode, level = 'KET') {
+  updateMode(unitNum, mode, true, level)
 }

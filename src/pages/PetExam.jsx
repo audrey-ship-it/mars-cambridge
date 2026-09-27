@@ -11,6 +11,33 @@ import { petListeningTests } from '../data/petListeningData'
 import { petReadingTests } from '../data/petReadingData'
 import { petWritingTests } from '../data/petWritingData'
 import { petSpeakingTests } from '../data/petSpeakingData'
+import { PET_LISTENING_SAMPLES } from '../data/petListeningSamples'
+import { PET_READING_SAMPLES } from '../data/petReadingSamples'
+import { PET_WRITING_SAMPLES } from '../data/petWritingSamples'
+import { PET_SPEAKING_SAMPLES } from '../data/petSpeakingSamples'
+import { PET_LISTENING_STANDARD } from '../data/petListeningStandard'
+import { PET_READING_STANDARD } from '../data/petReadingStandard'
+import { PET_WRITING_STANDARD } from '../data/petWritingStandard'
+import { PET_SPEAKING_STANDARD } from '../data/petSpeakingStandard'
+import { PET_TRAINER1_LISTENING } from '../data/petTrainer1Listening'
+import { PET_READING_TRAINER1 } from '../data/petReadingTrainer1'
+import { PET_WRITING_TRAINER1 } from '../data/petWritingTrainer1'
+import { PET_SPEAKING_TRAINER1 } from '../data/petSpeakingTrainer1'
+
+// 试卷类型：mock=模拟题（pet-mock-N），sample=官方样题（pet-sample-N），standard=标准版真题（pet-standard-N），trainer1=Trainer 1（pet-trainer1-N）
+const paperId = (kind, n) => (kind === 'sample' ? `pet-sample-${n}` : kind === 'standard' ? `pet-standard-${n}` : kind === 'trainer1' ? `pet-trainer1-${n}` : `pet-mock-${n}`)
+const resolvePetPaper = (kind, skill, n) => {
+  if (kind === 'sample') {
+    return { listening: PET_LISTENING_SAMPLES, reading: PET_READING_SAMPLES, writing: PET_WRITING_SAMPLES, speaking: PET_SPEAKING_SAMPLES }[skill][n - 1]
+  }
+  if (kind === 'standard') {
+    return { listening: PET_LISTENING_STANDARD, reading: PET_READING_STANDARD, writing: PET_WRITING_STANDARD, speaking: PET_SPEAKING_STANDARD }[skill][n - 1]
+  }
+  if (kind === 'trainer1') {
+    return { listening: PET_TRAINER1_LISTENING, reading: PET_READING_TRAINER1, writing: PET_WRITING_TRAINER1, speaking: PET_SPEAKING_TRAINER1 }[skill][n - 1]
+  }
+  return { listening: petListeningTests, reading: petReadingTests, writing: petWritingTests, speaking: petSpeakingTests }[skill][n - 1]
+}
 
 const DURATION_LABEL = totalSeconds => `${String(Math.floor(totalSeconds / 60)).padStart(2, '0')}:${String(totalSeconds % 60).padStart(2, '0')}`
 const ABCD = ['A', 'B', 'C', 'D']
@@ -19,24 +46,24 @@ const ABC = ['A', 'B', 'C']
 /* ══════════════════════════════
    PET ExamShell —— 共享外壳（紫色主题，含返回总览、Part 进度、计时器）
 ══════════════════════════════ */
-function PetExamShell({ testN, section, parts, partIndex, allAnswers, isDone, onReset, timerSeconds, timerPaused, onToggleTimer, totalMinutes, children }) {
+function PetExamShell({ testN, kind = 'mock', section, parts, partIndex, allAnswers, isDone, onReset, timerSeconds, timerPaused, onToggleTimer, totalMinutes, children }) {
   const [level, setLevel] = useExamLevel()
   return (
     <CambridgeLayout activeModule="exams" level={level} setLevel={setLevel}>
       <header className="border-b border-slate-100 bg-white px-6 py-4">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-2">
-          <Link to={`/cambridge/exams/pet-mock-${testN}`} className="group mr-2 flex items-center gap-2 rounded-xl border border-violet-200 bg-violet-50 px-4 py-2.5 text-sm font-extrabold text-violet-800">
-            <svg className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <Link to={`/cambridge/exams/${paperId(kind, testN)}`} className="group mr-2 flex items-center gap-2 rounded-xl border border-violet-200 bg-violet-50 px-4 py-2.5 text-sm font-extrabold text-violet-800">
+            <svg className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
-            <span>模拟题总览</span>
+            <span>试卷总览</span>
           </Link>
-          <div className="mr-2 rounded-xl bg-violet-700 px-4 py-2.5 text-sm font-extrabold text-white">
+          <div className="mr-2 rounded-xl bg-violet-600 px-4 py-2.5 text-sm font-extrabold text-white">
             {section === 'reading' ? `📖 阅读与写作模考 · ${totalMinutes || 45}分钟` : section === 'listening' ? '🎧 听力模考 · 约30分钟' : section === 'writing' ? '✍️ 写作模考 · 45分钟' : '🎤 口语模考 · 12–17分钟'}
           </div>
           {parts.map((p, index) => {
             const finished = allAnswers[index] !== undefined
-            return <span key={p.part} className={`rounded-xl border px-4 py-2.5 text-sm font-extrabold ${index === partIndex && !isDone ? 'border-violet-700 bg-violet-700 text-white' : finished || isDone ? 'border-violet-200 bg-violet-50 text-violet-700' : 'border-slate-200 bg-white text-slate-400'}`}>Part {p.part}{finished || isDone ? ' ✓' : ''}</span>
+            return <span key={p.part} className={`rounded-xl border px-4 py-2.5 text-sm font-extrabold ${index === partIndex && !isDone ? 'border-violet-600 bg-violet-600 text-white' : finished || isDone ? 'border-violet-200 bg-violet-50 text-violet-700' : 'border-slate-200 bg-white text-slate-400'}`}>Part {p.part}{finished || isDone ? ' ✓' : ''}</span>
           })}
           {onToggleTimer ? (
             <button type="button" onClick={onToggleTimer} className={`ml-auto rounded-xl px-4 py-2.5 font-mono text-sm font-extrabold ${timerPaused ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-700'}`}>
@@ -73,19 +100,21 @@ function PetListeningPictureMCQ({ part, isLast, onDone }) {
     <div>
       <div className="space-y-5">
         {part.items.map((item, i) => (
-          <div key={i} className="rounded-2xl border border-slate-200 p-4">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="grid h-7 w-7 place-items-center rounded-full bg-violet-600 text-xs font-extrabold text-white">{i + 1}</span>
-              <p className="text-sm font-semibold text-slate-800">{item.q}</p>
+          <div key={i} className="rounded-[22px] border border-slate-200 bg-white p-5 md:p-6">
+            <div className="flex items-start gap-4 mb-3">
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-violet-100 text-base font-extrabold text-violet-700">{i + 1}</span>
+              <p className="min-w-0 flex-1 text-lg font-extrabold leading-7 text-slate-900">{item.q}</p>
             </div>
             {/* 题目整图（含 A/B/C 三幅图）只渲染一次，铺满宽度，与 KET 一致 */}
-            <img src={item.image} alt={`第 ${i + 1} 题选项图`} className="mx-auto w-full rounded-xl border border-slate-200 bg-white object-contain" />
-            <div className="mt-3 grid gap-2 sm:grid-cols-3">
+            <div className="mx-auto max-w-[720px] overflow-hidden rounded-2xl border border-slate-200 bg-[#fafafa] p-2">
+              <img src={item.image} alt={`第 ${i + 1} 题选项图`} className="w-full rounded-xl bg-white object-contain" />
+            </div>
+            <div className="mt-4 grid grid-cols-3 gap-2">
               {ABC.map((label, idx) => {
                 const selected = answers[i] === idx
                 return (
                   <button key={label} type="button" onClick={() => pick(i, idx)}
-                    className={`rounded-xl border-2 px-4 py-3 text-base font-extrabold transition ${selected ? 'border-violet-600 bg-violet-50 text-violet-700' : 'border-slate-200 text-slate-500 hover:border-violet-300 hover:text-violet-600'}`}>
+                    className={`h-11 rounded-xl border-2 text-base font-extrabold transition ${selected ? 'border-violet-600 bg-violet-50 text-violet-700' : 'border-slate-200 text-slate-500 hover:border-violet-300 hover:text-violet-600'}`}>
                     {label}
                   </button>
                 )
@@ -115,18 +144,21 @@ function PetListeningMCQ({ part, isLast, onDone }) {
     <div>
       <div className="space-y-4">
         {part.items.map((item, i) => (
-          <div key={i} className="rounded-2xl border border-slate-200 p-4">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="grid h-7 w-7 place-items-center rounded-full bg-violet-600 text-xs font-extrabold text-white">{i + 1}</span>
-              <p className="text-sm font-semibold text-slate-800">{item.q}</p>
+          <div key={i} className="rounded-[22px] border border-slate-200 bg-white p-5 md:p-6">
+            <div className="flex items-start gap-4 mb-3">
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-violet-100 text-base font-extrabold text-violet-700">{i + 1}</span>
+              <p className="min-w-0 flex-1 text-lg font-extrabold leading-7 text-slate-900">{item.q}</p>
             </div>
-            <div className="grid gap-2 sm:grid-cols-3">
+            <div className="grid gap-2">
               {item.opts.map((opt, idx) => {
                 const selected = answers[i] === idx
                 return (
                   <button key={idx} type="button" onClick={() => pick(i, idx)}
-                    className={`rounded-xl border-2 px-3 py-2.5 text-left text-sm font-semibold transition ${selected ? 'border-violet-500 bg-violet-50 text-violet-800' : 'border-slate-200 text-slate-700 hover:border-violet-300'}`}>
-                    <strong className="mr-1">{ABC[idx]}.</strong>{opt}
+                    className={`flex items-center gap-3 rounded-xl border px-4 py-3 text-left font-bold transition ${selected ? 'border-violet-500 bg-violet-50 text-violet-800' : 'border-slate-200 text-slate-700 hover:border-violet-300'}`}>
+                    <span className={`grid h-7 w-7 shrink-0 place-items-center rounded-full text-xs font-extrabold ${selected ? 'bg-violet-600 text-white' : 'bg-violet-100 text-violet-700'}`}>
+                      {ABC[idx]}
+                    </span>
+                    <span className="text-sm font-medium text-slate-800">{opt}</span>
                   </button>
                 )
               })}
@@ -155,10 +187,15 @@ function PetListeningBlanks({ part, isLast, onDone }) {
     <div>
       <div className="space-y-3">
         {part.items.map((item, i) => (
-          <div key={i} className="rounded-xl border border-slate-200 p-3">
-            <label className="block text-xs font-semibold text-slate-600">{item.q}</label>
-            <input type="text" value={answers[i]} onChange={e => set(i, e.target.value)}
-              className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold focus:border-violet-500 focus:outline-none" />
+          <div key={i} className="rounded-[22px] border border-slate-200 bg-white p-5 md:p-6">
+            <div className="flex items-start gap-4">
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-violet-100 text-base font-extrabold text-violet-700">{i + 1}</span>
+              <div className="min-w-0 flex-1">
+                <p className="text-lg font-extrabold leading-7 text-slate-900">{item.q}</p>
+                <input type="text" value={answers[i]} onChange={e => set(i, e.target.value)}
+                  className="mt-4 h-12 w-full rounded-xl border border-slate-200 px-4 text-lg font-bold text-slate-800 focus:border-violet-500 focus:outline-none" placeholder="输入听到的信息（1-2 个词或数字）" />
+              </div>
+            </div>
           </div>
         ))}
       </div>
@@ -239,8 +276,8 @@ function PetAudioPlayer({ src }) {
 /* ══════════════════════════════
    PET 听力模考主组件
 ══════════════════════════════ */
-export function PetListeningExam({ testN }) {
-  const test = petListeningTests[testN - 1]
+export function PetListeningExam({ testN, kind = 'mock' }) {
+  const test = resolvePetPaper(kind, 'listening', testN)
   const parts = [1, 2, 3, 4].map(n => ({ part: n, ...test.parts[n] }))
   const [partIndex, setPartIndex] = useState(0)
   const [allAnswers, setAllAnswers] = useState({})
@@ -258,10 +295,10 @@ export function PetListeningExam({ testN }) {
     }
   }
 
-  if (done) return <PetListeningFinalResult parts={parts} allAnswers={allAnswers} testN={testN} />
+  if (done) return <PetListeningFinalResult parts={parts} allAnswers={allAnswers} testN={testN} kind={kind} />
 
   return (
-    <PetExamShell testN={testN} section="listening" parts={parts} partIndex={partIndex} allAnswers={allAnswers}>
+    <PetExamShell testN={testN} kind={kind} section="listening" parts={parts} partIndex={partIndex} allAnswers={allAnswers}>
       <AnimatePresence mode="wait">
         <motion.div key={partIndex} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
           <div className="mb-5">
@@ -275,7 +312,7 @@ export function PetListeningExam({ testN }) {
 }
 
 /* PET 听力最终结果 */
-function PetListeningFinalResult({ parts, allAnswers, testN }) {
+function PetListeningFinalResult({ parts, allAnswers, testN, kind = 'mock' }) {
   const [level, setLevel] = useExamLevel()
 
   const partScores = parts.map((part, pi) => {
@@ -366,7 +403,7 @@ function PetListeningFinalResult({ parts, allAnswers, testN }) {
             </div>
           ))}
           <div className="flex gap-3 pb-4">
-            <Link to={`/cambridge/exams/pet-mock-${testN}`} className="flex-1 py-3.5 bg-violet-700 text-white font-bold rounded-2xl hover:bg-violet-800 text-sm text-center transition-colors">
+            <Link to={`/cambridge/exams/${paperId(kind, testN)}`} className="flex-1 py-3.5 bg-violet-700 text-white font-bold rounded-2xl hover:bg-violet-800 text-sm text-center transition-colors">
               返回总览 →
             </Link>
             <Link to="/cambridge/exams" className="flex-1 py-3.5 bg-white border border-slate-200 text-slate-600 font-bold rounded-2xl hover:border-slate-300 text-sm text-center transition-colors">
@@ -388,37 +425,49 @@ const PET_WRITING_TABS = [
   { id: 2, label: 'Part 2 · 故事' },
 ]
 
-export function PetWritingExam({ testN }) {
+export function PetWritingExam({ testN, kind = 'mock' }) {
   const [tabId, setTabId] = useState(0)
-  const test = petWritingTests[testN - 1]
+  const test = resolvePetPaper(kind, 'writing', testN)
   const item = test.items[tabId]
   const [level, setLevel] = useExamLevel()
+  const draftKeyPrefix = kind === 'sample' ? 'mars_pet_sample_writing_v1' : kind === 'standard' ? 'mars_pet_standard_writing_v1' : kind === 'trainer1' ? 'mars_pet_trainer1_writing_v1' : 'mars_pet_exam_writing_v1'
 
   return (
     <CambridgeLayout activeModule="exams" level={level} setLevel={setLevel}>
       <header className="border-b border-slate-100 bg-white px-6 py-4">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-2">
-          <Link to={`/cambridge/exams/pet-mock-${testN}`} className="group mr-2 flex items-center gap-2 rounded-xl border border-violet-200 bg-violet-50 px-4 py-2.5 text-sm font-extrabold text-violet-800">
+          <Link to={`/cambridge/exams/${paperId(kind, testN)}`} className="group mr-2 flex items-center gap-2 rounded-xl border border-violet-200 bg-violet-50 px-4 py-2.5 text-sm font-extrabold text-violet-800">
             <svg className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
-            <span>模拟题总览</span>
+            <span>试卷总览</span>
           </Link>
-          <div className="mr-2 rounded-xl bg-violet-700 px-4 py-2.5 text-sm font-extrabold text-white">✍️ 写作模考 · 45分钟</div>
+          <div className="mr-2 rounded-xl bg-violet-600 px-4 py-2.5 text-sm font-extrabold text-white">✍️ 写作模考 · 45分钟</div>
         </div>
       </header>
-      <main className="mx-auto max-w-3xl px-6 py-7">
-        <div className="flex gap-2 mb-5">
+      <main className="mx-auto max-w-6xl px-4 py-7 sm:px-6">
+        <div>
+          <div className="text-[11px] font-extrabold tracking-[.18em] text-violet-700">PET WRITING MOCK</div>
+          <h1 className="mt-1 text-3xl font-extrabold text-slate-950 sm:text-4xl">{item.title}</h1>
+          <p className="mt-2 text-slate-500">
+            {tabId === 0
+              ? '阅读情境邮件和旁批，写一封约 100 词的回信，必须用上全部四个旁批。'
+              : tabId === 1
+                ? 'Part 2 二选一：为杂志写一篇约 100 词的文章，回答题目中的问题。'
+                : 'Part 2 二选一：以给定句子开头，写一篇约 100 词的故事。'}
+          </p>
+        </div>
+        <div className="mb-5 mt-6 flex gap-2 overflow-x-auto">
           {PET_WRITING_TABS.map(tab => (
             <button key={tab.id} type="button" onClick={() => setTabId(tab.id)}
-              className={`rounded-xl px-4 py-2.5 text-sm font-extrabold transition ${tabId === tab.id ? 'bg-violet-700 text-white shadow-sm' : 'bg-white border border-slate-200 text-slate-500 hover:border-violet-300'}`}>
+              className={`whitespace-nowrap rounded-xl border px-4 py-2.5 text-sm font-extrabold transition ${tabId === tab.id ? 'border-violet-600 bg-violet-600 text-white shadow-sm' : 'border-slate-200 bg-white text-slate-500 hover:border-violet-300 hover:text-violet-700'}`}>
               {tab.label}
             </button>
           ))}
         </div>
         <section className="overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-sm">
           <div className="border-b border-slate-100 px-5 py-4 text-xs font-semibold text-slate-400">Test {testN} · {test.meta.collection}</div>
-          <WritingCard key={`${test.meta.id}-${tabId}`} w={item} wi={0} storageKey={`mars_pet_exam_writing_v1:test${testN}:item${tabId}:draft`} />
+          <WritingCard key={`${test.meta.id}-${tabId}`} w={item} wi={0} storageKey={`${draftKeyPrefix}:test${testN}:item${tabId}:draft`} />
         </section>
       </main>
     </CambridgeLayout>
@@ -452,9 +501,9 @@ function PetSpeakingReference({ text }) {
   )
 }
 
-export function PetSpeakingExam({ testN }) {
+export function PetSpeakingExam({ testN, kind = 'mock' }) {
   const [partId, setPartId] = useState(1)
-  const test = petSpeakingTests[testN - 1]
+  const test = resolvePetPaper(kind, 'speaking', testN)
   const part = test.parts[partId]
   const [level, setLevel] = useExamLevel()
   const { stop } = useTTS()
@@ -465,20 +514,30 @@ export function PetSpeakingExam({ testN }) {
     <CambridgeLayout activeModule="exams" level={level} setLevel={setLevel}>
       <header className="border-b border-slate-100 bg-white px-6 py-4">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-2">
-          <Link to={`/cambridge/exams/pet-mock-${testN}`} className="group mr-2 flex items-center gap-2 rounded-xl border border-violet-200 bg-violet-50 px-4 py-2.5 text-sm font-extrabold text-violet-800">
+          <Link to={`/cambridge/exams/${paperId(kind, testN)}`} className="group mr-2 flex items-center gap-2 rounded-xl border border-violet-200 bg-violet-50 px-4 py-2.5 text-sm font-extrabold text-violet-800">
             <svg className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
-            <span>模拟题总览</span>
+            <span>试卷总览</span>
           </Link>
-          <div className="mr-2 rounded-xl bg-violet-700 px-4 py-2.5 text-sm font-extrabold text-white">🎤 口语模考 · 12–17分钟</div>
+          <div className="mr-2 rounded-xl bg-violet-600 px-4 py-2.5 text-sm font-extrabold text-white">🎤 口语模考 · 12–17分钟</div>
         </div>
       </header>
-      <main className="mx-auto max-w-3xl px-6 py-7">
-        <div className="flex gap-2 mb-5">
+      <main className="mx-auto max-w-6xl px-4 py-7 sm:px-6">
+        <div>
+          <div className="text-[11px] font-extrabold tracking-[.18em] text-violet-700">PET SPEAKING MOCK</div>
+          <h1 className="mt-1 text-3xl font-extrabold text-slate-950 sm:text-4xl">{PET_SPEAKING_TABS.find(tab => tab.id === partId)?.label}</h1>
+          {(part.duration || part.instruction) && (
+            <p className="mt-2 text-slate-500">
+              {part.duration && <span className="mr-2 rounded-full bg-violet-100 px-2.5 py-0.5 text-xs font-bold text-violet-700">{part.duration}</span>}
+              {part.instruction}
+            </p>
+          )}
+        </div>
+        <div className="mb-5 mt-6 flex gap-2 overflow-x-auto">
           {PET_SPEAKING_TABS.map(tab => (
             <button key={tab.id} type="button" onClick={() => switchPart(tab.id)}
-              className={`rounded-xl px-4 py-2.5 text-sm font-extrabold transition ${partId === tab.id ? 'bg-violet-700 text-white shadow-sm' : 'bg-white border border-slate-200 text-slate-500 hover:border-violet-300'}`}>
+              className={`whitespace-nowrap rounded-xl border px-4 py-2.5 text-sm font-extrabold transition ${partId === tab.id ? 'border-violet-600 bg-violet-600 text-white shadow-sm' : 'border-slate-200 bg-white text-slate-500 hover:border-violet-300 hover:text-violet-700'}`}>
               {tab.label}
             </button>
           ))}
@@ -493,77 +552,107 @@ export function PetSpeakingExam({ testN }) {
   )
 }
 
+function PetSpeakingQA({ q, index }) {
+  return (
+    <li className="rounded-xl border border-slate-200 p-4">
+      <div className="flex gap-3">
+        <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-violet-100 text-xs font-extrabold text-violet-700">{index + 1}</span>
+        <strong className="text-base font-semibold leading-7 text-slate-800">{q.q}</strong>
+      </div>
+      <div className="ml-9"><PetSpeakingReference text={q.modelAnswer} /></div>
+    </li>
+  )
+}
+
 function PetSpeakingPart({ part, partId }) {
   if (partId === 1) {
     return (
-      <div className="space-y-3">
-        {part.phase1?.map((q, i) => (
-          <div key={i} className="rounded-xl border border-slate-200 p-4">
-            <div className="flex gap-3">
-              <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-violet-100 text-xs font-extrabold text-violet-700">{i + 1}</span>
-              <strong className="text-sm font-semibold leading-6 text-slate-800">{q.q}</strong>
+      <div className="space-y-6">
+        {!!part.phase1?.length && (
+          <section className="rounded-[24px] border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+            <h2 className="text-lg font-extrabold text-slate-900">第一阶段 · 固定问题</h2>
+            <p className="mt-1 text-xs text-slate-500">两位考生都会被问到，回答要自然完整。</p>
+            <ol className="mt-4 space-y-3">
+              {part.phase1.map((q, i) => <PetSpeakingQA key={i} q={q} index={i} />)}
+            </ol>
+          </section>
+        )}
+        {!!part.phase2?.length && (
+          <section className="rounded-[24px] border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+            <h2 className="text-lg font-extrabold text-slate-900">第二阶段 · 个性化问题</h2>
+            <p className="mt-1 text-xs text-slate-500">考官分别向两位考生提问，回答中补充理由和例子。</p>
+            <ol className="mt-4 space-y-3">
+              {part.phase2.map((q, i) => <PetSpeakingQA key={i} q={q} index={i} />)}
+            </ol>
+          </section>
+        )}
+      </div>
+    )
+  }
+  if (partId === 2) {
+    return (
+      <div className="grid gap-6 lg:grid-cols-2">
+        {part.photos.map((p, i) => (
+          <section key={i} className="overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-sm">
+            <div className="bg-slate-50 p-4">
+              <div className="mb-2 flex items-center justify-between">
+                <span className="rounded-full bg-violet-100 px-3 py-1 text-xs font-extrabold text-violet-700">考生 {i === 0 ? 'A' : 'B'}</span>
+                <span className="text-xs text-slate-400">主题：{p.topic}</span>
+              </div>
+              <img src={p.image} alt={`Photo ${i === 0 ? 'A' : 'B'}`} className="max-h-[380px] w-full rounded-2xl border border-slate-200 bg-white object-contain" />
             </div>
-            <div className="ml-9"><PetSpeakingReference text={q.modelAnswer} /></div>
-          </div>
-        ))}
-        {part.phase2?.map((q, i) => (
-          <div key={`p2-${i}`} className="rounded-xl border border-slate-200 p-4">
-            <div className="flex gap-3">
-              <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-violet-100 text-xs font-extrabold text-violet-700">{i + 1}</span>
-              <strong className="text-sm font-semibold leading-6 text-slate-800">{q.q}</strong>
+            <div className="p-5 sm:p-6">
+              <div className="flex flex-wrap gap-2">
+                {p.points?.map((pt, j) => (
+                  <span key={j} className="rounded-full border border-violet-200 bg-violet-50 px-3 py-1 text-xs font-semibold text-violet-700">{pt}</span>
+                ))}
+              </div>
+              <PetSpeakingReference text={p.modelAnswer} />
             </div>
-            <div className="ml-9"><PetSpeakingReference text={q.modelAnswer} /></div>
-          </div>
+          </section>
         ))}
       </div>
     )
   }
-  if (partId === 2 || partId === 4) {
+  if (partId === 4) {
     return (
-      <div className="space-y-4">
-        {partId === 2 && (
-          <div className="grid gap-4 sm:grid-cols-2">
-            {part.photos.map((p, i) => (
-              <div key={i} className="rounded-xl border border-slate-200 p-3">
-                <img src={p.image} alt={`Photo ${i === 0 ? 'A' : 'B'}`} className="mx-auto mb-2 h-40 w-auto rounded-lg" />
-                <strong className="block text-sm font-bold text-slate-800">{p.topic}</strong>
-                <ul className="mt-1 list-disc pl-5 text-xs text-slate-600">
-                  {p.points?.map((pt, j) => <li key={j}>{pt}</li>)}
-                </ul>
-                <PetSpeakingReference text={p.modelAnswer} />
-              </div>
-            ))}
-          </div>
-        )}
-        {partId === 4 && (
-          <div className="space-y-3">
-            {part.questions.map((q, i) => (
-              <div key={i} className="rounded-xl border border-slate-200 p-4">
-                <div className="flex gap-3">
-                  <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-violet-100 text-xs font-extrabold text-violet-700">{i + 1}</span>
-                  <strong className="text-sm font-semibold leading-6 text-slate-800">{q.q}</strong>
-                </div>
-                <div className="ml-9"><PetSpeakingReference text={q.modelAnswer} /></div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+      <section className="rounded-[24px] border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+        <ol className="space-y-3">
+          {part.questions.map((q, i) => <PetSpeakingQA key={i} q={q} index={i} />)}
+        </ol>
+      </section>
     )
   }
   if (partId === 3) {
     return (
-      <div className="rounded-xl border border-slate-200 p-4">
-        <strong className="block text-sm font-bold text-slate-800">{part.situation}</strong>
-        <p className="mt-2 text-sm text-slate-700">{part.instruction}</p>
-        {part.image && <img src={part.image} alt="Task" className="mt-3 mx-auto h-40 w-auto rounded-lg" />}
-        {part.options && (
-          <ul className="mt-3 list-disc pl-5 text-xs text-slate-600 space-y-1">
-            {part.options.map((o, i) => <li key={i}>{o}</li>)}
-          </ul>
-        )}
-        <PetSpeakingReference text={part.modelDialogue} />
-      </div>
+      <section className="overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-sm">
+        <div className="grid items-start lg:grid-cols-2">
+          {part.image && (
+            <div className="border-b border-slate-100 bg-slate-50 p-5 lg:border-b-0 lg:border-r">
+              <img src={part.image} alt="Task" className="max-h-[620px] w-full rounded-2xl border border-slate-200 bg-white object-contain" />
+            </div>
+          )}
+          <div className="p-6">
+            <div className="rounded-xl bg-amber-50 px-4 py-3 text-xs leading-5 text-amber-800">
+              情境：{part.situation}
+            </div>
+            <p className="mt-3 text-sm leading-7 text-slate-600">{part.instruction}</p>
+            {part.options && (
+              <div className="mt-3 flex flex-wrap gap-2">
+                {part.options.map((o, i) => (
+                  <span key={i} className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-600">{o}</span>
+                ))}
+              </div>
+            )}
+            {part.modelDialogue && (
+              <div className="mt-4 rounded-xl border border-violet-200 bg-violet-50 p-4">
+                <div className="mb-2 text-[10px] font-extrabold uppercase tracking-wider text-violet-700">示范对话</div>
+                <p className="whitespace-pre-line text-sm leading-7 text-slate-700">{part.modelDialogue}</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
     )
   }
   return null
@@ -633,7 +722,35 @@ function countPetReadingMistakes(part, answers = []) {
   return 0
 }
 
-/* ── Part 1 渲染：短文本 MCQ ── */
+/* ── Part 1 渲染：短文本 MCQ（版式与阅读专项一致：左刺激卡 + 右方格选项行） ── */
+function PetP1Stimulus({ q }) {
+  const text = <p className="text-[18px] text-slate-900 whitespace-pre-line leading-8">{q.content}</p>
+  if (q.type === 'text') return (
+    <div className="mx-auto max-w-[330px] rounded-[30px] border-[7px] border-slate-800 bg-slate-50 px-4 pb-7 pt-3 shadow-[0_16px_35px_rgba(15,23,42,.15)]">
+      <div className="mx-auto mb-7 h-1.5 w-16 rounded-full bg-slate-600" />
+      <div className="mb-3 text-center text-xs font-bold text-slate-500">{q.from || 'Message'}</div>
+      <div className="rounded-[20px_20px_6px_20px] bg-violet-50 px-5 py-5 text-left shadow-sm">{text}</div>
+    </div>
+  )
+  if (q.type === 'ad') return (
+    <div className="relative overflow-hidden rounded-2xl border-2 border-rose-300 bg-gradient-to-br from-rose-50 via-amber-50 to-orange-100 px-7 py-10 text-center shadow-[0_14px_35px_rgba(190,24,93,.10)]">
+      <span className="absolute right-4 top-4 rounded-full bg-rose-500 px-3 py-1 text-[10px] font-extrabold uppercase tracking-widest text-white">Advertisement</span>
+      <div className="pt-4 font-semibold">{text}</div>
+    </div>
+  )
+  return (
+    <div className="relative rounded-xl bg-[#e7d8af] p-3 sm:p-5 shadow-[0_14px_35px_rgba(71,55,25,.12)]">
+      <span className="absolute left-1/2 top-2 h-4 w-4 -translate-x-1/2 rounded-full border-2 border-white bg-red-500 shadow" />
+      <div className="min-h-[220px] border border-amber-200 bg-[#fffdf6] px-3 sm:px-7 py-7 sm:py-10 text-center shadow-[0_5px_14px_rgba(71,55,25,.14)] flex items-center justify-center">
+        <div>
+          {q.from && q.to && <div className="mb-2 text-xs font-semibold text-slate-500">From: {q.from} · To: {q.to}</div>}
+          {text}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function PetPart1Notice({ part, initialAnswers, redoOnly, isLast, onDone }) {
   const visibleIndexes = useMemo(() => part.questions.map((_, i) => i).filter(i => !redoOnly || initialAnswers?.[i] == null || String(initialAnswers[i]).trim() === ''), [part.questions, redoOnly, initialAnswers])
   const [answers, setAnswers] = useState(() => initialAnswers ? [...initialAnswers] : Array(part.questions.length).fill(null))
@@ -644,32 +761,38 @@ function PetPart1Notice({ part, initialAnswers, redoOnly, isLast, onDone }) {
 
   return (
     <div>
-      <div className="space-y-5">
+      <div>
         {part.questions.map((q, i) => {
           if (!visibleIndexes.includes(i)) return null
           const correct = checked && answers[i] === q.ans
           return (
-            <div key={i} className={`rounded-2xl border p-4 ${checked ? correct ? 'border-emerald-300 bg-emerald-50' : 'border-rose-300 bg-rose-50' : 'border-slate-200'}`}>
-              <div className="flex items-center gap-2 mb-3">
-                <span className="grid h-7 w-7 place-items-center rounded-full bg-violet-600 text-xs font-extrabold text-white">{q.n}</span>
-                <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{q.type}</span>
+            <div key={i} className="grid grid-cols-1 lg:grid-cols-[minmax(0,.9fr)_minmax(0,1.1fr)] gap-4 lg:gap-8 py-8 sm:py-10 border-b border-slate-300 last:border-b-0 items-center">
+              {/* 左：题号 + 刺激卡（与专项同款视觉） */}
+              <div className="min-w-0 w-full flex flex-col">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className={`w-7 h-7 flex-shrink-0 rounded-full flex items-center justify-center text-xs font-extrabold transition-colors ${checked ? (correct ? 'bg-emerald-500 text-white' : 'bg-rose-400 text-white') : answers[i] != null ? 'bg-violet-600 text-white' : 'bg-violet-100 text-violet-700'}`}>{q.n || i + 1}</span>
+                </div>
+                <PetP1Stimulus q={q} />
               </div>
-              <div className="rounded-xl bg-slate-50 px-4 py-3 mb-3">
-                {q.from && q.to && <div className="text-xs text-slate-500 mb-1">From: {q.from} · To: {q.to}</div>}
-                <p className="text-sm font-semibold text-slate-800 whitespace-pre-line">{q.content}</p>
-              </div>
-              <div className="grid gap-2 sm:grid-cols-3">
+              {/* 右：方格选项行 */}
+              <div className="min-w-0 flex flex-col justify-center space-y-3">
+                <h3 className="text-[20px] font-extrabold text-[#30284d]">Choose the correct answer.</h3>
                 {q.opts.map((opt, idx) => {
                   const selected = answers[i] === idx
+                  const right = checked && q.ans === idx
+                  const wrong = checked && selected && q.ans !== idx
                   return (
                     <button key={idx} type="button" disabled={checked} onClick={() => pick(i, idx)}
-                      className={`rounded-xl border-2 px-3 py-2.5 text-left text-sm font-semibold transition ${checked && q.ans === idx ? 'border-emerald-500 bg-emerald-100 text-emerald-800' : checked && selected ? 'border-rose-400 bg-rose-100 text-rose-700' : selected ? 'border-violet-500 bg-violet-50 text-violet-800' : 'border-slate-200 text-slate-700 hover:border-violet-300'}`}>
-                      <strong className="mr-1">{ABC[idx]}.</strong>{opt}
+                      className={`flex items-center gap-3 sm:gap-5 w-full text-left py-2 transition-all ${checked && !right && !wrong ? 'opacity-45' : ''}`}>
+                      <span className={`w-9 h-9 sm:w-11 sm:h-11 flex-shrink-0 border-2 shadow-sm transition-colors ${right ? 'border-emerald-500 bg-emerald-50 text-emerald-600' : wrong ? 'border-rose-400 bg-rose-50 text-rose-500' : selected ? 'border-violet-500 bg-violet-50 text-violet-700' : 'border-slate-200 bg-white'} flex items-center justify-center font-bold text-sm`}>
+                        {(right || (selected && !checked)) ? ABC[idx] : ''}
+                      </span>
+                      <span className="select-text cursor-text text-[15px] sm:text-[18px] leading-snug text-[#30284d]">{opt}</span>
                     </button>
                   )
                 })}
+                {checked && !correct && <p className="text-xs text-rose-600">正确：{ABC[q.ans]}</p>}
               </div>
-              {checked && !correct && <p className="mt-2 text-xs text-rose-600">正确：{ABC[q.ans]}</p>}
             </div>
           )
         })}
@@ -695,41 +818,48 @@ function PetPart2PersonMatch({ part, initialAnswers, redoOnly, isLast, onDone })
 
   return (
     <div>
-      <div className="grid gap-5 lg:grid-cols-2">
+      <div className="grid gap-5 lg:grid-cols-[minmax(0,1.25fr)_minmax(400px,.75fr)] items-start">
         <div>
           <div className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">课程选项 A-H</div>
-          <div className="space-y-2">
+          <div className="space-y-4 lg:max-h-[125vh] lg:overflow-y-auto lg:pr-2 lg:sticky lg:top-5">
             {part.options.map(o => (
-              <div key={o.label} className="rounded-xl border border-slate-200 p-3">
-                <div className="flex items-center gap-2">
-                  <span className="grid h-7 w-7 place-items-center rounded-full bg-violet-100 text-xs font-extrabold text-violet-700">{o.label}</span>
-                  <strong className="text-sm font-bold text-slate-800">{o.name}</strong>
+              <div key={o.label} className="bg-slate-50 rounded-2xl border border-slate-200 p-6">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="w-9 h-9 bg-violet-600 text-white text-base font-extrabold rounded-full flex items-center justify-center flex-shrink-0">{o.label}</span>
+                  <span className="font-bold text-slate-800 text-xl">{o.name}</span>
                 </div>
-                <p className="mt-1 text-xs text-slate-600 leading-6">{o.text}</p>
+                <p className="text-[17px] text-slate-700 leading-8">{o.text}</p>
               </div>
             ))}
           </div>
         </div>
         <div>
           <div className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">人物 Q6-10</div>
-          <div className="space-y-3">
+          <div className="space-y-4 lg:sticky lg:top-5">
             {part.questions.map((q, i) => {
               if (!visibleIndexes.includes(i)) return null
               const person = part.people.find(p => p.n === q.n) || part.people[i]
               const correct = checked && answers[i] === q.ans
               return (
-                <div key={i} className={`rounded-xl border p-3 ${checked ? correct ? 'border-emerald-300 bg-emerald-50' : 'border-rose-300 bg-rose-50' : 'border-slate-200'}`}>
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="grid h-7 w-7 place-items-center rounded-full bg-violet-600 text-xs font-extrabold text-white">{q.n}</span>
-                    <strong className="text-sm font-bold text-slate-800">{person?.name}</strong>
+                <div key={i} className={`rounded-xl border px-5 py-4 ${checked ? correct ? 'border-emerald-300 bg-emerald-50' : 'border-rose-300 bg-rose-50' : 'border-slate-200'}`}>
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className={`w-7 h-7 flex-shrink-0 rounded-full flex items-center justify-center text-xs font-extrabold transition-colors ${checked ? correct ? 'bg-emerald-500 text-white' : 'bg-rose-400 text-white' : answers[i] ? 'bg-violet-600 text-white' : 'bg-violet-100 text-violet-700'}`}>{q.n}</span>
+                    <span className="font-bold text-slate-800 text-lg">{person?.name}</span>
                   </div>
-                  <p className="text-xs text-slate-600 leading-6 mb-2">{person?.text}</p>
-                  <div className="flex flex-wrap gap-1.5">
+                  <p className="text-[15px] leading-6 text-slate-700 mb-4">{person?.text}</p>
+                  <div className="grid grid-cols-8 gap-1.5">
                     {part.options.map(o => {
                       const selected = answers[i] === o.label
+                      let cls = 'border-slate-200 text-slate-600 hover:border-violet-300'
+                      if (selected && !checked) cls = 'border-violet-500 bg-violet-50 text-violet-700'
+                      if (checked) {
+                        if (q.ans === o.label) cls = 'border-emerald-500 bg-emerald-100 text-emerald-800'
+                        else if (selected) cls = 'border-rose-400 bg-rose-100 text-rose-700'
+                        else cls = 'border-slate-100 text-slate-300'
+                      }
                       return (
                         <button key={o.label} type="button" disabled={checked} onClick={() => pick(i, o.label)}
-                          className={`rounded-lg border-2 px-2 py-1 text-xs font-bold transition ${checked && q.ans === o.label ? 'border-emerald-500 bg-emerald-100 text-emerald-800' : checked && selected ? 'border-rose-400 bg-rose-100 text-rose-700' : selected ? 'border-violet-500 bg-violet-50 text-violet-800' : 'border-slate-200 text-slate-600 hover:border-violet-300'}`}>
+                          className={`w-full aspect-square min-w-0 rounded-lg border-2 font-bold text-sm transition-all ${cls}`}>
                           {o.label}
                         </button>
                       )
@@ -763,24 +893,24 @@ function PetPart3ArticleMCQ({ part, initialAnswers, redoOnly, isLast, onDone }) 
 
   return (
     <div>
-      {part.author && <div className="mb-2 text-xs text-slate-500">作者：{part.author}</div>}
-      <div className="rounded-xl bg-slate-50 px-4 py-3 mb-5 whitespace-pre-line text-sm leading-7 text-slate-800">{part.passage}</div>
+      {part.author && <div className="mb-2 text-xs font-semibold text-slate-500">作者：{part.author}</div>}
+      <div className="rounded-2xl bg-slate-50 px-6 py-5 mb-5 whitespace-pre-line text-[17px] leading-8 text-slate-800">{part.passage}</div>
       <div className="space-y-4">
         {part.questions.map((q, i) => {
           if (!visibleIndexes.includes(i)) return null
           const correct = checked && answers[i] === q.ans
           return (
-            <div key={i} className={`rounded-2xl border p-4 ${checked ? correct ? 'border-emerald-300 bg-emerald-50' : 'border-rose-300 bg-rose-50' : 'border-slate-200'}`}>
-              <div className="flex items-center gap-2 mb-3">
-                <span className="grid h-7 w-7 place-items-center rounded-full bg-violet-600 text-xs font-extrabold text-white">{q.n}</span>
-                <p className="text-sm font-semibold text-slate-800">{q.text}</p>
+            <div key={i} className={`rounded-[22px] border bg-white p-5 md:p-6 ${checked ? correct ? 'border-emerald-300 bg-emerald-50' : 'border-rose-300 bg-rose-50' : 'border-slate-200'}`}>
+              <div className="flex items-start gap-3 mb-3">
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-violet-600 text-sm font-extrabold text-white">{q.n}</span>
+                <p className="min-w-0 flex-1 text-[15px] font-bold leading-7 text-slate-900">{q.text}</p>
               </div>
               <div className="grid gap-2 sm:grid-cols-2">
                 {q.opts.map((opt, idx) => {
                   const selected = answers[i] === idx
                   return (
                     <button key={idx} type="button" disabled={checked} onClick={() => pick(i, idx)}
-                      className={`rounded-xl border-2 px-3 py-2.5 text-left text-sm font-semibold transition ${checked && q.ans === idx ? 'border-emerald-500 bg-emerald-100 text-emerald-800' : checked && selected ? 'border-rose-400 bg-rose-100 text-rose-700' : selected ? 'border-violet-500 bg-violet-50 text-violet-800' : 'border-slate-200 text-slate-700 hover:border-violet-300'}`}>
+                      className={`rounded-xl border-2 px-3 py-2.5 text-left text-[15px] font-semibold leading-6 transition ${checked && q.ans === idx ? 'border-emerald-500 bg-emerald-100 text-emerald-800' : checked && selected ? 'border-rose-400 bg-rose-100 text-rose-700' : selected ? 'border-violet-500 bg-violet-50 text-violet-800' : 'border-slate-200 text-slate-700 hover:border-violet-300'}`}>
                       <strong className="mr-1">{ABCD[idx]}.</strong>{opt}
                     </button>
                   )
@@ -812,22 +942,42 @@ function PetPart4GappedText({ part, initialAnswers, redoOnly, isLast, onDone }) 
 
   return (
     <div>
-      {part.author && <div className="mb-2 text-xs text-slate-500">作者：{part.author}</div>}
+      {part.author && <div className="mb-2 text-xs font-semibold text-slate-500">作者：{part.author}</div>}
       <div className="grid gap-5 lg:grid-cols-2 items-start">
         <div className="min-w-0">
           <div className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">文章（5 处空缺）</div>
-          <div className="rounded-xl bg-slate-50 px-4 py-3 text-sm leading-7 text-slate-800 whitespace-pre-line">
-            {(part.passage_segments || []).join('\n')}
+          <div className="rounded-2xl bg-slate-50 px-6 py-5 text-[17px] leading-8 text-slate-800">
+            {(part.passage_segments || []).flatMap((seg, i) => {
+              const q = part.questions[i]
+              const text = <span key={`seg-${i}`} style={{ whiteSpace: 'pre-wrap' }}>{seg}</span>
+              if (!q) return [text]
+              const ua = answers[i]
+              const gap = (
+                <span key={`gap-${i}`} className="inline-block mx-1.5 align-baseline">
+                  <span className="font-bold text-violet-600 text-base">({q.n})</span>
+                  {ua && !checked && (
+                    <span className="ml-1 px-1.5 py-0.5 rounded bg-violet-100 text-violet-700 text-xs font-bold align-baseline">{ua}</span>
+                  )}
+                  {checked && (
+                    <span className={`ml-1 px-1.5 py-0.5 rounded text-xs font-medium align-baseline ${ua === q.ans ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-600'}`}>
+                      {ua || '—'}
+                      {ua !== q.ans && <span className="ml-1 text-emerald-600">→{q.ans}</span>}
+                    </span>
+                  )}
+                </span>
+              )
+              return [text, gap]
+            })}
           </div>
         </div>
         <div className="space-y-3">
           <div className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">选项 A-H（其中 3 个为干扰项）</div>
           <div className="space-y-2">
             {part.options.map(o => (
-              <div key={o.label} className="rounded-xl border border-slate-200 p-3">
-                <div className="flex items-center gap-2">
-                  <span className="grid h-6 w-6 place-items-center rounded-full bg-violet-100 text-xs font-extrabold text-violet-700">{o.label}</span>
-                  <p className="text-sm text-slate-700">{o.text}</p>
+              <div key={o.label} className="rounded-2xl border border-slate-200 p-4">
+                <div className="flex items-center gap-3">
+                  <span className="grid w-8 h-8 shrink-0 place-items-center rounded-full bg-violet-600 text-sm font-extrabold text-white">{o.label}</span>
+                  <p className="min-w-0 flex-1 text-[15px] leading-7 text-slate-700">{o.text}</p>
                 </div>
               </div>
             ))}
@@ -839,14 +989,14 @@ function PetPart4GappedText({ part, initialAnswers, redoOnly, isLast, onDone }) 
         {part.questions.map((q, i) => {
           if (!visibleIndexes.includes(i)) return null
           return (
-            <div key={i} className="flex items-center gap-2">
-              <span className="text-xs font-bold text-slate-600 w-16">第 {q.n} 题</span>
-              <div className="flex flex-wrap gap-1.5">
+            <div key={i} className="flex items-center gap-3">
+              <span className="text-xs font-bold text-slate-600 w-16 flex-shrink-0">第 {q.n} 题</span>
+              <div className="grid flex-1 grid-cols-8 gap-1.5 min-w-0">
                 {part.options.map(o => {
                   const selected = answers[i] === o.label
                   return (
                     <button key={o.label} type="button" disabled={checked} onClick={() => pick(i, o.label)}
-                      className={`rounded-lg border-2 px-2 py-1 text-xs font-bold transition ${checked && q.ans === o.label ? 'border-emerald-500 bg-emerald-100 text-emerald-800' : checked && selected ? 'border-rose-400 bg-rose-100 text-rose-700' : selected ? 'border-violet-500 bg-violet-50 text-violet-800' : 'border-slate-200 text-slate-600 hover:border-violet-300'}`}>
+                      className={`w-full h-9 sm:h-10 min-w-0 rounded-lg border-2 font-bold text-sm transition ${checked && q.ans === o.label ? 'border-emerald-500 bg-emerald-100 text-emerald-800' : checked && selected ? 'border-rose-400 bg-rose-100 text-rose-700' : selected ? 'border-violet-500 bg-violet-50 text-violet-800' : 'border-slate-200 text-slate-600 hover:border-violet-300'}`}>
                       {o.label}
                     </button>
                   )
@@ -880,7 +1030,7 @@ function PetPart5ClozeMCQ({ part, initialAnswers, redoOnly, isLast, onDone }) {
       <div className="grid gap-5 lg:grid-cols-2 items-start">
         <div className="min-w-0">
           <div className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">文章（6 处空缺）</div>
-          <div className="rounded-xl bg-slate-50 px-4 py-3 text-sm leading-7 text-slate-800 whitespace-pre-line">
+          <div className="rounded-2xl bg-slate-50 px-6 py-5 text-[17px] leading-8 text-slate-800 whitespace-pre-line">
             {(part.passage_segments || []).join('\n')}
           </div>
         </div>
@@ -888,14 +1038,14 @@ function PetPart5ClozeMCQ({ part, initialAnswers, redoOnly, isLast, onDone }) {
           {part.questions.map((q, i) => {
             if (!visibleIndexes.includes(i)) return null
             return (
-              <div key={i} className="rounded-xl border border-slate-200 p-3">
-                <div className="text-xs font-bold text-slate-600 mb-2">第 {q.n} 题</div>
-                <div className="grid gap-2 sm:grid-cols-4">
+              <div key={i} className="rounded-2xl border border-slate-200 bg-white p-4">
+                <div className="text-sm font-extrabold text-slate-700 mb-2">第 {q.n} 题</div>
+                <div className="grid gap-2 sm:grid-cols-2">
                   {q.opts.map((opt, idx) => {
                     const selected = answers[i] === idx
                     return (
                       <button key={idx} type="button" disabled={checked} onClick={() => pick(i, idx)}
-                        className={`rounded-lg border-2 px-2 py-1.5 text-left text-xs font-semibold transition ${checked && q.ans === idx ? 'border-emerald-500 bg-emerald-100 text-emerald-800' : checked && selected ? 'border-rose-400 bg-rose-100 text-rose-700' : selected ? 'border-violet-500 bg-violet-50 text-violet-800' : 'border-slate-200 text-slate-700 hover:border-violet-300'}`}>
+                        className={`rounded-xl border-2 px-3 py-2 text-left text-[15px] font-semibold leading-6 transition ${checked && q.ans === idx ? 'border-emerald-500 bg-emerald-100 text-emerald-800' : checked && selected ? 'border-rose-400 bg-rose-100 text-rose-700' : selected ? 'border-violet-500 bg-violet-50 text-violet-800' : 'border-slate-200 text-slate-700 hover:border-violet-300'}`}>
                         <strong className="mr-1">{ABCD[idx]}.</strong>{opt}
                       </button>
                     )
@@ -930,7 +1080,7 @@ function PetPart6OpenCloze({ part, initialAnswers, redoOnly, isLast, onDone }) {
       <div className="grid gap-5 lg:grid-cols-2 items-start">
         <div className="min-w-0">
           <div className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">文章（6 处空缺）</div>
-          <div className="rounded-xl bg-slate-50 px-4 py-3 text-sm leading-7 text-slate-800 whitespace-pre-line">
+          <div className="rounded-2xl bg-slate-50 px-6 py-5 text-[17px] leading-8 text-slate-800 whitespace-pre-line">
             {(part.passage_segments || []).join('\n')}
           </div>
         </div>
@@ -943,7 +1093,7 @@ function PetPart6OpenCloze({ part, initialAnswers, redoOnly, isLast, onDone }) {
               <div key={i} className={`flex items-center gap-2 border rounded-xl px-3 py-2.5 ${!checked ? 'border-slate-200 focus-within:border-violet-400' : correct ? 'border-emerald-300 bg-emerald-50' : 'border-rose-300 bg-rose-50'}`}>
                 <span className={`text-xs font-extrabold w-8 flex-shrink-0 ${checked ? correct ? 'text-emerald-600' : 'text-rose-500' : 'text-violet-600'}`}>({q.n})</span>
                 <input type="text" disabled={checked} value={answers[i]} onChange={e => set(i, e.target.value)}
-                  className="min-w-0 flex-1 rounded-md border border-slate-200 px-2 py-1 text-sm font-semibold focus:outline-none focus:border-violet-500" placeholder="填词…" />
+                  className="min-w-0 flex-1 rounded-lg border border-slate-200 px-3 py-1 text-base font-semibold text-center focus:outline-none focus:border-violet-500" placeholder="填词…" />
                 {checked && !correct && <span className="text-xs text-emerald-600 font-semibold flex-shrink-0">{q.ans[0]}</span>}
               </div>
             )
@@ -973,11 +1123,17 @@ function PetReadingPartRouter({ part, initialAnswers, redoOnly, isLast, onDone }
 }
 
 /* PetReadingExam —— 含计时/进度保存/交卷/分 Part 得分/错题查看/只重做错题/刷新恢复 */
-export function PetReadingExam({ testN }) {
-  const test = petReadingTests[testN - 1]
+export function PetReadingExam({ testN, kind = 'mock' }) {
+  const test = resolvePetPaper(kind, 'reading', testN)
   const parts = useMemo(() => adaptPetReadingTest(test), [test])
   const TOTAL_MINUTES = 45
-  const progressKey = `mars_pet_exam_progress_v1:test${testN}:reading`
+  const progressKey = kind === 'sample'
+    ? `mars_pet_sample_progress_v1:test${testN}:reading`
+    : kind === 'standard'
+      ? `mars_pet_standard_progress_v1:test${testN}:reading`
+      : kind === 'trainer1'
+        ? `mars_pet_trainer1_progress_v1:test${testN}:reading`
+        : `mars_pet_exam_progress_v1:test${testN}:reading`
   const [savedProgress] = useState(() => {
     try {
       const value = JSON.parse(localStorage.getItem(progressKey) || 'null')
@@ -1092,11 +1248,11 @@ export function PetReadingExam({ testN }) {
     }
   }
 
-  if (done) return <PetReadingFinalResult parts={parts} allAnswers={allAnswers} elapsed={timerSeconds} onRestart={resetReading} onRedoWrong={redoMistakes} testN={testN} />
+  if (done) return <PetReadingFinalResult parts={parts} allAnswers={allAnswers} elapsed={timerSeconds} onRestart={resetReading} onRedoWrong={redoMistakes} testN={testN} kind={kind} />
 
   const part = parts[partIndex]
   return (
-    <PetExamShell testN={testN} section="reading" parts={parts} partIndex={partIndex} allAnswers={allAnswers}
+    <PetExamShell testN={testN} section="reading" kind={kind} parts={parts} partIndex={partIndex} allAnswers={allAnswers}
       onReset={resetReading} timerSeconds={timerSeconds} timerPaused={Boolean(pausedAt)} onToggleTimer={toggleTimer} totalMinutes={TOTAL_MINUTES}>
       <AnimatePresence mode="wait">
         <motion.div key={partIndex} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
@@ -1109,7 +1265,7 @@ export function PetReadingExam({ testN }) {
 }
 
 /* PetReadingFinalResult —— 阅读模考最终结果 */
-function PetReadingFinalResult({ parts, allAnswers, elapsed, onRestart, onRedoWrong, testN }) {
+function PetReadingFinalResult({ parts, allAnswers, elapsed, onRestart, onRedoWrong, testN, kind = 'mock' }) {
   const [level, setLevel] = useExamLevel()
   const [showReview, setShowReview] = useState(false)
 
@@ -1175,7 +1331,7 @@ function PetReadingFinalResult({ parts, allAnswers, elapsed, onRestart, onRedoWr
               <button type="button" onClick={() => setShowReview(v => !v)} className="rounded-xl bg-amber-400 px-5 py-3 font-extrabold text-amber-900">{showReview ? '收起错题解析' : `查看错题与答案（${wrongAnswers.length}）`}</button>
               {wrongAnswers.length > 0 && <button type="button" onClick={onRedoWrong} className="rounded-xl border border-violet-700 bg-violet-50 px-5 py-3 font-extrabold text-violet-800">重做错题（{wrongAnswers.length}）</button>}
               <button type="button" onClick={onRestart} className="rounded-xl border border-slate-200 px-5 py-3 font-extrabold text-slate-600">重新作答</button>
-              <Link to={`/cambridge/exams/pet-mock-${testN}`} className="rounded-xl bg-violet-700 px-5 py-3 font-extrabold text-white">返回总览</Link>
+              <Link to={`/cambridge/exams/${paperId(kind, testN)}`} className="rounded-xl bg-violet-700 px-5 py-3 font-extrabold text-white">返回总览</Link>
             </div>
           </div>
           {showReview && (

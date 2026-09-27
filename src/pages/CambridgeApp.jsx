@@ -44,7 +44,7 @@ export function CambridgeLayout({ children, activeModule, level, setLevel }) {
         {/* 模块图标 */}
         {SIDEBAR_MODULES.map(m => (
           <button key={m.id}
-            onClick={() => navigate(m.id === 'grammar' ? '/cambridge/grammar' : m.id === 'listening' ? '/cambridge/listening' : m.id === 'reading' ? '/cambridge/reading?view=center' : m.id === 'exams' ? '/cambridge/exams' : `/cambridge/${m.path}`)}
+            onClick={() => navigate(m.id === 'grammar' ? '/cambridge/grammar/category/tenses' : m.id === 'listening' ? '/cambridge/listening' : m.id === 'reading' ? '/cambridge/reading' : m.id === 'exams' ? '/cambridge/exams' : `/cambridge/${m.path}`)}
             title={m.label}
             className={`w-[78px] h-14 rounded-xl flex flex-col items-center justify-center gap-1 transition-all group ${
               activeModule === m.id
@@ -136,6 +136,7 @@ export function CambridgeLayout({ children, activeModule, level, setLevel }) {
 
 import { cambridgeWordsByLevel, LEVEL_WORD_COUNTS } from '../data/cambridgeWords'
 import { VOCAB_SETS, MUST_SPELL_TOPICS, mustSpell500, READING_FREQ_288, irregularVerbWords } from '../data/ketVocabSets'
+import { PET_MUST_SPELL_TOPICS, petMustSpell, PET_READING_FREQ, petIrregularVerbWords } from '../data/petVocabSets'
 
 const VOCAB_PHONETIC_OVERRIDES = {
   aunt: '/ɑːnt/', play: '/pleɪ/', 'pop music': '/ˈpɒp ˌmjuːzɪk/', cafe: '/ˈkæfeɪ/', yogurt: '/ˈjɒɡət/',
@@ -159,7 +160,8 @@ function getVocabPhonetic(word, fallback = '') {
   return fallback || VOCAB_PHONETIC_OVERRIDES[key] || VOCAB_PHONETIC_LOOKUP.get(key) || ''
 }
 import { COLLOCATION_BATCHES } from '../data/ketCollocations'
-import { getKetEnglishDefinition } from '../data/ketEnglishDefinitions'
+import { PET_COLLOCATION_BATCHES } from '../data/petCollocations'
+import { getVocabEnglishDefinition } from '../data/petEnglishDefinitions'
 
 function speak(word) {
   const u = new SpeechSynthesisUtterance(word)
@@ -231,17 +233,19 @@ function VocabCenterButton({ onClick, className = '' }) {
   )
 }
 
-/* ── 话题选择器 (for 必默500词 topic mode) ── */
-function TopicChooser({ onSelect, onBack }) {
+/* ── 话题选择器 (for 必默词汇 topic mode) ── */
+function TopicChooser({ level, onSelect, onBack, hideBack = false }) {
+  const topics = level === 'PET' ? PET_MUST_SPELL_TOPICS : MUST_SPELL_TOPICS
+  const hover = level === 'PET' ? 'hover:border-violet-300 hover:bg-violet-50/40' : 'hover:border-emerald-300 hover:bg-emerald-50/40'
   return (
     <div className="max-w-2xl mx-auto px-6 py-8">
-      <VocabCenterButton onClick={onBack} className="mb-6" />
+      {!hideBack && <VocabCenterButton onClick={onBack} className="mb-6" />}
       <h2 className="text-xl font-bold text-gray-900 mb-1">选择话题</h2>
       <p className="text-sm text-gray-400 mb-6">专项突破，每次专注一个主题</p>
       <div className="grid grid-cols-2 gap-3">
-        {MUST_SPELL_TOPICS.map(t => (
+        {topics.map(t => (
           <button key={t.id} onClick={() => onSelect(t)}
-            className="flex items-center gap-3 bg-white border border-gray-100 rounded-2xl px-4 py-3.5 hover:border-emerald-300 hover:bg-emerald-50/40 hover:shadow-sm transition-all text-left group">
+            className={`flex items-center gap-3 bg-white border border-gray-100 rounded-2xl px-4 py-3.5 ${hover} hover:shadow-sm transition-all text-left group`}>
             <span className="text-2xl">{t.emoji}</span>
             <div className="min-w-0">
               <div className="font-bold text-gray-900 text-sm leading-tight">{t.titleZh}</div>
@@ -266,15 +270,20 @@ function VocabPathIcon({ id }) {
     review: <><path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v5h5"/><path d="m9 12 2 2 4-5"/></>,
     saved: <><path d="M6 4h12v17l-6-4-6 4V4Z"/><path d="M9 9h6M9 12h4"/></>,
   }
-  return <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[id]}</svg>
+  const aliases = { petMust: paths.must500, petReading: paths.reading288, petIrregular: paths.irregular }
+  return <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[id] || aliases[id]}</svg>
 }
 
-function VocabSetChooser({ onSelect, onCollocation }) {
+function VocabSetChooser({ level, onSelect, onCollocation }) {
   const navigate = useNavigate()
+  const isPet = level === 'PET'
+  const lastResultKey = isPet ? 'mars_vocab_last_result_pet' : 'mars_vocab_last_result'
+  const reviewQueueKey = isPet ? 'mars_vocab_review_queue_pet_v1' : 'mars_vocab_review_queue_v1'
+  const masteryStorageKey = isPet ? 'mars_vocab_mastery_pet_v1' : 'mars_vocab_mastery_v1'
   const [savedCount, setSavedCount] = useState(() => readSavedWords().length)
   const [showTopics, setShowTopics] = useState(false)
   const [lastResult] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('mars_vocab_last_result') || 'null') } catch { return null }
+    try { return JSON.parse(localStorage.getItem(lastResultKey) || 'null') } catch { return null }
   })
 
   useEffect(() => {
@@ -286,8 +295,9 @@ function VocabSetChooser({ onSelect, onCollocation }) {
   if (showTopics) {
     return (
       <TopicChooser
+        level={level}
         onBack={() => setShowTopics(false)}
-        onSelect={(topic) => onSelect({ mode: 'topic', topic })}
+        onSelect={(topic) => onSelect({ mode: isPet ? 'petTopic' : 'topic', topic })}
       />
     )
   }
@@ -296,17 +306,15 @@ function VocabSetChooser({ onSelect, onCollocation }) {
   const accuracy = lastResult?.accuracy ?? 0
   const reviewWords = (() => {
     try {
-      const queue = JSON.parse(localStorage.getItem('mars_vocab_review_queue_v1') || '[]')
+      const queue = JSON.parse(localStorage.getItem(reviewQueueKey) || '[]')
       if (queue.length) return queue
 
       // Bring review records created before the dedicated queue was added into the new entry.
-      const mastery = JSON.parse(localStorage.getItem('mars_vocab_mastery_v1') || '{}')
+      const mastery = JSON.parse(localStorage.getItem(masteryStorageKey) || '{}')
       const needsReview = new Set(Object.entries(mastery).filter(([, record]) => record?.needsReview).map(([word]) => word))
-      const catalog = [
-        ...mustSpell500,
-        ...READING_FREQ_288,
-        ...(cambridgeWordsByLevel.KET || []),
-      ]
+      const catalog = isPet
+        ? [...petMustSpell, ...PET_READING_FREQ, ...(cambridgeWordsByLevel.PET || [])]
+        : [...mustSpell500, ...READING_FREQ_288, ...(cambridgeWordsByLevel.KET || [])]
       const recovered = []
       const seen = new Set()
       catalog.forEach(word => {
@@ -316,25 +324,40 @@ function VocabSetChooser({ onSelect, onCollocation }) {
           recovered.push(word)
         }
       })
-      if (recovered.length) localStorage.setItem('mars_vocab_review_queue_v1', JSON.stringify(recovered))
+      if (recovered.length) localStorage.setItem(reviewQueueKey, JSON.stringify(recovered))
       return recovered
     } catch { return [] }
   })()
   const wrongCount = reviewWords.length
 
   function openSet(vs) {
-    if (vs.mode === 'topic') setShowTopics(true)
+    if (vs.topicMode) setShowTopics(true)
     else if (vs.pending) return
     else onSelect({ mode: vs.mode })
   }
 
+  const mainSets = isPet
+    ? [
+        { id: 'petMust', title: 'PET 必默词汇', mode: 'petTopic', topicMode: true, count: petMustSpell.length, featured: true, arrow: true,
+          desc: `按 ${PET_MUST_SPELL_TOPICS.length} 个高频话题编排，覆盖 PET 考试核心拼写词。` },
+        { id: 'petReading', title: 'PET 阅读高频词', mode: 'petReading', count: PET_READING_FREQ.length, arrow: true,
+          desc: '精选 PET 阅读文章中反复出现的高频词，带音标和例句。' },
+        { id: 'official', title: 'B1 综合词表', mode: 'official', count: (cambridgeWordsByLevel.PET || []).length,
+          desc: '覆盖 PET (B1) 级别的完整大纲词汇，可按顺序系统学习。' },
+        { id: 'petIrregular', title: '不规则动词进阶', mode: 'petIrregular', count: petIrregularVerbWords.length, arrow: true,
+          desc: 'KET 之外的 B1 不规则动词过去式与过去分词变化。' },
+      ]
+    : VOCAB_SETS.map(vs => ({ ...vs, arrow: ['must500', 'reading288', 'irregular'].includes(vs.id) }))
+
   const cards = [
-    ...VOCAB_SETS.map(vs => ({ ...vs, action: () => openSet(vs) })),
+    ...mainSets.map(vs => ({ ...vs, action: () => openSet(vs) })),
     {
       id: 'collocations',
       title: '固定搭配专项',
-      subtitle: '270 组',
-      desc: '通过填空练习掌握常见搭配，帮助阅读理解和写作表达。',
+      subtitle: isPet ? '100 组' : '270 组',
+      desc: isPet
+        ? '通过填空练习掌握 B1 常见搭配，帮助阅读理解和写作表达。'
+        : '通过填空练习掌握常见搭配，帮助阅读理解和写作表达。',
       action: onCollocation,
     },
     {
@@ -358,7 +381,7 @@ function VocabSetChooser({ onSelect, onCollocation }) {
     <div className="max-w-7xl mx-auto px-6 lg:px-9 py-5 lg:py-6 min-h-full flex flex-col">
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
-          <div className="text-[11px] font-extrabold tracking-[.18em] text-emerald-700">KET VOCABULARY</div>
+          <div className={`text-[11px] font-extrabold tracking-[.18em] ${isPet ? 'text-violet-700' : 'text-emerald-700'}`}>{isPet ? 'PET VOCABULARY' : 'KET VOCABULARY'}</div>
           <div className="mt-1 flex items-baseline gap-4">
             <h1 className="text-4xl font-extrabold tracking-tight text-gray-950">我的词汇中心</h1>
             <p className="hidden md:block text-base text-gray-500">选择一个类别，开始今天的拼写与复习训练。</p>
@@ -374,14 +397,21 @@ function VocabSetChooser({ onSelect, onCollocation }) {
 
       <div className="mt-5 grid sm:grid-cols-2 lg:grid-cols-3 gap-3.5 flex-1">
         {cards.map((card, i) => {
-          const featured = i === 0
+          const featured = Boolean(card.featured)
           const gold = card.id === 'review'
-          const hasArrow = !card.disabled && (i === 0 || i === 1 || i === 3 || i === 4)
+          const cardBorder = isPet
+            ? (featured ? 'bg-violet-50/40 border-violet-500' : 'hover:border-violet-300')
+            : (featured ? 'bg-emerald-50/40 border-emerald-500' : 'hover:border-emerald-300')
+          const iconBox = isPet
+            ? (featured ? 'bg-violet-700 text-white' : 'bg-violet-50 text-violet-700')
+            : (featured ? 'bg-[#064e3b] text-white' : 'bg-emerald-50 text-emerald-700')
+          const deepPill = isPet ? 'bg-violet-700 text-white' : 'bg-[#064e3b] text-white'
+          const enterText = isPet ? 'text-violet-700' : 'text-emerald-700'
           return <div key={card.id} className="relative">
-          <button onClick={card.action} disabled={card.disabled} className={`relative overflow-hidden w-full h-full group text-left rounded-[22px] border p-5 lg:p-6 min-h-[190px] flex flex-col transition-all ${featured ? 'bg-emerald-50/40 border-emerald-500 hover:-translate-y-0.5 hover:shadow-md' : gold ? `bg-[#fffaf0] border-[#e8cf88] ${card.disabled ? 'cursor-default' : 'hover:-translate-y-0.5 hover:shadow-md'}` : 'bg-white border-gray-200 hover:border-emerald-300 hover:-translate-y-0.5 hover:shadow-md'}`}>
-            {featured && <div className="absolute top-0 inset-x-0 h-1.5 bg-[#064e3b]" />}
+          <button onClick={card.action} disabled={card.disabled} className={`relative overflow-hidden w-full h-full group text-left rounded-[22px] border p-5 lg:p-6 min-h-[190px] flex flex-col transition-all ${cardBorder} ${featured ? 'hover:-translate-y-0.5 hover:shadow-md' : gold ? `bg-[#fffaf0] border-[#e8cf88] ${card.disabled ? 'cursor-default' : 'hover:-translate-y-0.5 hover:shadow-md'}` : 'bg-white border-gray-200 hover:-translate-y-0.5 hover:shadow-md'}`}>
+            {featured && <div className={`absolute top-0 inset-x-0 h-1.5 ${isPet ? 'bg-violet-700' : 'bg-[#064e3b]'}`} />}
             <div className="relative flex items-start justify-between">
-              <span className={`w-11 h-11 rounded-2xl grid place-items-center ${featured ? 'bg-[#064e3b] text-white' : gold ? 'bg-[#f4c95d] text-[#684d00]' : 'bg-emerald-50 text-emerald-700'}`}><VocabPathIcon id={card.id}/></span>
+              <span className={`w-11 h-11 rounded-2xl grid place-items-center ${gold ? 'bg-[#f4c95d] text-[#684d00]' : iconBox}`}><VocabPathIcon id={card.id}/></span>
               <div className="flex items-center gap-2"><span className={`text-[10px] font-extrabold tracking-[.14em] ${gold ? 'text-[#b78a19]' : 'text-gray-300'}`}>0{i + 1}</span>{featured && <span className="rounded-full bg-[#f4c95d] text-[#604800] px-2.5 py-1 text-[10px] font-extrabold">今日推荐</span>}{gold && wrongCount > 0 && <span className="rounded-full bg-[#f4c95d] text-[#604800] px-2.5 py-1 text-[10px] font-extrabold">{wrongCount} 词</span>}</div>
             </div>
             <div className="relative mt-4">
@@ -390,10 +420,10 @@ function VocabSetChooser({ onSelect, onCollocation }) {
             </div>
             <div className="relative mt-auto pt-4 flex items-center justify-between text-sm">
               <span className="font-medium text-gray-500">{featured ? `${card.count} 词 · 按话题练习` : card.count ? `${card.count} ${card.countUnit || '词'}` : card.subtitle}</span>
-              <span className={`font-extrabold ${featured ? 'bg-[#064e3b] text-white rounded-xl px-3 py-2' : gold ? card.disabled ? 'text-[#b8a779]' : 'text-[#8a6500]' : 'text-emerald-700'}`}>{featured ? '选择话题 →' : gold ? card.disabled ? '暂无错词' : '开始复习 →' : '进入 →'}</span>
+              <span className={`font-extrabold ${featured ? `${deepPill} rounded-xl px-3 py-2` : gold ? card.disabled ? 'text-[#b8a779]' : 'text-[#8a6500]' : enterText}`}>{featured ? '选择话题 →' : gold ? card.disabled ? '暂无错词' : '开始复习 →' : '进入 →'}</span>
             </div>
           </button>
-          {hasArrow && <span className="hidden lg:grid absolute -right-[13px] top-1/2 -translate-y-1/2 z-10 w-7 h-7 rounded-full bg-[#f4c95d] text-[#064e3b] place-items-center text-sm font-extrabold shadow-sm">→</span>}
+          {card.arrow && <span className={`hidden lg:grid absolute -right-[13px] top-1/2 -translate-y-1/2 z-10 w-7 h-7 rounded-full bg-[#f4c95d] ${isPet ? 'text-violet-700' : 'text-[#064e3b]'} place-items-center text-sm font-extrabold shadow-sm`}>→</span>}
           </div>
         })}
       </div>
@@ -402,14 +432,33 @@ function VocabSetChooser({ onSelect, onCollocation }) {
 }
 
 /* ── 固定搭配练习 ── */
-function CollocationsContent({ onBack }) {
+function CollocationsContent({ level, onBack }) {
+  const isPet = level === 'PET'
+  const batches = isPet ? PET_COLLOCATION_BATCHES : COLLOCATION_BATCHES
+  const totalCount = isPet ? PET_COLLOCATION_BATCHES.reduce((s, b) => s + b.items.length, 0) : 270
   const [practiceMode, setPracticeMode] = useState(null) // 'phrase' | 'sentence'
   const [colBatch,   setColBatch]   = useState(0)
   const [colAnswers, setColAnswers] = useState({})
   const [colChecked, setColChecked] = useState(false)
   const [colScore,   setColScore]   = useState(null)
 
-  const currentBatch = COLLOCATION_BATCHES[colBatch]
+  const currentBatch = batches[colBatch]
+
+  const C = isPet ? {
+    tag: 'text-violet-700', cardBorder: 'border-violet-300 bg-violet-50/40',
+    deep: 'bg-violet-700 text-white', accent: 'text-violet-700',
+    blank: 'text-violet-700', inputBorder: 'border-violet-400',
+    batchActive: 'bg-violet-50 text-violet-700 ring-violet-200',
+    submit: 'bg-violet-600 hover:bg-violet-700',
+    scoreGood: 'text-violet-700',
+  } : {
+    tag: 'text-emerald-700', cardBorder: 'border-emerald-300 bg-emerald-50/40',
+    deep: 'bg-[#064e3b] text-white', accent: 'text-emerald-700',
+    blank: 'text-emerald-700', inputBorder: 'border-teal-400',
+    batchActive: 'bg-teal-50 text-teal-700 ring-teal-200',
+    submit: 'bg-teal-600 hover:bg-teal-700',
+    scoreGood: 'text-emerald-700',
+  }
 
   function phraseWithBlank(item) {
     const phrase = item.phrase
@@ -431,28 +480,28 @@ function CollocationsContent({ onBack }) {
       <div className="max-w-4xl mx-auto px-6 py-10">
         <VocabCenterButton onClick={onBack} />
         <div className="mt-6 text-center">
-          <div className="text-[11px] font-extrabold tracking-[.18em] text-emerald-700">KET COLLOCATIONS</div>
+          <div className={`text-[11px] font-extrabold tracking-[.18em] ${C.tag}`}>{isPet ? 'PET COLLOCATIONS' : 'KET COLLOCATIONS'}</div>
           <h1 className="mt-2 text-3xl font-extrabold text-gray-950">固定搭配专项</h1>
-          <p className="mt-2 text-sm text-gray-400">选择一种练习方式，两种模式使用同一套 270 个固定搭配。</p>
+          <p className="mt-2 text-sm text-gray-400">选择一种练习方式，两种模式使用同一套 {totalCount} 个固定搭配。</p>
         </div>
         <div className="mt-8 grid md:grid-cols-2 gap-5">
           <button onClick={() => setPracticeMode('phrase')}
-            className="group min-h-[260px] rounded-[26px] border border-emerald-300 bg-emerald-50/40 p-7 text-left hover:-translate-y-1 hover:shadow-lg transition-all">
-            <span className="grid h-12 w-12 place-items-center rounded-2xl bg-[#064e3b] text-xl font-extrabold text-white">Aa</span>
+            className={`group min-h-[260px] rounded-[26px] border p-7 text-left hover:-translate-y-1 hover:shadow-lg transition-all ${C.cardBorder}`}>
+            <span className={`grid h-12 w-12 place-items-center rounded-2xl text-xl font-extrabold ${C.deep}`}>Aa</span>
             <h2 className="mt-6 text-2xl font-extrabold text-gray-950">搭配填空</h2>
             <p className="mt-2 text-sm leading-relaxed text-gray-500">直接补全固定搭配，先记住词与词之间的组合。</p>
-            <div className="mt-6 rounded-xl border border-emerald-200 bg-white px-4 py-3 text-lg font-bold text-gray-700">
-              <span className="mr-2 font-semibold text-gray-500">例：</span>as soon <span className="text-emerald-700">___</span><span className="ml-3 font-semibold text-gray-700">一……就</span>
+            <div className="mt-6 rounded-xl border border-gray-200 bg-white px-4 py-3 text-lg font-bold text-gray-700">
+              <span className="mr-2 font-semibold text-gray-500">例：</span>as soon <span className={C.blank}>___</span><span className="ml-3 font-semibold text-gray-700">一……就</span>
             </div>
-            <span className="mt-5 inline-block font-extrabold text-emerald-700">开始练习 →</span>
+            <span className={`mt-5 inline-block font-extrabold ${C.accent}`}>开始练习 →</span>
           </button>
           <button onClick={() => setPracticeMode('sentence')}
-            className="group min-h-[260px] rounded-[26px] border border-gray-200 bg-white p-7 text-left hover:-translate-y-1 hover:border-emerald-300 hover:shadow-lg transition-all">
+            className={`group min-h-[260px] rounded-[26px] border border-gray-200 bg-white p-7 text-left hover:-translate-y-1 hover:shadow-lg transition-all ${isPet ? 'hover:border-violet-300' : 'hover:border-emerald-300'}`}>
             <span className="grid h-12 w-12 place-items-center rounded-2xl bg-[#f4c95d] text-[#684d00]"><VocabPathIcon id="collocations"/></span>
             <h2 className="mt-6 text-2xl font-extrabold text-gray-950">句中运用</h2>
             <p className="mt-2 text-sm leading-relaxed text-gray-500">在完整句子中填写搭配，理解真实语境中的用法。</p>
-            <div className="mt-6 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm font-semibold text-gray-700">Please tell me as soon <span className="text-emerald-700">___</span> you come back.</div>
-            <span className="mt-5 inline-block font-extrabold text-emerald-700">开始练习 →</span>
+            <div className="mt-6 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm font-semibold text-gray-700">Please tell me as soon <span className={C.blank}>___</span> you come back.</div>
+            <span className={`mt-5 inline-block font-extrabold ${C.accent}`}>开始练习 →</span>
           </button>
         </div>
       </div>
@@ -496,7 +545,7 @@ function CollocationsContent({ onBack }) {
         </button>
         <div className="w-px h-4 bg-gray-200" />
         <h2 className="text-xl font-bold text-gray-900">🔗 固定搭配专项</h2>
-        <span className="text-xs bg-teal-50 text-teal-700 border border-teal-100 font-semibold px-3 py-1 rounded-full">{practiceMode === 'phrase' ? '搭配填空' : '句中运用'} · 270 词组</span>
+        <span className={`text-xs border font-semibold px-3 py-1 rounded-full ${isPet ? 'bg-violet-50 text-violet-700 border-violet-100' : 'bg-teal-50 text-teal-700 border-teal-100'}`}>{practiceMode === 'phrase' ? '搭配填空' : '句中运用'} · {totalCount} 词组</span>
       </div>
 
       <div className="flex gap-4">
@@ -505,10 +554,10 @@ function CollocationsContent({ onBack }) {
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-3">
             <p className="text-sm font-bold text-gray-500 tracking-wider mb-3">批次</p>
             <div className="space-y-1 max-h-[420px] overflow-y-auto">
-              {COLLOCATION_BATCHES.map((b, i) => (
+              {batches.map((b, i) => (
                 <button key={i} onClick={() => switchBatch(i)}
                   className={`w-full text-left px-3 py-2.5 rounded-lg text-sm transition-all ${
-                    colBatch === i ? 'bg-teal-50 text-teal-700 font-bold ring-1 ring-teal-200' : 'text-gray-500 hover:bg-gray-50'
+                    colBatch === i ? C.batchActive + ' font-bold' : 'text-gray-500 hover:bg-gray-50'
                   }`}
                 >
                   <div className="font-bold">{b.label}</div>
@@ -543,7 +592,7 @@ function CollocationsContent({ onBack }) {
             <div className="px-6 py-4 border-b border-gray-50 flex items-center justify-between">
               <div>
                 <div className="font-extrabold text-gray-900">{currentBatch.label}</div>
-                <div className="text-xs text-gray-400 mt-0.5">第 {currentBatch.range} 个 · 共 270 个固定搭配</div>
+                <div className="text-xs text-gray-400 mt-0.5">第 {currentBatch.range} 个 · 共 {totalCount} 个固定搭配</div>
               </div>
             </div>
 
@@ -567,7 +616,7 @@ function CollocationsContent({ onBack }) {
                     <span className={`w-7 h-7 flex-shrink-0 rounded-full flex items-center justify-center text-xs font-extrabold mt-0.5 ${
                       colChecked
                         ? ok ? 'bg-emerald-500 text-white' : 'bg-red-400 text-white'
-                        : ua ? 'bg-teal-600 text-white' : 'bg-teal-100 text-teal-600'
+                        : ua ? (isPet ? 'bg-violet-600 text-white' : 'bg-teal-600 text-white') : (isPet ? 'bg-violet-100 text-violet-600' : 'bg-teal-100 text-teal-600')
                     }`}>{qi + 1}</span>
                     <div className="flex-1 min-w-0">
                       <p className={`${practiceMode === 'phrase' ? 'text-lg font-bold text-gray-800' : 'text-sm text-gray-700'} leading-relaxed`}>
@@ -583,7 +632,7 @@ function CollocationsContent({ onBack }) {
                         ) : (
                           <input type="text" value={ua}
                             onChange={e => setColAnswers(a => ({ ...a, [item.id]: e.target.value }))}
-                            className="inline-block mx-1 w-24 border-b-2 border-teal-400 bg-transparent text-center text-teal-700 font-medium focus:outline-none focus:border-teal-600 text-sm"
+                            className={`inline-block mx-1 w-24 border-b-2 bg-transparent text-center font-medium focus:outline-none text-sm ${isPet ? 'border-violet-400 text-violet-700 focus:border-violet-600' : 'border-teal-400 text-teal-700 focus:border-teal-600'}`}
                             placeholder=""
                           />
                         )}
@@ -625,12 +674,12 @@ function CollocationsContent({ onBack }) {
                     <span className="text-sm font-medium text-gray-400 ml-1">分</span>
                   </span>
                   <button onClick={reset}
-                    className="text-sm text-teal-600 hover:text-teal-800 font-semibold border border-teal-200 px-4 py-1.5 rounded-lg hover:bg-teal-50 transition-all">
+                    className={`text-sm font-semibold border px-4 py-1.5 rounded-lg transition-all ${isPet ? 'text-violet-600 hover:text-violet-800 border-violet-200 hover:bg-violet-50' : 'text-teal-600 hover:text-teal-800 border-teal-200 hover:bg-teal-50'}`}>
                     重新练习
                   </button>
-                  {colBatch < COLLOCATION_BATCHES.length - 1 && (
+                  {colBatch < batches.length - 1 && (
                     <button onClick={() => switchBatch(colBatch + 1)}
-                      className="text-sm text-white bg-teal-600 hover:bg-teal-700 font-semibold px-4 py-1.5 rounded-lg transition-all">
+                      className={`text-sm text-white font-semibold px-4 py-1.5 rounded-lg transition-all ${isPet ? 'bg-violet-600 hover:bg-violet-700' : 'bg-teal-600 hover:bg-teal-700'}`}>
                       下一批 →
                     </button>
                   )}
@@ -647,7 +696,7 @@ function CollocationsContent({ onBack }) {
                   disabled={currentBatch.items.filter(item => colAnswers[item.id]).length === 0}
                   className={`px-7 py-2.5 rounded-xl font-bold text-sm transition-all ${
                     currentBatch.items.filter(item => colAnswers[item.id]).length > 0
-                      ? 'bg-teal-600 text-white hover:bg-teal-700 shadow-sm shadow-teal-200/60'
+                      ? (isPet ? 'bg-violet-600 text-white hover:bg-violet-700 shadow-sm shadow-violet-200/60' : 'bg-teal-600 text-white hover:bg-teal-700 shadow-sm shadow-teal-200/60')
                       : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                   }`}>
                   提交答案 ✓
@@ -661,31 +710,119 @@ function CollocationsContent({ onBack }) {
   )
 }
 
+const WORDS_TABS = [
+  { id: 'must', label: '必默词汇' },
+  { id: 'reading', label: '阅读高频' },
+  { id: 'official', label: '综合词表' },
+  { id: 'irregular', label: '不规则动词' },
+  { id: 'collocations', label: '固定搭配' },
+]
+
+function WordsTabBar({ active, level, onTab }) {
+  const isPet = level === 'PET'
+  const activeStyle = isPet
+    ? 'border-violet-600 bg-violet-600 text-white shadow-sm'
+    : 'border-emerald-600 bg-emerald-600 text-white shadow-sm'
+  const tabStyle = isPet
+    ? 'border-violet-200 bg-violet-50 text-violet-800 hover:bg-violet-100'
+    : 'border-emerald-200 bg-emerald-50 text-emerald-800 hover:bg-emerald-100'
+  return (
+    <nav className="w-full border-b border-gray-100 bg-white px-6 py-4">
+      <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-2.5">
+        <button type="button" onClick={() => onTab('centre')}
+          className={`mr-1 rounded-xl border px-4 py-2.5 text-sm font-extrabold transition ${
+            active === 'centre'
+              ? activeStyle
+              : 'border-gray-200 bg-white text-gray-500 hover:border-gray-300'
+          }`}>
+          我的单词中心
+        </button>
+        {WORDS_TABS.map(tab => (
+          <button key={tab.id} type="button" onClick={() => onTab(tab.id)}
+            className={`rounded-xl border px-4 py-2.5 text-sm font-extrabold transition ${
+              active === tab.id ? activeStyle : tabStyle
+            }`}>
+            {tab.label}
+          </button>
+        ))}
+      </div>
+    </nav>
+  )
+}
+
 function WordsContent({ level }) {
   const [searchParams] = useSearchParams()
   const directMode = searchParams.get('mode')
+  const isPet = level === 'PET'
+  const directQueueKey = isPet ? 'mars_vocab_review_queue_pet_v1' : 'mars_vocab_review_queue_v1'
   const reviewChoice = (() => {
     if (directMode !== 'review') return null
     try {
-      const words = JSON.parse(localStorage.getItem('mars_vocab_review_queue_v1') || '[]')
+      const words = JSON.parse(localStorage.getItem(directQueueKey) || '[]')
       return Array.isArray(words) && words.length ? { mode: 'review', words } : null
     } catch { return null }
   })()
-  const directChoice = directMode === 'reading288' ? { mode: 'reading288' } : reviewChoice
-  const [view, setView] = useState(directChoice ? 'words' : 'choose') // 'choose' | 'words' | 'collocation'
+  const directChoice = directMode === 'reading288' ? { mode: isPet ? 'petReading' : 'reading288' } : reviewChoice
+  const [view, setView] = useState(directChoice ? 'words' : 'topics') // 'centre' | 'topics' | 'words' | 'collocation'
   const [vocabChoice, setVocabChoice] = useState(directChoice)
+  const [topicMode, setTopicMode] = useState(isPet ? 'petMust' : 'must')
+
+  function openTab(tab) {
+    setVocabChoice(null)
+    if (tab === 'centre') setView('centre')
+    else if (tab === 'must') { setTopicMode(isPet ? 'petMust' : 'must'); setView('topics') }
+    else if (tab === 'reading') { setVocabChoice({ mode: isPet ? 'petReading' : 'reading288' }); setView('words') }
+    else if (tab === 'official') { setVocabChoice({ mode: 'official' }); setView('words') }
+    else if (tab === 'irregular') { setVocabChoice({ mode: isPet ? 'petIrregular' : 'irregular' }); setView('words') }
+    else if (tab === 'collocations') setView('collocation')
+  }
 
   if (view === 'collocation') {
-    return <CollocationsContent onBack={() => setView('choose')} />
+    return (
+      <>
+        <WordsTabBar active="collocations" level={level} onTab={openTab} />
+        <CollocationsContent level={level} onBack={() => setView('centre')} />
+      </>
+    )
   }
   if (view === 'words' && vocabChoice) {
-    return <WordsPractice level={level} vocabChoice={vocabChoice} onBack={() => { setVocabChoice(null); setView('choose') }} />
+    const activeTab = ['topic', 'petTopic'].includes(vocabChoice.mode) ? 'must'
+      : ['reading288', 'petReading'].includes(vocabChoice.mode) ? 'reading'
+      : vocabChoice.mode === 'official' ? 'official'
+      : ['irregular', 'petIrregular'].includes(vocabChoice.mode) ? 'irregular'
+      : 'centre'
+    return (
+      <>
+        <WordsTabBar active={activeTab} level={level} onTab={openTab} />
+        <WordsPractice level={level} vocabChoice={vocabChoice} onBack={() => { setVocabChoice(null); setView('centre') }} />
+      </>
+    )
+  }
+  if (view === 'topics') {
+    return (
+      <>
+        <WordsTabBar active="must" level={level} onTab={openTab} />
+        <TopicChooser
+          level={level}
+          hideBack
+          onBack={() => setView('centre')}
+          onSelect={(topic) => {
+            setVocabChoice({ mode: topicMode === 'petMust' ? 'petTopic' : 'topic', topic })
+            setView('words')
+          }}
+        />
+      </>
+   )
   }
   return (
-    <VocabSetChooser
-      onSelect={choice => { setVocabChoice(choice); setView('words') }}
-      onCollocation={() => setView('collocation')}
-    />
+    <>
+      <WordsTabBar active="centre" level={level} onTab={openTab} />
+      <VocabSetChooser
+        level={level}
+        onSelect={choice => { setVocabChoice(choice); setView('words') }}
+        onCollocation={() => setView('collocation')}
+      />
+    </>
   )
 }
 
@@ -696,20 +833,20 @@ function WordsPractice({ level, vocabChoice, onBack }) {
       return vocabChoice.words.map(w => ({
         ...w,
         phonetic: getVocabPhonetic(w.word, w.phonetic),
-        english: getKetEnglishDefinition(w.word, w.english),
+        english: getVocabEnglishDefinition(w.word, w.english),
       }))
     }
     if (vocabChoice.mode === 'must500') {
       return mustSpell500.map(w => ({
         word: w.word, part: w.part, chinese: w.chinese,
-        phonetic: getVocabPhonetic(w.word), english: getKetEnglishDefinition(w.word), sentence: w.sentence,
+        phonetic: getVocabPhonetic(w.word), english: getVocabEnglishDefinition(w.word), sentence: w.sentence,
         topic: w.topicTitleZh,
       }))
     }
     if (vocabChoice.mode === 'reading288') {
       return READING_FREQ_288.map(w => ({
         word: w.word, part: w.part, chinese: w.chinese,
-        phonetic: w.phonetic, english: getKetEnglishDefinition(w.word), sentence: w.sentence,
+        phonetic: w.phonetic, english: getVocabEnglishDefinition(w.word), sentence: w.sentence,
         topic: '阅读高频词',
       }))
     }
@@ -717,21 +854,41 @@ function WordsPractice({ level, vocabChoice, onBack }) {
       const t = vocabChoice.topic
       return t.words.map(w => ({
         word: w.word, part: w.part, chinese: w.chinese,
-        phonetic: getVocabPhonetic(w.word), english: getKetEnglishDefinition(w.word), sentence: w.sentence,
+        phonetic: getVocabPhonetic(w.word), english: getVocabEnglishDefinition(w.word), sentence: w.sentence,
         topic: t.titleZh,
       }))
     }
     if (vocabChoice.mode === 'irregular') {
       return irregularVerbWords
     }
+    if (vocabChoice.mode === 'petTopic') {
+      const t = vocabChoice.topic
+      return t.words.map(w => ({
+        word: w.word, part: w.part, chinese: w.chinese,
+        phonetic: getVocabPhonetic(w.word), english: getVocabEnglishDefinition(w.word), sentence: w.sentence,
+        topic: t.titleZh,
+      }))
+    }
+    if (vocabChoice.mode === 'petReading') {
+      return PET_READING_FREQ.map(w => ({
+        word: w.word, part: w.part, chinese: w.chinese,
+        phonetic: w.phonetic, english: getVocabEnglishDefinition(w.word), sentence: w.sentence,
+        topic: 'PET 阅读高频词',
+      }))
+    }
+    if (vocabChoice.mode === 'petIrregular') {
+      return petIrregularVerbWords
+    }
     // official / default
     return (cambridgeWordsByLevel[level] || cambridgeWordsByLevel.KET)
       .filter(w => w.word && (w.chinese || w.english))
-      .map(w => ({ ...w, english: getKetEnglishDefinition(w.word, w.english) }))
+      .map(w => ({ ...w, english: getVocabEnglishDefinition(w.word, w.english) }))
   }
 
   const allWords = buildWordList()
-  const practiceIdentity = vocabChoice.mode === 'topic' ? `topic-${vocabChoice.topic.id}` : vocabChoice.mode
+  const practiceIdentity = vocabChoice.mode === 'topic' ? `topic-${vocabChoice.topic.id}`
+    : vocabChoice.mode === 'petTopic' ? `pet-topic-${vocabChoice.topic.id}`
+    : vocabChoice.mode
   const batchProgressKey = `mars_vocab_batch_v1:${practiceIdentity}`
 
   const [dailyCount, setDailyCount] = useState(() => {
@@ -756,7 +913,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
   const [openHints, setOpenHints] = useState(new Set())
   const [showLeaveConfirm, setShowLeaveConfirm] = useState(false)
   const [masteryRecords, setMasteryRecords] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('mars_vocab_mastery_v1') || '{}') } catch { return {} }
+    try { return JSON.parse(localStorage.getItem(level === 'PET' ? 'mars_vocab_mastery_pet_v1' : 'mars_vocab_mastery_v1') || '{}') } catch { return {} }
   })
   const inputRef = useRef(null)
   const startRef = useRef(Date.now())
@@ -765,11 +922,18 @@ function WordsPractice({ level, vocabChoice, onBack }) {
   const current = words[index]
   const progress = (index / words.length) * 100
   const levelInfo = LEVELS.find(l => l.abbr === level) || LEVELS[0]
+  const reviewQueueKey = level === 'PET' ? 'mars_vocab_review_queue_pet_v1' : 'mars_vocab_review_queue_v1'
+  const masteryStorageKey = level === 'PET' ? 'mars_vocab_mastery_pet_v1' : 'mars_vocab_mastery_v1'
+  const lastResultStorageKey = level === 'PET' ? 'mars_vocab_last_result_pet' : 'mars_vocab_last_result'
   const libraryName = vocabChoice.mode === 'topic' ? vocabChoice.topic.titleZh
+    : vocabChoice.mode === 'petTopic' ? vocabChoice.topic.titleZh
     : vocabChoice.mode === 'review' ? '待复习错词'
     : vocabChoice.mode === 'must500' ? 'KET 必默词汇'
     : vocabChoice.mode === 'reading288' ? '阅读常用词'
     : vocabChoice.mode === 'irregular' ? '不规则动词'
+    : vocabChoice.mode === 'petReading' ? 'PET 阅读高频词'
+    : vocabChoice.mode === 'petIrregular' ? '不规则动词进阶'
+    : level === 'PET' ? 'B1 综合词表'
     : 'A2 综合词表'
   const libraryRecords = allWords.map(w => masteryRecords[w.word.toLowerCase()]).filter(Boolean)
   const learnedCount = libraryRecords.length
@@ -811,11 +975,11 @@ function WordsPractice({ level, vocabChoice, onBack }) {
 
   function saveSpellingMistake(word, attemptedAnswer) {
     try {
-      const saved = JSON.parse(localStorage.getItem('mars_vocab_review_queue_v1') || '[]')
+      const saved = JSON.parse(localStorage.getItem(reviewQueueKey) || '[]')
       const queue = new Map((Array.isArray(saved) ? saved : []).filter(item => item?.word).map(item => [item.word.toLowerCase(), item]))
       const key = word.word.toLowerCase()
       queue.set(key, { ...queue.get(key), ...word, lastAnswer: attemptedAnswer, lastWrongAt: new Date().toISOString(), mistakeType: 'spelling' })
-      localStorage.setItem('mars_vocab_review_queue_v1', JSON.stringify([...queue.values()]))
+      localStorage.setItem(reviewQueueKey, JSON.stringify([...queue.values()]))
     } catch { /* local storage may be unavailable */ }
   }
 
@@ -837,7 +1001,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
   function finishSession(updated) {
     const resultByWord = new Map(updated.map(r => [r.word.toLowerCase(), r]))
     let previous = []
-    try { previous = JSON.parse(localStorage.getItem('mars_vocab_review_queue_v1') || '[]') } catch { /* local storage may be unavailable */ }
+    try { previous = JSON.parse(localStorage.getItem(reviewQueueKey) || '[]') } catch { /* local storage may be unavailable */ }
     const queue = new Map(previous.map(w => [w.word.toLowerCase(), w]))
     resultByWord.forEach((result, key) => {
       if (result.correct) queue.delete(key)
@@ -847,8 +1011,8 @@ function WordsPractice({ level, vocabChoice, onBack }) {
       }
     })
     try {
-      localStorage.setItem('mars_vocab_review_queue_v1', JSON.stringify([...queue.values()]))
-      localStorage.setItem('mars_vocab_last_result', JSON.stringify({ total: updated.length, accuracy: Math.round(updated.filter(r => r.correct).length / updated.length * 100), wrongCount: queue.size, completedAt: new Date().toISOString() }))
+      localStorage.setItem(reviewQueueKey, JSON.stringify([...queue.values()]))
+      localStorage.setItem(lastResultStorageKey, JSON.stringify({ total: updated.length, accuracy: Math.round(updated.filter(r => r.correct).length / updated.length * 100), wrongCount: queue.size, completedAt: new Date().toISOString() }))
     } catch { /* local storage may be unavailable */ }
   }
 
@@ -888,7 +1052,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
           lastSeen: new Date().toISOString(),
         },
       }
-      try { localStorage.setItem('mars_vocab_mastery_v1', JSON.stringify(next)) } catch { /* local storage may be unavailable */ }
+      try { localStorage.setItem(masteryStorageKey, JSON.stringify(next)) } catch { /* local storage may be unavailable */ }
       return next
     })
   }
@@ -949,13 +1113,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
           <div className={`text-xl font-bold mt-2 ${pct===100?'text-emerald-600':pct>=60?'text-blue-600':'text-orange-500'}`}>
             正确率 {pct}%
           </div>
-          <div className="text-sm text-gray-400 mt-1">{
-            vocabChoice.mode === 'topic' ? vocabChoice.topic.titleZh :
-            vocabChoice.mode === 'review' ? '待复习错词' :
-            vocabChoice.mode === 'must500' ? 'KET 必默词汇' :
-            vocabChoice.mode === 'reading288' ? '阅读高频词' :
-            vocabChoice.mode === 'irregular' ? '不规则动词' : 'A2 综合词表'
-          } · {words.length} 词</div>
+          <div className="text-sm text-gray-400 mt-1">{libraryName} · {words.length} 词</div>
           {vocabChoice.mode !== 'review' && <div className={`mt-4 rounded-xl px-4 py-3 text-sm font-bold ${hasMoreInCategory ? 'bg-amber-50 text-amber-800' : 'bg-emerald-50 text-emerald-800'}`}>
             {hasMoreInCategory ? `本轮已完成 ${words.length} 词，本分类还有 ${remainingWords} 词未练习。` : `本分类 ${allWords.length} 个词已全部完成一轮。`}
           </div>}

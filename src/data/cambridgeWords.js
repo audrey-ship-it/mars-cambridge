@@ -2572,7 +2572,7 @@ export const petWords = [
   { word: "universe", part: "n.", chinese: "宇宙，万物", phonetic: "/ˈjunəˌvərs/", english: "", sentence: "", topic: "General", freq: 3.89e-05, band: 2 },
   { word: "underground trains", part: "adj.", chinese: "地铁", phonetic: "/ˈəndərˌgraʊnd/", english: "", sentence: "", topic: "General", freq: 2.09e-05, band: 2 },
   { word: "unless", part: "conj.", chinese: "除非", phonetic: "/ənˈlɛs/", english: "", sentence: "", topic: "General", freq: 9.55e-05, band: 2 },
-  { word: "unlikey", part: "adj.", chinese: "不可能的", phonetic: "", english: "", sentence: "", topic: "General", freq: 0.00e+00, band: 2 },
+  { word: "unlikely", part: "adj.", chinese: "不可能的", phonetic: "", english: "", sentence: "", topic: "General", freq: 0.00e+00, band: 2 },
   { word: "underline", part: "v.", chinese: "划线于…之下", phonetic: "/ˈəndərˌlaɪn/", english: "", sentence: "", topic: "General", freq: 9.50e-07, band: 2 },
   { word: "unlucky", part: "adj.", chinese: "不幸的", phonetic: "/ənˈləki/", english: "", sentence: "", topic: "General", freq: 4.27e-06, band: 2 },
   { word: "unnecessary", part: "adj.", chinese: "不必要的，多余的", phonetic: "/ənˈnɛsəˌsɛri/", english: "", sentence: "", topic: "General", freq: 1.51e-05, band: 2 },

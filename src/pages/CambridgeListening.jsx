@@ -1,8 +1,11 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { KET_LISTENING_DATA } from "../data/ketListeningData";
 import { petListeningTests as PET_LISTENING } from "../data/petListeningData";
+import { PET_LISTENING_SAMPLES } from "../data/petListeningSamples";
+import { PET_LISTENING_STANDARD } from "../data/petListeningStandard";
+import { PET_TRAINER1_LISTENING } from "../data/petTrainer1Listening";
 import {
   OFFICIAL_LISTENING_SETS,
   officialListeningAudio,
@@ -173,6 +176,7 @@ function SpeedAudioPlayer({
   src,
   title = "整组练习音频",
   eyebrow = "LISTENING",
+  tone = "ket",
 }) {
   const audioRef = useRef(null);
   const [rate, setRate] = useState(1);
@@ -182,8 +186,11 @@ function SpeedAudioPlayer({
     if (audioRef.current) audioRef.current.playbackRate = value;
   }
 
+  const isPet = tone === "pet";
+  const barBg = isPet ? "bg-[#5b21b6]" : "bg-[#075741]";
+
   return (
-    <section className="sticky top-3 z-40 rounded-[22px] bg-[#075741] p-4 text-white shadow-xl md:p-5">
+    <section className={`sticky top-3 z-40 rounded-[22px] ${barBg} p-4 text-white shadow-xl md:p-5`}>
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
         <div className="min-w-[180px]">
           <div className="text-[11px] font-extrabold tracking-[.14em] text-[#f7cd60]">
@@ -1085,34 +1092,65 @@ function ListeningSetTabs({ part, activeSet }) {
   );
 }
 
-function ListeningPartNav({ activePart, setId }) {
-  const parts = [
-    activePart,
-    ...[1, 2, 3, 4, 5].filter((part) => part !== activePart),
-  ];
+function ListeningTabBar({ active, isPet = false, setId, onSelect }) {
+  const navigate = useNavigate();
+  const activeStyle = isPet
+    ? "border-violet-600 bg-violet-600 text-white shadow-sm"
+    : "border-emerald-600 bg-emerald-600 text-white shadow-sm";
+  const tabStyle = isPet
+    ? "border-violet-200 bg-violet-50 text-violet-800 hover:bg-violet-100"
+    : "border-emerald-200 bg-emerald-50 text-emerald-800 hover:bg-emerald-100";
+  const neutralStyle = "border-gray-200 bg-white text-gray-500 hover:border-gray-300";
+  const partCount = isPet ? 4 : 5;
+  function go(target) {
+    if (onSelect) return onSelect(target);
+    if (target === "centre")
+      navigate(
+        isPet
+          ? "/cambridge/listening?view=pet-centre"
+          : "/cambridge/listening?view=ket-centre",
+      );
+    else if (target === "common")
+      navigate("/cambridge/listening?view=common");
+    else if (target === "dictation") navigate("/cambridge/dictation");
+    else if (isPet)
+      navigate(
+        `/cambridge/listening?view=pet-bypart&petPart=${target}&source=pet&petTest=1`,
+      );
+    else navigate(`/cambridge/listening?part=${target}&set=${setId || 9}`);
+  }
+  const pill = (target, label) => (
+    <button
+      key={String(target)}
+      type="button"
+      onClick={() => go(target)}
+      className={`rounded-xl border px-4 py-2.5 text-sm font-extrabold transition ${
+        active === target
+          ? activeStyle
+          : target === "centre"
+            ? neutralStyle
+            : tabStyle
+      }`}
+    >
+      {label}
+    </button>
+  );
   return (
     <nav className="border-b border-gray-100 bg-white px-6 py-4">
       <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-2.5">
-        <Link
-          to="/cambridge/listening"
-          className="mr-1 rounded-xl border border-[#e7c65f] bg-[#fff8e7] px-4 py-2.5 text-sm font-extrabold text-[#735500]"
-        >
-          ← 我的听力中心
-        </Link>
-        <span className="mr-1 text-gray-300">›</span>
-        {parts.map((part) => (
-          <Link
-            key={part}
-            to={`/cambridge/listening?part=${part}&set=${setId}`}
-            aria-current={part === activePart ? "page" : undefined}
-            className={`rounded-xl border px-4 py-2.5 text-sm font-extrabold transition ${part === activePart ? "border-[#d9a921] bg-[#f7cd60] text-[#4c3a00] shadow-sm" : "border-gray-200 bg-white text-gray-500 hover:border-emerald-300 hover:text-emerald-800"}`}
-          >
-            Part {part}
-          </Link>
-        ))}
+        {pill("centre", "我的听力中心")}
+        {pill("common", "听力常见考点")}
+        {pill("dictation", "听力挖空练习")}
+        {Array.from({ length: partCount }, (_, i) => i + 1).map((p) =>
+          pill(p, `Part ${p}`),
+        )}
       </div>
     </nav>
   );
+}
+
+function ListeningPartNav({ activePart, setId }) {
+  return <ListeningTabBar active={activePart} setId={setId} />;
 }
 
 function ListeningSetChecking({ part, setId, level, setLevel }) {
@@ -2472,6 +2510,7 @@ function ListeningCentre({ level, setLevel }) {
   }
   return (
     <CambridgeLayout activeModule="listening" level={level} setLevel={setLevel}>
+      <ListeningTabBar active="centre" />
       <main className="mx-auto min-h-full max-w-7xl px-6 py-6 lg:px-9">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
@@ -2588,16 +2627,7 @@ function ListeningCommonPoints({ level, setLevel }) {
   const topicIds = ["spelling", "price", "number", "time", "date", "weekday"];
   return (
     <CambridgeLayout activeModule="listening" level={level} setLevel={setLevel}>
-      <nav className="flex items-center gap-3 border-b border-gray-100 bg-white px-6 py-4 text-sm">
-        <Link
-          to="/cambridge/listening"
-          className="rounded-xl border border-[#e7c65f] bg-[#fff8e7] px-4 py-2.5 font-extrabold text-[#735500]"
-        >
-          ← 我的听力中心
-        </Link>
-        <span className="text-gray-300">›</span>
-        <span className="font-extrabold text-gray-700">听力常见考点</span>
-      </nav>
+      <ListeningTabBar active="common" />
       <main className="mx-auto max-w-6xl px-6 py-7">
         <div className="text-[11px] font-extrabold tracking-[.18em] text-emerald-700">
           LISTENING BASICS
@@ -3581,7 +3611,6 @@ function SpellingPointPractice({ level, setLevel }) {
 }
 
 function ListeningPractice({ initialPart = 1 }) {
-  const navigate = useNavigate();
   const [level, setLevel] = useState(() => {
     try {
       return localStorage.getItem("cambridge_level") || "KET";
@@ -3589,17 +3618,11 @@ function ListeningPractice({ initialPart = 1 }) {
       return "KET";
     }
   });
-  const [activePart, setActivePart] = useState(initialPart);
+  const [activePart] = useState(initialPart);
   const [results, setResults] = useState(null);
   const [key, setKey] = useState(0); // force remount to reset
 
   const data = KET_LISTENING_DATA[activePart];
-
-  function handlePartChange(part) {
-    setActivePart(part);
-    setResults(null);
-    setKey((k) => k + 1);
-  }
 
   function handleDone(res) {
     setResults(res);
@@ -3612,43 +3635,7 @@ function ListeningPractice({ initialPart = 1 }) {
 
   return (
     <CambridgeLayout activeModule="listening" level={level} setLevel={setLevel}>
-      <nav className="flex items-center gap-3 border-b border-gray-100 bg-white px-6 py-3 text-sm">
-        <button
-          onClick={() => navigate("/cambridge/listening")}
-          className="rounded-xl border border-[#e7c65f] bg-[#fff8e7] px-4 py-2.5 font-extrabold text-[#735500]"
-        >
-          ← 我的听力中心
-        </button>
-        <span className="text-gray-300">›</span>
-        <span className="font-extrabold text-gray-700">Part {activePart}</span>
-      </nav>
-
-      {/* Part Tabs */}
-      <div className="bg-white border-b border-gray-100">
-        <div className="max-w-xl mx-auto px-6">
-          <div className="flex">
-            {[1, 2, 3, 4, 5].map((p) => (
-              <button
-                key={p}
-                onClick={() => handlePartChange(p)}
-                className={`flex-1 py-3 text-sm font-semibold border-b-2 transition-colors ${
-                  activePart === p
-                    ? "border-[#064e3b] text-[#064e3b]"
-                    : "border-transparent text-gray-400 hover:text-gray-600"
-                }`}
-              >
-                Part {p}
-              </button>
-            ))}
-            <button
-              onClick={() => navigate("/cambridge/dictation")}
-              className="flex-1 py-3 text-sm font-semibold border-b-2 border-transparent text-gray-400 hover:text-gray-600 transition-colors"
-            >
-              听写专项
-            </button>
-          </div>
-        </div>
-      </div>
+      <ListeningTabBar active={activePart} />
 
       <div className="max-w-xl mx-auto px-6 py-6">
         {/* Part header */}
@@ -4052,34 +4039,94 @@ function ListeningMockExam({ level, setLevel, setId, part, examId }) {
 
 const PET_PART_START = { 1: 1, 2: 8, 3: 14, 4: 20 };
 const PET_PREFIX = "mars_pet_listening_v1";
+const PET_SAMPLE_PREFIX = "mars_pet_sample_listening_v1";
+const PET_STANDARD_PREFIX = "mars_pet_standard_listening_v1";
+const PET_TRAINER_PREFIX = "mars_pet_trainer1_listening_v1";
 
-/* PET 听力中心：8 套模考入口卡片，按 level=PET 显示 */
-function readPetListeningProgress(testN) {
-  let checked = 0;
-  let total = 0;
-  try {
-    [1, 2, 3, 4].forEach((part) => {
-      const saved = JSON.parse(
-        localStorage.getItem(`${PET_PREFIX}:test${testN}:part${part}`) || "null",
-      );
-      if (!saved?.checked?.length) return;
-      total += saved.checked.length;
-      checked += saved.checked.filter(Boolean).length;
-    });
-  } catch {
-    /* storage may be unavailable */
-  }
-  const percent = total ? Math.round((checked / total) * 100) : 0;
-  return {
-    percent,
-    status: checked === 0 ? "未开始" : checked === total ? "已完成" : "进行中",
-  };
-}
+const PET_LISTENING_LAST_KEY = "mars_pet_listening_v1:last";
+
+const PET_LISTENING_ENTRIES = [
+  {
+    id: "common",
+    number: "01",
+    mark: "Aa",
+    title: "听力常见考点",
+    desc: "集中掌握时间、日期、数字、价格、电话号码和拼写等高频信息。",
+    meta: "基础听辨 · 信息识别",
+    featured: true,
+  },
+  {
+    id: "dictation",
+    number: "02",
+    mark: "⌁",
+    title: "听力挖空练习",
+    desc: "按句播放录音，补全缺失内容并检查拼写和中文理解。",
+    meta: "精听填空 · 拼写巩固",
+  },
+  {
+    id: "pet-bypart-1",
+    number: "03",
+    mark: "1",
+    title: "Part 1 图片选择题",
+    desc: "听短对话，从三幅图片中选择与关键信息相符的一项。",
+    meta: "图片信息 · 7 题",
+  },
+  {
+    id: "pet-bypart-2",
+    number: "04",
+    mark: "2",
+    title: "Part 2 单项选择题",
+    desc: "听多段短录音，理解细节、态度与观点，选出正确答案。",
+    meta: "单项选择 · 6 题",
+  },
+  {
+    id: "pet-bypart-3",
+    number: "05",
+    mark: "3",
+    title: "Part 3 信息填空题",
+    desc: "听一段独白，补全缺失的事实性信息，注意单词拼写。",
+    meta: "信息填空 · 6 题",
+  },
+  {
+    id: "pet-bypart-4",
+    number: "06",
+    mark: "4",
+    title: "Part 4 访谈理解题",
+    desc: "听一段访谈，理解主旨大意、关键细节与说话人观点。",
+    meta: "访谈理解 · 6 题",
+  },
+];
 
 function PetListeningCentre({ level, setLevel }) {
   const navigate = useNavigate();
+  const [lastPractice] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem(PET_LISTENING_LAST_KEY) || "null");
+    } catch {
+      return null;
+    }
+  });
+  function openEntry(id) {
+    if (id === "common") navigate("/cambridge/listening?view=common");
+    else if (id === "dictation") navigate("/cambridge/dictation");
+    else {
+      const part = id.slice(-1);
+      navigate(
+        `/cambridge/listening?view=pet-bypart&petPart=${part}&source=pet&petTest=1`,
+      );
+    }
+  }
+  const lastSourceLabel = (source) =>
+    source === "pet-sample"
+      ? "官方样题"
+      : source === "pet-standard"
+        ? "标准版真题"
+        : source === "pet-trainer"
+          ? "Trainer 1"
+          : "Test";
   return (
     <CambridgeLayout activeModule="listening" level={level} setLevel={setLevel}>
+      <ListeningTabBar active="centre" isPet />
       <main className="mx-auto min-h-full max-w-7xl px-6 py-6 lg:px-9">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
@@ -4091,7 +4138,7 @@ function PetListeningCentre({ level, setLevel }) {
                 我的听力中心
               </h1>
               <p className="hidden text-base text-gray-500 md:block">
-                PET 全真模拟试题 8 套，每套 4 Parts 共 25 题。
+                先练关键信息，再按 Part 熟悉完整题型。
               </p>
             </div>
           </div>
@@ -4106,55 +4153,68 @@ function PetListeningCentre({ level, setLevel }) {
             </div>
           </div>
         </div>
+        {lastPractice?.source && lastPractice?.testN && lastPractice?.part && (
+          <button
+            type="button"
+            onClick={() =>
+              navigate(
+                `/cambridge/listening?view=${lastPractice.source}&petTest=${lastPractice.testN}&petPart=${lastPractice.part}`,
+              )
+            }
+            className="mt-5 flex w-full items-center justify-between rounded-[20px] border border-[#e1b33a] bg-[#fff8df] px-5 py-4 text-left transition hover:-translate-y-0.5 hover:shadow-sm"
+          >
+            <span>
+              <span className="block text-xs font-extrabold tracking-[.12em] text-[#9a7308]">
+                继续上次练习
+              </span>
+              <strong className="mt-1 block text-lg text-gray-950">
+                {lastSourceLabel(lastPractice.source)} {lastPractice.testN} · Part {lastPractice.part}
+              </strong>
+            </span>
+            <span className="font-extrabold text-[#735500]">继续学习 →</span>
+          </button>
+        )}
         <div className="mt-6 grid gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
-          {PET_LISTENING.map((test, index) => {
-            const testN = index + 1;
-            const progress = readPetListeningProgress(testN);
-            return (
-              <motion.button
-                key={testN}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.04 }}
-                onClick={() =>
-                  navigate(
-                    `/cambridge/listening?view=pet&petTest=${testN}&petPart=1`,
-                  )
-                }
-                className="relative flex min-h-[215px] flex-col overflow-hidden rounded-[22px] border border-gray-200 bg-white p-6 text-left transition-all hover:-translate-y-0.5 hover:border-violet-300 hover:shadow-md"
-              >
+          {PET_LISTENING_ENTRIES.map((item, index) => (
+            <motion.button
+              key={item.id}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.04 }}
+              onClick={() => openEntry(item.id)}
+              className={`relative flex min-h-[215px] flex-col overflow-hidden rounded-[22px] border p-6 text-left transition-all hover:-translate-y-0.5 hover:shadow-md ${item.featured ? "border-violet-500 bg-violet-50/50" : item.id === "dictation" ? "border-[#e7c65f] bg-[#fff9e9]" : "border-gray-200 bg-white hover:border-violet-300"}`}
+            >
+              {item.featured && (
                 <div className="absolute inset-x-0 top-0 h-1.5 bg-violet-700" />
-                <div className="flex items-start justify-between">
-                  <span className="grid h-12 w-12 place-items-center rounded-2xl bg-violet-700 text-lg font-extrabold text-white">
-                    B1
-                  </span>
-                  <span className="text-[11px] font-extrabold tracking-[.14em] text-gray-300">
-                    Test {testN}
-                  </span>
-                </div>
-                <h2 className="mt-5 text-2xl font-extrabold text-gray-950">
-                  Test {testN} · 听力模考
-                </h2>
-                <p className="mt-2 text-sm leading-relaxed text-gray-500">
-                  4 Parts · 25 题 · 真录音
-                </p>
-                <div className="mt-auto flex items-center justify-between pt-5 text-sm">
-                  <span
-                    className={`rounded-full px-2.5 py-1 text-xs font-bold ${
-                      progress.status === "已完成"
-                        ? "bg-violet-100 text-violet-700"
-                        : progress.status === "进行中"
-                          ? "bg-amber-100 text-amber-800"
-                          : "bg-gray-100 text-gray-500"
-                    }`}
-                  >
-                    {progress.status} {progress.percent > 0 ? `${progress.percent}%` : ""}
-                  </span>
-                  <span className="font-extrabold text-violet-700">进入 →</span>
-                </div>
-              </motion.button>
-            );
-          })}
+              )}
+              <div className="flex items-start justify-between">
+                <span
+                  className={`grid h-12 w-12 place-items-center rounded-2xl text-lg font-extrabold ${item.featured ? "bg-violet-700 text-white" : item.id === "dictation" ? "bg-[#f4c95d] text-[#604800]" : "bg-violet-50 text-violet-700"}`}
+                >
+                  {item.mark}
+                </span>
+                <span
+                  className={`text-[11px] font-extrabold tracking-[.14em] ${item.id === "dictation" ? "text-[#b78a19]" : "text-gray-300"}`}
+                >
+                  {item.number}
+                </span>
+              </div>
+              <h2 className="mt-5 text-2xl font-extrabold text-gray-950">
+                {item.title}
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-gray-500">
+                {item.desc}
+              </p>
+              <div className="mt-auto flex items-center justify-between pt-5 text-sm">
+                <span className="font-medium text-gray-500">{item.meta}</span>
+                <span
+                  className={`font-extrabold ${item.id === "dictation" ? "text-[#8a6500]" : "text-violet-700"}`}
+                >
+                  进入 →
+                </span>
+              </div>
+            </motion.button>
+          ))}
         </div>
       </main>
     </CambridgeLayout>
@@ -4164,13 +4224,49 @@ function PetListeningCentre({ level, setLevel }) {
 function PetListeningPractice({ level, setLevel }) {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const testN = Math.min(8, Math.max(1, Number(searchParams.get("petTest")) || 1));
+  const rawView = searchParams.get("view");
+  const byPart = rawView === "pet-bypart";
+  const view = byPart ? searchParams.get("source") || "pet" : rawView;
+  const activeList =
+    view === "pet-sample"
+      ? PET_LISTENING_SAMPLES
+      : view === "pet-standard"
+        ? PET_LISTENING_STANDARD
+        : view === "pet-trainer"
+          ? PET_TRAINER1_LISTENING
+          : PET_LISTENING;
+  const activePrefix =
+    view === "pet-sample"
+      ? PET_SAMPLE_PREFIX
+      : view === "pet-standard"
+        ? PET_STANDARD_PREFIX
+        : view === "pet-trainer"
+          ? PET_TRAINER_PREFIX
+          : PET_PREFIX;
+  const testLabel =
+    view === "pet-sample"
+      ? "官方样题"
+      : view === "pet-standard"
+        ? "标准版真题"
+        : view === "pet-trainer"
+          ? "Trainer 1"
+          : "Test";
+  const eyebrow =
+    view === "pet-sample"
+      ? "B1 PET · OFFICIAL SAMPLE"
+      : view === "pet-standard"
+        ? "B1 PET · OFFICIAL STANDARD"
+        : view === "pet-trainer"
+          ? "B1 PET · TRAINER TEST"
+          : "B1 PET · MOCK TEST";
+  const maxTest = activeList.length;
+  const testN = Math.min(maxTest, Math.max(1, Number(searchParams.get("petTest")) || 1));
   const part = Math.min(4, Math.max(1, Number(searchParams.get("petPart")) || 1));
-  const test = PET_LISTENING[testN - 1];
+  const test = activeList[testN - 1];
   const data = test.parts[part];
   const count = data.items.length;
 
-  const storageKey = `${PET_PREFIX}:test${testN}:part${part}`;
+  const storageKey = `${activePrefix}:test${testN}:part${part}`;
   const emptyValue = data.type === "blanks" ? "" : null;
   const [answers, setAnswers] = useState(() => {
     try {
@@ -4197,6 +4293,17 @@ function PetListeningPractice({ level, setLevel }) {
       /* localStorage unavailable */
     }
   }, [answers, checked, storageKey]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(
+        PET_LISTENING_LAST_KEY,
+        JSON.stringify({ source: view, testN, part }),
+      );
+    } catch {
+      /* localStorage unavailable */
+    }
+  }, [view, testN, part]);
 
   const normalise = (v) =>
     String(v).toLowerCase().replace(/[£,\s-/.]/g, "");
@@ -4228,64 +4335,82 @@ function PetListeningPractice({ level, setLevel }) {
 
   return (
     <CambridgeLayout activeModule="listening" level={level} setLevel={setLevel}>
-      <nav className="flex items-center gap-3 border-b border-gray-100 bg-white px-6 py-3 text-sm">
-        <button
-          onClick={() => navigate("/cambridge/listening")}
-          className="rounded-xl border border-violet-200 bg-violet-50 px-4 py-2.5 font-extrabold text-violet-700"
-        >
-          ← 我的听力中心
-        </button>
-        <span className="text-gray-300">›</span>
-        <span className="font-extrabold text-gray-700">
-          Test {testN} · Part {part}
-        </span>
-      </nav>
+      <ListeningTabBar
+        active={part}
+        isPet
+        onSelect={(target) => {
+          if (target === "centre")
+            navigate("/cambridge/listening?view=pet-centre");
+          else if (target === "common")
+            navigate("/cambridge/listening?view=common");
+          else if (target === "dictation") navigate("/cambridge/dictation");
+          else setParam("petPart", target);
+        }}
+      />
 
       {/* Test selector */}
       <div className="bg-white border-b border-gray-100">
-        <div className="mx-auto max-w-5xl px-6 py-3">
-          <div className="flex flex-wrap gap-2">
-            {[1, 2, 3, 4, 5, 6, 7, 8].map((t) => (
-              <button
-                key={t}
-                onClick={() => setParam("petTest", t)}
-                className={`h-9 w-9 rounded-lg text-sm font-extrabold transition ${
-                  t === testN
-                    ? "bg-violet-600 text-white"
-                    : "bg-violet-50 text-violet-500 hover:bg-violet-100"
-                }`}
-              >
-                {t}
-              </button>
+        {byPart ? (
+          <div className="mx-auto max-w-5xl space-y-2.5 px-6 py-3.5">
+            {[
+              { source: "pet", label: "全真模考", list: PET_LISTENING },
+              { source: "pet-sample", label: "官方样题", list: PET_LISTENING_SAMPLES },
+              { source: "pet-standard", label: "标准版真题", list: PET_LISTENING_STANDARD },
+              { source: "pet-trainer", label: "Trainer 1", list: PET_TRAINER1_LISTENING },
+            ].map((group) => (
+              <div key={group.source} className="flex flex-wrap items-center gap-2">
+                <span className="w-16 shrink-0 text-[11px] font-extrabold tracking-wider text-gray-400">
+                  {group.label}
+                </span>
+                {group.list.map((_, i) => {
+                  const t = i + 1;
+                  const active = view === group.source && t === testN;
+                  return (
+                    <button
+                      key={t}
+                      onClick={() => {
+                        const next = new URLSearchParams(searchParams);
+                        next.set("source", group.source);
+                        next.set("petTest", t);
+                        setSearchParams(next, { replace: true });
+                      }}
+                      className={`h-8 w-8 rounded-lg text-sm font-extrabold transition ${
+                        active
+                          ? "bg-violet-600 text-white"
+                          : "bg-violet-50 text-violet-500 hover:bg-violet-100"
+                      }`}
+                    >
+                      {t}
+                    </button>
+                  );
+                })}
+              </div>
             ))}
           </div>
-        </div>
-      </div>
-
-      {/* Part tabs */}
-      <div className="bg-white border-b border-gray-100">
-        <div className="mx-auto max-w-5xl px-6">
-          <div className="flex">
-            {[1, 2, 3, 4].map((p) => (
-              <button
-                key={p}
-                onClick={() => setParam("petPart", p)}
-                className={`flex-1 py-3 text-sm font-semibold border-b-2 transition-colors ${
-                  part === p
-                    ? "border-violet-600 text-violet-700"
-                    : "border-transparent text-gray-400 hover:text-gray-600"
-                }`}
-              >
-                Part {p}
-              </button>
-            ))}
+        ) : (
+          <div className="mx-auto max-w-5xl px-6 py-3">
+            <div className="flex flex-wrap gap-2">
+              {Array.from({ length: maxTest }, (_, i) => i + 1).map((t) => (
+                <button
+                  key={t}
+                  onClick={() => setParam("petTest", t)}
+                  className={`h-9 w-9 rounded-lg text-sm font-extrabold transition ${
+                    t === testN
+                      ? "bg-violet-600 text-white"
+                      : "bg-violet-50 text-violet-500 hover:bg-violet-100"
+                  }`}
+                >
+                  {t}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       <main className="mx-auto max-w-5xl px-6 py-7">
         <div className="text-[11px] font-extrabold tracking-[.18em] text-violet-700">
-          B1 PET · MOCK TEST
+          {eyebrow}
         </div>
         <div className="mt-1 flex items-end justify-between gap-4">
           <div>
@@ -4303,8 +4428,9 @@ function PetListeningPractice({ level, setLevel }) {
         <div className="mt-6">
           <SpeedAudioPlayer
             src={data.audio}
-            title={`Test ${testN} · Part ${part}`}
+            title={`${testLabel} ${testN} · Part ${part}`}
             eyebrow="PET LISTENING"
+            tone="pet"
           />
         </div>
 
@@ -4489,10 +4615,26 @@ export default function CambridgeListening() {
   });
   if (searchParams.get("view") === "common")
     return <ListeningCommonPoints level={level} setLevel={setLevel} />;
-  if (searchParams.get("view") === "pet")
+  const view = searchParams.get("view");
+  if (
+    view === "pet" ||
+    view === "pet-sample" ||
+    view === "pet-standard" ||
+    view === "pet-trainer" ||
+    view === "pet-bypart"
+  )
     return <PetListeningPractice level={level} setLevel={setLevel} />;
-  if (level === "PET")
+  if (view === "pet-centre")
     return <PetListeningCentre level={level} setLevel={setLevel} />;
+  if (view === "ket-centre")
+    return <ListeningCentre level={level} setLevel={setLevel} />;
+  if (level === "PET")
+    return (
+      <Navigate
+        to="/cambridge/listening?view=pet-bypart&petPart=1&source=pet&petTest=1"
+        replace
+      />
+    );
   const part = Number(searchParams.get("part"));
   const requestedSet = Number(searchParams.get("set"));
   const setId = OFFICIAL_LISTENING_SETS.some((set) => set.id === requestedSet)
@@ -4532,5 +4674,5 @@ export default function CambridgeListening() {
       />
     );
   if (part >= 1 && part <= 5) return <ListeningPractice initialPart={part} />;
-  return <ListeningCentre level={level} setLevel={setLevel} />;
+  return <Navigate to="/cambridge/listening?part=1&set=9" replace />;
 }

@@ -76,18 +76,34 @@ const PENDING_EXAMS = {
   sample: [{ id: 'official-sample-1', name: '官方样题 1', source: 'A2 Key 官方样题' }],
 }
 
-/* PET — 与 KET 对齐的三个分类。
-   schools 含《青少版官方真题 3（2025 新增）》4 个完整 Test（petN 9–12）
-   与 8 个占位；standard 整卷未录入；mock 含全真模拟 8 套（整卷可考）。 */
+/* PET — 与 KET 对齐的四个分类。
+   schools/standard 整卷未录入（占位）；mock 含全真模拟8（整卷可考）、
+   Trainer 1 六套（仅听力）、Trainer 2 六套与 Booster 三套（占位）；
+   sample 三套仅听力。 */
 const PET_EXAM_COLLECTIONS = [
   { id: 'schools', label: '青少版真题', count: 12, help: 'PET for Schools 官方真题 1–3' },
   { id: 'standard', label: '标准版真题', count: 8, help: 'B1 Preliminary 标准版官方真题 1–2' },
-  { id: 'mock', label: '模拟题', count: 8, help: '全真模拟试题' },
+  { id: 'mock', label: '模拟题', count: 23, help: '全真模拟试题、Trainer 1/2 与 Exam Booster' },
+  { id: 'sample', label: '官方样题', count: 3, help: 'B1 Preliminary 官方样题（标准版1·校园版2）' },
 ]
 
-const PET_EXAM_ITEMS = {
+const PET_PENDING_ITEMS = {
   schools: [
-    // 已录入的完整试卷排在目录最前面
+    // 按真题册编号排序：真题1 → 真题2（待录入） → 真题3
+    ...Array.from({ length: 4 }, (_, index) => ({
+      id: `pet-mock-${index + 13}`,
+      petN: index + 13,
+      full: true,
+      name: `青少版真题1 · Test ${index + 1}`,
+      source: 'PET 青少版官方真题 1（新题型）',
+    })),
+    ...Array.from({ length: 4 }, (_, index) => ({
+      id: `pet-mock-${index + 17}`,
+      petN: index + 17,
+      full: true,
+      name: `青少版真题2 · Test ${index + 1}`,
+      source: 'PET 青少版官方真题 2（新题型）',
+    })),
     ...Array.from({ length: 4 }, (_, index) => ({
       id: `pet-mock-${index + 9}`,
       petN: index + 9,
@@ -95,23 +111,75 @@ const PET_EXAM_ITEMS = {
       name: `青少版真题3 · Test ${index + 1}`,
       source: 'PET 青少版官方真题 3（2025 新增）',
     })),
+  ],
+  standard: [
+    ...Array.from({ length: 4 }, (_, index) => ({
+      id: `pet-standard-${index + 1}`,
+      petN: index + 1,
+      full: true,
+      name: `标准版真题 1 · Test ${index + 1}`,
+      source: 'B1 Preliminary 标准版官方真题 1 · 听力/阅读/写作/口语完整',
+    })),
+    {
+      id: 'pet-standard-5',
+      petN: 5,
+      full: true,
+      name: '标准版真题 2 · Test 1',
+      source: 'B1 Preliminary 标准版官方真题 2 · 听力/阅读/写作/口语完整',
+    },
+    {
+      id: 'pet-standard-6',
+      petN: 6,
+      full: true,
+      name: '标准版真题 2 · Test 2',
+      source: 'B1 Preliminary 标准版官方真题 2 · 听力/阅读/写作/口语完整',
+    },
+    {
+      id: 'pet-standard-7',
+      petN: 7,
+      full: true,
+      name: '标准版真题 2 · Test 3',
+      source: 'B1 Preliminary 标准版官方真题 2 · 听力/阅读/写作/口语完整',
+    },
+    {
+      id: 'pet-standard-8',
+      petN: 8,
+      full: true,
+      name: '标准版真题 2 · Test 4',
+      source: 'B1 Preliminary 标准版官方真题 2 · 听力/阅读/写作/口语完整',
+    },
+  ],
+  mock: [
     ...Array.from({ length: 8 }, (_, index) => ({
-      id: `pet-schools-${index + 1}`,
-      name: `青少版真题 ${index + 1}`,
-      source: 'PET for Schools 官方真题',
+      id: `pet-mock-${index + 1}`,
+      petN: index + 1,
+      full: true,
+      name: `模拟题 ${index + 1}`,
+      source: 'PET 全真模拟试题（8套）',
+    })),
+    ...Array.from({ length: 6 }, (_, index) => ({
+      id: `pet-trainer1-${index + 1}`,
+      full: true,
+      name: `Trainer 1 · Test ${index + 1}`,
+      source: 'PET Trainer 1（2020 新题型）· 听力/阅读/写作/口语完整',
+    })),
+    ...Array.from({ length: 6 }, (_, index) => ({
+      id: `pet-trainer2-${index + 1}`,
+      name: `Trainer 2 · Test ${index + 1}`,
+      source: 'PET Trainer 2',
+    })),
+    ...Array.from({ length: 3 }, (_, index) => ({
+      id: `pet-booster-${index + 1}`,
+      name: `Exam Booster · Test ${index + 1}`,
+      source: 'PET Exam Booster',
     })),
   ],
-  standard: Array.from({ length: 8 }, (_, index) => ({
-    id: `pet-standard-${index + 1}`,
-    name: `标准版真题 ${index + 1}`,
-    source: 'B1 Preliminary 标准版官方真题',
-  })),
-  mock: Array.from({ length: 8 }, (_, index) => ({
-    id: `pet-mock-${index + 1}`,
+  sample: Array.from({ length: 3 }, (_, index) => ({
+    id: `pet-sample-${index + 1}`,
     petN: index + 1,
     full: true,
-    name: `模拟题 ${index + 1}`,
-    source: 'PET 全真模拟试题（8套）',
+    name: `官方样题 ${index + 1}`,
+    source: 'B1 Preliminary 官方样题 · 听力/阅读/写作/口语完整',
   })),
 }
 
@@ -200,12 +268,13 @@ function readExamListProgress(exam) {
 }
 
 /* PET card progress: listening answers are persisted per part (25 questions). */
-function readPetExamListProgress(testN) {
+function readPetExamListProgress(testN, kind = 'mock') {
   let checked = 0
   let total = 0
   try {
+    const prefix = kind === 'sample' ? 'mars_pet_sample_listening_v1' : kind === 'standard' ? 'mars_pet_standard_listening_v1' : 'mars_pet_listening_v1'
     ;[1, 2, 3, 4].forEach(part => {
-      const saved = JSON.parse(localStorage.getItem(`mars_pet_listening_v1:test${testN}:part${part}`) || 'null')
+      const saved = JSON.parse(localStorage.getItem(`${prefix}:test${testN}:part${part}`) || 'null')
       if (!saved?.checked?.length) return
       total += saved.checked.length
       checked += saved.checked.filter(Boolean).length
@@ -226,7 +295,7 @@ export function ExamList() {
   const sectionSummary = () => '听力 30分钟 · 阅读与写作 60分钟 · 口语 8–10分钟'
   const petSummary = () => '听力约30分钟 · 阅读与写作各45分钟 · 口语12–17分钟'
   const displayedExams = isPet
-    ? PET_EXAM_ITEMS[collection]
+    ? PET_PENDING_ITEMS[collection]
     : collection === 'schools'
       ? ORDERED_KET_EXAMS.map((exam, index) => ({ exam, id: exam.id, name: `真题 ${index + 1}`, source: exam.title }))
       : collection === 'standard'
@@ -272,14 +341,19 @@ export function ExamList() {
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {displayedExams.map(item => {
-            const petFull = isPet && item.full
-            const exam = isPet ? (petFull ? { id: item.id } : null) : item.exam
-            const linkTo = isPet
-              ? (petFull ? `/cambridge/exams/${item.id}` : null)
+            const petFull   = isPet && item.full
+            const petListen = isPet && !item.full && Boolean(item.to)
+            const exam      = isPet ? (petFull ? { id: item.id } : null) : item.exam
+            const linkTo    = isPet
+              ? (petFull ? `/cambridge/exams/${item.id}` : item.to)
               : (exam ? `/cambridge/exams/${exam.id}` : null)
-            const progress = isPet
-              ? (petFull ? readPetExamListProgress(item.petN) : { status: '待录入', completed: 0, total: 0, percent: 0 })
-              : exam ? readExamListProgress(exam) : { status: '待录入', completed: 0, total: 0, percent: 0 }
+            const progress = petFull
+              ? readPetExamListProgress(item.petN, item.id.startsWith('pet-sample-') ? 'sample' : item.id.startsWith('pet-standard-') ? 'standard' : 'mock')
+              : petListen
+                ? { status: '仅听力', percent: 0 }
+                : exam
+                  ? readExamListProgress(exam)
+                  : { status: '待录入', completed: 0, total: 0, percent: 0 }
             const Card = linkTo ? Link : 'div'
             return (
             <Card key={item.id} {...(linkTo ? { to: linkTo } : {})}
@@ -289,22 +363,22 @@ export function ExamList() {
                   <div className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl ${isPet ? 'bg-violet-700' : 'bg-[#064e3b]'}`}>
                     <span className="text-xl text-white">📝</span>
                   </div>
-                  <span className={`rounded-full px-2.5 py-1 text-xs font-bold ${progress.status === '已完成' ? `${isPet ? 'bg-violet-100 text-violet-700' : 'bg-emerald-100 text-emerald-700'}` : progress.status === '进行中' ? 'bg-amber-100 text-amber-800' : 'bg-gray-100 text-gray-500'}`}>{progress.status}</span>
+                  <span className={`rounded-full px-2.5 py-1 text-xs font-bold ${progress.status === '已完成' ? `${isPet ? 'bg-violet-100 text-violet-700' : 'bg-emerald-100 text-emerald-700'}` : progress.status === '进行中' || progress.status === '仅听力' ? 'bg-amber-100 text-amber-800' : 'bg-gray-100 text-gray-500'}`}>{progress.status}</span>
                 </div>
                 <div className="mt-5">
                   <div className={`text-xl font-extrabold leading-snug text-gray-900 transition-colors ${isPet ? 'group-hover:text-violet-800' : 'group-hover:text-[#064e3b]'}`}>{item.name}</div>
                   <div className="mt-2 text-sm text-gray-400">{item.source}</div>
-                  <div className="mt-1 text-sm text-gray-400">{isPet ? (petFull ? petSummary() : '题目、答案与配套材料正在整理') : exam?.kind === 'standard' ? '听力 30分钟 · 阅读与写作 60分钟 · 口语待录入' : exam ? sectionSummary(exam) : '题目、答案与配套材料正在整理'}</div>
+                  <div className="mt-1 text-sm text-gray-400">{isPet ? (petFull ? petSummary() : petListen ? '听力已上线 · 阅读、写作、口语整理中' : '题目、答案与配套材料正在整理') : exam?.kind === 'standard' ? '听力 30分钟 · 阅读与写作 60分钟 · 口语待录入' : exam ? sectionSummary(exam) : '题目、答案与配套材料正在整理'}</div>
                 </div>
                 <div className="mt-auto pt-5">
                   <div className="mb-2 flex items-center justify-between gap-3">
                     <span className="text-xs font-semibold text-gray-400">练习进度</span>
-                    <span className="whitespace-nowrap text-xs font-bold text-gray-500">{petFull ? `${progress.percent}%` : isPet ? '尚未开放' : exam ? `${progress.percent}%` : '尚未开放'}</span>
+                    <span className="whitespace-nowrap text-xs font-bold text-gray-500">{petFull ? `${progress.percent}%` : petListen ? '听力可练' : exam ? `${progress.percent}%` : '尚未开放'}</span>
                   </div>
                   <div className="h-1.5 overflow-hidden rounded-full bg-gray-100">
                     <div className={`h-full rounded-full ${isPet ? 'bg-violet-600' : 'bg-[#0d7656]'}`} style={{ width: `${progress.percent}%` }} />
                   </div>
-                  <div className={`mt-4 text-right text-sm font-extrabold ${linkTo ? (isPet ? 'text-violet-700' : 'text-[#0d7656]') : 'text-gray-400'}`}>{petFull ? '进入模拟题 →' : isPet ? '整理中' : exam ? '进入真题 →' : '整理中'}</div>
+                  <div className={`mt-4 text-right text-sm font-extrabold ${linkTo ? (isPet ? 'text-violet-700' : 'text-[#0d7656]') : 'text-gray-400'}`}>{petFull ? '进入模拟题 →' : petListen ? '练听力 →' : isPet ? '整理中' : exam ? '进入真题 →' : '整理中'}</div>
                 </div>
               </div>
             </Card>
@@ -357,26 +431,46 @@ function ExamOverview({ exam }) {
   )
 }
 
-function PetExamOverview({ testN }) {
+function PetExamOverview({ testN, kind = 'mock' }) {
   const [level, setLevel] = useExamLevel()
   const navigate = useNavigate()
   useEffect(() => { if (level !== 'PET') navigate('/cambridge/exams', { replace: true }) }, [level, navigate])
+  const pid = kind === 'sample' ? `pet-sample-${testN}` : kind === 'standard' ? `pet-standard-${testN}` : kind === 'trainer1' ? `pet-trainer1-${testN}` : `pet-mock-${testN}`
   const sections = [
-    { icon: '🎧', title: '听力', en: 'Listening', detail: '约30分钟 · 4个 Part · 25道题', href: `/cambridge/exams/pet-mock-${testN}?tab=listening` },
-    { icon: '📖', title: '阅读', en: 'Reading', detail: '45分钟 · 6个 Part · 32道客观题，自动评分与错题重做', href: `/cambridge/exams/pet-mock-${testN}?tab=reading` },
-    { icon: '✍️', title: '写作', en: 'Writing', detail: '45分钟 · Part 1 邮件（必做）· Part 2 文章或故事（二选一）', href: `/cambridge/exams/pet-mock-${testN}?tab=writing` },
-    { icon: '🎙️', title: '口语', en: 'Speaking', detail: '12–17分钟 · 4个 Part · 含参考答案与 TTS 朗读', href: `/cambridge/exams/pet-mock-${testN}?tab=speaking` },
+    { icon: '🎧', title: '听力', en: 'Listening', detail: '约30分钟 · 4个 Part · 25道题', href: `/cambridge/exams/${pid}?tab=listening` },
+    { icon: '📖', title: '阅读', en: 'Reading', detail: '45分钟 · 6个 Part · 32道客观题，自动评分与错题重做', href: `/cambridge/exams/${pid}?tab=reading` },
+    { icon: '✍️', title: '写作', en: 'Writing', detail: '45分钟 · Part 1 邮件（必做）· Part 2 文章或故事（二选一）', href: `/cambridge/exams/${pid}?tab=writing` },
+    { icon: '🎙️', title: '口语', en: 'Speaking', detail: '12–17分钟 · 4个 Part · 含参考答案与 TTS 朗读', href: `/cambridge/exams/${pid}?tab=speaking` },
   ]
+
+  const title = kind === 'sample'
+    ? `官方样题 ${testN}`
+    : kind === 'standard'
+      ? `标准版真题 ${testN > 4 ? 2 : 1} · Test ${testN > 4 ? testN - 4 : testN}`
+      : kind === 'trainer1'
+        ? `Trainer 1 · Test ${testN}`
+        : testN > 16 ? `青少版真题 2 · Test ${testN - 16}` : testN > 12 ? `青少版真题 1 · Test ${testN - 12}` : testN > 8 ? `青少版真题3 · Test ${testN - 8}` : `模拟题 ${testN}`
+  const description = kind === 'sample'
+    ? 'B1 Preliminary 官方样题 · 听力、阅读、写作、口语均已核对。'
+    : kind === 'standard'
+      ? `B1 Preliminary 标准版官方真题 ${testN > 4 ? 2 : 1} · 听力、阅读、写作、口语均已核对。`
+      : kind === 'trainer1'
+        ? 'PET Trainer 1（2020 新题型）· 听力、阅读、写作、口语均已核对。'
+        : testN > 16
+        ? 'PET 青少版官方真题 2（新题型） · 听力、阅读、写作、口语均已核对。'
+        : testN > 12
+          ? 'PET 青少版官方真题 1（新题型） · 听力、阅读、写作、口语均已核对。'
+          : testN > 8
+            ? 'PET 青少版官方真题 3（2025 新增） · 听力、阅读、写作、口语均已核对。'
+            : 'PET 全真模拟试题（8套） · 听力、阅读与写作、口语均已核对。'
 
   return (
     <CambridgeLayout activeModule="exams" level={level} setLevel={setLevel}>
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-        <Link to="/cambridge/exams" className="text-sm font-bold text-violet-700 hover:text-violet-900">← 返回模拟题列表</Link>
-        <div className="mt-5 text-[11px] font-extrabold tracking-[.18em] text-violet-700">PET FULL PRACTICE TEST</div>
-        <h1 className="mt-1 text-3xl font-extrabold text-slate-950 sm:text-4xl">{testN > 8 ? `青少版真题3 · Test ${testN - 8}` : `模拟题 ${testN}`}</h1>
-        <p className="mt-2 text-slate-500">{testN > 8
-          ? 'PET 青少版官方真题 3（2025 新增） · 听力、阅读、写作、口语均已核对。'
-          : 'PET 全真模拟试题（8套） · 听力、阅读与写作、口语均已核对。'}</p>
+        <Link to="/cambridge/exams" className="text-sm font-bold text-violet-700 hover:text-violet-900">← 返回试卷列表</Link>
+        <div className="mt-5 text-[11px] font-extrabold tracking-[.18em] text-violet-700">{kind === 'sample' ? 'PET OFFICIAL SAMPLE TEST' : kind === 'standard' ? 'PET OFFICIAL STANDARD TEST' : kind === 'trainer1' ? 'PET TRAINER 1 · FULL PRACTICE TEST' : 'PET FULL PRACTICE TEST'}</div>
+        <h1 className="mt-1 text-3xl font-extrabold text-slate-950 sm:text-4xl">{title}</h1>
+        <p className="mt-2 text-slate-500">{description}</p>
 
         <section className="mt-7 grid gap-4 sm:grid-cols-2">
           {sections.map((item, index) => {
@@ -404,26 +498,32 @@ function PetExamOverview({ testN }) {
 export default function CambridgeExam() {
   const { id } = useParams()
   const [searchParams] = useSearchParams()
-  const petIdMatch = id?.match(/^pet-mock-(\d+)$/)
-  if (petIdMatch) {
-    const testN = Number(petIdMatch[1])
-    if (testN < 1 || testN > 12) {
+  const petMockMatch = id?.match(/^pet-mock-(\d+)$/)
+  const petSampleMatch = id?.match(/^pet-sample-(\d+)$/)
+  const petStandardMatch = id?.match(/^pet-standard-(\d+)$/)
+  const petTrainer1Match = id?.match(/^pet-trainer1-(\d+)$/)
+  const petMatch = petMockMatch || petSampleMatch || petStandardMatch || petTrainer1Match
+  if (petMatch) {
+    const testN = Number(petMatch[1])
+    const kind = petSampleMatch ? 'sample' : petStandardMatch ? 'standard' : petTrainer1Match ? 'trainer1' : 'mock'
+    const maxN = kind === 'sample' ? 3 : kind === 'standard' ? 8 : kind === 'trainer1' ? 6 : 20
+    if (testN < 1 || testN > maxN) {
       return (
         <div className="min-h-screen bg-[#f8f9fc] flex items-center justify-center">
           <div className="text-center">
             <div className="text-4xl mb-4">🔒</div>
             <h2 className="text-xl font-bold text-gray-800 mb-2">找不到该试卷</h2>
-            <Link to="/cambridge/exams" className="text-[#064e3b] text-sm font-semibold hover:underline">返回模拟题列表</Link>
+            <Link to="/cambridge/exams" className="text-violet-700 text-sm font-semibold hover:underline">返回试卷列表</Link>
           </div>
         </div>
       )
     }
     const petTab = searchParams.get('tab')
-    if (petTab === 'listening') return <PetListeningExam testN={testN} />
-    if (petTab === 'reading')   return <PetReadingExam testN={testN} />
-    if (petTab === 'writing')   return <PetWritingExam testN={testN} />
-    if (petTab === 'speaking')  return <PetSpeakingExam testN={testN} />
-    return <PetExamOverview testN={testN} />
+    if (petTab === 'listening') return <PetListeningExam testN={testN} kind={kind} />
+    if (petTab === 'reading')   return <PetReadingExam testN={testN} kind={kind} />
+    if (petTab === 'writing')   return <PetWritingExam testN={testN} kind={kind} />
+    if (petTab === 'speaking')  return <PetSpeakingExam testN={testN} kind={kind} />
+    return <PetExamOverview testN={testN} kind={kind} />
   }
   const baseExam = [...KET_EXAMS, ...STANDARD_READY_EXAMS].find(e => e.id === id)
   const readingSet = baseExam ? getKetReadingTest(baseExam.id) : null

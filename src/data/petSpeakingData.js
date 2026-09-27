@@ -1550,4 +1550,1057 @@ B: I agree. It's the best prize.`,
       },
     },
   },
+  {
+    meta: {
+      id: 'pet-mock-13-speaking',
+      title: 'PET 青少版官方真题 1 · Test 1 · Speaking',
+      level: 'PET',
+      collection: 'PET 青少版官方真题 1（新题型）',
+      paper: 'Speaking',
+      pages: '80–83',
+      source: 'B1 PET青少版官方真题 新题型 1.pdf（PDF p.81–84）',
+      answerSource: '原创教学参考答案',
+      verified: true,
+    },
+    parts: {
+      1: {
+        title: 'Part 1 · 个人问答',
+        duration: '2–3 分钟',
+        instruction: '考官先问两位考生相同的问题（第一阶段），再从问题清单中选问个性化问题（第二阶段）。',
+        phase1: [
+          {
+            q: "What's your name?",
+            modelAnswer: 'My name is Wang Mei, but most people call me May.',
+          },
+          {
+            q: 'How old are you?',
+            modelAnswer: "I'm fourteen. My birthday is in June, so I'll be fifteen soon.",
+          },
+          {
+            q: 'Where do you live?',
+            modelAnswer: "I live in Chengdu, a big city in the south-west of China. It's quite busy, but I like it because there's always something to do at weekends.",
+          },
+          {
+            q: 'Who do you live with?',
+            modelAnswer: 'I live with my parents and my grandparents. My grandmother cooks for us every day, which is wonderful.',
+          },
+        ],
+        phase2: [
+          {
+            q: 'Tell us about a teacher you like.',
+            modelAnswer: "I really like my maths teacher, Mr Chen, because he explains difficult problems slowly and always smiles. For example, when I got a question wrong, he never shouted — he just showed me an easier way until I understood.",
+          },
+          {
+            q: 'How often do you use a mobile phone?',
+            modelAnswer: "I use my phone every day, but only for about an hour after finishing my homework. I mainly chat with my classmates and watch short science videos, so it helps me both relax and study.",
+          },
+          {
+            q: 'Which time of year do you like the most? (Why?)',
+            modelAnswer: "I like autumn best, because the weather is cool and sunny and the leaves turn gold and red. Last October we walked in the hills and took photos of the colourful forest, which was beautiful.",
+          },
+          {
+            q: 'Which do you like best, the morning or the afternoon? (Why?)',
+            modelAnswer: "I prefer the afternoon, because I have more energy after lunch and most of my favourite lessons are then. After school I also play basketball with my friends in the afternoon, so it's the best part of my day.",
+          },
+        ],
+      },
+      2: {
+        title: 'Part 2 · 个人图片描述',
+        duration: '2–3 分钟',
+        instruction: '考官给每位考生一张照片，各自单独描述约一分钟（人物、地点、照片中的其他事物）。',
+        photos: [
+          {
+            label: 'A',
+            topic: 'someone watching TV',
+            image: '/images/pet/speaking/schools1-1/photo-a.png',
+            points: ['谈谈人物', '谈谈地点', '谈谈照片中的其他事物'],
+            modelAnswer: `In this photograph, I can see a boy sitting on a big pale green sofa in a living room.
+He's lying back against the cushions with a phone in one hand, and he looks very relaxed.
+On the wall in front of him there's a large TV, and a football match is on the screen, so maybe he's watching the game and checking his phone at the same time.
+Under the TV there's a long wooden shelf with a small lamp and some candles on it.
+The room looks bright and tidy, with plain white walls.
+I think it's a comfortable family living room, and the boy is enjoying a quiet evening at home.`,
+          },
+          {
+            label: 'B',
+            topic: 'people having a meal',
+            image: '/images/pet/speaking/schools1-1/photo-b.png',
+            points: ['谈谈人物', '谈谈地点', '谈谈照片中的其他事物'],
+            modelAnswer: `In this photograph, I can see a family of four having a meal together at home.
+The mother is sitting in the middle and smiling, and the father on the right is talking to one of the two girls.
+On the table there are two big pans with soup and a red sauce, and there's also fresh bread, some small pumpkins and a glass of water.
+The room looks bright because of the big windows, and I can see some flowers near the window.
+It looks like a home-cooked lunch, and everybody seems happy and relaxed.
+I think they're enjoying a weekend meal together, because on weekdays families are often too busy to eat slowly like this.`,
+          },
+        ],
+      },
+      3: {
+        title: 'Part 3 · 协作讨论',
+        duration: '2–3 分钟',
+        situation: 'A class is going on a day trip walking in the mountains with their teacher.',
+        instruction: 'Here are some things they could take with them. Talk together about the different things they could take with them and say which would be most useful.',
+        image: '/images/pet/speaking/schools1-1/task.png',
+        options: ['地图', '带绒球的毛线帽', '雨伞', '瓶装水', '照相机', '巧克力', '足球'],
+        modelDialogue: `A: A class is going on a day trip walking in the mountains, and they need to choose the most useful thing to take with them. What do you think of these ideas?
+B: Well, the football would be fun after the walk, but you can't play football while you're walking uphill, so it isn't really useful.
+A: I agree. The camera would take lovely photos of the mountains, but it doesn't help you during the walk. The chocolate is a better idea, though — it gives you quick energy when you feel tired.
+B: That's true. The woolly hat is warm, but it can be too hot on a sunny day, and the umbrella is heavy and awkward to carry on a long walk.
+A: Yes. The map is very useful because you can't get lost with it, but the teacher probably already has one.
+B: Good point! So I think the bottle of water is the most useful thing, because walking all day in the mountains makes you really thirsty, and you can't buy water there.
+A: I agree. You can't walk safely without drinking. Let's choose the bottle of water.`,
+        tips: ['逐个讨论七样物品，不要只说一件', '从“是否必需、是否轻便、是否适合山地徒步”比较', '用 Well / I agree / Good point! 回应同伴', '扣题：选出对全班日间山地徒步最有用的物品', '最后达成一致并说明理由'],
+      },
+      4: {
+        title: 'Part 4 · 深入讨论',
+        duration: '3 分钟',
+        instruction: '考官围绕 Part 3 的话题与两位考生展开讨论。',
+        questions: [
+          {
+            q: 'Do you like walking in the countryside? (Why? / Why not?)',
+            modelAnswer: "Yes, I do, because the air is fresh and it's quiet, so walking there helps me relax after a busy week. Last spring I walked through the fields near my grandparents' village, and we saw birds and a small river.",
+          },
+          {
+            q: 'Do you walk to school? (Why? / Why not?)',
+            modelAnswer: "Yes, I walk to school every day, because my home is only fifteen minutes away and walking is free exercise. I also meet my friends on the way, so it's a nice start to the day.",
+          },
+          {
+            q: 'When was the last time you went for a really long walk? (Where did you go?)',
+            modelAnswer: "It was last month, when my family walked around a big lake near my city. It took us almost three hours, but we stopped for a picnic halfway, so it didn't feel too tiring.",
+          },
+          {
+            q: 'Which outdoor activity do you enjoy doing most? (Why?)',
+            modelAnswer: "I enjoy cycling most, because you can go much further than on foot and you can feel the wind, which is exciting. My friends and I often ride along the river path and stop at a small shop for cold drinks.",
+          },
+          {
+            q: 'Is it important for young people to spend time outdoors? (Why? / Why not?)',
+            modelAnswer: "Yes, I think it's really important, because fresh air and exercise keep both the body and the mind healthy. For example, after playing football outside I always sleep better and find it easier to focus on my homework.",
+          },
+        ],
+      },
+    },
+  },
+  {
+    meta: {
+      id: 'pet-mock-14-speaking',
+      title: 'PET 青少版官方真题 1 · Test 2 · Speaking',
+      level: 'PET',
+      collection: 'PET 青少版官方真题 1（新题型）',
+      paper: 'Speaking',
+      pages: '84–87',
+      source: 'B1 PET青少版官方真题 新题型 1.pdf（PDF p.85–88）',
+      answerSource: '原创教学参考答案',
+      verified: true,
+    },
+    parts: {
+      1: {
+        title: 'Part 1 · 个人问答',
+        duration: '2–3 分钟',
+        instruction: '考官先问两位考生相同的问题（第一阶段），再从问题清单中选问个性化问题（第二阶段）。',
+        phase1: [
+          {
+            q: "What's your name?",
+            modelAnswer: 'My name is Zhang Tao, but you can call me Tony.',
+          },
+          {
+            q: 'How old are you?',
+            modelAnswer: "I'm fifteen years old. My birthday is in March, so I'm one of the oldest students in my class.",
+          },
+          {
+            q: 'Where do you live?',
+            modelAnswer: "I live in a small town near Nanjing. It's quiet and green, and there's a lake just five minutes from my home.",
+          },
+          {
+            q: 'Who do you live with?',
+            modelAnswer: 'I live with my parents and my elder brother. He studies at university now, but he comes home at weekends.',
+          },
+        ],
+        phase2: [
+          {
+            q: 'Tell us about sports you like.',
+            modelAnswer: "I like table tennis and swimming. I play table tennis with my classmates twice a week because it's fast and exciting, and in summer I swim in the pool near my home to cool down.",
+          },
+          {
+            q: 'What type of music do you like listening to?',
+            modelAnswer: "I mostly listen to pop music, because the songs are cheerful and easy to sing along to. When a new song by my favourite singer comes out, my friends and I listen to it together after class.",
+          },
+          {
+            q: 'Tell us what you do in the school holidays.',
+            modelAnswer: "In the school holidays I usually visit my grandparents in the countryside and help them in the garden. I also go cycling with my friends and read books, so I never feel bored.",
+          },
+          {
+            q: 'What new hobby would you like to try? (Why?)',
+            modelAnswer: "I'd like to try photography, because I love taking pictures of beautiful places when I travel. Last summer I took a photo of a sunset with my mum's phone and it looked amazing, so I'd like to learn to do it properly.",
+          },
+        ],
+      },
+      2: {
+        title: 'Part 2 · 个人图片描述',
+        duration: '2–3 分钟',
+        instruction: '考官给每位考生一张照片，各自单独描述约一分钟（人物、地点、照片中的其他事物）。',
+        photos: [
+          {
+            label: 'A',
+            topic: 'people on bicycles',
+            image: '/images/pet/speaking/schools1-2/photo-a.png',
+            points: ['谈谈人物', '谈谈地点', '谈谈照片中的其他事物'],
+            modelAnswer: `In this photograph, I can see some people riding mountain bikes on a rocky path in a forest.
+The man in front is wearing a red jacket, black shorts and a helmet, and he's carrying a red rucksack.
+Behind him another cyclist is coming down the hill, and I can just see someone else standing among the tall trees.
+The path looks quite difficult because it's full of stones and tree roots, so the riders have to be careful.
+There's green grass on the hillside and the forest looks thick and wild.
+I think mountain biking is an exciting but hard sport, and these people look well prepared for it.`,
+          },
+          {
+            label: 'B',
+            topic: 'people playing music',
+            image: '/images/pet/speaking/schools1-2/photo-b.png',
+            points: ['谈谈人物', '谈谈地点', '谈谈照片中的其他事物'],
+            modelAnswer: `In this photograph, I can see some young people playing music in a music room.
+The girl in the foreground is playing an electric guitar and wearing big headphones, and she looks very serious about her music.
+Next to her a boy with glasses is playing an acoustic guitar, and on the left another boy is sitting at an electronic keyboard.
+In the background there are computers and screens, so maybe they're recording a song or practising for a concert.
+Everybody is wearing headphones, so they can hear the music clearly without making too much noise.
+I think they're a small school band, and they seem to really enjoy playing together.`,
+          },
+        ],
+      },
+      3: {
+        title: 'Part 3 · 协作讨论',
+        duration: '2–3 分钟',
+        situation: 'A girl is going to write an article for her school magazine about the history of her local area. She wants to find out more about it.',
+        instruction: 'Here are some ways she could find out about the history of her local area. Talk together about the different ways she could find out about the history of the local area and say which would be best.',
+        image: '/images/pet/speaking/schools1-2/task.png',
+        options: ['在雕像前看说明牌', '采访老人听过去的故事', '用笔记本电脑上网查资料', '参加导游带领的参观', '参观博物馆看展品', '查阅旧报纸杂志'],
+        modelDialogue: `A: A girl wants to find out about the history of her local area for a school article. What do you think of these ideas?
+B: Well, reading old newspapers and magazines is useful, because they have true stories from the past, but it takes a long time to find the right information.
+A: That's true. Looking at the statue and reading the plaque is quick and free, but it probably only tells one small part of the story.
+B: I agree. Interviewing old people is a lovely idea, though — my grandmother remembers things about our town that you can't find in any book.
+A: Good point! Using the internet is the fastest way, and she can do it at home, but some information online isn't correct.
+B: Yes. The museum is interesting because the objects are real, and on the guided tour the guide can answer her questions directly.
+A: So which is best? I think interviewing older people, because her article will include special stories that nobody else has.
+B: I agree. Let's choose talking to people who remember the past.`,
+        tips: ['逐个讨论六种了解当地历史的途径', '从“信息是否可靠、是否省时、内容是否独特”比较', "用 That's true / Good point! 互动回应", '扣题：为校刊文章收集当地历史资料', '最后达成一致并说明理由'],
+      },
+      4: {
+        title: 'Part 4 · 深入讨论',
+        duration: '3 分钟',
+        instruction: '考官围绕 Part 3 的话题与两位考生展开讨论。',
+        questions: [
+          {
+            q: 'Do you like learning about history at school? (Why? / Why not?)',
+            modelAnswer: "Yes, I do, because history is full of interesting stories about real people. For example, we recently learned how people lived in our city a hundred years ago, and I was amazed at how different everything was.",
+          },
+          {
+            q: 'Have you been on a school trip to a museum? (What did you see?)',
+            modelAnswer: "Yes, I went to a history museum with my class last autumn. We saw ancient coins, old maps and some pottery that was found near our town, and a guide explained how people made the pots by hand.",
+          },
+          {
+            q: 'Do you enjoy watching films about the past? (Why? / Why not?)',
+            modelAnswer: "Yes, I enjoy them, because they make history feel real and exciting. After I watched a film about an old king last month, I understood that period much better than from just reading the textbook.",
+          },
+          {
+            q: 'Is it interesting to visit historical buildings like castles? (Why? / Why not?)',
+            modelAnswer: "Yes, I think it's very interesting, because you can walk where people walked hundreds of years ago. When I visited an old city wall, I could almost imagine the soldiers standing there, which you can't feel from photos.",
+          },
+          {
+            q: "Do you think it's important for young people to learn about the past? (Why? / Why not?)",
+            modelAnswer: "Yes, I do, because understanding the past helps us understand the world today. For example, if young people know how their town developed, they will care more about protecting its old buildings.",
+          },
+        ],
+      },
+    },
+  },
+  {
+    meta: {
+      id: 'pet-mock-15-speaking',
+      title: 'PET 青少版官方真题 1 · Test 3 · Speaking',
+      level: 'PET',
+      collection: 'PET 青少版官方真题 1（新题型）',
+      paper: 'Speaking',
+      pages: '88–91',
+      source: 'B1 PET青少版官方真题 新题型 1.pdf（PDF p.89–92）',
+      answerSource: '原创教学参考答案',
+      verified: true,
+    },
+    parts: {
+      1: {
+        title: 'Part 1 · 个人问答',
+        duration: '2–3 分钟',
+        instruction: '考官先问两位考生相同的问题（第一阶段），再从问题清单中选问个性化问题（第二阶段）。',
+        phase1: [
+          {
+            q: "What's your name?",
+            modelAnswer: 'My name is Liu Yang, but my English name is Eric.',
+          },
+          {
+            q: 'How old are you?',
+            modelAnswer: "I'm fourteen years old, and I'm in my second year of junior high school.",
+          },
+          {
+            q: 'Where do you live?',
+            modelAnswer: "I live in Xi'an, an old city in the north-west of China. It's famous for its city wall and its food, and I really like living there.",
+          },
+          {
+            q: 'Who do you live with?',
+            modelAnswer: 'I live with my parents and my little sister. Our flat is near my school, so I can walk there in ten minutes.',
+          },
+        ],
+        phase2: [
+          {
+            q: 'Which do you like best, the morning or the afternoon? (Why?)',
+            modelAnswer: "I like the morning best, because I feel full of energy after breakfast and I can study well before school. At the weekend I also go running early with my dad, and the streets are still quiet.",
+          },
+          {
+            q: 'Tell us about sports you like.',
+            modelAnswer: "I enjoy badminton and cycling. I play badminton with my cousin every Saturday because it's fast and you improve quickly, and I cycle to school every day, which keeps me fit without taking extra time.",
+          },
+          {
+            q: 'What type of music do you like listening to?',
+            modelAnswer: "I like listening to pop music most, because the songs have good energy and help me wake up in the morning. I've also started learning the words of English songs, and that has improved my pronunciation.",
+          },
+          {
+            q: 'Tell us what you do in the school holidays.',
+            modelAnswer: "In the holidays I usually spend a week at my grandparents' farm and help feed the chickens. I also meet my friends in the park and finish a couple of books, so the holidays pass really quickly.",
+          },
+        ],
+      },
+      2: {
+        title: 'Part 2 · 个人图片描述',
+        duration: '2–3 分钟',
+        instruction: '考官给每位考生一张照片，各自单独描述约一分钟（人物、地点、照片中的其他事物）。',
+        photos: [
+          {
+            label: 'A',
+            topic: 'people with horses',
+            image: '/images/pet/speaking/schools1-3/photo-a.png',
+            points: ['谈谈人物', '谈谈地点', '谈谈照片中的其他事物'],
+            modelAnswer: `In this photograph, I can see two girls with horses on a grassy path in the countryside.
+The girl on the right is wearing a blue jacket, and she's leading a big horse towards the camera.
+On the left, the other girl is standing next to a brown horse near a wooden fence.
+In the background there are tall trees, white flowers and a small red house, so it looks like a farm in the countryside.
+The sky is a little cloudy, but it doesn't look cold.
+I think the girls help look after the horses, and they're taking them for a walk along the path.`,
+          },
+          {
+            label: 'B',
+            topic: 'people playing chess',
+            image: '/images/pet/speaking/schools1-3/photo-b.png',
+            points: ['谈谈人物', '谈谈地点', '谈谈照片中的其他事物'],
+            modelAnswer: `In this photograph, I can see some people playing chess at a long table.
+In the foreground there's a chess board, and a boy with glasses and a checked shirt is thinking hard about his next move.
+On the right, another boy in a white T-shirt is watching the game carefully.
+There are papers, pencils and a glass of water on the table, and I can see another chess board behind them.
+It looks like a chess club or a competition, because several games are happening at the same time.
+The players all look quiet and serious, so maybe they're trying to win a prize.`,
+          },
+        ],
+      },
+      3: {
+        title: 'Part 3 · 协作讨论',
+        duration: '2–3 分钟',
+        situation: 'Two students are going to do a school project about fashion and they need to get some information for their project.',
+        instruction: 'Here are some ways they could get information. Talk together about the different ways they could get information about fashion and say which would be best.',
+        image: '/images/pet/speaking/schools1-3/task.png',
+        options: ['用缝纫机自己做衣服', '用笔记本电脑上网查资料', '逛服装店看橱窗', '看时装秀', '阅读时尚杂志', '参观服装展览/博物馆'],
+        modelDialogue: `A: Two students need information for a school project about fashion. What do you think of these ideas?
+B: Well, making clothes with a sewing machine sounds interesting, but it teaches you how to make things, not much about fashion in general.
+A: True. Looking at the shop windows is easy and free, but the clothes there are only what's in the shops right now.
+B: I agree. Reading fashion magazines is more useful, because there are lots of photos and interviews with designers.
+A: Good point! Watching a fashion show is exciting and you can see the newest styles, but it only lasts one evening and tickets can be expensive.
+B: Yes. Using a laptop to search online is fast and free, and you can even watch videos of old fashion shows.
+A: So which is best? I think visiting the clothes exhibition, because they can see real historical dresses and take notes for their project.
+B: I agree. Let's choose visiting the exhibition.`,
+        tips: ['逐个讨论六种获取时尚信息的途径', '从“信息多少、是否免费、是否适合做课题”比较', '用 I agree / Good point! 回应同伴', '扣题：为学校时尚课题收集资料', '最后达成一致并说明理由'],
+      },
+      4: {
+        title: 'Part 4 · 深入讨论',
+        duration: '3 分钟',
+        instruction: '考官围绕 Part 3 的话题与两位考生展开讨论。',
+        questions: [
+          {
+            q: 'Do you enjoy going shopping for clothes? (Why? / Why not?)',
+            modelAnswer: "Not really, because I find it tiring to walk around lots of shops. My mum usually buys most of my clothes, but I enjoy choosing T-shirts myself online, because it's quick and there's more choice.",
+          },
+          {
+            q: 'What do you usually wear at weekends? (Why?)',
+            modelAnswer: "I usually wear jeans and a comfortable hoodie, because weekends are for relaxing and playing sport with my friends. If the weather is warm, I just wear shorts and trainers.",
+          },
+          {
+            q: 'Have you ever tried to make your own clothes? (Why? / Why not?)',
+            modelAnswer: "No, I haven't, because sewing looks quite difficult and I don't have a machine. However, my grandmother once showed me how to sew a button, and now I can repair my own clothes.",
+          },
+          {
+            q: 'What do people in your country wear for special occasions? (Why?)',
+            modelAnswer: "For important festivals, many people wear traditional dresses, which are usually red and gold and look beautiful. In everyday life we wear modern clothes, but on special days traditional clothes make the celebration feel more important.",
+          },
+          {
+            q: 'Do you think what people wear is important? (Why? / Why not?)',
+            modelAnswer: "I think it's important, but not the most important thing. Clean, tidy clothes help you make a good impression, for example at an interview, but people should judge you by your character, not only your clothes.",
+          },
+        ],
+      },
+    },
+  },
+  {
+    meta: {
+      id: 'pet-mock-16-speaking',
+      title: 'PET 青少版官方真题 1 · Test 4 · Speaking',
+      level: 'PET',
+      collection: 'PET 青少版官方真题 1（新题型）',
+      paper: 'Speaking',
+      pages: '92–95',
+      source: 'B1 PET青少版官方真题 新题型 1.pdf（PDF p.93–96）',
+      answerSource: '原创教学参考答案',
+      verified: true,
+    },
+    parts: {
+      1: {
+        title: 'Part 1 · 个人问答',
+        duration: '2–3 分钟',
+        instruction: '考官先问两位考生相同的问题（第一阶段），再从问题清单中选问个性化问题（第二阶段）。',
+        phase1: [
+          {
+            q: "What's your name?",
+            modelAnswer: 'My name is Chen Jia, and my English name is Cindy.',
+          },
+          {
+            q: 'How old are you?',
+            modelAnswer: "I'm thirteen. I'll be fourteen in December, just before the New Year.",
+          },
+          {
+            q: 'Where do you live?',
+            modelAnswer: 'I live in Qingdao, a city by the sea in the east of China. In summer many people come to visit our beaches.',
+          },
+          {
+            q: 'Who do you live with?',
+            modelAnswer: 'I live with my parents and my grandfather. He tells me stories about when he was young, which I really enjoy.',
+          },
+        ],
+        phase2: [
+          {
+            q: 'Tell us about a teacher you like.',
+            modelAnswer: "My favourite teacher is Miss Yang, my English teacher, because her lessons are never boring. She often brings short videos and games into class, and when I made a mistake she just encouraged me to try again.",
+          },
+          {
+            q: 'How often do you use a mobile phone?',
+            modelAnswer: "I use my phone several times a day, mainly to check messages from my family and listen to music on the bus. I try not to use it too long, because my eyes get tired and I have homework to do.",
+          },
+          {
+            q: 'Which time of year do you like the most? (Why?)',
+            modelAnswer: "I like spring most, because it's warm but not hot and everything starts to grow. My birthday is also in April, and last year my friends and I had a picnic among the flowers to celebrate.",
+          },
+          {
+            q: 'Which do you like best, the morning or the afternoon? (Why?)',
+            modelAnswer: "I prefer the morning, because my mind is fresh and I can finish my homework quickly before school. In the afternoon I often feel sleepy after lunch, especially on hot days.",
+          },
+        ],
+      },
+      2: {
+        title: 'Part 2 · 个人图片描述',
+        duration: '2–3 分钟',
+        instruction: '考官给每位考生一张照片，各自单独描述约一分钟（人物、地点、照片中的其他事物）。',
+        photos: [
+          {
+            label: 'A',
+            topic: 'people in a classroom',
+            image: '/images/pet/speaking/schools1-4/photo-a.png',
+            points: ['谈谈人物', '谈谈地点', '谈谈照片中的其他事物'],
+            modelAnswer: `In this photograph, I can see a teacher and some students in a bright classroom.
+The teacher is wearing a blue shirt and a tie, and he's leaning over a desk to help a student with her work.
+The students are sitting close together, writing in their notebooks and looking at their books.
+There are big windows behind them, so a lot of light comes into the room.
+On the desks I can see notebooks, pens and a red pencil case.
+I think they're working on an exercise together, and the teacher is explaining something to the girl on the left.`,
+          },
+          {
+            label: 'B',
+            topic: 'people with a model boat',
+            image: '/images/pet/speaking/schools1-4/photo-b.png',
+            points: ['谈谈人物', '谈谈地点', '谈谈照片中的其他事物'],
+            modelAnswer: `In this photograph, I can see a man and a boy making a model boat together.
+The man is wearing a black and white striped shirt, and the boy is wearing a checked shirt.
+They're both smiling and looking at a small sailing boat with a red and white striped sail.
+There are little pots of blue and red paint on the table in front of them, so maybe they've just finished painting it.
+It looks like they're at home, sitting at a big wooden table.
+I think it's a father and his son, and they're enjoying making the model together.`,
+          },
+        ],
+      },
+      3: {
+        title: 'Part 3 · 协作讨论',
+        duration: '2–3 分钟',
+        situation: "A family is going on a long journey by train. They want to do something on the journey so they don't feel bored.",
+        instruction: 'Here are some activities they could do on the journey. Talk together about the different activities they could do and say which would be most fun.',
+        image: '/images/pet/speaking/schools1-4/task.png',
+        options: ['下国际象棋', '戴耳机听音乐', '看窗外风景拍照', '用笔记本电脑看电影', '弹吉他唱歌', '在座位上吃零食'],
+        modelDialogue: `A: A family is going on a long train journey and wants something fun to do. What do you think of these activities?
+B: Well, watching a film on the laptop is relaxing, but looking at a small screen for hours might make them feel tired.
+A: Maybe. Listening to music with headphones is easy, but everyone does it alone — it isn't really a family activity.
+B: That's true. Looking out of the window and taking photos of the mountains is nice, but the view changes quickly and then they might get bored.
+A: I agree. Eating snacks is fun too, but it's over quickly. Playing chess is better, because the whole family can play together for a long time.
+B: Good point! What about playing the guitar and singing? That's fun for everyone, even for people who just listen and clap.
+A: Yes, and everyone can join in with their favourite songs. Let's choose playing music and singing together.
+B: I agree — that would be the most fun.`,
+        tips: ['逐个讨论六种火车上的活动', '从“全家人能否一起参与、是否有趣持久”比较', "用 That's true / Good point! 回应同伴", '扣题：选出一家人觉得最好玩的活动', '最后达成一致并说明理由'],
+      },
+      4: {
+        title: 'Part 4 · 深入讨论',
+        duration: '3 分钟',
+        instruction: '考官围绕 Part 3 的话题与两位考生展开讨论。',
+        questions: [
+          {
+            q: 'How often do you go on long journeys? (Why? / Why not?)',
+            modelAnswer: "I don't go on long journeys very often, maybe two or three times a year, because my family is usually busy with school and work. We normally travel in the summer holidays, when we have more time.",
+          },
+          {
+            q: "What's your favourite way to travel on a long journey? (Why?)",
+            modelAnswer: "I like travelling by train best, because you can walk around, watch the scenery and even play games at a little table. On a plane you just sit in one seat for hours, so I find trains more fun.",
+          },
+          {
+            q: 'Where would you most like to travel to in the future? (Why?)',
+            modelAnswer: "I'd most like to travel to Yunnan in the future, because I've seen photos of its high mountains and old towns and they look amazing. I'd also love to try all the different food there.",
+          },
+          {
+            q: "What's the best place you've visited in your country? (Why?)",
+            modelAnswer: "The best place I've visited is Beijing, because there's so much history there. When I stood on the Great Wall, I couldn't believe how long it was, and it was even better than in the photos.",
+          },
+          {
+            q: 'Is it better to have a holiday in your own country or to go abroad? (Why?)',
+            modelAnswer: "I think both are good, but a holiday in my own country is easier, because I don't need a passport and I understand the language. However, going abroad is exciting because you can experience a completely different culture.",
+          },
+        ],
+      },
+    },
+  },
+  {
+    meta: {
+      id: 'pet-mock-17-speaking',
+      title: 'PET 青少版官方真题 2 · Test 1 · Speaking',
+      level: 'PET',
+      collection: 'PET 青少版官方真题 2（新题型）',
+      book: 'B1 Preliminary for Schools 2',
+      paper: 'Speaking',
+      pages: '80–83',
+      source: '2022-B1 PRELIMINARY FOR SCHOOLS 2.pdf（PDF p.82–85）',
+      answerSource: '原创教学参考答案',
+      verified: true,
+    },
+    parts: {
+      1: {
+        title: 'Part 1 · 个人问答',
+        duration: '2–3 分钟',
+        instruction: '考官先问两位考生相同的问题（第一阶段），再从问题清单中选问个性化问题（第二阶段）。',
+        phase1: [
+          {
+            q: "What's your name?",
+            modelAnswer: 'My name is Sun Lei, but please call me Sam. It is easier for people to remember.',
+          },
+          {
+            q: 'How old are you?',
+            modelAnswer: "I'm fifteen years old. I'm in the same class as my best friend, who is also fifteen.",
+          },
+          {
+            q: 'Where do you live?',
+            modelAnswer: 'I live in Wuhan, a big city in the middle of China. It is famous for its universities, and there is a large park just opposite my block.',
+          },
+          {
+            q: 'Who do you live with?',
+            modelAnswer: 'I live with my parents. I am the only child in the family, but my cousin often comes over at weekends to play chess with me.',
+          },
+        ],
+        phase2: [
+          {
+            q: 'What subject do you find the easiest at school? (Why?)',
+            modelAnswer: "I find geography the easiest, because I love maps and I remember facts well when I connect them to places. For example, I can name all the provinces because I studied them on a map, not just from the book.",
+          },
+          {
+            q: 'What type of animals do you like?',
+            modelAnswer: "I like dogs best, because they are friendly and always happy to see you. I walk my neighbour's dog every Sunday, so we get a lot of exercise together.",
+          },
+          {
+            q: 'How often do you take photos? (Why?/Why not?)',
+            modelAnswer: "I take photos almost every day, because I enjoy recording little happy moments. Last weekend I took pictures of my grandmother cooking, and we all laughed when we looked at them together.",
+          },
+          {
+            q: 'Where do you like to meet your friends?',
+            modelAnswer: "I like meeting my friends at the basketball court near my school, because we can play first and then talk. Afterwards we usually buy cold drinks at the small shop across the road.",
+          },
+        ],
+      },
+      2: {
+        title: 'Part 2 · 个人图片描述',
+        duration: '2–3 分钟',
+        instruction: '考官给每位考生一张照片，各自单独描述约一分钟（人物、地点、照片中的其他事物）。',
+        photos: [
+          {
+            label: 'A',
+            topic: 'friends enjoying time together',
+            image: '/images/pet/speaking/schools2-1/photo-a.png',
+            points: ['谈谈人物', '谈谈地点', '谈谈照片中的其他事物'],
+            modelAnswer: `In this photograph, I can see a group of six friends sitting together on the grass in a park.
+The girl on the left is wearing a pink jacket, and one of the boys is holding a guitar, so maybe they are making music for their friends.
+Some of them are holding books, and they are all talking and smiling at each other.
+Behind them there are lots of tall green trees, and they are sitting on a blanket on the ground.
+The weather looks warm and sunny.
+I think they are having a picnic or just relaxing together after school, because everyone looks very happy and comfortable.`,
+          },
+          {
+            label: 'B',
+            topic: 'friends walking',
+            image: '/images/pet/speaking/schools2-1/photo-b.png',
+            points: ['谈谈人物', '谈谈地点', '谈谈照片中的其他事物'],
+            modelAnswer: `In this photograph, I can see four girls walking together along a wide wooden path near the water.
+They are all wearing warm winter coats and hats, and each of them is holding a takeaway cup of coffee, so it is probably a cold day.
+Behind them I can see boats, tall buildings and some masts, so the place looks like a harbour.
+The sun is shining on the water, and the girls are walking side by side talking to each other.
+One of them is laughing, so they seem to be having a good time.
+I think they are friends enjoying a walk together on a cold but sunny afternoon.`,
+          },
+        ],
+      },
+      3: {
+        title: 'Part 3 · 协作讨论',
+        duration: '2–3 分钟',
+        situation: 'A boy is going to visit England soon for a short holiday. He wants to improve his English quickly before he goes.',
+        instruction: 'Here are some ways he could improve his English. Talk together about the different ways he could improve his English before his holiday and say which would be best.',
+        image: '/images/pet/speaking/schools2-1/task.png',
+        options: ['在家读书', '上英语课', '看英文电影', '听英文歌', '跟家教一起学', '用手机应用学英语'],
+        modelDialogue: `A: A boy wants to improve his English quickly before his holiday in England. What do you think of these ideas?
+B: Well, reading books at home is useful for vocabulary, but he will not practise speaking, which he will really need on holiday.
+A: That's true. Watching films in English is fun, and he can hear how people really talk, though the actors sometimes speak very fast.
+B: I agree. Listening to English songs is easy because he can do it anywhere, but songs don't always use everyday language.
+A: Good point. Having lessons with a tutor would help a lot, because she can correct his mistakes, but it costs money and he may not have much time.
+B: Yes. Using an app on his phone is cheap and he can practise for ten minutes every day, even on the bus.
+A: So which is best? I think having lessons, because a teacher can help him quickly with exactly what he needs for the trip.
+B: I agree. Let's choose lessons with a tutor.`,
+        tips: ['逐个讨论六种提高英语的方法', '从“是否有用、是否有趣、是否快捷省钱”比较', "用 That's true / Good point! 回应同伴", '扣题：出发去英国前的短时间内快速提高', '最后达成一致并说明理由'],
+      },
+      4: {
+        title: 'Part 4 · 深入讨论',
+        duration: '3 分钟',
+        instruction: '考官围绕 Part 3 的话题与两位考生展开讨论。',
+        questions: [
+          {
+            q: 'Do you enjoy learning English? (Why?/Why not?)',
+            modelAnswer: "Yes, I do, because English lets me talk to people from all over the world. For example, last month I made a friend from Australia in an online game, and we could chat easily because we both study English.",
+          },
+          {
+            q: 'How often do you listen to songs in English? (Why?)',
+            modelAnswer: "I listen to English songs almost every day, because I play them while I do sport or walk to school. I like copying the words, and without noticing it my pronunciation has become much better.",
+          },
+          {
+            q: 'Does anyone in your family speak English? (Why?/Why not?)',
+            modelAnswer: "Yes, my mother speaks English quite well, because she uses it at work with foreign customers. She sometimes helps me practise difficult words at dinner, which is really useful.",
+          },
+          {
+            q: 'Which other languages would you most like to learn in the future? (Why?)',
+            modelAnswer: "I'd most like to learn Japanese, because I love Japanese cartoons and I'd like to understand them without reading the subtitles. I also think it would be exciting to visit Japan one day and use the language there.",
+          },
+          {
+            q: 'Is it more important to learn to speak or to learn to write in another language? (Why?/Why not?)',
+            modelAnswer: "I think speaking is more important, because when you meet people you must talk with them straight away. Writing matters too, for emails and exams, but most everyday communication happens face to face.",
+          },
+        ],
+      },
+    },
+  },
+  {
+    meta: {
+      id: 'pet-mock-18-speaking',
+      title: 'PET 青少版官方真题 2 · Test 2 · Speaking',
+      level: 'PET',
+      collection: 'PET 青少版官方真题 2（新题型）',
+      book: 'B1 Preliminary for Schools 2',
+      paper: 'Speaking',
+      pages: '84–87',
+      source: '2022-B1 PRELIMINARY FOR SCHOOLS 2.pdf（PDF p.86–89）',
+      answerSource: '原创教学参考答案',
+      verified: true,
+    },
+    parts: {
+      1: {
+        title: 'Part 1 · 个人问答',
+        duration: '2–3 分钟',
+        instruction: '考官先问两位考生相同的问题（第一阶段），再从问题清单中选问个性化问题（第二阶段）。',
+        phase1: [
+          {
+            q: "What's your name?",
+            modelAnswer: 'My name is Guo Yu, and my English name is Grace.',
+          },
+          {
+            q: 'How old are you?',
+            modelAnswer: "I'm thirteen years old. I'm one of the youngest students in my class because I started school early.",
+          },
+          {
+            q: 'Where do you live?',
+            modelAnswer: 'I live in Kunming in the south-west of China. People call it the Spring City, because the weather is warm all year round.',
+          },
+          {
+            q: 'Who do you live with?',
+            modelAnswer: 'I live with my parents and my twin brother. We look the same, but we are very different — he loves sport and I love music.',
+          },
+        ],
+        phase2: [
+          {
+            q: 'What kind of music do you listen to?',
+            modelAnswer: "I mostly listen to quiet piano music, because it helps me relax after school. My favourite pianist is Lang Lang, and I watch his videos and try to copy how he plays.",
+          },
+          {
+            q: 'Do you like shopping? (Why?/Why not?)',
+            modelAnswer: "Yes, I do, especially shopping for books, because I love choosing new stories myself. I don't like shopping for clothes so much, because the shops are always crowded at weekends.",
+          },
+          {
+            q: 'Tell us about the kind of films you like.',
+            modelAnswer: "I like cartoon films best, because the pictures are beautiful and the stories are often funny. My favourite one is about a panda who learns kung fu, and I've watched it three times already.",
+          },
+          {
+            q: 'Do you enjoy playing games on phones and computers?',
+            modelAnswer: "Yes, but only for about half an hour a day. I enjoy puzzle games because they make me think, and I always finish my homework first, so my parents don't mind.",
+          },
+        ],
+      },
+      2: {
+        title: 'Part 2 · 个人图片描述',
+        duration: '2–3 分钟',
+        instruction: '考官给每位考生一张照片，各自单独描述约一分钟（人物、地点、照片中的其他事物）。',
+        photos: [
+          {
+            label: 'A',
+            topic: 'people playing music',
+            image: '/images/pet/speaking/schools2-2/photo-a.png',
+            points: ['谈谈人物', '谈谈地点', '谈谈照片中的其他事物'],
+            modelAnswer: `In this photograph, I can see four young people playing music together in a big room.
+The girl in the front is playing an acoustic guitar and looking down at the strings.
+On the right, another girl is playing an electric guitar, and in the middle a boy is sitting at a piano, with one more student standing behind him.
+The room looks like a school hall or music room, because the walls are dark and there are chairs and music stands around.
+There is some sheet music on the piano.
+I think they are a small school band and they're practising for a concert, because they all look very serious.`,
+          },
+          {
+            label: 'B',
+            topic: 'someone cooking',
+            image: '/images/pet/speaking/schools2-2/photo-b.png',
+            points: ['谈谈人物', '谈谈地点', '谈谈照片中的其他事物'],
+            modelAnswer: `In this photograph, I can see a teenage boy cooking at a big white counter.
+He is wearing a blue T-shirt, and he is using a spatula to turn small burgers on a hot black pan.
+On the counter there are eggs in a box, some cheese, vegetables and little dishes with different sauces, so maybe he is preparing a big meal.
+Behind him there is a wooden table with bags and boxes, and I can see a tall green plant on the right.
+The room looks bright and friendly, with lots of things on the shelves.
+I think he is learning to cook at home, and he looks confident and happy about it.`,
+          },
+        ],
+      },
+      3: {
+        title: 'Part 3 · 协作讨论',
+        duration: '2–3 分钟',
+        situation: 'A new library is going to open in a town.',
+        instruction: 'Here are some things the library could have. Talk together about the different things the library could have and say which would be most popular with teenagers.',
+        image: '/images/pet/speaking/schools2-2/task.png',
+        options: ['乒乓球桌和棋类游戏区', '电脑区', '带遮阳伞的咖啡座', '零食小卖部', '文具/小商品柜台', '放映室'],
+        modelDialogue: `A: A new library is opening, and they want the most popular thing for teenagers. What do you think of these ideas?
+B: Well, the table tennis table and the chess games would be really popular, because teenagers love competing with their friends after school.
+A: Good point. The computer area is useful for homework, but most teenagers already have a computer or a phone at home.
+B: That's true. A café with umbrellas would be a nice place to sit and chat, though drinks there can be quite expensive.
+A: Yes. The snack shop is popular too, but it's more about food than the library itself. The stationery counter is useful but not exciting.
+B: I agree. What about the screening room? Teenagers could watch films together, and it would make the library feel modern.
+A: Hmm, but a screening room is quiet and you sit still. I still think the table tennis and games area is best, because it's active and free for everyone.
+B: I agree. Let's choose the games area with the table tennis table.`,
+        tips: ['逐个讨论图书馆可以有的六样设施', '从“青少年是否喜欢、是否免费、是否适合图书馆”比较', "用 That's true / Good point! 回应同伴", '扣题：选出对青少年最有吸引力的一项', '最后达成一致并说明理由'],
+      },
+      4: {
+        title: 'Part 4 · 深入讨论',
+        duration: '3 分钟',
+        instruction: '考官围绕 Part 3 的话题与两位考生展开讨论。',
+        questions: [
+          {
+            q: 'How often do you go to a library? (Why?)',
+            modelAnswer: "I go to the library about twice a month, usually at weekends. I like it because it's completely quiet there, so I can finish my homework much faster than at home, where my brother watches TV.",
+          },
+          {
+            q: 'What kind of things do you enjoy reading? (Why?)',
+            modelAnswer: "I enjoy adventure stories, because something exciting happens in every chapter and I can't stop reading. I also like magazines about animals, since the photos are amazing and I learn new facts all the time.",
+          },
+          {
+            q: 'Do you prefer to read about something or watch a TV programme about it? (Why?)',
+            modelAnswer: "I prefer reading, because I can stop and think about any page or read it again, and I imagine everything myself. TV is easier, but it gives you the pictures, so your own imagination doesn't work.",
+          },
+          {
+            q: 'Have you ever read a book in English? (Why?/Why not?)',
+            modelAnswer: "Yes, I read a short story about a detective last term. Some words were difficult, so I wrote them in my notebook, but finishing a whole English book made me feel really proud of myself.",
+          },
+          {
+            q: "Do you think it's important for every town to have a library? (Why?/Why not?)",
+            modelAnswer: "Yes, I do, because not every family can buy lots of books, and a library lets everybody read for free. It also gives young people a quiet, safe place to study after school, which is important for the whole town.",
+          },
+        ],
+      },
+    },
+  },
+  {
+    meta: {
+      id: 'pet-mock-19-speaking',
+      title: 'PET 青少版官方真题 2 · Test 3 · Speaking',
+      level: 'PET',
+      collection: 'PET 青少版官方真题 2（新题型）',
+      book: 'B1 Preliminary for Schools 2',
+      paper: 'Speaking',
+      pages: '88–91',
+      source: '2022-B1 PRELIMINARY FOR SCHOOLS 2.pdf（PDF p.90–93）',
+      answerSource: '原创教学参考答案',
+      verified: true,
+    },
+    parts: {
+      1: {
+        title: 'Part 1 · 个人问答',
+        duration: '2–3 分钟',
+        instruction: '考官先问两位考生相同的问题（第一阶段），再从问题清单中选问个性化问题（第二阶段）。',
+        phase1: [
+          {
+            q: "What's your name?",
+            modelAnswer: 'My name is Chen Hao, and everyone at school calls me Leo.',
+          },
+          {
+            q: 'How old are you?',
+            modelAnswer: "I'm fourteen. My birthday is in March, so I'm usually one of the older students in my class.",
+          },
+          {
+            q: 'Where do you live?',
+            modelAnswer: "I live in Chengdu. It's a big city in the south-west of China, and it's famous for its pandas.",
+          },
+          {
+            q: 'Who do you live with?',
+            modelAnswer: "I live with my parents and my little sister. She's only six, so I often help her with her reading.",
+          },
+        ],
+        phase2: [
+          {
+            q: 'What subject do you find the easiest at school? (Why?)',
+            modelAnswer: "I find history the easiest, because I love stories about the past and I remember dates well. Our teacher tells everything like a story, so the lessons never feel difficult.",
+          },
+          {
+            q: 'What kind of music do you listen to?',
+            modelAnswer: "I listen to pop music most of the time, because the songs are cheerful and easy to sing. My friends and I often sing the same songs on the bus to school.",
+          },
+          {
+            q: 'Tell us about the kind of films you like.',
+            modelAnswer: "I like funny films best, because they help me relax after a long week. I watched a comedy about a football team last weekend, and I laughed from the beginning to the end.",
+          },
+          {
+            q: 'Do you enjoy playing games on phones and computers?',
+            modelAnswer: "Yes, I do, especially at weekends. I like racing games because they're exciting, but I stop after an hour so I still have time for homework.",
+          },
+        ],
+      },
+      2: {
+        title: 'Part 2 · 个人图片描述',
+        duration: '2–3 分钟',
+        instruction: '考官给每位考生一张照片，各自单独描述约一分钟（人物、地点、照片中的其他事物）。',
+        photos: [
+          {
+            label: 'A',
+            topic: 'people watching television',
+            image: '/images/pet/speaking/schools2-3/photo-a.png',
+            points: ['谈谈人物', '谈谈地点', '谈谈照片中的其他事物'],
+            modelAnswer: `In this photograph, I can see a group of people watching television in a living room.
+Some of them are sitting on the sofa and the others are in armchairs, and they are all looking at the TV on the right.
+There is a big bookshelf on the left with lots of books, and a small table in the middle of the room.
+Behind them there are large windows with curtains, and there is a patterned rug on the floor.
+The room looks warm and comfortable, like a real family home.
+I think they are watching a film or a match together in the evening, because everyone is looking in the same direction.`,
+          },
+          {
+            label: 'B',
+            topic: 'people taking a photo',
+            image: '/images/pet/speaking/schools2-3/photo-b.png',
+            points: ['谈谈人物', '谈谈地点', '谈谈照片中的其他事物'],
+            modelAnswer: `In this photograph, I can see five people taking a photo of themselves on a beach.
+A man in the front is holding up a phone to take the picture, and everyone is smiling at it.
+They are standing close together on pebbles next to the water, and behind them there are hills and tall green trees.
+The sky looks grey, and they are all wearing jackets, so it is probably a cool day.
+One woman has her hand on her hip, and the whole group looks happy and relaxed.
+I think they are friends or a family on a trip, taking a selfie to remember the beautiful place.`,
+          },
+        ],
+      },
+      3: {
+        title: 'Part 3 · 协作讨论',
+        duration: '2–3 分钟',
+        situation: 'A girl wants to go somewhere to celebrate her birthday. She wants to invite all the students in her class.',
+        instruction: "Here are some places they could celebrate together. Talk together about the different places to celebrate the girl's birthday and say which would be best for a large group of people.",
+        image: '/images/pet/speaking/schools2-3/task.png',
+        options: ['挂气球彩旗的派对厅', '海滩烧烤', '室内游泳池', '餐厅长桌宴', '公园野餐'],
+        modelDialogue: `A: A girl wants to celebrate her birthday with all the students in her class. What do you think of these places?
+B: The party room with balloons looks fun, and it's indoors, so rain wouldn't be a problem. But it might be too small for such a large group.
+A: Good point. A barbecue on the beach would be exciting, though it depends on the weather, and cooking for the whole class would take a long time.
+B: That's true. What about the swimming pool? It's great fun in summer, but some students can't swim, and it's hard to talk and eat there.
+A: Yes. The restaurant with long tables could seat everyone and the food is ready, but it would be very expensive for a class of thirty.
+B: I agree. A picnic in the park is free, there is lots of space for games, and everyone can bring their own food.
+A: So which is best for a large group? I think the park, because the whole class can fit and play together.
+B: I agree. Let's choose the picnic in the park.`,
+        tips: ['逐个讨论五个庆祝地点', '从“空间大小、花费、天气、是否有趣”比较', "用 That's true / Good point! 回应同伴", '扣题：全班同学都能参加的大团体', '最后达成一致并说明理由'],
+      },
+      4: {
+        title: 'Part 4 · 深入讨论',
+        duration: '3 分钟',
+        instruction: '考官围绕 Part 3 的话题与两位考生展开讨论。',
+        questions: [
+          {
+            q: 'Did you celebrate your last birthday with your friends? (Why?/Why not?)',
+            modelAnswer: "Yes, I did. I invited four friends to a pizza restaurant, because I wanted to do something special. We ate, laughed and took photos, and it was one of my best birthdays.",
+          },
+          {
+            q: 'Have you been to a party recently? (Why?)',
+            modelAnswer: "Yes, I went to my classmate's party two weeks ago, because it was her birthday. There was music, cake and games, and I got to know some students I had never talked to before.",
+          },
+          {
+            q: 'What do you enjoy most when you go to a party? (Why?)',
+            modelAnswer: "I enjoy the games most, because they help everyone relax and talk to each other. When we play games together, nobody sits alone, so the party feels really friendly.",
+          },
+          {
+            q: 'Which is your favourite day of the year? (Why?)',
+            modelAnswer: "My favourite day is Chinese New Year, because the whole family gets together. We eat dumplings, watch the fireworks, and I see my cousins, who live in another city.",
+          },
+          {
+            q: "Do you think it's important to have special days to celebrate during the year? (Why?/Why not?)",
+            modelAnswer: "Yes, I do, because special days give us something to look forward to. School is busy, so celebrating together helps everyone relax and feel closer to their friends and family.",
+          },
+        ],
+      },
+    },
+  },
+  {
+    meta: {
+      id: 'pet-mock-20-speaking',
+      title: 'PET 青少版官方真题 2 · Test 4 · Speaking',
+      level: 'PET',
+      collection: 'PET 青少版官方真题 2（新题型）',
+      book: 'B1 Preliminary for Schools 2',
+      paper: 'Speaking',
+      pages: '92–95',
+      source: '2022-B1 PRELIMINARY FOR SCHOOLS 2.pdf（PDF p.94–97）',
+      answerSource: '原创教学参考答案',
+      verified: true,
+    },
+    parts: {
+      1: {
+        title: 'Part 1 · 个人问答',
+        duration: '2–3 分钟',
+        instruction: '考官先问两位考生相同的问题（第一阶段），再从问题清单中选问个性化问题（第二阶段）。',
+        phase1: [
+          {
+            q: "What's your name?",
+            modelAnswer: 'My name is Lin Yue, and my English name is Amy.',
+          },
+          {
+            q: 'How old are you?',
+            modelAnswer: "I'm fifteen years old. I'll be sixteen soon, because my birthday is in November.",
+          },
+          {
+            q: 'Where do you live?',
+            modelAnswer: 'I live in Hangzhou, a green city with a beautiful lake. Lots of tourists visit it every year.',
+          },
+          {
+            q: 'Who do you live with?',
+            modelAnswer: 'I live with my parents and my grandmother. She cooks dinner for us every day, and her food is delicious.',
+          },
+        ],
+        phase2: [
+          {
+            q: 'What type of animals do you like?',
+            modelAnswer: "I like cats, because they're quiet and easy to look after. My aunt's cat sleeps on my knees when I visit her, and it always makes me smile.",
+          },
+          {
+            q: 'Do you like shopping? (Why?/Why not?)',
+            modelAnswer: "Not really, because the shops near my home are always crowded and I get tired of walking around. But I do enjoy buying presents for my friends' birthdays.",
+          },
+          {
+            q: 'How often do you take photos? (Why?/Why not?)',
+            modelAnswer: "I only take photos on special days, like trips or birthdays. I prefer to enjoy the moment with my own eyes instead of looking at everything through a phone.",
+          },
+          {
+            q: 'Where do you like to meet your friends?',
+            modelAnswer: "I like meeting my friends at the park near my home, because we can play badminton there for free. When the weather is bad, we meet at each other's homes instead.",
+          },
+        ],
+      },
+      2: {
+        title: 'Part 2 · 个人图片描述',
+        duration: '2–3 分钟',
+        instruction: '考官给每位考生一张照片，各自单独描述约一分钟（人物、地点、照片中的其他事物）。',
+        photos: [
+          {
+            label: 'A',
+            topic: 'people in an art class',
+            image: '/images/pet/speaking/schools2-4/photo-a.png',
+            points: ['谈谈人物', '谈谈地点', '谈谈照片中的其他事物'],
+            modelAnswer: `In this photograph, I can see a group of students in an art class.
+They are sitting around a long table, and most of them are wearing aprons over their clothes.
+There is a red bucket on the table, and some students are making things with their hands, maybe models or sculptures.
+A teacher in an apron is standing behind the table and helping them.
+Above the table there are colourful things hanging from the ceiling, like masks or paper animals.
+Everyone looks busy and interested, so I think they are enjoying a practical art lesson at school.`,
+          },
+          {
+            label: 'B',
+            topic: 'someone talking on the phone',
+            image: '/images/pet/speaking/schools2-4/photo-b.png',
+            points: ['谈谈人物', '谈谈地点', '谈谈照片中的其他事物'],
+            modelAnswer: `In this photograph, I can see a young man talking on the phone in a city street.
+He is wearing glasses and a dark shirt, and he has a bag on his shoulder.
+He is holding the phone to his ear with one hand, and he is smiling, so maybe he is talking to a friend or a family member.
+Behind him there are shops with bright signs, and some people are walking past, though they look blurry.
+The street looks busy, like the centre of a big city.
+I think he has just stopped for a moment to make an important but happy phone call.`,
+          },
+        ],
+      },
+      3: {
+        title: 'Part 3 · 协作讨论',
+        duration: '2–3 分钟',
+        situation: 'A sports club is going to have a volleyball competition. The sports club wants to give the winning team a prize.',
+        instruction: 'Here are some different prizes the sports club could give. Talk together about the different prizes and say which the winning team would like best.',
+        image: '/images/pet/speaking/schools2-4/task.png',
+        options: ['奖杯', '运动T恤和衣服', '现金', '猴子玩偶', '巧克力礼盒', '运动水壶', '花束'],
+        modelDialogue: `A: A sports club wants to give the winning volleyball team a prize. What do you think of these prizes?
+B: A trophy is the classic prize, and the team can keep it and show everyone. But it doesn't really belong to one single person.
+A: Good point. A T-shirt and sports clothes are useful, though most players already have sports clothes at home.
+B: That's true. Money is exciting, but for a school competition it might be too much, and it isn't something to remember the day by.
+A: Yes. A toy monkey is funny, but it's really for little children, not for a winning team.
+B: I agree. Chocolates are nice, but everyone eats them in five minutes and then they're gone. Flowers look pretty, but it's the same problem.
+A: Water bottles are useful for sport, and they have the club logo, so the team can use them every time they play.
+B: So which would they like best? I think the trophy, because it's special and they'll remember winning for years.
+A: I agree. Let's choose the trophy.`,
+        tips: ['逐个讨论七种奖品', '从“是否有纪念意义、是否实用、是否适合团队”比较', "用 That's true / Good point! 回应同伴", '扣题：获胜的排球队最喜欢的奖品', '最后达成一致并说明理由'],
+      },
+      4: {
+        title: 'Part 4 · 深入讨论',
+        duration: '3 分钟',
+        instruction: '考官围绕 Part 3 的话题与两位考生展开讨论。',
+        questions: [
+          {
+            q: 'Have you ever played volleyball? (Why?/Why not?)',
+            modelAnswer: "Yes, I have. I played volleyball in PE lessons last year, because our school has a court. I wasn't very good at first, but hitting the ball over the net felt great.",
+          },
+          {
+            q: 'Which sports do you enjoy watching on TV? (Why?/Why not?)',
+            modelAnswer: "I enjoy watching football, because the matches are exciting and anything can happen until the last minute. My father supports the same team as me, so we watch together.",
+          },
+          {
+            q: 'Is there a new sport you would like to try? (Why?/Why not?)',
+            modelAnswer: "Yes, I'd like to try rock climbing, because it looks exciting and it's a good test of both body and mind. A new climbing centre opened near my home last month.",
+          },
+          {
+            q: 'What do you think is the best way to keep fit? (Why?)',
+            modelAnswer: "I think the best way is to do a sport you really enjoy, because then you keep doing it. I go cycling with my friends at weekends, and it never feels like exercise.",
+          },
+          {
+            q: 'Is it important for school students to do sport every day? (Why?/Why not?)',
+            modelAnswer: "I think some sport every day is important, because it helps students concentrate in class and sleep better. Even twenty minutes of running at break time can make a difference.",
+          },
+        ],
+      },
+    },
+  },
+  // __SCHOOLS1_APPEND__
 ]

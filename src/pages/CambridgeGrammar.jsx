@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { readGrammarMistakes } from '../utils/grammarMistakes'
 import { grammarUnitStatus, readGrammarProgress } from '../utils/grammarProgress'
+import { isGrammarUnitReady, isPetGrammarUnitReady } from '../utils/grammarUnitReady'
 import { CambridgeLayout } from './CambridgeApp'
-import { GRAMMAR_QUESTIONS } from '../data/grammarQuestions'
+import { PET_GRAMMAR_GROUPS, PET_GRAMMAR_POINTS } from '../data/petGrammarSets'
 
 /* ── KET 语法考点数据 ── */
 export const GRAMMAR_POINTS = [
@@ -140,52 +141,89 @@ export const GRAMMAR_GROUPS = [
   { id: 'passive-review', number: '05', title: '被动语态与综合语法', desc: '被动语态、情态动词、非谓语和综合巩固', unitNums: [38, 39, 40, 41, 42, 49], icon: '↻' },
 ]
 
-const hasChinese = value => /[\u3400-\u9fff]/.test(String(value || ''))
+const THEMES = {
+  KET: {
+    tag: 'KET GRAMMAR', tagClass: 'text-emerald-700',
+    featuredBg: 'bg-emerald-50/40', featuredBorder: 'border-emerald-500', cardHover: 'hover:border-emerald-300',
+    iconFeatured: 'bg-[#064e3b] text-white', icon: 'bg-emerald-50 text-emerald-700', accent: 'text-emerald-700',
+  },
+  PET: {
+    tag: 'PET GRAMMAR', tagClass: 'text-violet-700',
+    featuredBg: 'bg-violet-50/40', featuredBorder: 'border-violet-500', cardHover: 'hover:border-violet-300',
+    iconFeatured: 'bg-violet-700 text-white', icon: 'bg-violet-50 text-violet-700', accent: 'text-violet-700',
+  },
+}
 
-// 学生端只开放题目、中文题意和中文解析均已完整校对的单元。
-export function isGrammarUnitReady(unit) {
-  if (!unit?.available) return false
-  const content = GRAMMAR_QUESTIONS[unit.n]
-  if (!content) return false
-
-  const questionTypes = [
-    ['questions', 'qZh'],
-    ['blanks', 'sentenceZh'],
-    ['corrections', 'sentenceZh'],
-  ]
-
-  return questionTypes.every(([type, translationKey]) => {
-    const items = content[type]
-    return Array.isArray(items) && items.length >= 15 && items.every(item =>
-      hasChinese(item[translationKey]) && hasChinese(item.expZh || item.exp)
-    )
-  })
+export function GrammarTabBar({ active, level }) {
+  const navigate = useNavigate()
+  const isPet = level === 'PET'
+  const groups = isPet ? PET_GRAMMAR_GROUPS : GRAMMAR_GROUPS
+  const activeStyle = isPet
+    ? 'border-violet-600 bg-violet-600 text-white shadow-sm'
+    : 'border-emerald-600 bg-emerald-600 text-white shadow-sm'
+  const tabStyle = isPet
+    ? 'border-violet-200 bg-violet-50 text-violet-800 hover:bg-violet-100'
+    : 'border-emerald-200 bg-emerald-50 text-emerald-800 hover:bg-emerald-100'
+  return (
+    <nav className="w-full border-b border-gray-100 bg-white px-6 py-4">
+      <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-2.5">
+        <button type="button" onClick={() => navigate('/cambridge/grammar')}
+          className={`mr-1 rounded-xl border px-4 py-2.5 text-sm font-extrabold transition ${
+            active === 'home'
+              ? activeStyle
+              : 'border-gray-200 bg-white text-gray-500 hover:border-gray-300'
+          }`}>
+          我的语法中心
+        </button>
+        {groups.map(group => (
+          <button key={group.id} type="button"
+            onClick={() => navigate(`/cambridge/grammar/category/${group.id}`)}
+            className={`rounded-xl border px-4 py-2.5 text-sm font-extrabold transition ${
+              active === group.id ? activeStyle : tabStyle
+            }`}>
+            {group.title}
+          </button>
+        ))}
+      </div>
+    </nav>
+  )
 }
 
 export default function CambridgeGrammar() {
   const navigate = useNavigate()
   const [level, setLevel] = useState(() => { try { return localStorage.getItem('cambridge_level') || 'KET' } catch { return 'KET' } })
 
-  const totalUnits    = GRAMMAR_POINTS.reduce((s, p) => s + p.units.length, 0)
-  const storedProgress = readGrammarProgress()
-  const completedUnits = GRAMMAR_POINTS.flatMap(point => point.units).filter(unit => grammarUnitStatus(storedProgress, unit.n).complete).length
+  useEffect(() => {
+    try { localStorage.setItem('cambridge_level', level) } catch { /* local storage may be unavailable */ }
+  }, [level])
+
+  const isPet = level === 'PET'
+  const theme = isPet ? THEMES.PET : THEMES.KET
+  const groups = isPet ? PET_GRAMMAR_GROUPS : GRAMMAR_GROUPS
+  const allUnits = (isPet ? PET_GRAMMAR_POINTS : GRAMMAR_POINTS).flatMap(point => point.units)
+  const readyCheck = isPet ? isPetGrammarUnitReady : isGrammarUnitReady
+
+  const totalUnits    = allUnits.length
+  const storedProgress = readGrammarProgress(level)
+  const completedUnits = allUnits.filter(unit => grammarUnitStatus(storedProgress, unit.n).complete).length
   const lastAccuracy = (() => {
     try { return JSON.parse(localStorage.getItem('mars_grammar_last_result') || 'null')?.accuracy ?? null } catch { return null }
   })()
-  const mistakeCount = Object.keys(readGrammarMistakes()).length
+  const mistakeCount = Object.keys(readGrammarMistakes(level)).length
 
   function unitsForGroup(group) {
-    return group.unitNums.map(unitNum => GRAMMAR_POINTS.flatMap(point => point.units).find(unit => unit.n === unitNum)).filter(Boolean)
+    return group.unitNums.map(unitNum => allUnits.find(unit => unit.n === unitNum)).filter(Boolean)
   }
 
   return (
     <CambridgeLayout activeModule="grammar" level={level} setLevel={setLevel}>
+      <GrammarTabBar active="home" level={level} />
       <div className="max-w-7xl mx-auto px-6 lg:px-9 py-5 lg:py-6 min-h-full">
 
         {/* ── 页头 ── */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <div>
-            <div className="text-[11px] font-extrabold tracking-[.18em] text-emerald-700">KET GRAMMAR</div>
+            <div className={`text-[11px] font-extrabold tracking-[.18em] ${theme.tagClass}`}>{theme.tag}</div>
             <div className="mt-1 flex items-baseline gap-4">
               <h1 className="text-4xl font-extrabold tracking-tight text-gray-950">我的语法中心</h1>
               <p className="hidden md:block text-base text-gray-500">按考点理解规则，通过练习掌握语法。</p>
@@ -203,33 +241,33 @@ export default function CambridgeGrammar() {
 
         {/* ── 五个学习入口 ── */}
         <div className="mt-5 grid sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-          {GRAMMAR_GROUPS.map((group, index) => {
+          {groups.map((group, index) => {
             const units = unitsForGroup(group)
-            const available = units.filter(isGrammarUnitReady).length
+            const available = units.filter(readyCheck).length
             return (
               <motion.button key={group.id}
                 initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.04 }}
                 onClick={() => navigate(`/cambridge/grammar/category/${group.id}`)}
                 className={`relative min-h-[215px] overflow-hidden rounded-[22px] border p-6 text-left flex flex-col transition-all ${
-                  group.featured ? 'bg-emerald-50/40 border-emerald-500 hover:-translate-y-0.5 hover:shadow-md' :
-                  'bg-white border-gray-200 hover:border-emerald-300 hover:-translate-y-0.5 hover:shadow-md'
+                  group.featured ? `${theme.featuredBg} ${theme.featuredBorder} hover:-translate-y-0.5 hover:shadow-md` :
+                  `bg-white border-gray-200 ${theme.cardHover} hover:-translate-y-0.5 hover:shadow-md`
                 }`}>
-                {group.featured && <div className="absolute top-0 inset-x-0 h-1.5 bg-[#064e3b]" />}
+                {group.featured && <div className={`absolute top-0 inset-x-0 h-1.5 ${isPet ? 'bg-violet-700' : 'bg-[#064e3b]'}`} />}
                 <div className="flex items-start justify-between">
-                  <span className={`w-12 h-12 rounded-2xl grid place-items-center text-lg font-extrabold ${group.featured ? 'bg-[#064e3b] text-white' : 'bg-emerald-50 text-emerald-700'}`}>{group.icon}</span>
+                  <span className={`w-12 h-12 rounded-2xl grid place-items-center text-lg font-extrabold ${group.featured ? theme.iconFeatured : theme.icon}`}>{group.icon}</span>
                   <span className="text-[11px] font-extrabold tracking-[.14em] text-gray-300">{group.number}</span>
                 </div>
                 <h2 className="mt-5 text-2xl font-extrabold text-gray-950">{group.title}</h2>
                 <p className="mt-2 text-sm leading-relaxed text-gray-500">{group.desc}</p>
                 <div className="mt-auto pt-5 flex items-center justify-between text-sm">
                   <span className="font-medium text-gray-500">{`${units.length} 单元 · ${available} 已可练`}</span>
-                  <span className="font-extrabold text-emerald-700">查看单元 →</span>
+                  <span className={`font-extrabold ${theme.accent}`}>查看单元 →</span>
                 </div>
               </motion.button>
             )
           })}
           <motion.button
-            initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: GRAMMAR_GROUPS.length * 0.04 }}
+            initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: groups.length * 0.04 }}
             onClick={() => navigate('/cambridge/grammar/mistakes')}
             className="relative min-h-[215px] overflow-hidden rounded-[22px] border border-[#e7c65f] bg-[#fff9e9] p-6 text-left flex flex-col transition-all hover:-translate-y-0.5 hover:border-[#d9aa28] hover:shadow-md">
             <div className="flex items-start justify-between">

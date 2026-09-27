@@ -1077,4 +1077,714 @@ Later that day, he sat with us at lunchtime and seemed much happier.
       },
     ],
   },
+  {
+    meta: {
+      id: 'pet-mock-13-writing',
+      title: 'PET 青少版官方真题 1 · Test 1 · Writing',
+      level: 'PET',
+      collection: 'PET 青少版官方真题 1（新题型）',
+      paper: 'Writing',
+      pages: '18–19',
+      source: 'B1 PET青少版官方真题 新题型 1.pdf',
+      answerSource: '原创教学范文',
+      verified: true,
+    },
+    items: [
+      {
+        part: 1,
+        type: 'guided_writing',
+        title: 'Part 1 · 邮件写作',
+        minWords: 100,
+        prompt: `Read this email from your English teacher Mrs Hallam and the notes you have made.
+
+From: Mrs Hallam
+To: All students
+Subject: School talent show
+
+Dear Students,
+I'm planning to organise a school talent competition. Students taking part in the competition can sing, dance, play a musical instrument or perform in some other way.
+        —— Good idea!
+The talent show could be for students of all ages, or just for students over 15. Which do you think would be better?
+        —— Explain which is better
+I think that some parents should judge the competition. Do you agree?
+        —— Tell Mrs Hallam
+And finally, what prizes do you think the winners should receive?
+        —— Suggest ...
+Please reply soon.
+Beatrice Hallam
+
+Write your email to Mrs Hallam using all the notes.`,
+        modelAnswer: `Dear Mrs Hallam,
+Thank you for your email. I think a school talent competition is a really good idea, and I'm sure lots of students will want to take part.
+In my opinion, it would be better for students of all ages. Younger students can sing and dance really well too, and it would be a shame to leave them out.
+Yes, I agree that some parents should judge the competition. They know us well, and it's more exciting for our families to watch.
+For the prizes, I suggest book tokens and free tickets to the end-of-term disco. That way everyone can use them.
+Best wishes,
+Li Hua`,
+        tips: ['四个批注全部回应：表示赞成、解释全年龄段还是15岁以上更好并说明理由、回应家长评委的提问、建议具体奖品', '用 Dear Mrs Hallam / Best wishes', '每个观点后用 because 给出理由', '100词左右'],
+        contentKeywords: ['good idea', 'all ages', 'better', 'because', 'agree', 'parents', 'judge', 'prizes', 'suggest', 'best wishes'],
+      },
+      {
+        part: 2,
+        q: 2,
+        type: 'article',
+        title: 'Part 2 · 文章写作（二选一）',
+        minWords: 100,
+        prompt: `You see this announcement on an English-language website.
+
+Articles wanted!
+Sport and exercise
+Are there enough sports activities for young people to do in your area?
+Do you think it's important for young people to do sport and exercise?
+Why?
+Write an article answering these questions and we'll publish the best ones.
+
+Write your article.`,
+        modelAnswer: `In my area, there aren't enough sports activities for young people. We only have a football pitch and a small gym, and both are always crowded. I'd like more places where teenagers can swim, skate or play basketball for free.
+I think doing sport and exercise is really important for young people. It keeps your body healthy and strong, and it also helps you relax after studying. For example, I ride my bike every afternoon, and it always makes me feel happy and full of energy.
+I hope our town will build more sports facilities soon, so everyone can find something they enjoy.`,
+        tips: ['回答两个问题：所在地区的运动设施是否足够、年轻人做运动是否重要并说明原因', '用具体例子（如骑车、游泳）支持观点', '先答现状再答重要性，可用 In my area / For example 组织', '100词左右'],
+        contentKeywords: ['area', 'enough', 'activities', 'important', 'because', 'healthy', 'relax', 'example', 'bike', 'facilities'],
+      },
+      {
+        part: 2,
+        q: 3,
+        type: 'story_writing',
+        title: 'Part 2 · 故事写作（二选一）',
+        minWords: 100,
+        prompt: `Your English teacher has asked you to write a story.
+Your story must begin with this sentence.
+
+Lois smiled as she put the tickets in her pocket and walked out of her house.
+
+Write your story.`,
+        modelAnswer: `Lois smiled as she put the tickets in her pocket and walked out of her house. They were tickets for a concert by her favourite band, and her best friend Amy was waiting at the bus stop.
+On the way, the girls talked about the songs they wanted to hear. At the concert hall, the queue was already long, but they found their seats easily because the tickets were numbered.
+The band played for two hours, and everybody sang along. On the bus home, Lois looked at the signed poster in her hand and smiled again. It was the best evening of her whole year.`,
+        tips: ['必须逐字以给定句子开头', '用一般过去时，写清票是什么活动、和谁去、经过怎样', '加入排队、合唱等细节', '结尾回扣"微笑"并写出感受', '100词左右'],
+        contentKeywords: ['tickets', 'concert', 'band', 'friend', 'bus', 'seats', 'sang', 'smiled', 'evening', 'best'],
+      },
+    ],
+  },
+  {
+    meta: {
+      id: 'pet-mock-14-writing',
+      title: 'PET 青少版官方真题 1 · Test 2 · Writing',
+      level: 'PET',
+      collection: 'PET 青少版官方真题 1（新题型）',
+      paper: 'Writing',
+      pages: '36–37',
+      source: 'B1 PET青少版官方真题 新题型 1.pdf（PDF p.37–38）',
+      answerSource: '原创教学范文',
+      verified: true,
+    },
+    items: [
+      {
+        part: 1,
+        type: 'guided_writing',
+        title: 'Part 1 · 邮件写作',
+        minWords: 100,
+        prompt: `Read this email from your English teacher Mr Smith and the notes you have made.
+
+From: Mr Smith
+To: English class
+Subject: End-of-term party
+
+Dear English class,
+Next month, we'll have our final English lesson of the term, so I'd like to organise a party for that day. What do you think of this idea?
+        —— Awesome!
+We could either use the classroom or go to the park. Which place would be better for the party?
+        —— Explain which would be better
+Can you suggest any fun activities for practising English during the party?
+        —— Suggest ...
+Also, it would be great if everyone could bring something to the party – please let me know what you can bring.
+        —— Offer ...
+Many thanks,
+James Smith
+
+Write your email to Mr Smith using all the notes.`,
+        modelAnswer: `Dear Mr Smith,
+Thank you for your email. Organising an end-of-term party sounds awesome – I think everybody in the class will love it.
+I believe the park would be better than the classroom. If the weather is nice, we can play games on the grass and be as noisy as we like, and the classroom is quite small for a party.
+For practising English, we could have a quiz about films and music, and play word games in teams.
+I can bring some sandwiches and orange juice for everyone.
+Best wishes,
+Li Hua`,
+        tips: ['四个批注必须全部回应：表达觉得主意很棒、说明教室还是公园更好并给理由、建议练习英语的趣味活动、说明自己能带的东西', '用 Dear Mr Smith 开头、结尾署名', '表达偏好可用 I believe ... would be better because ...', '活动建议要具体（如问答竞赛、单词游戏）', '100词左右'],
+        contentKeywords: ['awesome', 'party', 'park', 'classroom', 'better', 'because', 'quiz', 'word games', 'bring', 'sandwiches', 'juice'],
+      },
+      {
+        part: 2,
+        q: 2,
+        type: 'article',
+        title: 'Part 2 · 文章写作（二选一）',
+        minWords: 100,
+        prompt: `You see this announcement on an English-language website for young people.
+
+Articles wanted!
+Many people have friends who don't go to the same school as they do.
+What are the advantages of having friends who go to a different school?
+Is it difficult to keep in touch with friends if you don't see them at school?
+We'll publish the best articles answering these questions!
+
+Write your article.`,
+        modelAnswer: `Most of my friends go to my school, but my best friend Emma goes to a school on the other side of town.
+I think having friends from different schools is a great thing. You can compare school life, swap books and learn about clubs and events that we don't have. It also helps you meet new people.
+It isn't too difficult to keep in touch. We message each other every day and meet in the park at weekends. We also play online games together after homework.
+Different schools don't stop a real friendship.`,
+        tips: ['依次回答两个问题：不同校朋友的好处、见不到面时保持联系是否困难', '给出具体好处（交流校园生活、认识新朋友等）', '用实例说明如何保持联系（发消息、周末见面）', '可用 In my opinion / For example 组织文章', '100词左右'],
+        contentKeywords: ['friends', 'different school', 'advantages', 'meet new people', 'keep in touch', 'message', 'weekends', 'park', 'example', 'friendship'],
+      },
+      {
+        part: 2,
+        q: 3,
+        type: 'story_writing',
+        title: 'Part 2 · 故事写作（二选一）',
+        minWords: 100,
+        prompt: `Your English teacher has asked you to write a story.
+Your story must begin with this sentence.
+
+Ben and his father got off the plane and left the airport.
+
+Write your story.`,
+        modelAnswer: `Ben and his father got off the plane and left the airport. They had finally arrived in Spain to visit Ben's grandmother, and Ben was very excited because he hadn't seen her for two years.
+Grandma was waiting for them with a big smile. She hugged them both and drove them to her little white house near the beach. That evening, they all ate paella together in her garden.
+The next morning, Ben woke up early and ran straight down to the sea. The water was warm and the sand was golden.
+"This is the best holiday ever," he thought, smiling at the waves.`,
+        tips: ['必须逐字以给定句子开头', '用一般过去时（可用过去完成时）写清去哪里、见谁', '按时间顺序写接机、到家、第二天的经过', '加入具体细节和人物心情', '100词左右'],
+        contentKeywords: ['plane', 'airport', 'grandmother', 'hug', 'beach', 'sea', 'garden', 'holiday', 'excited', 'smiling'],
+      },
+    ],
+  },
+  {
+    meta: {
+      id: 'pet-mock-15-writing',
+      title: 'PET 青少版官方真题 1 · Test 3 · Writing',
+      level: 'PET',
+      collection: 'PET 青少版官方真题 1（新题型）',
+      paper: 'Writing',
+      pages: '54–55',
+      source: 'B1 PET青少版官方真题 新题型 1.pdf（PDF p.55–56）',
+      answerSource: '原创教学范文',
+      verified: true,
+    },
+    items: [
+      {
+        part: 1,
+        type: 'guided_writing',
+        title: 'Part 1 · 邮件写作',
+        minWords: 100,
+        prompt: `Read this email from your English-speaking friend Alex and the notes you have made.
+
+From: Alex
+Subject: Next weekend's party
+
+Hi
+I'm so glad you can come to my party next weekend. I'm really excited about it!
+        —— Me too!
+My parents are going to provide drinks for everybody, but I'm asking everyone to bring some food with them to the party. Can you bring a chocolate cake?
+        —— No, but ...
+I think it would be fun if everyone could dress in special clothes for the party, like an animal or a famous person. What do you think?
+        —— Tell Alex
+Also, I'll organise some games for us to play at the party. What's a good game that we can all play together?
+        —— Suggest ...
+See you next weekend.
+Alex
+
+Write your email to Alex using all the notes.`,
+        modelAnswer: `Hi Alex,
+Thanks for your email – I'm so excited about your party too! I can't wait to see everyone next weekend.
+Unfortunately, I can't bring a chocolate cake because we don't have one at home, but I can bring some sandwiches and fruit salad instead. Is that OK?
+I love your idea about dressing in special clothes. I think it will make the party really funny, and I'm going to come dressed as a pirate.
+For a game, how about charades? It's easy to learn, everyone can join in and it always makes us laugh.
+See you next weekend!
+Li Hua`,
+        tips: ['四个批注必须全部回应：表达同样期待、回应能否带巧克力蛋糕（不行要给替代方案）、对特殊着装的想法、建议一个集体游戏并说明理由', '用 Hi Alex 开头、结尾署名', '拒绝时语气委婉，用 Unfortunately ... but ... instead', '游戏建议要具体（如猜词游戏）', '100词左右'],
+        contentKeywords: ['excited', 'party', 'chocolate cake', 'sandwiches', 'instead', 'special clothes', 'pirate', 'game', 'charades', 'see you next weekend'],
+      },
+      {
+        part: 2,
+        q: 2,
+        type: 'article',
+        title: 'Part 2 · 文章写作（二选一）',
+        minWords: 100,
+        prompt: `You see this announcement in an English-language magazine.
+
+Articles wanted!
+Tell us about a place that you really like in the area where you live.
+Why do you like it? When do you go there? Is this place popular with other people too?
+We'll publish the most interesting article answering these questions from each country!
+
+Write your article.`,
+        modelAnswer: `The place I really like in my area is Central Park, which is only ten minutes from my house.
+I like it because it's quiet and green, with a beautiful lake in the middle. There are lots of tall trees and colourful flowers, and you can see ducks and sometimes even rabbits there.
+I usually go there at the weekend with my friends or my dog. We ride our bikes, have picnics and play badminton on the grass.
+The park is very popular with other people too. Families come to relax, older people walk around the lake, and children love the playground. It's the best place in our area.`,
+        tips: ['依次回答三个问题：喜欢的地方是哪里、为什么喜欢、什么时候去', '不要忘记写这个地方是否受其他人欢迎', '给出具体细节（湖、树木、活动）', '可用 The place I really like is ... 开头', '100词左右'],
+        contentKeywords: ['park', 'lake', 'quiet', 'green', 'trees', 'weekend', 'friends', 'picnic', 'popular', 'families'],
+      },
+      {
+        part: 2,
+        q: 3,
+        type: 'story_writing',
+        title: 'Part 2 · 故事写作（二选一）',
+        minWords: 100,
+        prompt: `Your English teacher has asked you to write a story.
+Your story must begin with this sentence.
+
+Everybody clapped when I walked onto the stage.
+
+Write your story.`,
+        modelAnswer: `Everybody clapped when I walked onto the stage. My heart was beating fast, but I smiled and looked at the audience. It was the final of our school singing competition.
+I had practised my song every evening for a month because I was very nervous about singing in front of so many people. When the music started, I forgot my fear and simply enjoyed the moment.
+When I finished, everyone stood up and cheered. My best friend was crying with excitement, and my parents waved at me from the back.
+Later, the head teacher announced the winner. I couldn't believe it when she said my name!`,
+        tips: ['必须逐字以给定句子开头', '用一般过去时（可用过去完成时）写清为什么走上舞台、比赛前如何准备', '写出紧张、兴奋的心情变化', '结尾交代结果，回扣掌声', '100词左右'],
+        contentKeywords: ['stage', 'clapped', 'nervous', 'practised', 'song', 'audience', 'cheered', 'competition', 'winner', 'smiled'],
+      },
+    ],
+  },
+  {
+    meta: {
+      id: 'pet-mock-16-writing',
+      title: 'PET 青少版官方真题 1 · Test 4 · Writing',
+      level: 'PET',
+      collection: 'PET 青少版官方真题 1（新题型）',
+      paper: 'Writing',
+      pages: '72–73',
+      source: 'B1 PET青少版官方真题 新题型 1.pdf（PDF p.73–74）',
+      answerSource: '原创教学范文',
+      verified: true,
+    },
+    items: [
+      {
+        part: 1,
+        type: 'guided_writing',
+        title: 'Part 1 · 邮件写作',
+        minWords: 100,
+        prompt: `Read this email from your English-speaking friend Jo and the notes you have made.
+
+From: Jo
+Subject: Geography presentation
+
+Hi
+I'm glad we're going to do our school geography presentation together, because I know you're really good at geography!
+        —— Thanks!
+The teacher said we can choose to tell the class about rivers or deserts for our presentation. Which do you think would be better?
+        —— Explain
+What do you think we could do to make the presentation more interesting?
+        —— Tell Jo
+We need to start planning the presentation soon! Can you come to my house on Tuesday evening after school?
+        —— No, but ...
+See you soon.
+Jo
+
+Write your email to Jo using all the notes.`,
+        modelAnswer: `Hi Jo,
+Thanks for your message – I'm really happy we're doing the geography presentation together too.
+I think rivers would be better than deserts. There are several interesting rivers near our town, we can find good photos and maps easily, and rivers are easier for us to describe.
+To make the presentation more interesting, we could show the class a short video clip and draw a big colourful map with the main rivers on it.
+About Tuesday evening – I'm sorry, but I have a dentist appointment then. Would Wednesday after school work instead?
+See you soon,
+Li Hua`,
+        tips: ['四个批注必须全部回应：表达感谢、解释选河流还是沙漠更好并给理由、提出让演示更有趣的办法、回复周二能否见面（不行要另约时间）', '用 Hi Jo 开头、结尾署名', '偏好用 ... would be better than ... because ...', '改期建议用 Would ... work instead?', '100词左右'],
+        contentKeywords: ['thanks', 'rivers', 'deserts', 'better', 'because', 'video', 'map', 'presentation', 'dentist', 'wednesday instead'],
+      },
+      {
+        part: 2,
+        q: 2,
+        type: 'article',
+        title: 'Part 2 · 文章写作（二选一）',
+        minWords: 100,
+        prompt: `You see this announcement in an English-language magazine.
+
+Articles wanted!
+Free-time activities
+Tell us about a free-time activity which is popular with young people in your country.
+Why do people enjoy it so much?
+Write an article answering these questions and we'll publish the most interesting ones on our website.
+
+Write your article.`,
+        modelAnswer: `One free-time activity that is really popular with young people in my country is playing basketball.
+You can see students playing it almost everywhere – at school, in the park and at sports centres. Many teenagers also watch basketball matches on TV and have favourite players.
+I think people enjoy it so much because it's exciting and fast, and it's easy to find a court and some friends to play with. It keeps you fit, and it's also a great way to make new friends and learn to work as a team.
+That's why basketball is one of the best ways for young people to spend their free time.`,
+        tips: ['依次回答两个问题：哪种休闲活动在年轻人中受欢迎、为什么大家这么喜欢它', '给出多处场景（学校、公园）和具体理由（健身、交友、团队）', '可用 One free-time activity that is popular is ... 开头', '100词左右'],
+        contentKeywords: ['basketball', 'popular', 'young people', 'school', 'park', 'exciting', 'fit', 'friends', 'team', 'free time'],
+      },
+      {
+        part: 2,
+        q: 3,
+        type: 'story_writing',
+        title: 'Part 2 · 故事写作（二选一）',
+        minWords: 100,
+        prompt: `Your English teacher has asked you to write a story.
+Your story must begin with this sentence.
+
+It was Jack's birthday and he was feeling very happy.
+
+Write your story.`,
+        modelAnswer: `It was Jack's birthday and he was feeling very happy. When he came downstairs, the kitchen was full of balloons, and his family shouted "Surprise!"
+After breakfast, Jack opened his presents. His parents had bought him a new bike, the one he had wanted for months. His little sister gave him a drawing of the two of them.
+In the afternoon, Jack invited five friends to his house. They played games in the garden, ate birthday cake and sang songs together.
+Before he went to sleep, Jack looked at his new bike and smiled. It had been the best birthday ever.`,
+        tips: ['必须逐字以给定句子开头', '用一般过去时（可用过去完成时）写清生日当天的经过', '按时间顺序写早晨、下午和结尾', '加入礼物、朋友、蛋糕等具体细节和人物心情', '100词左右'],
+        contentKeywords: ['birthday', 'balloons', 'surprise', 'presents', 'bike', 'friends', 'garden', 'cake', 'sang', 'smiled'],
+      },
+    ],
+  },
+  {
+    meta: {
+      id: 'pet-mock-17-writing',
+      title: 'PET 青少版官方真题 2 · Test 1 · Writing',
+      level: 'PET',
+      collection: 'PET 青少版官方真题 2（新题型）',
+      book: 'B1 Preliminary for Schools 2',
+      paper: 'Writing',
+      pages: '18–19',
+      source: '2022-B1 PRELIMINARY FOR SCHOOLS 2.pdf（PDF p.20–21）',
+      answerSource: '原创教学范文',
+      verified: true,
+    },
+    items: [
+      {
+        part: 1,
+        type: 'guided_writing',
+        title: 'Part 1 · 邮件写作',
+        minWords: 100,
+        prompt: `Read this email from your English-speaking friend Alex and the notes you have made.
+
+From: Alex
+Subject: Running
+
+Hey,
+I'm glad you can come to my house to go running with me and my older sister next weekend.
+        —— Me too!
+There's a big park near my house and we usually go there to run for about 5 km. Is 5 km a good distance for you?
+        —— Tell Alex
+My sister and I had planned to pick you up, but her car broke down yesterday. I hope it won't be a problem for you to get to my house.
+        —— Don't worry because ...
+We'll probably get hungry. My mum wants to know what food she can make for us to eat. Any ideas?
+        —— Suggest ...
+See you soon,
+Alex
+
+Write your email to Alex using all the notes.`,
+        modelAnswer: `Hi Alex,
+Thanks for your message – I can't wait to go running with you and your sister next weekend!
+Five kilometres sounds fine for me. I run twice a week in my local park, so I should manage that distance without a problem.
+And don't worry about picking me up, because my dad can drive me to your house before we start. I'll text you when I leave home.
+For food, how about pasta with tomato sauce and some chicken sandwiches? We'll be really hungry after all that exercise, and your mum's pasta is the best!
+See you soon,
+Li Hua`,
+        tips: ['四个批注必须全部回应：表达同样期待、回答 5 公里是否合适、说明怎么到 Alex 家（车坏了别担心）并给理由、建议食物', '用 Hi Alex 开头、结尾署名', '解释交通可用 Don\'t worry, because my dad can drive me ...', '食物建议要具体', '100词左右'],
+        contentKeywords: ['running', '5 km', 'park', 'dad', 'drive', 'pasta', 'sandwiches', 'hungry', 'text you', 'see you soon'],
+      },
+      {
+        part: 2,
+        q: 2,
+        type: 'article',
+        title: 'Part 2 · 文章写作（二选一）',
+        minWords: 100,
+        prompt: `You see this announcement on an English-language website for young people.
+
+Articles wanted!
+Learning outside school
+What kinds of things can young people learn when they're not at school?
+How can these things help young people when they're at school?
+The best article answering these questions will win a prize!
+
+Write your article.`,
+        modelAnswer: `When we're not at school, we can learn many useful things. For example, cooking at home teaches us about healthy food, and we even practise maths when we weigh ingredients. Playing team sports shows us how to work with other people, and travelling teaches us about different places and cultures.
+These things really help us at school. If you can work well in a team, group projects become much easier. Being independent helps you organise your homework, and knowing about other cultures is useful in subjects like history and geography.
+In my opinion, learning outside school is just as important as our lessons.`,
+        tips: ['依次回答两个问题：校外能学到什么、这些收获如何反哺校园学习', '每个例子都要写清对学校生活的帮助（团队合作、独立、文化知识）', '可用 For example 列举两三类学习', '结尾表明观点', '100词左右'],
+        contentKeywords: ['cooking', 'team sports', 'work with other people', 'travelling', 'cultures', 'group projects', 'independent', 'geography', 'opinion', 'important'],
+      },
+      {
+        part: 2,
+        q: 3,
+        type: 'story_writing',
+        title: 'Part 2 · 故事写作（二选一）',
+        minWords: 100,
+        prompt: `Your English teacher has asked you to write a story.
+Your story must begin with this sentence.
+
+I came out of the shop and I saw my friends walking towards me.
+
+Write your story.`,
+        modelAnswer: `I came out of the shop and I saw my friends walking towards me. They were carrying a huge banner with my name on it and singing "Happy Birthday". I was so surprised!
+I had completely forgotten that my friends had planned a party for that afternoon. They took me to Sam's house, where the garden was full of balloons and there was a big chocolate cake on the table.
+We played games, took lots of photos and ate until we couldn't eat any more. In the evening, we watched a funny film together.
+It was the best surprise of my life, and I will never forget that day.`,
+        tips: ['必须逐字以给定句子开头', '用一般过去时（可用过去完成时）写清朋友为什么朝我走来', '按时间顺序写惊喜派对、活动、结束', '加入蛋糕、气球等细节和惊喜心情', '100词左右'],
+        contentKeywords: ['shop', 'friends', 'banner', 'birthday', 'surprise', 'party', 'balloons', 'cake', 'photos', 'never forget'],
+      },
+    ],
+  },
+  {
+    meta: {
+      id: 'pet-mock-18-writing',
+      title: 'PET 青少版官方真题 2 · Test 2 · Writing',
+      level: 'PET',
+      collection: 'PET 青少版官方真题 2（新题型）',
+      book: 'B1 Preliminary for Schools 2',
+      paper: 'Writing',
+      pages: '36–37',
+      source: '2022-B1 PRELIMINARY FOR SCHOOLS 2.pdf（PDF p.38–39）',
+      answerSource: '原创教学范文',
+      verified: true,
+    },
+    items: [
+      {
+        part: 1,
+        type: 'guided_writing',
+        title: 'Part 1 · 邮件写作',
+        minWords: 100,
+        prompt: `Read this email from your English-speaking friend Pat and the notes you have made.
+
+From: Pat
+Subject: School music project
+
+Hi,
+I've been to the library and got a couple of books we can use to help us with the school music project we're doing together.
+        —— Thanks!
+I think you should write about classical music – what do you think?
+        —— Tell Pat
+Shall we use your laptop to work on the project?
+        —— Sorry, but ...
+It's probably a good idea to get someone to check our work before we give it to the teacher. Who's the best person to ask?
+        —— Suggest someone
+See you soon,
+Pat
+
+Write your email to Pat using all the notes.`,
+        modelAnswer: `Hi Pat,
+Thanks a lot for going to the library and getting those books for our music project – that was really kind of you!
+I agree with you about classical music. I think it's a good choice because there's plenty of information about it in the books, and it will be different from what most other students write about.
+About your question – sorry, but I can't bring my laptop, because my brother needs it for his exams this week. We could use the computers in the school library instead.
+For checking our work, why don't we ask Miss Carter, the music teacher? She's friendly and knows the subject really well.
+See you soon,
+Li Hua`,
+        tips: ['四个批注必须全部回应：感谢借书、对写古典音乐表明态度并给理由、回应借用笔记本电脑（抱歉要给替代方案）、建议由谁来检查作业', '用 Hi Pat 开头、结尾署名', '拒绝用 Sorry, but ... instead', '人选建议要说明理由', '100词左右'],
+        contentKeywords: ['thanks', 'books', 'classical music', 'agree', 'laptop', 'sorry', 'library computers', 'check', 'music teacher', 'friendly'],
+      },
+      {
+        part: 2,
+        q: 2,
+        type: 'article',
+        title: 'Part 2 · 文章写作（二选一）',
+        minWords: 100,
+        prompt: `You see this announcement in an English-language magazine for young people.
+
+Articles wanted!
+Free time
+When you and your friends are not at school, do you prefer just relaxing at home, or doing organised activities such as going to a club or having sports lessons? Why?
+We'll publish the ten best articles answering these questions next month!
+
+Write your article.`,
+        modelAnswer: `When my friends and I are not at school, most of us prefer doing organised activities. On Saturdays I have swimming lessons in the morning, and on Sundays we often meet at the sports centre to play basketball together.
+I enjoy these activities because they keep me fit and healthy, and it's much more fun to see my friends face to face than just chatting online. We always laugh a lot when we play as a team.
+Of course, relaxing at home is nice too, especially after a busy week. But in my opinion, doing activities with friends is a much better way to spend our free time.`,
+        tips: ['明确写出自己和朋友的偏好：在家放松还是参加有组织的活动', '给出具体活动（游泳课、篮球）和理由（健康、见面更有趣）', '可以承认在家放松也不错，但说明自己的倾向', '结尾表明观点', '100词左右'],
+        contentKeywords: ['organised activities', 'swimming lessons', 'sports centre', 'basketball', 'fit', 'healthy', 'friends', 'relaxing', 'prefer', 'free time'],
+      },
+      {
+        part: 2,
+        q: 3,
+        type: 'story_writing',
+        title: 'Part 2 · 故事写作（二选一）',
+        minWords: 100,
+        prompt: `Your English teacher has asked you to write a story.
+Your story must begin with this sentence.
+
+Mallory opened the door and ran down the street.
+
+Write your story.`,
+        modelAnswer: `Mallory opened the door and ran down the street. She was late for the school bus, and she didn't want to miss the class trip to the science museum.
+Luckily, she reached the bus stop just in time, and her friends cheered when they saw her. The journey took about an hour, and they played word games all the way there.
+At the museum, Mallory saw robots, planets and a real spacesuit. Her favourite part was the dolphin show in the afternoon.
+On the way home, she fell asleep on the bus, holding her new postcards. It had been a perfect day.`,
+        tips: ['必须逐字以给定句子开头', '用一般过去时写清她为什么跑出门、结果如何', '按时间顺序写赶车、参观、返程', '加入机器人、海豚表演等细节和心情', '100词左右'],
+        contentKeywords: ['door', 'ran', 'street', 'late', 'bus', 'trip', 'museum', 'robots', 'dolphin show', 'perfect day'],
+      },
+    ],
+  },
+  {
+    meta: {
+      id: 'pet-mock-19-writing',
+      title: 'PET 青少版官方真题 2 · Test 3 · Writing',
+      level: 'PET',
+      collection: 'PET 青少版官方真题 2（新题型）',
+      book: 'B1 Preliminary for Schools 2',
+      paper: 'Writing',
+      pages: '54–55',
+      source: '2022-B1 PRELIMINARY FOR SCHOOLS 2.pdf（PDF p.56–57）',
+      answerSource: '原创教学范文',
+      verified: true,
+    },
+    items: [
+      {
+        part: 1,
+        type: 'guided_writing',
+        title: 'Part 1 · 邮件写作',
+        minWords: 100,
+        prompt: `Read this email from your English teacher Mr Lyons and the notes you have made.
+
+From: Mr Lyons
+To: All students
+Subject: School play
+
+Some students have written a play in English. I'd like some of you to perform it in the school theatre next month.
+        —— Great idea!
+We need people to act in the play, or help with things like painting the scenery for the stage and making costumes. Can you do anything to help?
+        —— Offer ...
+We want lots of students and parents to come and watch the play. How can we let them know about the play?
+        —— Tell Mr Lyons
+I'd like to have a meeting to discuss plans for the play. Could you come next Tuesday after school?
+        —— Sorry, but ...
+John Lyons
+
+Write your email to Mr Lyons using all the notes.`,
+        modelAnswer: `Dear Mr Lyons,
+Thank you for your email. I think it's great that some students have written a play, and I'd love to see it performed in our school theatre.
+I can't act very well, but I'd be happy to help paint the scenery for the stage. I enjoy drawing, so I could also help design the costumes.
+To let everyone know about the play, we could put posters up around the school and send a message about it to all the parents on the school website.
+About next Tuesday – sorry, but I have a piano lesson then. Could we meet on Wednesday after school instead?
+Best wishes,
+Li Hua`,
+        tips: ['四个批注必须全部回应：表示赞成、提出能帮什么忙（演戏/布景/服装）、说明如何宣传活动、回复周二会议（抱歉要另约时间）', '给老师写信用 Dear Mr Lyons / Best wishes', '帮忙建议要结合自己的特长（画画、设计）', '改期用 Could we meet ... instead?', '100词左右'],
+        contentKeywords: ['play', 'scenery', 'costumes', 'help', 'posters', 'website', 'parents', 'tuesday', 'wednesday instead', 'best wishes'],
+      },
+      {
+        part: 2,
+        q: 2,
+        type: 'article',
+        title: 'Part 2 · 文章写作（二选一）',
+        minWords: 100,
+        prompt: `You see this announcement on an international English-language website for young people.
+
+Articles wanted!
+Teenage pop stars
+Do you think that being a famous teenage pop star is easy? Why?
+What influence can teenage pop stars have on their fans?
+We'll publish the most interesting articles answering these questions on our website.
+
+Write your article.`,
+        modelAnswer: `In my opinion, being a famous teenage pop star is not easy at all. Stars have to travel all the time, practise for hours every day and spend weeks away from their friends and family. They also have very little privacy because everyone watches what they do.
+Teenage pop stars can have a big influence on their fans. Young people often copy their clothes and hairstyles, and they listen carefully to the messages in their songs. That's why pop stars should behave well in public.
+A good star can teach fans to work hard, stay positive and be kind to others.`,
+        tips: ['依次回答两个问题：当红青少年歌星是否容易、为什么；他们对歌迷有什么影响', '不容易的理由要具体（旅行、练习、少隐私）', '影响可写穿着模仿、歌曲传递的价值观', '结尾点出正面影响', '100词左右'],
+        contentKeywords: ['pop star', 'easy', 'practise', 'travel', 'privacy', 'fans', 'copy', 'clothes', 'songs', 'behave'],
+      },
+      {
+        part: 2,
+        q: 3,
+        type: 'story_writing',
+        title: 'Part 2 · 故事写作（二选一）',
+        minWords: 100,
+        prompt: `Your English teacher has asked you to write a story.
+Your story must begin with this sentence.
+
+Toby was getting ready to go on a fantastic day out.
+
+Write your story.`,
+        modelAnswer: `Toby was getting ready to go on a fantastic day out. He packed some sandwiches, a bottle of water and his new camera, and then he waited at the door for his uncle's car.
+They were going to the seal sanctuary on the coast. When they arrived, Toby watched the seals being fed and took dozens of photos of them playing in the water.
+In the afternoon, they walked along the beach, and Toby found a beautiful shell to take home for his sister.
+On the way back, he looked through all his photos and smiled. It really had been a fantastic day out.`,
+        tips: ['必须逐字以给定句子开头', '用过去进行时开头，续写一般过去时', '写清去哪里、做了什么、发现什么', '按时间顺序展开，结尾回扣"精彩的一天"', '100词左右'],
+        contentKeywords: ['day out', 'camera', 'uncle', 'seal sanctuary', 'coast', 'photos', 'beach', 'shell', 'sister', 'fantastic'],
+      },
+    ],
+  },
+  {
+    meta: {
+      id: 'pet-mock-20-writing',
+      title: 'PET 青少版官方真题 2 · Test 4 · Writing',
+      level: 'PET',
+      collection: 'PET 青少版官方真题 2（新题型）',
+      book: 'B1 Preliminary for Schools 2',
+      paper: 'Writing',
+      pages: '72–73',
+      source: '2022-B1 PRELIMINARY FOR SCHOOLS 2.pdf（PDF p.74–75）',
+      answerSource: '原创教学范文',
+      verified: true,
+    },
+    items: [
+      {
+        part: 1,
+        type: 'guided_writing',
+        title: 'Part 1 · 邮件写作',
+        minWords: 100,
+        prompt: `Read this email from your English-speaking friend Lennie and the notes you have made.
+
+From: Lennie
+Subject: Water sports centre
+
+Thanks for inviting me to the water sports centre at the lake with you and your family tomorrow. I'm so excited about it – are you?
+        —— Yes!
+I'm really looking forward to going sailing in the morning, and I know there's time to do something else in the afternoon. Would you like to try water skiing?
+        —— No, because ...
+You said we're going to a restaurant for a meal with your parents afterwards. What clothes should I bring to change into?
+        —— Suggest ...
+What time are we getting back in the evening? I need to tell my mum.
+        —— Tell Lennie
+Let me know.
+Lennie
+
+Write your email to Lennie using all the notes.`,
+        modelAnswer: `Hi Lennie,
+I'm so excited too – tomorrow can't come soon enough! Sailing at the lake sounds amazing.
+About water skiing – no, because I tried it once on holiday and I fell into the water straight away! I'd prefer to swim or just relax by the lake in the afternoon.
+For the restaurant, I suggest bringing some jeans and a clean T-shirt to change into, and maybe a warm jumper, because it can get cool in the evening.
+We're getting back at about eight o'clock, so tell your mum not to worry.
+See you tomorrow!
+Li Hua`,
+        tips: ['四个批注必须全部回应：表达同样兴奋、拒绝滑水并给理由、建议带什么换洗衣物、告知晚上回程时间', '朋友之间用 Hi Lennie / See you tomorrow', '拒绝用 No, because ...，再给出替代安排', '衣物建议要具体（牛仔裤、T恤、毛衣）', '100词左右'],
+        contentKeywords: ['excited', 'sailing', 'water skiing', 'no because', 'swim', 'jeans', 't-shirt', 'jumper', 'eight o\'clock', 'see you tomorrow'],
+      },
+      {
+        part: 2,
+        q: 2,
+        type: 'article',
+        title: 'Part 2 · 文章写作（二选一）',
+        minWords: 100,
+        prompt: `You see this announcement on an English-language website for young people.
+
+Articles wanted!
+Photos
+Why do you think people take so many photos?
+What do you like taking photos of?
+Do you have a favourite photo that you look at often?
+The best articles answering these questions will be published next month.
+
+Write your article.`,
+        modelAnswer: `I think people take so many photos because photos help us remember special moments, like birthdays, holidays and days out with friends. Nowadays it's also really quick and easy – everyone has a phone in their pocket.
+I like taking photos of animals and beautiful sunsets best. My dog is my favourite model, and I must have hundreds of pictures of him running in the garden!
+My favourite photo is one of my family at the beach last summer. We're all laughing in it. It's on my desk, and I look at it often because it always makes me smile.`,
+        tips: ['依次回答三个问题：人们为什么拍那么多照片、自己喜欢拍什么、有没有常看的最爱照片', '给出具体例子（宠物、日落、全家福）', '结尾写照片带来的感受', '100词左右'],
+        contentKeywords: ['photos', 'remember', 'special moments', 'phone', 'animals', 'sunsets', 'dog', 'favourite photo', 'beach', 'smile'],
+      },
+      {
+        part: 2,
+        q: 3,
+        type: 'story_writing',
+        title: 'Part 2 · 故事写作（二选一）',
+        minWords: 100,
+        prompt: `Your English teacher has asked you to write a story.
+Your story must begin with this sentence.
+
+Chris and Jo were walking through the park when they saw a beautiful little box under a tree.
+
+Write your story.`,
+        modelAnswer: `Chris and Jo were walking through the park when they saw a beautiful little box under a tree. It was made of wood and covered in gold paint, and it shone in the sunlight.
+Jo opened it carefully. Inside there was an old necklace and a note that said: "This belongs to the girl with the red umbrella." Chris remembered a photo on the park noticeboard of an old lady with a red umbrella, so they went to look for her.
+When they gave her the necklace, she was overjoyed and gave them each a warm hug. It was a special afternoon.`,
+        tips: ['必须逐字以给定句子开头', '用过去进行时开头，续写一般过去时', '写清盒子里有什么、两人如何找到失主', '结尾点出归还物品的暖心结果', '100词左右'],
+        contentKeywords: ['box', 'tree', 'wood', 'gold', 'necklace', 'note', 'umbrella', 'noticeboard', 'overjoyed', 'hug'],
+      },
+    ],
+  },
+  // __SCHOOLS1_APPEND__
 ]

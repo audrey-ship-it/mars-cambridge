@@ -138,19 +138,31 @@ function PetQAItem({ index, q, modelAnswer }) {
 
 
 /* PET 口语中心：与 KET 写作中心同构，Part 标签 + Test 选择器 + 内容直接显示 */
+const PET_SPEAKING_HOME = [
+  { part: 1, icon: '🎤', title: '个人问答',
+    desc: '第一阶段固定问题加第二阶段个性化问题，练习用完整句子作答并补充理由和例子。' },
+  { part: 2, icon: '📷', title: '图片描述',
+    desc: '分别描述两张彩色照片，围绕提示要点持续表达约一分钟。' },
+  { part: 3, icon: '💬', title: '协作讨论',
+    desc: '根据给定情境和图片选项与同伴交换意见、协商决定，讨论 2-3 分钟。' },
+  { part: 4, icon: '🗣️', title: '深入讨论',
+    desc: '围绕 Part 3 的话题深入交流观点，持续约三分钟。' },
+]
+
 function PetSpeakingCentre({ level, setLevel }) {
   const [testN, setTestN] = useState(1)
-  const [petTab, setPetTab] = useState(1)
+  const [petTab, setPetTab] = useState(0)
   const test = petSpeakingTests[testN - 1]
-  const part = test.parts[petTab]
+  const part = test.parts[petTab] || {}
 
   return (
     <CambridgeLayout activeModule="speaking" level={level} setLevel={setLevel}>
       <nav className="border-b border-slate-100 bg-white px-4 py-4 sm:px-6">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-2.5">
-          <div className="mr-1 rounded-xl border border-violet-300 bg-violet-50 px-4 py-2.5 text-sm font-extrabold text-violet-800">
+          <button type="button" onClick={() => setPetTab(0)} aria-current={petTab === 0 ? 'page' : undefined}
+            className={`mr-1 rounded-xl border px-4 py-2.5 text-sm font-extrabold transition ${petTab === 0 ? 'border-violet-600 bg-violet-600 text-white shadow-sm' : 'border-violet-300 bg-violet-50 text-violet-800 hover:bg-violet-100'}`}>
             我的口语中心
-          </div>
+          </button>
           <span className="mr-1 text-slate-300">›</span>
           {PET_SPEAKING_TABS.map(tab => (
             <button key={tab.id} type="button" onClick={() => setPetTab(tab.id)}
@@ -167,6 +179,34 @@ function PetSpeakingCentre({ level, setLevel }) {
       </nav>
 
       <main className="mx-auto max-w-6xl px-4 py-7 sm:px-6">
+        {petTab === 0 ? (
+          <>
+            <div className="text-[11px] font-extrabold tracking-[.18em] text-violet-700">B1 PET SPEAKING</div>
+            <h1 className="mt-1 text-3xl font-extrabold text-slate-950 sm:text-4xl">我的口语中心</h1>
+            <p className="mt-2 text-slate-500">选择一种练习，熟悉 PET 口语考试的提问方式与表达方法。</p>
+            <section className="mt-7 grid gap-5 md:grid-cols-2">
+              {PET_SPEAKING_HOME.map((card) => (
+                <button
+                  key={card.part}
+                  type="button"
+                  onClick={() => setPetTab(card.part)}
+                  className="group overflow-hidden rounded-[28px] border border-slate-200 bg-white text-left shadow-sm transition hover:-translate-y-1 hover:border-violet-300 hover:shadow-lg"
+                >
+                  <div className="grid h-44 place-items-center bg-gradient-to-br from-violet-50 to-fuchsia-50 p-6">
+                    <span className="text-6xl">{card.icon}</span>
+                  </div>
+                  <div className="p-6">
+                    <div className="text-xs font-extrabold tracking-widest text-violet-600">PART {card.part}</div>
+                    <h2 className="mt-1 text-2xl font-extrabold text-slate-900 group-hover:text-violet-700">{card.title}</h2>
+                    <p className="mt-2 leading-7 text-slate-500">{card.desc}</p>
+                    <span className="mt-5 inline-flex items-center font-bold text-violet-700">进入练习<span className="ml-2">→</span></span>
+                  </div>
+                </button>
+              ))}
+            </section>
+          </>
+        ) : (
+          <>
         <div>
           <div className="text-[11px] font-extrabold tracking-[.18em] text-violet-700">B1 PET SPEAKING</div>
           <h1 className="mt-1 text-3xl font-extrabold text-slate-950 sm:text-4xl">{part.title}</h1>
@@ -287,6 +327,8 @@ function PetSpeakingCentre({ level, setLevel }) {
               {part.questions.map((item, index) => <PetQAItem key={index} index={index} {...item} />)}
             </ol>
           </section>
+        )}
+          </>
         )}
       </main>
     </CambridgeLayout>
