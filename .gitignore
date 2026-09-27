@@ -10,6 +10,8 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+dist-offline
+火星剑桥离线包-*.zip
 *.local
 
 # Tesseract OCR language model

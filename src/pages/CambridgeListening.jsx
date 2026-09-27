@@ -3751,6 +3751,7 @@ function mockDurationLabel(totalSeconds) {
 }
 
 function ListeningMockExam({ level, setLevel, setId, part, examId }) {
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const data = mockListeningData(setId, part);
   const storageKey = `${MOCK_LISTENING_PREFIX}:set-${setId}`;
@@ -3773,7 +3774,7 @@ function ListeningMockExam({ level, setLevel, setId, part, examId }) {
   const redoParts = redoTargets ? [...new Set(redoTargets.map(target => target.part))].sort((left, right) => left - right) : [1, 2, 3, 4, 5];
   const nextPart = redoParts.find(partId => partId > part);
   const [submitted, setSubmitted] = useState(() => attempt.completed === true);
-  const [showReview, setShowReview] = useState(() => new URLSearchParams(window.location.search).get('review') === '1');
+  const [showReview, setShowReview] = useState(() => searchParams.get('review') === '1');
   const [activeMatch, setActiveMatch] = useState(() => {
     const firstEmpty = visibleIndexes.find(index => answers[index] === null);
     return firstEmpty ?? visibleIndexes[0] ?? 0;

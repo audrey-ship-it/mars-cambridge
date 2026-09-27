@@ -1886,7 +1886,8 @@ export function WritingCard({ w, wi, storageKey }) {
 
 function ReadingFinalResult({ exam, parts, allAnswers, elapsed, onRestart, onRedoWrong }) {
   const [level, setLevel] = useExamLevel()
-  const [showReview, setShowReview] = useState(() => new URLSearchParams(window.location.search).get('review') === '1')
+  const [searchParams] = useSearchParams()
+  const [showReview, setShowReview] = useState(() => searchParams.get('review') === '1')
 
   const partScores = parts.filter(part => part.type !== 'writing_task').map((part, pi) => {
     const ans = allAnswers[pi] || []
