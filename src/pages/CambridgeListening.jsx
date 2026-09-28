@@ -6,11 +6,22 @@ import { petListeningTests as PET_LISTENING } from "../data/petListeningData";
 import { PET_LISTENING_SAMPLES } from "../data/petListeningSamples";
 import { PET_LISTENING_STANDARD } from "../data/petListeningStandard";
 import { PET_TRAINER1_LISTENING } from "../data/petTrainer1Listening";
+import { PET_TRAINER2_LISTENING } from "../data/petTrainer2Listening";
 import {
   OFFICIAL_LISTENING_SETS,
   officialListeningAudio,
 } from "../data/officialListeningManifest";
 import { CambridgeLayout } from "./CambridgeApp";
+
+// 扁平化听力试卷选择器：把 5 个来源（全真模考/官方样题/标准版真题/Trainer 1/Trainer 2）
+// 合并为连续编号 1..43，供 byPart 视图的纯数字网格使用（与阅读专项练习样式一致）
+const PET_LISTENING_FLAT = [
+  { source: "pet",         label: "全真模考", list: PET_LISTENING },
+  { source: "pet-sample",  label: "官方样题", list: PET_LISTENING_SAMPLES },
+  { source: "pet-standard",label: "标准版真题", list: PET_LISTENING_STANDARD },
+  { source: "pet-trainer", label: "Trainer 1", list: PET_TRAINER1_LISTENING },
+  { source: "pet-trainer2",label: "Trainer 2", list: PET_TRAINER2_LISTENING },
+].flatMap((g) => g.list.map((_, i) => ({ source: g.source, testN: i + 1, label: g.label })));
 
 const PART_COLORS = {
   1: "bg-cyan-500",
@@ -1062,29 +1073,38 @@ const OFFICIAL_PART1_SETS = {
 };
 
 function ListeningSetTabs({ part, activeSet }) {
+  const [searchParams, setSearchParams] = useSearchParams();
+  function setSet(newSet) {
+    const next = new URLSearchParams(searchParams);
+    next.set("set", newSet);
+    next.set("part", part);
+    setSearchParams(next, { replace: true });
+  }
   return (
     <section className="mt-6 rounded-[22px] border border-gray-200 bg-white p-4">
       <div className="mb-3 flex items-center justify-between gap-4">
         <strong className="text-sm text-gray-800">选择练习</strong>
         <span className="text-xs text-gray-400">
-          共 12 套 · 当前为练习{activeSet}
+          共 {OFFICIAL_LISTENING_SETS.length} 套 · 当前为练习{activeSet}
         </span>
       </div>
       <div className="grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-12">
         {OFFICIAL_LISTENING_SETS.map((set) => {
           const active = set.id === activeSet;
-          const ready = set.readyParts?.includes(part);
           return (
-            <Link
+            <button
               key={set.id}
-              to={`/cambridge/listening?part=${part}&set=${set.id}`}
-              className={`relative rounded-xl border px-2 py-3 text-center text-sm font-extrabold transition ${active ? "border-[#d9a921] bg-[#f7cd60] text-[#4c3a00] shadow-sm" : ready ? "border-emerald-200 bg-emerald-50 text-emerald-800 hover:border-emerald-400" : "border-gray-200 bg-gray-50 text-gray-500 hover:border-[#e7c65f] hover:bg-[#fff9e9]"}`}
+              type="button"
+              onClick={() => setSet(set.id)}
+              aria-current={active ? "page" : undefined}
+              className={`rounded-xl border px-2 py-3 text-center text-sm font-extrabold transition ${
+                active
+                  ? "border-emerald-600 bg-emerald-600 text-white shadow-sm"
+                  : "border-emerald-100 bg-emerald-50 text-emerald-800 hover:border-emerald-300"
+              }`}
             >
-              {set.label.replace("练习", "")}
-              {!ready && (
-                <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-gray-300" />
-              )}
-            </Link>
+              {set.id}
+            </button>
           );
         })}
       </div>
@@ -1185,42 +1205,42 @@ function OfficialPartOneSample({ level, setLevel, setId = 9 }) {
       ? saved.answers
       : Array(questions.length).fill(null),
   );
+  const [localSubmitted, setLocalSubmitted] = useState(() => Boolean(saved?.submitted));
   useEffect(() => {
     saveListeningProgress(setId, 1, {
       answers,
-      completed: answers.every((value) => value !== null),
-      wrongCount: answers.reduce((count, value, index) => count + (value !== null && value !== questions[index].answer ? 1 : 0), 0),
+      submitted: localSubmitted,
+      completed: localSubmitted,
+      wrongCount: localSubmitted ? answers.reduce((count, value, index) => count + (value !== null && value !== questions[index].answer ? 1 : 0), 0) : 0,
     });
-  }, [answers, setId]);
+  }, [answers, localSubmitted, setId]);
   function resetProgress() {
     clearListeningProgress(setId, 1);
     setAnswers(Array(questions.length).fill(null));
+    setLocalSubmitted(false);
   }
-  const completed = answers.filter((value) => value !== null).length;
-  const correct = answers.reduce(
+  function submitAll() {
+    setLocalSubmitted(true);
+  }
+  const answeredCount = answers.filter((value) => value !== null).length;
+  const correct = localSubmitted ? answers.reduce(
     (total, value, index) =>
       total + (value === questions[index].answer ? 1 : 0),
     0,
-  );
+  ) : 0;
   return (
     <CambridgeLayout activeModule="listening" level={level} setLevel={setLevel}>
       <ListeningPartNav activePart={1} setId={setId} />
       <main className="mx-auto max-w-6xl px-6 py-7">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <div className="text-[11px] font-extrabold tracking-[.18em] text-emerald-700">
-              INTERNAL REVIEW SAMPLE
+            <div className="text-[11px] font-extrabold tracking-[.18em] text-violet-700">
+              A2 KEY · LISTENING
             </div>
             <h1 className="mt-1 text-4xl font-extrabold">Part 1 图片选择题</h1>
             <p className="mt-2 text-gray-500">
               练习{setId} · 听五段短对话，从 A、B、C 三幅图片中选择正确答案。
             </p>
-          </div>
-          <div className="rounded-2xl border border-[#e7c65f] bg-[#fff9e9] px-5 py-3 text-sm text-[#735500]">
-            <strong>内部原型素材</strong>
-            <div className="mt-1 text-xs">
-              用于页面结构与交互审核，不作为官方授权声明
-            </div>
           </div>
         </div>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
@@ -1237,50 +1257,65 @@ function OfficialPartOneSample({ level, setLevel, setId = 9 }) {
         </div>
         <div className="mt-6 space-y-5">
           {questions.map((item, index) => {
-            const selected = answers[index],
-              done = selected !== null,
-              right = selected === item.answer;
+            const selected = answers[index];
+            const done = localSubmitted && selected !== null;
+            const right = localSubmitted && selected === item.answer;
             return (
               <article
                 key={item.question}
-                className={`rounded-[24px] border bg-white p-5 md:p-7 ${done ? (right ? "border-emerald-400" : "border-rose-300") : "border-gray-200"}`}
+                className={`rounded-[24px] border bg-white p-5 md:p-7 ${
+                  localSubmitted
+                    ? right
+                      ? "border-emerald-400"
+                      : "border-rose-300"
+                    : selected !== null
+                      ? "border-violet-200"
+                      : "border-gray-200"
+                }`}
               >
                 <div className="flex items-start gap-4">
-                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[#f7cd60] font-extrabold text-[#4c3a00]">
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-violet-100 font-extrabold text-violet-700">
                     {index + 1}
                   </span>
                   <div className="min-w-0 flex-1">
                     <h2 className="text-xl font-extrabold text-gray-950">
                       {item.question}
                     </h2>
-                    <div className="relative mx-auto mt-5 max-w-[720px] overflow-hidden rounded-2xl border border-gray-200 bg-[#fafafa] p-2">
+                    <div className="mt-5">
                       <img
                         src={item.image}
                         alt={`Question ${index + 1} options A, B and C`}
-                        className="w-full"
+                        className="w-full rounded-xl border border-gray-200 bg-white"
                       />
-                      <div className="absolute inset-0 grid grid-cols-3">
-                        {[0, 1, 2].map((option) => (
-                          <button
-                            key={option}
-                            type="button"
-                            aria-label={`选择 ${String.fromCharCode(65 + option)}`}
-                            onClick={() =>
-                              setAnswers((values) =>
-                                values.map((value, i) =>
-                                  i === index ? option : value,
-                                ),
-                              )
-                            }
-                            className={`m-1 rounded-xl border-2 transition ${selected === option ? (right ? "border-emerald-500 bg-emerald-400/10" : "border-rose-500 bg-rose-400/10") : "border-transparent hover:border-[#f7cd60]"}`}
-                          >
-                            <span
-                              className={`absolute mt-2 ml-2 grid h-8 w-8 place-items-center rounded-full text-sm font-extrabold ${selected === option ? "bg-[#064e3b] text-white" : "bg-white/90 text-gray-700 shadow"}`}
+                      <div className="mt-3 grid grid-cols-3 gap-2">
+                        {[0, 1, 2].map((option) => {
+                          const sel = selected === option;
+                          return (
+                            <button
+                              key={option}
+                              type="button"
+                              aria-label={`选择 ${String.fromCharCode(65 + option)}`}
+                              onClick={() =>
+                                setAnswers((values) =>
+                                  values.map((value, i) =>
+                                    i === index ? option : value,
+                                  ),
+                                )
+                              }
+                              className={`h-11 rounded-xl border-2 text-base font-extrabold transition ${
+                                sel
+                                  ? localSubmitted
+                                    ? right
+                                      ? "border-emerald-500 bg-emerald-50 text-emerald-700"
+                                      : "border-violet-600 bg-violet-50 text-violet-700"
+                                    : "border-violet-600 bg-violet-50 text-violet-700"
+                                  : "border-gray-200 text-gray-500 hover:border-violet-300 hover:text-violet-600"
+                              }`}
                             >
                               {String.fromCharCode(65 + option)}
-                            </span>
-                          </button>
-                        ))}
+                            </button>
+                          );
+                        })}
                       </div>
                     </div>
                     {done && (
@@ -1301,25 +1336,44 @@ function OfficialPartOneSample({ level, setLevel, setId = 9 }) {
             );
           })}
         </div>
-        <section className="mt-6 rounded-[22px] bg-[#064e3b] p-5 text-white">
-          <div className="flex items-center justify-between">
+        <section className="mt-6 rounded-[22px] bg-violet-700 p-5 text-white">
+          <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <div className="text-sm text-white/60">完成进度</div>
-              <strong className="text-2xl">{completed} / 5</strong>
-            </div>
-            {completed === 5 && (
-              <div className="text-right">
-                <div className="text-sm text-white/60">本次正确</div>
-                <strong className="text-3xl text-[#f7cd60]">
-                  {correct} / 5
+              {localSubmitted ? (
+                <strong className="text-2xl text-amber-200">
+                  正确 {correct} / {questions.length}
                 </strong>
-              </div>
+              ) : (
+                <strong>
+                  已作答 {answeredCount} / {questions.length}
+                </strong>
+              )}
+            </div>
+            {!localSubmitted ? (
+              <button
+                disabled={answeredCount < questions.length}
+                onClick={submitAll}
+                className="rounded-xl bg-amber-400 px-6 py-2.5 text-sm font-extrabold text-violet-900 transition hover:bg-amber-300 disabled:cursor-not-allowed disabled:bg-white/20 disabled:text-white/50"
+              >
+                提交答案
+              </button>
+            ) : (
+              <button
+                onClick={resetProgress}
+                className="rounded-xl bg-white/20 px-5 py-2.5 text-sm font-extrabold text-white transition hover:bg-white/30"
+              >
+                重做本题
+              </button>
             )}
           </div>
-          <div className="mt-4 h-2 rounded-full bg-white/10">
+          <div className="mt-3 h-2 rounded-full bg-white/10">
             <div
-              className="h-full rounded-full bg-[#f7cd60] transition-all"
-              style={{ width: `${completed * 20}%` }}
+              className="h-full rounded-full bg-amber-300 transition-all"
+              style={{
+                width: `${
+                  ((localSubmitted ? correct : answeredCount) / questions.length) * 100
+                }%`,
+              }}
             />
           </div>
         </section>
@@ -2166,20 +2220,25 @@ function OfficialPartFiveBoard({ level, setLevel, setId = 9 }) {
   const [active, setActive] = useState(() =>
     Number.isInteger(saved?.active) ? saved.active : 0,
   );
+  const [localSubmitted, setLocalSubmitted] = useState(() => Boolean(saved?.submitted));
   useEffect(() => {
     saveListeningProgress(setId, 5, {
       answers,
       active,
-      completed: answers.every((value) => value !== null),
-      wrongCount: answers.reduce((count, value, index) => count + (value !== null && value !== data.items[index].answer ? 1 : 0), 0),
+      submitted: localSubmitted,
+      completed: localSubmitted,
+      wrongCount: localSubmitted ? answers.reduce((count, value, index) => count + (value !== null && value !== data.items[index].answer ? 1 : 0), 0) : 0,
     });
-  }, [active, answers, setId]);
+  }, [active, answers, localSubmitted, setId]);
   const used = new Set(answers.filter((value) => value !== null));
-  const completed = answers.filter((value) => value !== null).length;
-  const score = answers.reduce(
-    (sum, value, index) => sum + (value === data.items[index].answer ? 1 : 0),
-    0,
-  );
+  const answeredCount = answers.filter((value) => value !== null).length;
+  const score = localSubmitted
+    ? answers.reduce(
+        (sum, value, index) =>
+          sum + (value !== null && value === data.items[index].answer ? 1 : 0),
+        0,
+      )
+    : 0;
   function choose(job) {
     setAnswers((values) =>
       values.map((value, index) => (index === active ? job : value)),
@@ -2193,6 +2252,10 @@ function OfficialPartFiveBoard({ level, setLevel, setId = 9 }) {
     clearListeningProgress(setId, 5);
     setAnswers(Array(data.items.length).fill(null));
     setActive(0);
+    setLocalSubmitted(false);
+  }
+  function submitAll() {
+    setLocalSubmitted(true);
   }
   return (
     <CambridgeLayout activeModule="listening" level={level} setLevel={setLevel}>
@@ -2227,12 +2290,24 @@ function OfficialPartFiveBoard({ level, setLevel, setId = 9 }) {
                 const selected = active === index,
                   value = answers[index],
                   done = value !== null,
-                  right = value === item.answer;
+                  right = localSubmitted && value === item.answer;
                 return (
                   <button
                     key={item.q}
                     onClick={() => setActive(index)}
-                    className={`flex w-full items-center gap-4 rounded-2xl border p-4 text-left transition ${selected ? "border-[#e1b33a] bg-[#fff9e9] shadow-sm" : done ? (right ? "border-emerald-300 bg-emerald-50" : "border-rose-200 bg-rose-50") : "border-gray-200 hover:border-emerald-300"}`}
+                    className={`flex w-full items-center gap-4 rounded-2xl border p-4 text-left transition ${
+                      selected
+                        ? "border-[#e1b33a] bg-[#fff9e9] shadow-sm"
+                        : localSubmitted
+                          ? done
+                            ? right
+                              ? "border-emerald-300 bg-emerald-50"
+                              : "border-rose-200 bg-rose-50"
+                            : "border-gray-200 hover:border-emerald-300"
+                          : done
+                            ? "border-emerald-200 bg-emerald-50"
+                            : "border-gray-200 hover:border-emerald-300"
+                    }`}
                   >
                     <span
                       className={`grid h-10 w-10 place-items-center rounded-full font-extrabold ${selected ? "bg-[#f7cd60]" : "bg-gray-100 text-gray-500"}`}
@@ -2250,7 +2325,7 @@ function OfficialPartFiveBoard({ level, setLevel, setId = 9 }) {
                       </div>
                     </div>
                     <span>
-                      {selected ? "→" : done ? (right ? "✓" : "!") : ""}
+                      {selected ? "→" : localSubmitted && done ? (right ? "✓" : "!") : ""}
                     </span>
                   </button>
                 );
@@ -2292,18 +2367,43 @@ function OfficialPartFiveBoard({ level, setLevel, setId = 9 }) {
           </section>
         </div>
         <section className="mt-6 rounded-[22px] bg-[#064e3b] p-5 text-white">
-          <div className="flex justify-between">
-            <strong>完成 {completed} / 5</strong>
-            {completed === 5 && (
-              <strong className="text-2xl text-[#f7cd60]">
-                正确 {score} / 5
-              </strong>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              {localSubmitted ? (
+                <strong className="text-2xl text-[#f7cd60]">
+                  正确 {score} / {data.items.length}
+                </strong>
+              ) : (
+                <strong>
+                  已作答 {answeredCount} / {data.items.length}
+                </strong>
+              )}
+            </div>
+            {!localSubmitted ? (
+              <button
+                disabled={answeredCount < data.items.length}
+                onClick={submitAll}
+                className="rounded-xl bg-[#f7cd60] px-6 py-2.5 text-sm font-extrabold text-[#064e3b] transition hover:bg-amber-300 disabled:cursor-not-allowed disabled:bg-white/20 disabled:text-white/50"
+              >
+                提交答案
+              </button>
+            ) : (
+              <button
+                onClick={resetProgress}
+                className="rounded-xl bg-white/20 px-5 py-2.5 text-sm font-extrabold text-white transition hover:bg-white/30"
+              >
+                重做本题
+              </button>
             )}
           </div>
           <div className="mt-3 h-2 rounded-full bg-white/10">
             <div
               className="h-full rounded-full bg-[#f7cd60]"
-              style={{ width: `${completed * 20}%` }}
+              style={{
+                width: `${
+                  ((localSubmitted ? score : answeredCount) / data.items.length) * 100
+                }%`,
+              }}
             />
           </div>
         </section>
@@ -2345,12 +2445,21 @@ function OfficialListeningPartSample({ part, level, setLevel, setId = 9 }) {
     data.type === "blanks"
       ? item.answer.some((answer) => normalise(answer) === normalise(value))
       : Number(value) === item.answer;
-  const completed = checked.filter(Boolean).length;
-  const score = data.items.reduce(
-    (sum, item, index) =>
-      sum + (checked[index] && isRight(item, answers[index]) ? 1 : 0),
-    0,
-  );
+  const completed = checked.every(Boolean) && data.items.length > 0;
+  const answeredCount = answers.filter(
+    (a) => (data.type === "blanks" ? String(a ?? "").trim() !== "" : a !== null && a !== undefined),
+  ).length;
+  const submitted = completed;
+  const score = submitted
+    ? data.items.reduce(
+        (sum, item, index) =>
+          sum + (isRight(item, answers[index]) ? 1 : 0),
+        0,
+      )
+    : 0;
+  function submitAll() {
+    setChecked(Array(data.items.length).fill(true));
+  }
   function resetProgress() {
     clearListeningProgress(setId, part);
     setAnswers(Array(data.items.length).fill(""));
@@ -2381,12 +2490,23 @@ function OfficialListeningPartSample({ part, level, setLevel, setId = 9 }) {
         </div>
         <div className="mt-6 space-y-4">
           {data.items.map((item, index) => {
-            const done = checked[index],
-              right = done && isRight(item, answers[index]);
+            const answered =
+              data.type === "blanks"
+                ? String(answers[index] ?? "").trim() !== ""
+                : answers[index] !== null && answers[index] !== undefined;
+            const right = submitted && isRight(item, answers[index]);
             return (
               <article
                 key={item.q}
-                className={`rounded-[22px] border bg-white p-5 md:p-6 ${done ? (right ? "border-emerald-400" : "border-rose-300") : "border-gray-200"}`}
+                className={`rounded-[22px] border bg-white p-5 md:p-6 ${
+                  submitted
+                    ? right
+                      ? "border-emerald-400"
+                      : "border-rose-300"
+                    : answered
+                      ? "border-emerald-200"
+                      : "border-gray-200"
+                }`}
               >
                 <div className="flex gap-4">
                   <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#f7cd60] font-extrabold">
@@ -2395,7 +2515,7 @@ function OfficialListeningPartSample({ part, level, setLevel, setId = 9 }) {
                   <div className="min-w-0 flex-1">
                     <h2 className="text-lg font-extrabold">{item.q}</h2>
                     {data.type === "blanks" ? (
-                      <div className="mt-4 flex gap-3">
+                      <div className="mt-4">
                         <input
                           value={answers[index]}
                           onChange={(e) => {
@@ -2404,24 +2524,10 @@ function OfficialListeningPartSample({ part, level, setLevel, setId = 9 }) {
                                 i === index ? e.target.value : x,
                               ),
                             );
-                            setChecked((v) =>
-                              v.map((x, i) => (i === index ? false : x)),
-                            );
                           }}
-                          className="h-12 min-w-0 flex-1 rounded-xl border border-gray-200 px-4 text-lg font-bold outline-none focus:border-emerald-500"
+                          className="h-12 w-full rounded-xl border border-gray-200 px-4 text-lg font-bold outline-none focus:border-emerald-500"
                           placeholder="输入听到的信息"
                         />
-                        <button
-                          disabled={!answers[index].trim()}
-                          onClick={() =>
-                            setChecked((v) =>
-                              v.map((x, i) => (i === index ? true : x)),
-                            )
-                          }
-                          className="rounded-xl bg-[#064e3b] px-5 font-extrabold text-white disabled:bg-gray-200"
-                        >
-                          检查
-                        </button>
                       </div>
                     ) : (
                       <div className="mt-4 grid gap-2">
@@ -2435,11 +2541,16 @@ function OfficialListeningPartSample({ part, level, setLevel, setId = 9 }) {
                                     i === index ? optionIndex : x,
                                   ),
                                 );
-                                setChecked((v) =>
-                                  v.map((x, i) => (i === index ? true : x)),
-                                );
                               }}
-                              className={`rounded-xl border px-4 py-3 text-left font-bold ${answers[index] === optionIndex ? (right ? "border-emerald-400 bg-emerald-50 text-emerald-800" : "border-rose-300 bg-rose-50 text-rose-700") : "border-gray-200 hover:border-[#f7cd60]"}`}
+                              className={`rounded-xl border px-4 py-3 text-left font-bold ${
+                                answers[index] === optionIndex
+                                  ? right
+                                    ? "border-emerald-400 bg-emerald-50 text-emerald-800"
+                                    : submitted
+                                      ? "border-rose-300 bg-rose-50 text-rose-700"
+                                      : "border-emerald-500 bg-emerald-50 text-emerald-800"
+                                  : "border-gray-200 hover:border-[#f7cd60]"
+                              }`}
                             >
                               {String.fromCharCode(65 + optionIndex)}. {option}
                             </button>
@@ -2447,7 +2558,7 @@ function OfficialListeningPartSample({ part, level, setLevel, setId = 9 }) {
                         )}
                       </div>
                     )}
-                    {done && (
+                    {submitted && (
                       <div
                         className={`mt-4 rounded-xl px-4 py-3 text-sm ${right ? "bg-emerald-50 text-emerald-800" : "bg-rose-50 text-rose-700"}`}
                       >
@@ -2474,18 +2585,43 @@ function OfficialListeningPartSample({ part, level, setLevel, setId = 9 }) {
           })}
         </div>
         <section className="mt-6 rounded-[22px] bg-[#064e3b] p-5 text-white">
-          <div className="flex justify-between">
-            <strong>完成 {completed} / 5</strong>
-            {completed === 5 && (
-              <strong className="text-2xl text-[#f7cd60]">
-                正确 {score} / 5
-              </strong>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              {submitted ? (
+                <strong className="text-2xl text-[#f7cd60]">
+                  正确 {score} / {data.items.length}
+                </strong>
+              ) : (
+                <strong>
+                  已作答 {answeredCount} / {data.items.length}
+                </strong>
+              )}
+            </div>
+            {!submitted ? (
+              <button
+                disabled={answeredCount < data.items.length}
+                onClick={submitAll}
+                className="rounded-xl bg-[#f7cd60] px-6 py-2.5 text-sm font-extrabold text-[#064e3b] transition hover:bg-amber-300 disabled:cursor-not-allowed disabled:bg-white/20 disabled:text-white/50"
+              >
+                提交答案
+              </button>
+            ) : (
+              <button
+                onClick={resetProgress}
+                className="rounded-xl bg-white/20 px-5 py-2.5 text-sm font-extrabold text-white transition hover:bg-white/30"
+              >
+                重做本题
+              </button>
             )}
           </div>
           <div className="mt-3 h-2 rounded-full bg-white/10">
             <div
               className="h-full rounded-full bg-[#f7cd60]"
-              style={{ width: `${completed * 20}%` }}
+              style={{
+                width: `${
+                  ((submitted ? score : answeredCount) / data.items.length) * 100
+                }%`,
+              }}
             />
           </div>
         </section>
@@ -4315,24 +4451,38 @@ function PetListeningPractice({ level, setLevel }) {
 
   function choose(index, value) {
     setAnswers((v) => v.map((x, i) => (i === index ? value : x)));
-    setChecked((v) => v.map((x, i) => (i === index ? true : x)));
   }
   function resetPart() {
     setAnswers(Array(count).fill(emptyValue));
     setChecked(Array(count).fill(false));
   }
-
-  const completed = checked.filter(Boolean).length;
-  const score = data.items.reduce(
-    (s, item, i) => s + (checked[i] && isRight(item, answers[i]) ? 1 : 0),
-    0,
-  );
+  function submitAll() {
+    setChecked(Array(count).fill(true));
+  }
+  // 已作答数（答案非空）
+  const answeredCount = answers.filter(
+    (a) => (data.type === "blanks" ? String(a ?? "").trim() !== "" : a !== null && a !== undefined),
+  ).length;
+  const submitted = checked.every(Boolean) && count > 0;
+  const score = submitted
+    ? data.items.reduce(
+        (s, item, i) => s + (isRight(item, answers[i]) ? 1 : 0),
+        0,
+      )
+    : 0;
 
   function setParam(key, value) {
     const next = new URLSearchParams(searchParams);
     next.set(key, value);
     setSearchParams(next, { replace: true });
   }
+
+  // byPart 纯数字网格：定位当前 (source, testN) 在扁平序列中的全局序号
+  const flatIdx = PET_LISTENING_FLAT.findIndex(
+    (f) => f.source === view && f.testN === testN,
+  );
+  const currentN = flatIdx >= 0 ? flatIdx + 1 : 1;
+  const currentLabel = flatIdx >= 0 ? PET_LISTENING_FLAT[flatIdx].label : "";
 
   return (
     <CambridgeLayout activeModule="listening" level={level} setLevel={setLevel}>
@@ -4352,41 +4502,39 @@ function PetListeningPractice({ level, setLevel }) {
       {/* Test selector */}
       <div className="bg-white border-b border-gray-100">
         {byPart ? (
-          <div className="mx-auto max-w-5xl space-y-2.5 px-6 py-3.5">
-            {[
-              { source: "pet", label: "全真模考", list: PET_LISTENING },
-              { source: "pet-sample", label: "官方样题", list: PET_LISTENING_SAMPLES },
-              { source: "pet-standard", label: "标准版真题", list: PET_LISTENING_STANDARD },
-              { source: "pet-trainer", label: "Trainer 1", list: PET_TRAINER1_LISTENING },
-            ].map((group) => (
-              <div key={group.source} className="flex flex-wrap items-center gap-2">
-                <span className="w-16 shrink-0 text-[11px] font-extrabold tracking-wider text-gray-400">
-                  {group.label}
-                </span>
-                {group.list.map((_, i) => {
-                  const t = i + 1;
-                  const active = view === group.source && t === testN;
-                  return (
-                    <button
-                      key={t}
-                      onClick={() => {
-                        const next = new URLSearchParams(searchParams);
-                        next.set("source", group.source);
-                        next.set("petTest", t);
-                        setSearchParams(next, { replace: true });
-                      }}
-                      className={`h-8 w-8 rounded-lg text-sm font-extrabold transition ${
-                        active
-                          ? "bg-violet-600 text-white"
-                          : "bg-violet-50 text-violet-500 hover:bg-violet-100"
-                      }`}
-                    >
-                      {t}
-                    </button>
-                  );
-                })}
-              </div>
-            ))}
+          <div className="mx-auto max-w-5xl px-6 py-3.5">
+            <div className="mb-2 flex items-center justify-between gap-3">
+              <strong className="text-sm text-slate-700">选择练习</strong>
+              <span className="text-xs text-slate-400">
+                共 {PET_LISTENING_FLAT.length} 套 · 当前为练习{currentN}
+                {currentLabel ? ` · ${currentLabel}` : ""}
+              </span>
+            </div>
+            <div className="grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-12">
+              {PET_LISTENING_FLAT.map((item, i) => {
+                const n = i + 1;
+                const active = item.source === view && item.testN === testN;
+                return (
+                  <button
+                    key={n}
+                    onClick={() => {
+                      const next = new URLSearchParams(searchParams);
+                      next.set("source", item.source);
+                      next.set("petTest", item.testN);
+                      setSearchParams(next, { replace: true });
+                    }}
+                    aria-current={active ? "page" : undefined}
+                    className={`rounded-xl border px-3 py-3 text-sm font-extrabold transition ${
+                      active
+                        ? "border-violet-600 bg-violet-600 text-white shadow-sm"
+                        : "border-violet-100 bg-violet-50 text-violet-800 hover:border-violet-300"
+                    }`}
+                  >
+                    {n}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         ) : (
           <div className="mx-auto max-w-5xl px-6 py-3">
@@ -4437,18 +4585,24 @@ function PetListeningPractice({ level, setLevel }) {
 
         <div className="mt-6 space-y-4">
           {data.items.map((item, index) => {
-            const done = checked[index];
-            const right = done && isRight(item, answers[index]);
+            const answered =
+              data.type === "blanks"
+                ? String(answers[index] ?? "").trim() !== ""
+                : answers[index] !== null && answers[index] !== undefined;
+            const right = submitted && isRight(item, answers[index]);
+            const wrong = submitted && !isRight(item, answers[index]);
             const qNo = PET_PART_START[part] + index;
             return (
               <article
                 key={qNo}
                 className={`rounded-[22px] border bg-white p-5 md:p-6 ${
-                  done
+                  submitted
                     ? right
                       ? "border-emerald-400"
                       : "border-rose-300"
-                    : "border-gray-200"
+                    : answered
+                      ? "border-violet-200"
+                      : "border-gray-200"
                 }`}
               >
                 <div className="flex gap-4">
@@ -4466,24 +4620,10 @@ function PetListeningPractice({ level, setLevel }) {
                             setAnswers((v) =>
                               v.map((x, i) => (i === index ? e.target.value : x)),
                             );
-                            setChecked((v) =>
-                              v.map((x, i) => (i === index ? false : x)),
-                            );
                           }}
                           className="h-12 min-w-0 flex-1 rounded-xl border border-gray-200 px-4 text-lg font-bold outline-none focus:border-violet-500"
                           placeholder="输入听到的信息（1-2 个词或数字）"
                         />
-                        <button
-                          disabled={!String(answers[index] ?? "").trim()}
-                          onClick={() =>
-                            setChecked((v) =>
-                              v.map((x, i) => (i === index ? true : x)),
-                            )
-                          }
-                          className="rounded-xl bg-violet-600 px-5 font-extrabold text-white disabled:bg-gray-200"
-                        >
-                          检查
-                        </button>
                       </div>
                     )}
 
@@ -4553,7 +4693,7 @@ function PetListeningPractice({ level, setLevel }) {
                       </div>
                     )}
 
-                    {done && (
+                    {submitted && (
                       <div
                         className={`mt-4 rounded-xl px-4 py-3 text-sm leading-6 ${
                           right
@@ -4583,20 +4723,41 @@ function PetListeningPractice({ level, setLevel }) {
         </div>
 
         <section className="mt-6 rounded-[22px] bg-violet-700 p-5 text-white">
-          <div className="flex justify-between">
-            <strong>
-              已检查 {completed} / {count}
-            </strong>
-            {completed === count && (
-              <strong className="text-2xl text-amber-200">
-                正确 {score} / {count}
-              </strong>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              {submitted ? (
+                <strong className="text-2xl text-amber-200">
+                  正确 {score} / {count}
+                </strong>
+              ) : (
+                <strong>
+                  已作答 {answeredCount} / {count}
+                </strong>
+              )}
+            </div>
+            {!submitted ? (
+              <button
+                disabled={answeredCount < count}
+                onClick={submitAll}
+                className="rounded-xl bg-amber-400 px-6 py-2.5 text-sm font-extrabold text-violet-900 transition hover:bg-amber-300 disabled:cursor-not-allowed disabled:bg-white/20 disabled:text-white/50"
+              >
+                提交答案
+              </button>
+            ) : (
+              <button
+                onClick={resetPart}
+                className="rounded-xl bg-white/20 px-5 py-2.5 text-sm font-extrabold text-white transition hover:bg-white/30"
+              >
+                重做本题
+              </button>
             )}
           </div>
           <div className="mt-3 h-2 rounded-full bg-white/10">
             <div
               className="h-full rounded-full bg-amber-300 transition-all"
-              style={{ width: `${(completed / count) * 100}%` }}
+              style={{
+                width: `${((submitted ? score : answeredCount) / count) * 100}%`,
+              }}
             />
           </div>
         </section>

@@ -602,7 +602,10 @@ export default function CambridgeReading() {
           <section className="mt-6 rounded-[24px] border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
             <div className="mb-3 flex items-center justify-between gap-3">
               <strong className="text-sm text-slate-700">选择练习</strong>
-              <span className="text-xs text-slate-400">共 {batches.length} 套 · 当前为练习{batchIdx + 1}</span>
+              <span className="text-xs text-slate-400">
+                共 {batches.length} 套 · 当前为练习{batchIdx + 1}
+                {batches[batchIdx]?.source?.collection ? ` · ${batches[batchIdx].source.collection}` : ''}
+              </span>
             </div>
             <div className="grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-12">
               {batches.map((_, i) => (

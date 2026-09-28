@@ -4,6 +4,27 @@ import { CambridgeLayout } from './CambridgeApp'
 import { KET_EXAMS } from '../data/ketExamData'
 import { KET_SPEAKING_PART1_TOPICS } from '../data/ketSpeakingTopicBank'
 import { petSpeakingTests } from '../data/petSpeakingData'
+import { PET_SPEAKING_SAMPLES } from '../data/petSpeakingSamples'
+import { PET_SPEAKING_STANDARD } from '../data/petSpeakingStandard'
+import { PET_SPEAKING_TRAINER1 } from '../data/petSpeakingTrainer1'
+import { PET_SPEAKING_TRAINER2 } from '../data/petSpeakingTrainer2'
+
+// PET 口语扁平序列：主20 + 样题3 + 标准8 + Trainer1 6 + Trainer2 6 = 43
+const PET_SPEAKING_FLAT = [
+  { source: 'pet',          list: petSpeakingTests },
+  { source: 'pet-sample',   list: PET_SPEAKING_SAMPLES },
+  { source: 'pet-standard', list: PET_SPEAKING_STANDARD },
+  { source: 'pet-trainer1', list: PET_SPEAKING_TRAINER1 },
+  { source: 'pet-trainer2', list: PET_SPEAKING_TRAINER2 },
+].flatMap(g => g.list.map((_, i) => ({ source: g.source, testN: i + 1 })))
+
+const PET_SPEAKING_SOURCE_LABELS = {
+  'pet': '官方真题',
+  'pet-sample': '官方样题',
+  'pet-standard': '标准版真题',
+  'pet-trainer1': 'Trainer 1',
+  'pet-trainer2': 'Trainer 2',
+}
 
 const SPEAKING_SETS = [1, 2, 3].flatMap(book => [1, 2, 3, 4].map(test => {
   const exam = KET_EXAMS.find(item => item.id === `ket-${book}-test${test}`)
@@ -150,10 +171,19 @@ const PET_SPEAKING_HOME = [
 ]
 
 function PetSpeakingCentre({ level, setLevel }) {
-  const [testN, setTestN] = useState(1)
+  const [flatIdx, setFlatIdx] = useState(0)
   const [petTab, setPetTab] = useState(0)
-  const test = petSpeakingTests[testN - 1]
+  const entry = PET_SPEAKING_FLAT[flatIdx] || PET_SPEAKING_FLAT[0]
+  const activeList =
+    entry.source === 'pet-sample'   ? PET_SPEAKING_SAMPLES
+  : entry.source === 'pet-standard' ? PET_SPEAKING_STANDARD
+  : entry.source === 'pet-trainer1' ? PET_SPEAKING_TRAINER1
+  : entry.source === 'pet-trainer2' ? PET_SPEAKING_TRAINER2
+  : petSpeakingTests
+  const test = activeList[entry.testN - 1]
   const part = test.parts[petTab] || {}
+  const sourceLabel = PET_SPEAKING_SOURCE_LABELS[entry.source] || '官方真题'
+  const currentN = flatIdx + 1
 
   return (
     <CambridgeLayout activeModule="speaking" level={level} setLevel={setLevel}>
@@ -219,21 +249,25 @@ function PetSpeakingCentre({ level, setLevel }) {
         <section className="mt-6 rounded-[24px] border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
           <div className="mb-3 flex items-center justify-between gap-3">
             <strong className="text-sm text-slate-700">选择练习</strong>
-            <span className="text-xs text-slate-400">共 {petSpeakingTests.length} 套 · 当前为 Test {testN}</span>
+            <span className="text-xs text-slate-400">共 {PET_SPEAKING_FLAT.length} 套 · 当前为练习{currentN} · {sourceLabel}</span>
           </div>
-          <div className="grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-8">
-            {petSpeakingTests.map((t, index) => (
-              <button key={t.meta.id} type="button" onClick={() => setTestN(index + 1)}
-                aria-current={testN === index + 1 ? 'page' : undefined}
-                title={`Test ${index + 1} · ${PET_SPEAKING_TABS.find(t => t.id === petTab)?.label}`}
-                className={`rounded-xl border px-3 py-3 text-sm font-extrabold transition ${
-                  testN === index + 1
-                    ? 'border-violet-600 bg-violet-600 text-white shadow-sm'
-                    : 'border-violet-100 bg-violet-50 text-violet-800 hover:border-violet-300'
-                }`}>
-                {index + 1}
-              </button>
-            ))}
+          <div className="grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-12">
+            {PET_SPEAKING_FLAT.map((it, i) => {
+              const n = i + 1
+              const active = i === flatIdx
+              return (
+                <button key={n} type="button" onClick={() => setFlatIdx(i)}
+                  aria-current={active ? 'page' : undefined}
+                  title={`${PET_SPEAKING_SOURCE_LABELS[it.source] || ''} · Test ${it.testN}`}
+                  className={`rounded-xl border px-3 py-3 text-sm font-extrabold transition ${
+                    active
+                      ? 'border-violet-600 bg-violet-600 text-white shadow-sm'
+                      : 'border-violet-100 bg-violet-50 text-violet-800 hover:border-violet-300'
+                  }`}>
+                  {n}
+                </button>
+              )
+            })}
           </div>
         </section>
 
@@ -338,10 +372,21 @@ function PetSpeakingCentre({ level, setLevel }) {
 function PetSpeakingPractice({ level, setLevel }) {
   const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
-  const testN = Math.min(8, Math.max(1, Number(searchParams.get('petTest')) || 1))
+  const source = searchParams.get('source') || 'pet'
+  const activeList =
+    source === 'pet-sample'   ? PET_SPEAKING_SAMPLES
+  : source === 'pet-standard' ? PET_SPEAKING_STANDARD
+  : source === 'pet-trainer1' ? PET_SPEAKING_TRAINER1
+  : source === 'pet-trainer2' ? PET_SPEAKING_TRAINER2
+  : petSpeakingTests
+  const maxTest = activeList.length
+  const testN = Math.min(maxTest, Math.max(1, Number(searchParams.get('petTest')) || 1))
   const tabId = Math.min(4, Math.max(1, Number(searchParams.get('petTab')) || 1))
-  const test = petSpeakingTests[testN - 1]
+  const test = activeList[testN - 1]
   const part = test.parts[tabId]
+  const flatIdx = PET_SPEAKING_FLAT.findIndex(f => f.source === source && f.testN === testN)
+  const currentN = flatIdx >= 0 ? flatIdx + 1 : 1
+  const sourceLabel = PET_SPEAKING_SOURCE_LABELS[source] || '官方真题'
 
   function setParam(key, value) {
     const next = new URLSearchParams(searchParams)
@@ -359,26 +404,41 @@ function PetSpeakingPractice({ level, setLevel }) {
           ← 我的口语中心
         </button>
         <span className="text-slate-300">›</span>
-        <span className="text-sm font-extrabold text-slate-600">PET 口语 · Test {testN}</span>
+        <span className="text-sm font-extrabold text-slate-600">PET 口语 · 练习{currentN}</span>
       </nav>
 
-      {/* Test selector */}
+      {/* Test selector - 连续 1-43 网格 */}
       <div className="border-b border-slate-100 bg-white">
-        <div className="mx-auto max-w-6xl px-4 py-3 sm:px-6">
-          <div className="flex flex-wrap gap-2">
-            {petSpeakingTests.map((t, index) => (
-              <button
-                key={t.meta.id}
-                type="button"
-                onClick={() => setParam('petTest', index + 1)}
-                className={`h-9 w-9 rounded-lg text-sm font-extrabold transition ${
-                  index + 1 === testN
-                    ? 'bg-violet-600 text-white'
-                    : 'bg-violet-50 text-violet-500 hover:bg-violet-100'
-                }`}>
-                {index + 1}
-              </button>
-            ))}
+        <div className="mx-auto max-w-5xl px-4 py-3.5 sm:px-6">
+          <div className="mb-2 flex items-center justify-between gap-3">
+            <strong className="text-sm text-slate-700">选择练习</strong>
+            <span className="text-xs text-slate-400">
+              共 {PET_SPEAKING_FLAT.length} 套 · 当前为练习{currentN} · {sourceLabel}
+            </span>
+          </div>
+          <div className="grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-12">
+            {PET_SPEAKING_FLAT.map((it, i) => {
+              const n = i + 1
+              const active = it.source === source && it.testN === testN
+              return (
+                <button
+                  key={n}
+                  onClick={() => {
+                    const next = new URLSearchParams(searchParams)
+                    next.set('source', it.source)
+                    next.set('petTest', it.testN)
+                    setSearchParams(next, { replace: true })
+                  }}
+                  aria-current={active ? 'page' : undefined}
+                  className={`rounded-xl border px-3 py-3 text-sm font-extrabold transition ${
+                    active
+                      ? 'border-violet-600 bg-violet-600 text-white shadow-sm'
+                      : 'border-violet-100 bg-violet-50 text-violet-800 hover:border-violet-300'
+                  }`}>
+                  {n}
+                </button>
+              )
+            })}
           </div>
         </div>
       </div>

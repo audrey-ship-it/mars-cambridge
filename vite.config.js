@@ -19,6 +19,10 @@ export default defineConfig(({ mode }) => {
     plugins: [react(), ...(offline ? [relativizeAssets(), viteSingleFile()] : [])],
     ...(offline ? { base: './' } : {}),
     // dev 监听排除构建产物目录，避免离线构建写文件时触发 EBUSY 崩溃
-    server: { watch: { ignored: ['**/dist/**', '**/dist-offline/**'] } },
+    // allowedHosts：允许通过 localtunnel（*.loca.lt）公网访问 dev server
+    server: {
+      watch: { ignored: ['**/dist/**', '**/dist-offline/**'] },
+      allowedHosts: ['.loca.lt'],
+    },
   }
 })
