@@ -17,6 +17,7 @@ export const PET_GRAMMAR_POINTS = [
       { n: 6, title: 'used to 与 would', available: true },
       { n: 7, title: '动名词', available: true },
       { n: 8, title: '不定式', available: true },
+      { n: 22, title: '动名词与不定式对比', available: true },
     ],
   },
   {
@@ -25,6 +26,9 @@ export const PET_GRAMMAR_POINTS = [
       { n: 9, title: 'so / such / too / enough', available: true },
       { n: 10, title: 'prefer / would rather / would like', available: true },
       { n: 11, title: '感叹句综合', available: true },
+      { n: 23, title: '使役与感官句型', available: true },
+      { n: 24, title: '花费表达句型', available: true },
+      { n: 25, title: 'both / either / neither 与全部否定', available: true },
     ],
   },
   {
@@ -51,8 +55,8 @@ export const PET_GRAMMAR_POINTS = [
 
 export const PET_GRAMMAR_GROUPS = [
   { id: 'tenses', number: '01', title: '高频时态', desc: 'PET 进阶时态：完成进行时、过去完成时与将来进行时', unitNums: [1, 2, 3, 4], icon: 'T', featured: true },
-  { id: 'word-grammar', number: '02', title: '核心词法', desc: '数量词、used to、动名词和不定式', unitNums: [5, 6, 7, 8], icon: 'Aa' },
-  { id: 'sentence-patterns', number: '03', title: '常用句型', desc: 'so/such、prefer/would rather 和感叹句', unitNums: [9, 10, 11], icon: 'S' },
+  { id: 'word-grammar', number: '02', title: '核心词法', desc: '数量词、used to、动名词、不定式及其对比', unitNums: [5, 6, 7, 8, 22], icon: 'Aa' },
+  { id: 'sentence-patterns', number: '03', title: '常用句型', desc: 'so/such、prefer、感叹句、使役、花费表达与 either/neither', unitNums: [9, 10, 11, 23, 24, 25], icon: 'S' },
   { id: 'clauses', number: '04', title: '从句', desc: '宾语从句、定语从句和第二、第三条件句', unitNums: [12, 13, 14, 15, 16], icon: 'if' },
   { id: 'passive-review', number: '05', title: '被动语态与综合语法', desc: '被动语态、情态推测、间接引语和短语动词', unitNums: [17, 18, 19, 20, 21], icon: '↻' },
 ]

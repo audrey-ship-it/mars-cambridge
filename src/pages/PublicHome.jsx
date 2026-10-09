@@ -7,9 +7,7 @@ import PlacementTestModal from './PlacementTestModal'
 const levels = [
   { code: 'A2', abbr: 'KET', name: 'Key', zh: '基础英语', color: '#0d7656', bg: '#eaf7f1', note: '内容最完整', desc: '建立日常英语沟通基础，适合小学高年级及入门学习者。' },
   { code: 'B1', abbr: 'PET', name: 'Preliminary', zh: '初级英语', color: '#2574a9', bg: '#edf6fb', note: '可进入', desc: '提升日常学习、旅行与生活场景中的独立英语能力。' },
-  { code: 'B2', abbr: 'FCE', name: 'First', zh: '独立英语', color: '#5b63b7', bg: '#f0f1fb', note: '可进入', desc: '面向更复杂的学习与交流任务，发展独立使用英语的能力。' },
-  { code: 'C1', abbr: 'CAE', name: 'Advanced', zh: '高级英语', color: '#7c5aa6', bg: '#f5f0fa', note: '可进入', desc: '训练高阶学术与专业场景中的理解、表达和沟通能力。' },
-  { code: 'C2', abbr: 'CPE', name: 'Proficiency', zh: '精通英语', color: '#a14d68', bg: '#fbf0f4', note: '可进入', desc: '面向接近熟练使用者水平的深度语言训练与综合表达。' },
+  { code: 'B2', abbr: 'FCE', name: 'First', zh: '独立英语', color: '#0ea5e9', bg: '#e0f2fe', note: '可进入', desc: '面向更复杂的学习与交流任务，发展独立使用英语的能力。' },
 ]
 
 const coreModules = [
@@ -87,7 +85,7 @@ export default function PublicHome() {
 
           <div className="px-6 sm:px-10 lg:px-16 xl:px-24 py-14 lg:py-10 flex items-center">
             <div className="w-full max-w-2xl mx-auto">
-              <div className="divide-y divide-gray-100 border-y border-gray-100">{levels.map((level,i)=><motion.button key={level.abbr} initial={{opacity:0,x:14}} animate={{opacity:1,x:0}} transition={{delay:.06+i*.05}} onClick={()=>openLevel(level)} className="w-full py-5 flex items-center gap-4 group text-left"><span className="w-3 h-3 rounded-full flex-shrink-0 transition-transform group-hover:scale-150" style={{background:level.color}}/><div className="flex-1 min-w-0"><div className="flex items-center gap-2"><span className="font-extrabold text-base sm:text-lg">{level.code} {level.name}</span><span className="font-extrabold text-base sm:text-lg">({level.abbr})</span>{level.abbr==='KET'&&<span className="text-[9px] font-extrabold bg-[#fff1bf] text-[#8a6400] border border-[#efd77a] rounded-full px-2 py-0.5">优先完善</span>}</div></div><span className="w-28 sm:w-32 py-3 rounded-[14px] bg-[#064e3b] text-white text-sm text-center font-extrabold group-hover:bg-[#0d7656] group-hover:shadow-md transition-all">进入</span></motion.button>)}</div>
+              <div className="divide-y divide-gray-100 border-y border-gray-100">{levels.map((level,i)=><motion.button key={level.abbr} initial={{opacity:0,x:14}} animate={{opacity:1,x:0}} transition={{delay:.06+i*.05}} onClick={()=>openLevel(level)} className="w-full py-5 flex items-center gap-4 group text-left"><span className="w-3 h-3 rounded-full flex-shrink-0 transition-transform group-hover:scale-150" style={{background:level.color}}/><div className="flex-1 min-w-0"><div className="flex items-center gap-2"><span className="font-semibold text-2xl sm:text-3xl">{level.code} {level.name}</span><span className="font-semibold text-2xl sm:text-3xl">({level.abbr})</span>{level.abbr==='KET'&&<span className="text-[9px] font-extrabold bg-[#fff1bf] text-[#8a6400] border border-[#efd77a] rounded-full px-2 py-0.5">优先完善</span>}</div></div><span className="w-28 sm:w-32 py-3 rounded-[14px] bg-[#064e3b] text-white text-sm text-center font-extrabold group-hover:bg-[#0d7656] group-hover:shadow-md transition-all">进入</span></motion.button>)}</div>
               <div className="mt-6 flex items-center justify-between gap-4"><p className="text-xs text-gray-400">已经学习过？系统会记住你上次选择的阶段。</p><button onClick={startLearning} className="text-xs font-extrabold text-[#9a6b00] hover:text-[#745000] whitespace-nowrap transition-colors">继续上次学习 →</button></div>
             </div>
           </div>

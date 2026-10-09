@@ -1,8 +1,9 @@
 const KEYS = {
   KET: 'mars_grammar_progress_v1',
   PET: 'mars_grammar_progress_pet_v1',
+  FCE: 'mars_grammar_progress_fce_v1',
 }
-const storageKey = level => (level === 'PET' ? KEYS.PET : KEYS.KET)
+const storageKey = level => KEYS[level] || KEYS.KET
 export const GRAMMAR_MODES = ['questions', 'blanks', 'corrections']
 
 function normalizeRecord(value) {

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { Component, useState, useRef, useEffect, useCallback } from "react";
 import { Link, Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { KET_LISTENING_DATA } from "../data/ketListeningData";
@@ -12,6 +12,7 @@ import {
   officialListeningAudio,
 } from "../data/officialListeningManifest";
 import { CambridgeLayout } from "./CambridgeApp";
+import { setMockWrongBatch } from "../data/mockWrongBook";
 
 // 扁平化听力试卷选择器：把 5 个来源（全真模考/官方样题/标准版真题/Trainer 1/Trainer 2）
 // 合并为连续编号 1..43，供 byPart 视图的纯数字网格使用（与阅读专项练习样式一致）
@@ -1213,6 +1214,7 @@ function OfficialPartOneSample({ level, setLevel, setId = 9 }) {
       completed: localSubmitted,
       wrongCount: localSubmitted ? answers.reduce((count, value, index) => count + (value !== null && value !== questions[index].answer ? 1 : 0), 0) : 0,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [answers, localSubmitted, setId]);
   function resetProgress() {
     clearListeningProgress(setId, 1);
@@ -1234,7 +1236,7 @@ function OfficialPartOneSample({ level, setLevel, setId = 9 }) {
       <main className="mx-auto max-w-6xl px-6 py-7">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <div className="text-[11px] font-extrabold tracking-[.18em] text-violet-700">
+            <div className="text-[11px] font-extrabold tracking-[.18em] text-emerald-700">
               A2 KEY · LISTENING
             </div>
             <h1 className="mt-1 text-4xl font-extrabold">Part 1 图片选择题</h1>
@@ -1269,12 +1271,12 @@ function OfficialPartOneSample({ level, setLevel, setId = 9 }) {
                       ? "border-emerald-400"
                       : "border-rose-300"
                     : selected !== null
-                      ? "border-violet-200"
+                      ? "border-emerald-200"
                       : "border-gray-200"
                 }`}
               >
                 <div className="flex items-start gap-4">
-                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-violet-100 font-extrabold text-violet-700">
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-emerald-100 font-extrabold text-emerald-700">
                     {index + 1}
                   </span>
                   <div className="min-w-0 flex-1">
@@ -1307,9 +1309,9 @@ function OfficialPartOneSample({ level, setLevel, setId = 9 }) {
                                   ? localSubmitted
                                     ? right
                                       ? "border-emerald-500 bg-emerald-50 text-emerald-700"
-                                      : "border-violet-600 bg-violet-50 text-violet-700"
-                                    : "border-violet-600 bg-violet-50 text-violet-700"
-                                  : "border-gray-200 text-gray-500 hover:border-violet-300 hover:text-violet-600"
+                                      : "border-rose-500 bg-rose-50 text-rose-700"
+                                    : "border-emerald-500 bg-emerald-50 text-emerald-700"
+                                  : "border-gray-200 text-gray-500 hover:border-emerald-300 hover:text-emerald-700"
                               }`}
                             >
                               {String.fromCharCode(65 + option)}
@@ -1336,11 +1338,11 @@ function OfficialPartOneSample({ level, setLevel, setId = 9 }) {
             );
           })}
         </div>
-        <section className="mt-6 rounded-[22px] bg-violet-700 p-5 text-white">
+        <section className="mt-6 rounded-[22px] bg-[#064e3b] p-5 text-white">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               {localSubmitted ? (
-                <strong className="text-2xl text-amber-200">
+                <strong className="text-2xl text-[#f7cd60]">
                   正确 {correct} / {questions.length}
                 </strong>
               ) : (
@@ -1353,7 +1355,7 @@ function OfficialPartOneSample({ level, setLevel, setId = 9 }) {
               <button
                 disabled={answeredCount < questions.length}
                 onClick={submitAll}
-                className="rounded-xl bg-amber-400 px-6 py-2.5 text-sm font-extrabold text-violet-900 transition hover:bg-amber-300 disabled:cursor-not-allowed disabled:bg-white/20 disabled:text-white/50"
+                className="rounded-xl bg-[#f7cd60] px-6 py-2.5 text-sm font-extrabold text-[#064e3b] transition hover:bg-amber-300 disabled:cursor-not-allowed disabled:bg-white/20 disabled:text-white/50"
               >
                 提交答案
               </button>
@@ -1368,7 +1370,7 @@ function OfficialPartOneSample({ level, setLevel, setId = 9 }) {
           </div>
           <div className="mt-3 h-2 rounded-full bg-white/10">
             <div
-              className="h-full rounded-full bg-amber-300 transition-all"
+              className="h-full rounded-full bg-[#f7cd60] transition-all"
               style={{
                 width: `${
                   ((localSubmitted ? correct : answeredCount) / questions.length) * 100
@@ -1507,74 +1509,6 @@ const OFFICIAL_TEST1_PARTS = {
       { q: "Amy", answer: 6 },
       { q: "Tom", answer: 1 },
       { q: "Jane", answer: 2 },
-    ],
-  },
-  3: {
-    title: "Part 3 长篇听力题",
-    instruction: "听 Teresa 和 Daniel 讨论学校写作比赛，选择正确答案。",
-    type: "mcq",
-    items: [
-      { q: "What has Teresa decided to write about?", opts: ["a place she visited", "a film she watched", "a person she knows"], answer: 2 },
-      { q: "How many words do students have to write for the competition?", opts: ["500 or less", "between 500 and 1000", "as many as they want"], answer: 0 },
-      { q: "How did Daniel feel after he finished his writing?", opts: ["worried", "excited", "tired"], answer: 0 },
-      { q: "What’s the prize for winning the competition?", opts: ["a laptop", "a tablet", "some books"], answer: 1 },
-      { q: "Teresa thinks she is good at", opts: ["spelling.", "writing stories.", "describing places."], answer: 1 },
-    ],
-  },
-  4: {
-    title: "Part 3 长篇听力题",
-    instruction: "听 Maria 和 Alex 讨论参观科学博物馆，选择正确答案。",
-    type: "mcq",
-    items: [
-      { q: "Maria went to the museum", opts: ["on Sunday.", "on Monday.", "on Tuesday."], answer: 1 },
-      { q: "Alex usually goes to the museum with his", opts: ["class.", "friends.", "family."], answer: 2 },
-      { q: "Alex usually travels to the museum", opts: ["by bike.", "by bus.", "on foot."], answer: 0 },
-      { q: "What did Maria prefer at the museum?", opts: ["talking to the guide", "watching a video", "making a model"], answer: 1 },
-      { q: "In the café, Maria had", opts: ["a cake.", "an ice cream.", "a drink."], answer: 2 },
-    ],
-  },
-  3: {
-    title: "Part 4 短篇听力题",
-    instruction: "听五段独立短对话，选择每段对话的重点信息。",
-    type: "mcq",
-    items: [
-      { q: "Who is the boy meeting?", opts: ["his brother", "his uncle", "his cousin"], answer: 2 },
-      { q: "What’s the girl surprised about?", opts: ["how warm the weather is", "what the boy is wearing", "how kind her teachers were"], answer: 0 },
-      { q: "What does she want Adam to do?", opts: ["lend her something", "explain something to her", "give someone a message"], answer: 1 },
-      { q: "What activity are they going to do?", opts: ["walking", "fishing", "cycling"], answer: 2 },
-      { q: "What did the girl think about the film?", opts: ["The music was too loud.", "The story was difficult to understand.", "The actors didn’t speak clearly enough."], answer: 0 },
-    ],
-  },
-  4: {
-    title: "Part 4 短篇听力题",
-    instruction: "听五段独立短对话，选择每段对话的重点信息。",
-    type: "mcq",
-    items: [
-      { q: "What does the teacher tell them?", opts: ["They’ve got less work to do.", "They should do more exercise.", "They’ve got more time to study."], answer: 2 },
-      { q: "What’s Emily’s mum doing?", opts: ["making a shopping list", "explaining how to cook a dish", "deciding what they’re going to eat"], answer: 2 },
-      { q: "What job does Dan’s mum do?", opts: ["She’s a guide.", "She’s a receptionist.", "She’s a shop assistant."], answer: 0 },
-      { q: "What will they do today?", opts: ["visit the hospital", "go to the train station", "buy some stamps"], answer: 2 },
-      { q: "What did they do together?", opts: ["visit the countryside", "do a sport", "have a meal"], answer: 1 },
-    ],
-  },
-  3: {
-    options: ["basketball", "cycling", "golf", "hockey", "snowboarding", "swimming", "tennis", "volleyball"],
-    items: [
-      { q: "Vicky", answer: 5 },
-      { q: "Oliver", answer: 2 },
-      { q: "Karen", answer: 7 },
-      { q: "Mike", answer: 6 },
-      { q: "Ellie", answer: 4 },
-    ],
-  },
-  4: {
-    options: ["backpack", "basketball", "book", "bracelet", "poster", "scarf", "tablet", "tent"],
-    items: [
-      { q: "mum", answer: 7 },
-      { q: "brother", answer: 4 },
-      { q: "grandma", answer: 0 },
-      { q: "sister", answer: 5 },
-      { q: "uncle", answer: 3 },
     ],
   },
 };
@@ -2229,6 +2163,7 @@ function OfficialPartFiveBoard({ level, setLevel, setId = 9 }) {
       completed: localSubmitted,
       wrongCount: localSubmitted ? answers.reduce((count, value, index) => count + (value !== null && value !== data.items[index].answer ? 1 : 0), 0) : 0,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active, answers, localSubmitted, setId]);
   const used = new Set(answers.filter((value) => value !== null));
   const answeredCount = answers.filter((value) => value !== null).length;
@@ -2429,14 +2364,6 @@ function OfficialListeningPartSample({ part, level, setLevel, setId = 9 }) {
       ? saved.checked
       : Array(data.items.length).fill(false),
   );
-  useEffect(() => {
-    saveListeningProgress(setId, part, {
-      answers,
-      checked,
-      completed: checked.every(Boolean),
-      wrongCount: data.items.reduce((count, item, index) => count + (checked[index] && !isRight(item, answers[index]) ? 1 : 0), 0),
-    });
-  }, [answers, checked, part, setId]);
   const normalise = (value) =>
     String(value)
       .toLowerCase()
@@ -2445,6 +2372,15 @@ function OfficialListeningPartSample({ part, level, setLevel, setId = 9 }) {
     data.type === "blanks"
       ? item.answer.some((answer) => normalise(answer) === normalise(value))
       : Number(value) === item.answer;
+  useEffect(() => {
+    saveListeningProgress(setId, part, {
+      answers,
+      checked,
+      completed: checked.every(Boolean),
+      wrongCount: data.items.reduce((count, item, index) => count + (checked[index] && !isRight(item, answers[index]) ? 1 : 0), 0),
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [answers, checked, part, setId]);
   const completed = checked.every(Boolean) && data.items.length > 0;
   const answeredCount = answers.filter(
     (a) => (data.type === "blanks" ? String(a ?? "").trim() !== "" : a !== null && a !== undefined),
@@ -3849,6 +3785,7 @@ function ListeningPractice({ initialPart = 1 }) {
 
 const MOCK_LISTENING_PREFIX = "mars_ket_mock_listening_v2";
 
+// eslint-disable-next-line react-refresh/only-export-components -- 供其他页面复用的数据装配函数
 export function mockListeningData(setId, part) {
   if (part === 1) return OFFICIAL_PART1_SETS[setId] ? { title: "Part 1 图片选择题", type: "picture", items: OFFICIAL_PART1_SETS[setId] } : null;
   if (part === 2) return OFFICIAL_PART2_SETS[setId] || null;
@@ -3861,6 +3798,7 @@ function normaliseMockAnswer(value) {
   return String(value ?? "").toLowerCase().replace(/[£,\s-]/g, "");
 }
 
+// eslint-disable-next-line react-refresh/only-export-components -- 供其他页面复用的判定函数
 export function isMockAnswerRight(data, item, value) {
   if (data.type === "blanks") return item.answer.some(answer => normaliseMockAnswer(answer) === normaliseMockAnswer(value));
   return Number(value) === item.answer;
@@ -3884,6 +3822,48 @@ function mockDurationLabel(totalSeconds) {
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;
   return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+}
+
+// 模考渲染兜底：出现异常时显示报错与恢复入口，避免整页白屏
+class ListeningMockErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { error };
+  }
+
+  render() {
+    if (!this.state.error) return this.props.children;
+    const { setId, examId, level, setLevel } = this.props;
+    return (
+      <CambridgeLayout activeModule="exams" level={level} setLevel={setLevel}>
+        <main className="mx-auto max-w-3xl px-6 py-16">
+          <div className="rounded-[24px] border border-rose-200 bg-white p-8 text-center shadow-sm">
+            <div className="text-5xl">⚠️</div>
+            <h1 className="mt-4 text-2xl font-extrabold text-slate-950">页面渲染出错了</h1>
+            <p className="mt-2 text-sm text-slate-500">听力模考加载时发生异常，可以重置本次模考后重新开始，或返回真题总览。把下方错误信息发给开发者有助于定位问题。</p>
+            <pre className="mt-4 max-h-40 overflow-auto whitespace-pre-wrap rounded-xl bg-slate-50 p-4 text-left text-xs text-rose-700">{String((this.state.error && (this.state.error.stack || this.state.error.message)) || this.state.error)}</pre>
+            <div className="mt-6 flex flex-wrap justify-center gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  try { localStorage.removeItem(`${MOCK_LISTENING_PREFIX}:set-${setId}`); } catch { /* ignore */ }
+                  window.location.reload();
+                }}
+                className="rounded-xl bg-[#064e3b] px-5 py-3 text-sm font-extrabold text-white transition hover:bg-[#0d7656]"
+              >
+                重置本次模考并重新开始
+              </button>
+              <Link to={`/cambridge/exams/${examId}`} className="rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-extrabold text-slate-600 transition hover:border-emerald-300 hover:text-emerald-700">返回真题总览</Link>
+            </div>
+          </div>
+        </main>
+      </CambridgeLayout>
+    );
+  }
 }
 
 function ListeningMockExam({ level, setLevel, setId, part, examId }) {
@@ -3918,8 +3898,9 @@ function ListeningMockExam({ level, setLevel, setId, part, examId }) {
 
   useEffect(() => {
     const next = { ...attempt, startedAt, pausedAt, totalPausedMs, parts: { ...(attempt.parts || {}), [part]: answers } };
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- 与既有进度恢复逻辑耦合，保持原行为
     setAttempt(next);
-    try { localStorage.setItem(storageKey, JSON.stringify(next)); } catch {}
+    try { localStorage.setItem(storageKey, JSON.stringify(next)); } catch { /* ignore */ }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [answers]);
 
@@ -3962,12 +3943,13 @@ function ListeningMockExam({ level, setLevel, setId, part, examId }) {
     if (redoTargets && answers.some((answer, index) => index !== activeMatch && answer === value)) return;
     choose(activeMatch, value);
     const next = visibleIndexes.find(index => index > activeMatch && answers[index] === null);
-    if (next !== -1) setActiveMatch(next);
+    if (next !== undefined) setActiveMatch(next);
   }
 
   function resetMock() {
-    try { localStorage.removeItem(storageKey); } catch {}
-    navigate(`/cambridge/listening?mode=mock&exam=${examId}&part=1&set=${setId}`);
+    if (!window.confirm('确定要重置本次听力模考吗？所有作答和计时将清空。')) return;
+    try { localStorage.removeItem(storageKey); } catch { /* ignore */ }
+    navigate(`/cambridge/listening?mode=mock&exam=${examId}&part=1&set=${setId}&redo=${Date.now()}`);
   }
 
   function finishMock() {
@@ -3976,7 +3958,17 @@ function ListeningMockExam({ level, setLevel, setId, part, examId }) {
     const next = { ...scoringAttempt, startedAt, finishedAt, pausedAt: null, totalPausedMs: finalPausedMs, completed: true, wrongCount: wrongAnswers.length, level: 'KET', examId };
     setAttempt(next);
     setFinalElapsed(Math.max(0, Math.floor((finishedAt - startedAt - finalPausedMs) / 1000)));
-    try { localStorage.setItem(storageKey, JSON.stringify(next)); } catch {}
+    try { localStorage.setItem(storageKey, JSON.stringify(next)); } catch { /* ignore */ }
+    // 交卷同步错题本（覆盖式：本次答对的旧错题自动移出；key = 题在 Part 内的序号）
+    allData.forEach((partData, partIndex) => {
+      const values = scoringAttempt.parts?.[partIndex + 1] || [];
+      const wrong = {};
+      partData.items.forEach((item, itemIndex) => {
+        if (isMockAnswerRight(partData, item, values[itemIndex])) return;
+        wrong[String(itemIndex)] = mockAnswerLabel(partData, item, values[itemIndex]);
+      });
+      setMockWrongBatch('ket', 'listening', examId, String(partIndex + 1), wrong);
+    });
     setSubmitted(true);
   }
 
@@ -3988,13 +3980,13 @@ function ListeningMockExam({ level, setLevel, setId, part, examId }) {
       setPaused(false);
       setPausedAt(null);
       setTotalPausedMs(nextTotal);
-      try { localStorage.setItem(storageKey, JSON.stringify(next)); } catch {}
+      try { localStorage.setItem(storageKey, JSON.stringify(next)); } catch { /* ignore */ }
       setAttempt(next);
     } else {
       const next = { ...attempt, startedAt, pausedAt: now, totalPausedMs };
       setPaused(true);
       setPausedAt(now);
-      try { localStorage.setItem(storageKey, JSON.stringify(next)); } catch {}
+      try { localStorage.setItem(storageKey, JSON.stringify(next)); } catch { /* ignore */ }
       setAttempt(next);
     }
   }
@@ -4017,7 +4009,7 @@ function ListeningMockExam({ level, setLevel, setId, part, examId }) {
         score: totalScore,
       },
     };
-    try { localStorage.setItem(storageKey, JSON.stringify(next)); } catch {}
+    try { localStorage.setItem(storageKey, JSON.stringify(next)); } catch { /* ignore */ }
     navigate(`/cambridge/listening?mode=mock&exam=${examId}&part=${wrongAnswers[0].part}&set=${setId}&redo=${Date.now()}`);
   }
 
@@ -4083,6 +4075,7 @@ function ListeningMockExam({ level, setLevel, setId, part, examId }) {
           <div className="ml-auto flex items-center gap-2">
             <span className={`rounded-xl px-4 py-2.5 font-mono text-sm font-extrabold ${paused ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-700'}`}>⏱ {mockDurationLabel(elapsed)}</span>
             <button type="button" onClick={toggleTimer} className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-extrabold text-slate-600 hover:border-emerald-300 hover:text-emerald-700">{paused ? '▶ 继续计时' : 'Ⅱ 暂停计时'}</button>
+            <button type="button" onClick={resetMock} className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-extrabold text-slate-600 hover:border-rose-300 hover:text-rose-600">↺ 重置模考</button>
           </div>
         </div>
       </nav>
@@ -4590,7 +4583,6 @@ function PetListeningPractice({ level, setLevel }) {
                 ? String(answers[index] ?? "").trim() !== ""
                 : answers[index] !== null && answers[index] !== undefined;
             const right = submitted && isRight(item, answers[index]);
-            const wrong = submitted && !isRight(item, answers[index]);
             const qNo = PET_PART_START[part] + index;
             return (
               <article
@@ -4806,7 +4798,11 @@ export default function CambridgeListening() {
   if (searchParams.get("mode") === "mock" && part >= 1 && part <= 5) {
     if ([1, 2, 3, 4, 5].some(partId => !mockListeningData(setId, partId)))
       return <ListeningSetChecking part={part} setId={setId} level={level} setLevel={setLevel} />;
-    return <ListeningMockExam key={`mock-${setId}-${part}-${searchParams.get("redo") || "main"}`} level={level} setLevel={setLevel} setId={setId} part={part} examId={searchParams.get("exam") || `ket-${Math.ceil(setId / 4)}-test${((setId - 1) % 4) + 1}`} />;
+    return (
+      <ListeningMockErrorBoundary key={`mock-${setId}-${part}-${searchParams.get("redo") || "main"}`} level={level} setLevel={setLevel} setId={setId} examId={searchParams.get("exam") || `ket-${Math.ceil(setId / 4)}-test${((setId - 1) % 4) + 1}`}>
+        <ListeningMockExam level={level} setLevel={setLevel} setId={setId} part={part} examId={searchParams.get("exam") || `ket-${Math.ceil(setId / 4)}-test${((setId - 1) % 4) + 1}`} />
+      </ListeningMockErrorBoundary>
+    );
   }
   if (part >= 1 && part <= 5 && !selectedSet?.readyParts?.includes(part))
     return (

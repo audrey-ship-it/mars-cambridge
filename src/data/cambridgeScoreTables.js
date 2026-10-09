@@ -139,7 +139,7 @@ export const EXAM_CONFIGS = {
   },
   FCE: {
     abbr: 'FCE', name: 'B2 First', cefr: 'B2',
-    color: '#4338ca', lightBg: '#e0e7ff', lightText: '#3730a3',
+    color: '#0ea5e9', lightBg: '#e0f2fe', lightText: '#075985',
     scaleMin: 120, scaleMax: 190,
     exact: false,
     sections: [

@@ -2,8 +2,9 @@ import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { CambridgeLayout } from './CambridgeApp'
 import { GRAMMAR_GROUPS, GRAMMAR_POINTS, GrammarTabBar } from './CambridgeGrammar'
-import { isGrammarUnitReady, isPetGrammarUnitReady } from '../utils/grammarUnitReady'
+import { isGrammarUnitReady, isPetGrammarUnitReady, isFceGrammarUnitReady } from '../utils/grammarUnitReady'
 import { PET_GRAMMAR_GROUPS, PET_GRAMMAR_POINTS } from '../data/petGrammarSets'
+import { FCE_GRAMMAR_GROUPS, FCE_GRAMMAR_POINTS } from '../data/fceGrammarSets'
 import { grammarUnitStatus, readGrammarProgress } from '../utils/grammarProgress'
 
 const THEMES = {
@@ -21,6 +22,13 @@ const THEMES = {
     ready: 'hover:border-violet-300',
     badgeDone: 'bg-violet-600', action: 'text-violet-700', continueAction: 'text-amber-800',
   },
+  FCE: {
+    tag: 'FCE GRAMMAR CATEGORY', tagClass: 'text-sky-700',
+    iconBox: 'bg-sky-600', countAccent: 'text-sky-700',
+    complete: 'border-sky-300 bg-sky-50 hover:border-sky-500',
+    ready: 'hover:border-sky-300',
+    badgeDone: 'bg-sky-600', action: 'text-sky-700', continueAction: 'text-amber-800',
+  },
 }
 
 export default function CambridgeGrammarCategory() {
@@ -28,11 +36,12 @@ export default function CambridgeGrammarCategory() {
   const navigate = useNavigate()
   const [level, setLevel] = useState(() => { try { return localStorage.getItem('cambridge_level') || 'KET' } catch { return 'KET' } })
 
+  const isFce = level === 'FCE'
   const isPet = level === 'PET'
-  const theme = isPet ? THEMES.PET : THEMES.KET
-  const groups = isPet ? PET_GRAMMAR_GROUPS : GRAMMAR_GROUPS
-  const points = isPet ? PET_GRAMMAR_POINTS : GRAMMAR_POINTS
-  const readyCheck = isPet ? isPetGrammarUnitReady : isGrammarUnitReady
+  const theme = THEMES[level] || THEMES.KET
+  const groups = isFce ? FCE_GRAMMAR_GROUPS : isPet ? PET_GRAMMAR_GROUPS : GRAMMAR_GROUPS
+  const points = isFce ? FCE_GRAMMAR_POINTS : isPet ? PET_GRAMMAR_POINTS : GRAMMAR_POINTS
+  const readyCheck = isFce ? isFceGrammarUnitReady : isPet ? isPetGrammarUnitReady : isGrammarUnitReady
   const group = groups.find(item => item.id === category)
 
   if (!group) {
@@ -44,7 +53,7 @@ export default function CambridgeGrammarCategory() {
   const units = group.unitNums.map(unitNum => allUnits.find(unit => unit.n === unitNum)).filter(Boolean)
   const available = units.filter(readyCheck).length
   const progress = readGrammarProgress(level)
-  const unitPath = unitNum => (isPet ? `/cambridge/grammar/p${unitNum}` : `/cambridge/grammar/${unitNum}`)
+  const unitPath = unitNum => (isFce ? `/cambridge/grammar/f${unitNum}` : isPet ? `/cambridge/grammar/p${unitNum}` : `/cambridge/grammar/${unitNum}`)
 
   return (
     <CambridgeLayout activeModule="grammar" level={level} setLevel={setLevel}>

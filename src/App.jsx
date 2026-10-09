@@ -1,7 +1,13 @@
-import { Navigate, Routes, Route } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import PublicHome from './pages/PublicHome'
 import CambridgeApp from './pages/CambridgeApp'
 import CambridgeReading from './pages/CambridgeReading'
+import CambridgeReadingFCE from './pages/CambridgeReadingFCE'
+import CambridgeWritingFCE from './pages/CambridgeWritingFCE'
+import CambridgeListeningFCE from './pages/CambridgeListeningFCE'
+import CambridgeSpeakingFCE from './pages/CambridgeSpeakingFCE'
+import CambridgeWrongBookFCE from './pages/CambridgeWrongBookFCE'
+import CambridgeWrongBookMock from './pages/CambridgeWrongBookMock'
 import CambridgeGrammar from './pages/CambridgeGrammar'
 import CambridgeGrammarUnit from './pages/CambridgeGrammarUnit'
 import CambridgeGrammarCategory from './pages/CambridgeGrammarCategory'
@@ -20,6 +26,7 @@ export default function App() {
       <Route path="/" element={<PublicHome />} />
       <Route path="/cambridge" element={<CambridgeApp />} />
       <Route path="/cambridge/reading" element={<CambridgeReading />} />
+      <Route path="/cambridge/reading/fce" element={<CambridgeReadingFCE />} />
       <Route path="/cambridge/mistakes" element={<CambridgeMistakes />} />
       <Route path="/cambridge/words/saved" element={<CambridgeSavedWords />} />
       <Route path="/cambridge/:module" element={<CambridgeApp />} />
@@ -30,8 +37,14 @@ export default function App() {
       <Route path="/cambridge/grammar/mistakes" element={<CambridgeGrammarMistakes />} />
       <Route path="/cambridge/grammar/:unit" element={<CambridgeGrammarUnit />} />
       <Route path="/cambridge/listening" element={<CambridgeListening />} />
+      <Route path="/cambridge/listening/fce" element={<CambridgeListeningFCE />} />
+      <Route path="/cambridge/speaking/fce" element={<CambridgeSpeakingFCE />} />
+      <Route path="/cambridge/wrong/fce" element={<CambridgeWrongBookFCE />} />
+      <Route path="/cambridge/wrong/ket" element={<CambridgeWrongBookMock level="KET" />} />
+      <Route path="/cambridge/wrong/pet" element={<CambridgeWrongBookMock level="PET" />} />
       <Route path="/cambridge/dictation" element={<CambridgeListeningGap />} />
       <Route path="/cambridge/writing" element={<CambridgeWriting />} />
+      <Route path="/cambridge/writing/fce" element={<CambridgeWritingFCE />} />
       <Route path="/cambridge/speaking" element={<CambridgeSpeaking />} />
       <Route path="/cambridge/exams" element={<ExamList />} />
       <Route path="/cambridge/exams/:id" element={<CambridgeExam />} />

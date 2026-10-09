@@ -1,0 +1,57 @@
+export default {
+  meta: {
+    id: 'fce-standard-1-test1-writing',
+    title: 'FCE 标准版真题 1 · Test 1 Writing',
+    level: 'FCE',
+    collection: 'Cambridge English First 1（标准版1）',
+    book: 'Cambridge English First 1',
+    paper: 'Writing',
+    pages: '书 20–21',
+    source: '标准版1 cen_first_1_with_answers .pdf（用户原件扫描版）',
+    answerSource: '本书官方未附范文（评分量表见书 107–108）',
+    verified: true,
+  },
+  parts: {
+    1: {
+      title: 'Part 1 · 必答议论文',
+      instruction: 'You must answer this question. Write your answer in 140–190 words in an appropriate style on the separate answer sheet.',
+      type: 'essay',
+      context: "In your English class you have been talking about life in the past. Now, your English teacher has asked you to write an essay.\n\nWrite an essay using all the notes and give reasons for your point of view.\n\nWrite your essay. You must use grammatically correct sentences with accurate spelling and punctuation in a style appropriate for the situation.",
+      prompt: "'Life is better today than it was 100 years ago.' Do you agree?",
+      notes: ['health', 'entertainment', '.................. (your own idea)'],
+      wordRange: '140–190',
+    },
+    2: {
+      title: 'Part 2 · 多选一',
+      instruction: 'Write an answer to one of the questions 2–4 in this part. Write your answer in 140–190 words in an appropriate style on the separate answer sheet. Put the question number in the box at the top of the answer sheet.',
+      type: 'choice',
+      tasks: [
+        {
+          q: 2,
+          genre: 'review',
+          context: 'You recently saw this notice on an English-language website called TV Gold:',
+          boxTitle: 'Reviews wanted!',
+          boxHeading: 'A TV documentary I learnt a lot from.',
+          prompt: "Have you seen an interesting TV documentary recently that you learnt a lot from? Write us a review of the documentary. You should explain what the documentary was about, tell us what you learnt from it and say whether other people would find it interesting too.\n\nThe best reviews will be posted on the website next month.",
+          taskLine: 'Write your review.',
+        },
+        {
+          q: 3,
+          genre: 'article',
+          context: 'You see this announcement on an English-language travel website.',
+          boxTitle: 'ARTICLES WANTED',
+          boxHeading: 'A day in the city!',
+          prompt: "We are looking for articles about how a visitor could have a great time in a city in your country in just one day.\n\nWrite us an article telling us what a visitor can do, what they can see and how they can travel around.\nThe best articles will be posted on our website.",
+          taskLine: 'Write your article.',
+        },
+        {
+          q: 4,
+          genre: 'report',
+          context: 'Your English teacher has asked you to write a report on a part-time or holiday job that you have done. The report will appear in the college English-language magazine.',
+          prompt: 'In your report, you should\n• describe the job\n• explain what you learnt from it\n• say whether you would recommend other students to do it.',
+          taskLine: 'Write your report.',
+        },
+      ],
+    },
+  },
+};

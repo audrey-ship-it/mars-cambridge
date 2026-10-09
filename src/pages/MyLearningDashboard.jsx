@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { grammarUnitStatus } from '../utils/grammarProgress'
 import { readSavedWords, SAVED_WORDS_EVENT } from '../utils/savedWords'
 
 const EXAM_IDS = Array.from({ length: 20 }, (_, index) => index < 12
@@ -20,22 +19,16 @@ function clampPercent(value) {
 }
 
 function readLearningSnapshot() {
-  const mastery = safeJson('mars_vocab_mastery_v1', {})
-  const masteredWords = Object.values(mastery).filter(record => record && !record.needsReview).length
-  const grammarProgress = safeJson('mars_grammar_progress_v1', {})
-  const grammarDone = Object.keys(grammarProgress).filter(unitNum => grammarUnitStatus(grammarProgress, unitNum).complete).length
   const grammarMistakes = safeJson('mars_grammar_mistakes_v1', {})
   const vocabMistakes = safeJson('mars_vocab_review_queue_v1', [])
   const records = []
 
-  let listeningDone = 0
   let listeningMistakeCount = 0
   let listeningMistakePath = '/cambridge/listening'
   for (let setId = 1; setId <= 20; setId += 1) {
     for (let part = 1; part <= 5; part += 1) {
       const item = safeJson(`mars_ket_listening_progress_v1:set-${setId}:part-${part}`, null)
       if (!item) continue
-      if (item.completed) listeningDone += 1
       listeningMistakeCount += Number(item.wrongCount || 0)
       if (Number(item.wrongCount || 0) > 0) listeningMistakePath = `/cambridge/listening?part=${part}&set=${setId}`
       records.push({
@@ -59,13 +52,11 @@ function readLearningSnapshot() {
     }
   }
 
-  let gapCompleted = 0
   let gapMistakeCount = 0
   for (let exercise = 1; exercise <= 15; exercise += 1) {
     const item = safeJson(`mars_ket_gap_progress_v1:exercise-${exercise}`, null)
     const hasResponse = item && Object.values(item.responses || {}).some(value => String(value || '').trim())
     if (!item || (!item.completed && !hasResponse)) continue
-    if (item.completed) gapCompleted += 1
     gapMistakeCount += Number(item.wrongCount || 0)
     records.push({
       title: `听力挖空 · 练习${exercise}`,
@@ -76,19 +67,14 @@ function readLearningSnapshot() {
     })
   }
 
-  let readingUnits = 0
-  let readingCompleted = 0
   let readingMistakeCount = 0
   let readingMistakePath = '/cambridge/reading'
-  let writingDrafts = 0
   EXAM_IDS.forEach((examId, index) => {
     const reading = safeJson(`mars_ket_exam_progress_v1:${examId}:reading`, null)
     if (reading) {
       readingMistakeCount += Object.values(reading.wrongCounts || {}).reduce((sum, value) => sum + Number(value || 0), 0)
       if (Object.values(reading.wrongCounts || {}).some(value => Number(value || 0) > 0)) readingMistakePath = `/cambridge/exams/${examId}?tab=reading`
       const partNumber = Math.min(5, (reading.partIndex || 0) + 1)
-      readingUnits += reading.done ? 5 : Math.max(0, partNumber - 1)
-      if (reading.done) readingCompleted += 1
       records.push({
         title: `阅读第${index + 1}套 · Part ${partNumber}`,
         detail: reading.done ? '整套已完成' : '继续答题',
@@ -97,12 +83,6 @@ function readLearningSnapshot() {
         progress: reading.done ? 100 : clampPercent((partNumber - 1) / 5 * 100),
       })
     }
-    ;[6, 7].forEach(part => {
-      try {
-        const draft = localStorage.getItem(`mars_ket_exam_progress_v1:${examId}:writing:part${part}:draft`) || ''
-        if (draft.trim()) writingDrafts += 1
-      } catch { /* storage may be unavailable */ }
-    })
   })
 
   let speakingRatings = 0
@@ -335,9 +315,10 @@ export default function MyLearningDashboard({ level = 'KET' }) {
   useEffect(() => {
     if (!studyPlan.examDate || !currentWeeklyTask || tasks[0]?.weekTaskId === currentWeeklyTask.id) return
     const nextTasks = createTodayTasks(currentWeeklyTask)
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- 从学习计划生成今日任务并写入本地存储
     setTasks(nextTasks)
     try { localStorage.setItem('mars_today_tasks', JSON.stringify(nextTasks)) } catch { /* storage may be unavailable */ }
-  }, [studyPlan.examDate, currentWeeklyTask?.id])
+  }, [studyPlan.examDate, currentWeeklyTask, tasks])
 
   useEffect(() => {
     const refresh = event => setSavedWordCount((event.detail || readSavedWords()).length)

@@ -27,10 +27,13 @@ import { PET_TRAINER2_LISTENING } from '../data/petTrainer2Listening'
 import { PET_READING_TRAINER2 } from '../data/petReadingTrainer2'
 import { PET_WRITING_TRAINER2 } from '../data/petWritingTrainer2'
 import { PET_SPEAKING_TRAINER2 } from '../data/petSpeakingTrainer2'
+import { setMockWrongBatch } from '../data/mockWrongBook'
 
 // 试卷类型：mock=模拟题（pet-mock-N），sample=官方样题（pet-sample-N），standard=标准版真题（pet-standard-N），trainer1=Trainer 1（pet-trainer1-N），trainer2=Trainer 2（pet-trainer2-N）
-const paperId = (kind, n) => (kind === 'sample' ? `pet-sample-${n}` : kind === 'standard' ? `pet-standard-${n}` : kind === 'trainer1' ? `pet-trainer1-${n}` : kind === 'trainer2' ? `pet-trainer2-${n}` : `pet-mock-${n}`)
-const resolvePetPaper = (kind, skill, n) => {
+// eslint-disable-next-line react-refresh/only-export-components -- 供错题本页面复用的试卷定位函数
+export const paperId = (kind, n) => (kind === 'sample' ? `pet-sample-${n}` : kind === 'standard' ? `pet-standard-${n}` : kind === 'trainer1' ? `pet-trainer1-${n}` : kind === 'trainer2' ? `pet-trainer2-${n}` : `pet-mock-${n}`)
+// eslint-disable-next-line react-refresh/only-export-components -- 供错题本页面复用的试卷定位函数
+export const resolvePetPaper = (kind, skill, n) => {
   if (kind === 'sample') {
     return { listening: PET_LISTENING_SAMPLES, reading: PET_READING_SAMPLES, writing: PET_WRITING_SAMPLES, speaking: PET_SPEAKING_SAMPLES }[skill][n - 1]
   }
@@ -295,6 +298,7 @@ export function PetListeningExam({ testN, kind = 'mock' }) {
     const updated = { ...allAnswers, [partIndex]: answers }
     setAllAnswers(updated)
     if (partIndex + 1 >= parts.length) {
+      syncPetWrongBook(kind, testN, 'listening', parts, updated, petListeningWrongMap)
       setDone(true)
     } else {
       setPartIndex(i => i + 1)
@@ -670,7 +674,8 @@ function PetSpeakingPart({ part, partId }) {
 ══════════════════════════════ */
 
 /* 把 petReadingTests 数据结构转换为 KET 风格的 parts 数组（含 part 标号、type、questions 等） */
-function adaptPetReadingTest(test) {
+// eslint-disable-next-line react-refresh/only-export-components -- 供错题本页面复用的数据装配函数
+export function adaptPetReadingTest(test) {
   const parts = []
   // Part 1: 5 题 notice/text/ad，options {A,B,C}, answer (A/B/C 字母)
   parts.push({
@@ -727,6 +732,51 @@ function countPetReadingMistakes(part, answers = []) {
     }, 0)
   }
   return 0
+}
+
+/* 交卷时生成某 Part 的错题集合（key = 题在 Part 内的序号，value = 用户答案展示文本） */
+function petReadingWrongMap(part, answers = []) {
+  const wrong = {}
+  part.questions.forEach((q, i) => {
+    const value = answers[i]
+    const isRight = part.type === 'pet_open_cloze'
+      ? (q.ans || []).some(a => a.trim().toLowerCase() === String(value || '').trim().toLowerCase())
+      : value === q.ans
+    if (isRight) return
+    let userAnswer
+    if (part.type === 'pet_notice_mcq') userAnswer = value != null ? ABC[value] : '—'
+    else if (part.type === 'pet_article_mcq' || part.type === 'pet_cloze_mcq') userAnswer = value != null ? ABCD[value] : '—'
+    else if (part.type === 'pet_person_match' || part.type === 'pet_gapped_text') userAnswer = value || '—'
+    else userAnswer = String(value || '').trim() || '—'
+    wrong[String(i)] = userAnswer
+  })
+  return wrong
+}
+
+/* 交卷时生成听力某 Part 的错题集合 */
+function petListeningWrongMap(part, answers = []) {
+  const wrong = {}
+  if (part.type === 'image_mcq' || part.type === 'mcq') {
+    part.items.forEach((item, i) => {
+      if (answers[i] === item.answer) return
+      wrong[String(i)] = answers[i] != null ? ABC[answers[i]] : '—'
+    })
+  } else if (part.type === 'blanks') {
+    part.items.forEach((item, i) => {
+      const value = String(answers[i] || '').trim().toLowerCase()
+      if ((item.answer || []).some(a => String(a).trim().toLowerCase() === value)) return
+      wrong[String(i)] = String(answers[i] || '').trim() || '—'
+    })
+  }
+  return wrong
+}
+
+/* 整套交卷时同步错题本（覆盖式：本次答对的旧错题自动移出） */
+function syncPetWrongBook(kind, testN, paper, parts, allAnswers, wrongMapOf) {
+  const examRef = paperId(kind, testN)
+  parts.forEach((part, index) => {
+    setMockWrongBatch('pet', paper, examRef, String(part.part), wrongMapOf(part, allAnswers[index] || []))
+  })
 }
 
 /* ── Part 1 渲染：短文本 MCQ（版式与阅读专项一致：左刺激卡 + 右方格选项行） ── */
@@ -1248,6 +1298,7 @@ export function PetReadingExam({ testN, kind = 'mock' }) {
       const finishedAt = Date.now()
       const finalPausedMs = totalPausedMs + (pausedAt ? finishedAt - pausedAt : 0)
       setTimerSeconds(Math.max(0, Math.floor((finishedAt - startedAt - finalPausedMs) / 1000)))
+      syncPetWrongBook(kind, testN, 'reading', parts, updated, petReadingWrongMap)
       setDone(true)
       saveProgress({ partIndex, allAnswers: updated, wrongCounts, done: true, finishedAt, pausedAt: null, totalPausedMs: finalPausedMs })
     } else {

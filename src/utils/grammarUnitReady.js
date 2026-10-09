@@ -1,5 +1,6 @@
 import { GRAMMAR_QUESTIONS } from '../data/grammarQuestions'
 import { PET_GRAMMAR_QUESTIONS } from '../data/petGrammarQuestions'
+import { FCE_GRAMMAR_QUESTIONS } from '../data/fceGrammarQuestions'
 
 export const hasChinese = value => /[㐀-鿿]/.test(String(value || ''))
 
@@ -29,4 +30,8 @@ export function isGrammarUnitReady(unit) {
 
 export function isPetGrammarUnitReady(unit) {
   return grammarUnitReadyFor(unit, PET_GRAMMAR_QUESTIONS)
+}
+
+export function isFceGrammarUnitReady(unit) {
+  return grammarUnitReadyFor(unit, FCE_GRAMMAR_QUESTIONS)
 }

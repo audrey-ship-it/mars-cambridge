@@ -581,6 +581,8 @@ export default function CambridgeSpeaking() {
   const [setIndex, setSetIndex] = useState(initialSet - 1)
   const [topicIndex, setTopicIndex] = useState(initialTopic)
   const [questionIndex, setQuestionIndex] = useState(0)
+  const [part1ShowAnswer, setPart1ShowAnswer] = useState(false)
+  const [part2ShowAnswer, setPart2ShowAnswer] = useState(false)
   const selected = SPEAKING_SETS[setIndex]
   const sourcePart = selected?.exam.speaking?.parts?.find(item => item.part === 2)
   const selectedTopic = KET_SPEAKING_PART1_TOPICS[topicIndex]
@@ -603,6 +605,7 @@ export default function CambridgeSpeaking() {
     setSearchParams(nextParams, { replace: true })
   }, [part, setIndex, selectedTopic, setSearchParams, searchParams])
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- 切换 Part/题组时把题目序号归零
   useEffect(() => setQuestionIndex(0), [part, setIndex, topicIndex])
 
   if (searchParams.get('view') === 'pet') return <PetSpeakingPractice level={level} setLevel={setLevel} />
@@ -700,7 +703,7 @@ export default function CambridgeSpeaking() {
           ) : (
             <div className="grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-12">
               {SPEAKING_SETS.map((item, index) => (
-                <button key={item.exam.id} type="button" onClick={() => setSetIndex(index)} aria-current={setIndex === index ? 'page' : undefined}
+                <button key={item.exam.id} type="button" onClick={() => { setSetIndex(index); setPart2ShowAnswer(false) }} aria-current={setIndex === index ? 'page' : undefined}
                   title={`${item.exam.label} · ${PART_INFO[part].label}`}
                   className={`rounded-xl border px-3 py-3 text-sm font-extrabold transition ${setIndex === index ? 'border-emerald-600 bg-emerald-600 text-white shadow-sm' : 'border-emerald-100 bg-emerald-50 text-emerald-800 hover:border-emerald-300'}`}>
                   {index + 1}
@@ -715,7 +718,7 @@ export default function CambridgeSpeaking() {
             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 px-5 py-4">
               <span className="text-xs font-semibold text-slate-400">主题：{selectedTopic.label} · 问题 {questionIndex + 1}/{topics.length}</span>
               <div className="flex gap-2">
-                {topics.map((_, index) => <button key={index} onClick={() => setQuestionIndex(index)} className={`grid h-8 w-8 place-items-center rounded-lg text-xs font-extrabold ${questionIndex === index ? 'bg-emerald-600 text-white' : 'bg-slate-100 text-slate-500'}`}>{index + 1}</button>)}
+                {topics.map((_, index) => <button key={index} onClick={() => { setQuestionIndex(index); setPart1ShowAnswer(false) }} className={`grid h-8 w-8 place-items-center rounded-lg text-xs font-extrabold ${questionIndex === index ? 'bg-emerald-600 text-white' : 'bg-slate-100 text-slate-500'}`}>{index + 1}</button>)}
               </div>
             </div>
             <div>
@@ -724,7 +727,13 @@ export default function CambridgeSpeaking() {
                 <h2 className="mt-3 text-2xl font-extrabold leading-snug text-slate-900">{topic.question}</h2>
                 <p className="mt-3 text-sm text-slate-500">回答思路：{topic.chineseHint}</p>
               </div>
-              <div className="px-6 py-5 sm:px-8"><ReferenceAnswer topic={topic} /></div>
+              <div className="px-6 py-5 sm:px-8">
+                <button type="button" onClick={() => setPart1ShowAnswer(v => !v)}
+                  className="text-xs font-extrabold text-emerald-700 hover:text-emerald-900">
+                  {part1ShowAnswer ? '▾ 收起参考答案' : '▸ 查看参考答案'}
+                </button>
+                {part1ShowAnswer && <div className="mt-3"><ReferenceAnswer topic={topic} /></div>}
+              </div>
             </div>
           </section>
         )}
@@ -739,17 +748,29 @@ export default function CambridgeSpeaking() {
               </div>
               <div className="p-6">
                 <div className="text-xs font-extrabold tracking-wide text-emerald-700">讨论问题</div>
-                <p className="mt-2 rounded-xl bg-amber-50 px-4 py-3 text-xs leading-5 text-amber-800">口语题没有唯一标准答案。下面提供的是“参考回答之一”，你可以替换观点、例子和理由。</p>
                 <ol className="mt-4 space-y-3">
                   {topic.cardPrompts.map((question, index) => <li key={index} className="rounded-xl border border-slate-200 p-4 text-sm leading-6 text-slate-700">
                     <div className="flex gap-3"><span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-emerald-100 text-xs font-extrabold text-emerald-700">{index + 1}</span><strong className="font-semibold text-slate-800">{question}</strong></div>
-                    <div className="ml-9 mt-3 rounded-xl border border-emerald-100 bg-emerald-50 px-4 py-3">
-                      <div className="mb-1 text-[10px] font-extrabold uppercase tracking-wider text-emerald-700">参考回答之一</div>
-                      <p className="text-sm leading-6 text-slate-700">{structuredSpeakingAnswer(question, speakingPromptAnswers(topic)[index])}</p>
-                    </div>
                   </li>)}
                 </ol>
-                {!!topic.phrases?.length && <div className="mt-5"><div className="mb-2 text-xs font-extrabold text-slate-500">可替换表达</div><div className="flex flex-wrap gap-2">{topic.phrases.map((phrase, index) => <span key={index} className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">💬 {phrase}</span>)}</div></div>}
+                <div className="mt-5">
+                  <button type="button" onClick={() => setPart2ShowAnswer(v => !v)}
+                    className="text-xs font-extrabold text-emerald-700 hover:text-emerald-900">
+                    {part2ShowAnswer ? '▾ 收起参考答案' : '▸ 查看参考答案'}
+                  </button>
+                  {part2ShowAnswer && (
+                    <>
+                      <p className="mt-2 rounded-xl bg-amber-50 px-4 py-3 text-xs leading-5 text-amber-800">口语题没有唯一标准答案，下面提供的是参考回答之一，你可以替换观点、例子和理由。</p>
+                      <ol className="mt-3 space-y-3">
+                        {topic.cardPrompts.map((question, index) => <li key={index} className="rounded-xl border border-emerald-100 bg-emerald-50 px-4 py-3 text-sm leading-6 text-slate-700">
+                          <div className="mb-1 text-[10px] font-extrabold uppercase tracking-wider text-emerald-700">参考回答之一</div>
+                          <p>{structuredSpeakingAnswer(question, speakingPromptAnswers(topic)[index])}</p>
+                        </li>)}
+                      </ol>
+                      {!!topic.phrases?.length && <div className="mt-4"><div className="mb-2 text-xs font-extrabold text-slate-500">可替换表达</div><div className="flex flex-wrap gap-2">{topic.phrases.map((phrase, index) => <span key={index} className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">💬 {phrase}</span>)}</div></div>}
+                    </>
+                  )}
+                </div>
               </div>
             </div>
           </section>

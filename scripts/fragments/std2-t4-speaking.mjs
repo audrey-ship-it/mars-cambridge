@@ -1,0 +1,114 @@
+// 来源：标准版2 First 2 (updated).pdf（用户原件扫描版），由 scripts/fce8-render.mjs 渲染 PNG 后逐页视觉转录
+// 应用 Test 4 = 书内印 Test 8。Speaking 说明页：书 94（PDF 95）；Interlocutor frames：书 104–106（PDF 105–107）
+// 脚本来源：书末 "Frames for the Speaking test"（官方完整考官脚本）；官方无标准答案
+// 含撇号的字符串一律用双引号包裹
+// Part 2 图片在书末彩色插页 C10–C11（PDF 187–188）：仅记录页码引用，未嵌入图片
+// ⚠ 缺页：本扫描件彩色插页缺 C12（Test 8 Part 3 任务卡 8E；PDF 189 位置为封底）。part 3 的 mindmap（中心问题与分支）无法转录，暂缺该字段，待补扫描后补充；未凭推测编造。
+// 原书 Part 3 的 decide 句 "what the best reason is for not being too easily influenced by your friends" 中 "not" 一词原书加下划线强调（纯文本无法呈现，照录文字）。
+
+export default {
+  meta: {
+    id: 'fce-standard-2-test4-speaking',
+    title: 'FCE 标准版真题 2 · Test 4 Speaking',
+    level: 'FCE',
+    collection: 'Cambridge English First 2（标准版2）',
+    book: 'Cambridge English First 2',
+    paper: 'Speaking',
+    pages: '书 94 · 框架 104–106',
+    source: '标准版2 First 2 (updated).pdf（用户原件扫描版）',
+    answerSource: 'Interlocutor frames（书 104–106）；官方无标准答案',
+    verified: true,
+  },
+  parts: {
+    1: {
+      title: 'Part 1 · Interview（面试问答）',
+      type: 'interview',
+      timing: '2 minutes (3 minutes for groups of three)',
+      instruction: "The examiner asks you and your partner questions about yourselves. You may be asked about things like 'your home town', 'your interests', 'your career plans', etc.",
+      script: "Good morning/afternoon/evening. My name is ............ and this is my colleague ............ . And your names are? Can I have your mark sheets, please? Thank you.\n\nWhere are you from, (Candidate A)? And you, (Candidate B)?\n\nFirst, we'd like to know something about you.",
+      note: '框架页（书 104）印有：Note: In the examination, there will be both an assessor and an interlocutor in the room. The visual material for Test 8 appears on pages C10 and C11 (Part 2), and C12 (Part 3). 备选问题说明：Select one or more questions from any of the following categories, as appropriate. Part 1 的三个类别及问题与 Test 1（书内 Test 5）完全相同。',
+      categories: [
+        {
+          name: 'Travel',
+          questions: [
+            'Do you enjoy long journeys? (What do you do to pass the time?)',
+            'Do you have to travel far every day? (Where do you have to go?)',
+            'Do you prefer to travel by car or public transport? (Why?)',
+            "Tell us about an interesting place you've travelled to.",
+          ],
+        },
+        {
+          name: 'Study or work',
+          questions: [
+            'What good memories do you have of school?',
+            'Is there anything you would like to study in the future? (Why?)',
+            'Have you ever had a part-time job? (What do/did you do? Do/Did you enjoy it?)',
+            'Would you prefer to work for a big or small company? (Why?)',
+          ],
+        },
+        {
+          name: 'Sports and hobbies',
+          questions: [
+            'Do you prefer individual sports or team sports? (Why?)',
+            "Which is the most popular sport in your country? (Why do you think it's popular?)",
+            'How much time do you spend listening to music? (What kind of music do you like?)',
+            'Do you enjoy playing computer games in your free time? (Why? / Why not?)',
+          ],
+        },
+      ],
+    },
+    2: {
+      title: 'Part 2 · Long turn（图片长描述）',
+      type: 'long_turn',
+      timing: '4 minutes (6 minutes for groups of three)',
+      instruction: '每位考生就一组图片独白约 1 分钟，另一名考生就图片简答约 30 秒。Candidate A 做 Task 1，Candidate B 做 Task 2。图片见书末彩色插页（书内印作 Test 8）。',
+      script: "In this part of the test, I'm going to give each of you two photographs. I'd like you to talk about your photographs on your own for about a minute, and also to answer a question about your partner's photographs.",
+      tasks: [
+        {
+          candidate: 'A',
+          task: 1,
+          topic: 'By the river',
+          q: "Here are your photographs. They show people spending time by different rivers. I'd like you to compare the photographs, and say what you think the people are enjoying about spending time by the different rivers.",
+          partnerQuestion: 'Which of these things would you prefer to do? ...... (Why?)',
+          images: 2,
+          imagesPage: '书末彩色插页 C10（Test 8，图片 8A/8B）',
+        },
+        {
+          candidate: 'B',
+          task: 2,
+          topic: 'Attending big events',
+          q: "Here are your photographs. They show people at different big events. I'd like you to compare the photographs, and say what you think the people are enjoying about being at these events.",
+          partnerQuestion: 'Which of these events would you prefer to attend? ...... (Why?)',
+          images: 2,
+          imagesPage: '书末彩色插页 C11（Test 8，图片 8C/8D）',
+        },
+      ],
+    },
+    3: {
+      title: 'Part 3 · Collaborative task（合作讨论）',
+      type: 'collaborative',
+      topic: 'The influence of friends',
+      timing: 'Parts 3 and 4: 8 minutes (11 minutes for groups of three)',
+      script: "Now, I'd like you to talk about something together for about two minutes (3 minutes for groups of three). Many people are too easily influenced by their friends. Here are some things to think about and a question for you to discuss. First you have some time to look at the task. (Indicate the text on page C12 to the candidates. Allow 15 seconds.) Now, talk to each other about whether you think people are too easily influenced by their friends.",
+      discuss: 'whether you think people are too easily influenced by their friends',
+      decide: 'what the best reason is for not being too easily influenced by your friends',
+      // mindmap 暂缺：任务卡 8E 在书末彩色插页 C12，本扫描件缺此页（见文件头部注释），不编造中心问题与分支。
+    },
+    4: {
+      title: 'Part 4 · Discussion（深入讨论）',
+      type: 'discussion',
+      timing: 'Parts 3 and 4: 8 minutes (11 minutes for groups of three)',
+      leadIn: 'Use the following questions, in order, as appropriate:',
+      questions: [
+        'Some people say that we always want to have the same things as our friends. What do you think?',
+        'Do you think we can be friends with people who have very different ideas and opinions from us?',
+        "Do you think it's better to have only one or two close friends or have a big group of friends? ...... (Why?)",
+        "How important do you think it is for parents to like their children's friends?",
+        'Some people think that the media influence us much more than our friends do. Do you agree? ...... (Why? / Why not?)',
+        'Are we too easily influenced by people we have never met, such as sports stars or other famous people? ...... (Why do you say that?)',
+      ],
+      prompts: ['What do you think?', 'Do you agree?', 'And you?'],
+      closing: 'Thank you. That is the end of the test.',
+    },
+  },
+};

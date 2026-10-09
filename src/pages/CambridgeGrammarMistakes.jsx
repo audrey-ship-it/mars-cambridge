@@ -14,7 +14,10 @@ export default function CambridgeGrammarMistakes() {
   const [filter, setFilter] = useState('all')
   const mistakes = useMemo(() => Object.values(readGrammarMistakes(level)).sort((a, b) => b.lastWrongAt - a.lastWrongAt), [level])
   const visible = filter === 'all' ? mistakes : mistakes.filter(item => item.type === filter)
-  const unitLink = item => `/cambridge/grammar/${level === 'PET' ? `p${item.unitNum}` : item.unitNum}?mode=${item.type}`
+  const unitLink = item => {
+    const prefix = level === 'PET' ? 'p' : level === 'FCE' ? 'f' : ''
+    return `/cambridge/grammar/${prefix}${item.unitNum}?mode=${item.type}`
+  }
 
   return (
     <CambridgeLayout activeModule="grammar" level={level} setLevel={setLevel}>

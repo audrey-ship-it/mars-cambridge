@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 const LEVELS = [
   { abbr: 'KET', code: 'A2', name: 'Key', color: '#0d7656', bg: '#eaf7f1' },
   { abbr: 'PET', code: 'B1', name: 'Preliminary', color: '#2574a9', bg: '#edf6fb' },
-  { abbr: 'FCE', code: 'B2', name: 'First', color: '#5b63b7', bg: '#f0f1fb' },
+  { abbr: 'FCE', code: 'B2', name: 'First', color: '#0ea5e9', bg: '#e0f2fe' },
   { abbr: 'CAE', code: 'C1', name: 'Advanced', color: '#7c5aa6', bg: '#f5f0fa' },
   { abbr: 'CPE', code: 'C2', name: 'Proficiency', color: '#a14d68', bg: '#fbf0f4' },
 ]

@@ -1,0 +1,1474 @@
+ability|能力|official
+abroad|在国外|official,mustSpell
+absent|缺席的|official
+absolutely|完全地|official
+accent|口音，腔调|official
+accept|接受|official
+access|存取(计算机文件)|official
+accommodation|住宿，留宿|official,mustSpell
+accompany|陪伴|official
+account|账目|official
+accountant|会计人员，会计师|official
+accurate|正确无误的|official
+ache|痛；哀怜n. (指连续)疼痛、酸痛|official
+achieve|实现|official,readingFreq
+action|行动，动作|official
+active|活跃的，敏捷的，积极的|official
+actor|男演员|official
+actress|女演员|official
+add|加；增加(进)；进一步说/写vi. (to)增添|official
+addition|加，加法|official
+admire|钦佩，赞赏，羡慕|official
+admission|准许进(加)入|official
+admit|承认，供认|official
+advance|前进，预付vi. 前进，进展vt. 促进，推进|official
+advantage|优点，长处，有利条件|official
+adventure|冒险，奇遇|readingFreq
+advert|广告|official
+advertise|做广告|official,mustSpell
+advise|忠告，劝告，建议|official
+afford|负担得起|official,readingFreq
+afraid|害怕的，恐惧的|official
+after|在…以后|official
+age|年龄；时代|official
+agency|代理机构|official
+ahead|在前面(头)|official
+aim|目标|official
+air force|空军|official
+airline|航空公司|official
+alarm|警报|official
+alike|同样的，相像ad. 一样地|official
+alive|活着的|official
+allergy|过敏（症）|mustSpell
+allow|允许，准许|official
+aloud|出声地，大声地|official
+alphabet|字母表|official
+although|虽然|official
+altogether|完全，总之，全部地|official
+amazed|感到惊奇的|official
+ambition|雄心,抱负|official
+ambitious|有抱负的，有野心的|mustSpell
+ambulance|救护车|mustSpell
+amount|数量|official
+amusing|有趣的|official
+ancient|古代的，古老的，古式的|official,readingFreq
+ankle|足踝，踝关节|official
+anniversary|周年纪念|official
+announce|宣布|official
+announcement|通知|official
+annoy|使烦恼,使生气|official
+annual|每年的,一年生的|official
+answerphone|自动答录机|official
+ant|蚁；蚂蚁|official
+antique|/n. 古代的,古玩,古物|official
+anxious|焦虑的，担心的|official,mustSpell
+anything|任何事|official
+apart|分离，离开，隔开a. 分离的，分隔的|official
+apologise|道歉|official,readingFreq
+apology|道歉，认错，辩解，辩护|official
+app|应用程序|mustSpell
+appear|出现|official
+appearance|外貌|official
+apply|申请|official,mustSpell
+appointment|预约，约定|mustSpell
+approach|方法；靠近|official,readingFreq
+approve|赞成，赞许，同意|official
+architect|建筑师,设计师|official
+architecture|建筑，建筑学|official
+argue|不同意,辩论|official
+argument|争论(吵)，辩论|official
+arisen|arise 的过去分词（出现，发生）|irregular
+arm|手臂|official
+army|军队，陆军，军|official
+arose|arise 的过去式（出现，发生）|irregular
+arrange|安排|official
+arrangement|整理，排列|official
+arrest|逮捕，扣留vt. 逮捕，扣留|official,mustSpell
+arrival|到达，到来|official
+article|文章|mustSpell
+ashamed|羞愧的,害臊的|official,mustSpell
+asleep|睡觉，睡着(用作表语)|official
+aspirin|阿斯匹林|official
+assignment|作业，任务|mustSpell
+athlete|体育家,运动员|official
+athletics|田径运动|official
+atmosphere|大气(层)|official,mustSpell
+attach|系上,附上|official
+attack|/vt. 攻击,非难,疾病发作|official
+attempt|/n. 尝试,企图|official
+attend|出席，参加|official,mustSpell
+attention|注意，注意力|official
+attitude|态度|official
+attract|引起的注意(或兴趣等)，吸引|official
+attraction|吸引|official
+audience|听众,观众,读者|official,mustSpell
+author|作者，作家，著作人|official
+available|可获得的；有空的|readingFreq
+average|平均的|official,readingFreq
+avoid|避免|official
+awake|醒着的vt. 唤醒，使觉醒vi. 醒来，醒悟到|official
+awoke|awake 的过去式（醒来，唤醒）|irregular
+awoken|awake 的过去分词（醒来，唤醒）|irregular
+babysit|临时照看孩子|official
+babysitter|临时保姆|official
+background|背景，经历|official
+backpacker|背包旅行者|official
+backwards|向后地|official
+bad|坏的|official
+baggage|行李|official
+baker|面包师|official
+balcony|阳台,剧院楼厅|official
+bald|秃头的,单调的|official
+ballet|芭蕾舞,芭蕾舞演员|official
+bank account|银行账户|official
+banking|银行业务、金融业|official
+basic|基本的，基础的|official
+basin|盆，脸盆|official
+basket|筐，篮，篓|official
+basketball|篮球|official
+battery|电池|official,mustSpell
+battle|战役，战斗|official
+bay|海湾|official
+beat|/v. 敲打,搅拌,胜,心跳|official
+beauty|美，美丽|official
+because|因为，由于|official
+beef|牛肉|official
+behave|举动|official
+behaviour|行为|official
+bell|钟，铃|official
+beneath|在…下边，在…之下ad. 在下方|official
+benefit|好处|official,readingFreq
+besides|此外|official
+beyond|在(或向)…的那边，远于|official
+big|大的|official
+bin|垃圾桶|official
+biography|传记,传记文学|official
+bite|/n. 咬,叮,刺,紧握,鱼上钩|official
+bitter|有苦味的|official
+blame|责备,找…的差错|official
+blank|没有写字的|official
+bled|bleed 的过去式（流血，出血）|irregular
+bleed|流血,悲痛,同情|official
+blind|盲的，瞎的|official
+blog|博客|official,mustSpell
+blogger|博主|official
+boarding pass|登机牌|official,mustSpell
+bold|大胆的,无耻的,醒目的|official
+bomb|炸弹v. 投弹于，轰炸|official
+bone|骨(骼)|official
+book|预订|mustSpell
+booking|定货|official
+border|边,边沿|official
+bound|bind 的过去式（捆绑；装订）|irregular
+bowl|碗(状物)，钵|official
+bracelet|手镯|official
+brake|/v. 刹车|official
+branch|条，分支|official
+brand new|全新的|official
+breath|呼吸，气息|official
+breathe|呼吸|official
+breeze|微风|official
+bride|新娘|official
+brief|简短的，简洁的v. 简短介绍，简要汇报|official
+broad|宽的，广阔的|official
+broadcast|广播，播出|mustSpell
+broccoli|西蓝花|official
+brochure|有插图的小册子|official
+brush|刷子|official
+bucket|水桶,一桶之量|official
+bug|臭虫,病毒传染,窃听器|official
+bulb|鳞茎,球茎,球状物|official
+bull|公牛,雄性的鲸、象等大动物|official
+bunch|/v. 束,串|official
+burglary|入室盗窃（案）|mustSpell
+burn|燃烧，烧着|official
+burning|燃烧的|official
+burnt|burn 的过去式（燃烧；烧伤）|irregular
+butcher|屠夫,残杀者|official
+butterfly|蝴蝶|official
+button|纽扣，按钮(开关)v. 扣紧|official
+buyer|购买者|official
+cab|出租车，出租马车|official
+cabbage|洋白菜，卷心菜|official
+cabin|船舱,机舱,小木屋|official
+cable|缆,索,电缆|official
+cafe/cafe|咖啡馆|official
+cage|鸟笼|official
+calculator|计算机, 计算器|official
+calf|小牛，腿肚子|official
+calm|静的n. 平静v. (使)平静|official,mustSpell
+campus|校园|mustSpell
+canal|运河,河渠,动植物体内的管道|official
+cancel|取消|official,mustSpell
+candidate|候选人,应试人|official
+candle|蜡烛|official
+canteen|食堂,小卖部,餐具箱,水壶|official
+captain|首领，队长|official
+carbon|碳|mustSpell
+cardboard|硬纸板|official
+care|小心|official
+careless|粗心的，漫不经心的|official
+carpet|地毯|official
+cashpoint|ATM取款机|official
+cattle|牛；牲口，家畜|official
+celebrate|庆祝|official,readingFreq
+celebration|庆祝仪式|official
+celebrity|名人|official
+central|中心的，中央的，中枢的|official
+central heating|中央供暖|official
+centre/center|中心|official
+ceremony|典礼,仪式,礼节|official
+certain|某，某一，某些|official
+certificate|证(明)书，执照|official
+challenge|挑战|official,readingFreq
+challenging|具有挑战性的|official
+champion|冠军|official
+chance|机会|official
+changing room|更衣室|official
+channel|频道；渠道|mustSpell
+chapter|章；回，篇|official
+character|性格；人物|official
+charge|要价|official,mustSpell
+charity|慈善（机构）|mustSpell
+charming|迷人的，可爱的|official
+chat show|脱口秀节目|official
+cheat|欺骗|official
+check-in|办理入住|official
+cheek|面颊，脸|official
+cheerful|快乐的，愉快的|official
+childhood|幼年，童年|official
+chin|颏,下巴|official
+chip|片屑,薄片,集成电路|official
+choice|选择|official
+choose|选择|official
+cinema|电影院|official
+citizen|公民，市民|mustSpell
+clap|拍手，拍，轻拍n. 拍(手)，掌声，霹雳声|official
+classical|古典的|official
+clear|清晰的|official
+click|点击|mustSpell
+client|客户，委托人|mustSpell
+climate|气候|official,mustSpell
+clinic|诊所,门诊所|official
+cloudy|多云的|official
+clung|cling 的过去式（紧握；依恋）|irregular
+coach|长途公共汽车,铁路客车,教师,教练|official,mustSpell
+coast|海岸，海滨|official
+coconut|椰子|official
+cod|鳕鱼|official
+coin|铸币,硬币|official
+cola|可乐|official
+collar|衣领|official
+colleague|同事|mustSpell
+collection|收藏(品)，收集(物)|official
+comfort|舒适，安逸|official
+comfortable|舒适的|official
+comic|漫画书|official
+comma|逗号|official
+comment|评论，意见|mustSpell
+common|普通的|official
+communicate|交流|official,readingFreq
+communication|通讯,交往,交流,传达的消息,交通|official
+community|社区，群体|mustSpell
+compare|比较,对照|official,readingFreq
+compete|比赛|official,readingFreq
+competitor|竞争者，敌手|official
+complain|抱怨|official
+complaint|抱怨，诉苦，怨言，控告|official
+complicated|结构复杂的|official
+concentrate|集中注意力|official,mustSpell
+conclusion|结论，推论|official
+condition|条件；状况|official
+conference|会议|official
+confident|自信的|official,mustSpell
+confirm|证实|official
+confused|困惑的|official
+confusing|令人困惑的|official
+connect|连接|official,mustSpell
+connection|联系|official
+consider|考虑|official
+consist|组成,存在|official
+consonant|辅音,辅音字母,子音|official
+contain|包含|official
+contents|目录；内容|official
+contest|争夺,竞争|official
+continent|大陆，洲;adj. 有节制的|official
+continue|继续|official,readingFreq
+contract|合同,契约|official
+control|控制，支配v. 控制，支配|official
+convenient|便利的，方便的|official,readingFreq
+convince|使信服|official
+cooker|炊具|official
+corn|谷物，庄稼，玉米|official
+correction|改正，纠正，修改|official
+cosy|舒适的, 安逸的|official
+cottage|村舍，小屋，别墅|official
+cotton|棉花|official
+cough|咳嗽|mustSpell
+could|能够（过去式）|official
+count|数，计算|official
+couple|对，双|official
+courage|勇气，胆量|official,mustSpell
+court|法庭，法院|mustSpell
+crash|突然坠落|official
+create|创造|official
+creative|有创造力的，创造性的|official
+creature|人，动物|official
+credit|信誉，信用v.相信|official
+crept|creep 的过去式（蹑手蹑脚地走）|irregular
+crew|全体船员，全体乘务员|official
+crime|犯罪|official,mustSpell
+criminal|罪犯；犯罪的|mustSpell
+crop|作物，庄稼|official
+crossroads|交叉路口，十字路|official
+cruel|残忍的，残酷的|official
+cruise|巡航|official
+cucumber|黄瓜|official
+culture|文化|mustSpell
+cure|治愈；疗法|mustSpell
+curious|好奇的|readingFreq
+curiously|好奇地|official
+curly|卷曲的|official
+currency|通货，货币|official
+current affairs|时事|mustSpell
+curriculum|课程|official
+cushion|垫子,坐垫,垫状物|official
+custom|习俗,惯例|official
+customer|顾客|mustSpell
+customs|海关|mustSpell
+cute|可爱的, 聪明的, 伶俐的, 装腔作势的|official
+cyclist|自行车运动员|official
+daily|每日的，日常的|mustSpell
+damage|损害|official,mustSpell
+damaged|受损的|official
+dancer|舞蹈演员|official
+danger|危险|official
+database|数据库|mustSpell
+date|日期|official
+deadline|截止日期|mustSpell
+deaf|聋的,不愿听的|official
+deal|处理；交易|official
+death|死，死亡|official
+decide|决定|readingFreq
+decision|决定|official
+declare|宣告,声明|official
+decorate|装饰|official
+defeat|击败n.失败|official
+defence|防卫,防护,防御物|official
+defend|防守，保卫|official
+definitely|一定地，明确地|official
+degree|学位；程度|mustSpell
+delay|延误，推迟|mustSpell
+delete|删除(文字),擦去(字迹)|official
+delicious|美味的,可口的|official
+delighted|高兴的|official,mustSpell
+deliver|投递,解救,发表,接生|official
+delivery|递送|official
+demand|/v. 要求，请求，需要(量)v. 查问|official
+depart|离开,启程|official
+department|部门|mustSpell
+departure|离开，起程|official,mustSpell
+deposit|/vt. 存款|official
+depressed|情绪低落的|official
+depth|深，深度，深奥，深刻|official
+describe|描述，描写|readingFreq
+description|描写,描绘,叙述|official
+deserve|应得,应受|official
+design|设计|official
+designer|设计者|official
+despite|不管，不顾|official
+destination|目的地|official,mustSpell
+destroy|破坏，摧毁，消灭|official,mustSpell
+detective|侦探|official
+develop|发展|official
+development|发展|official
+device|设备，装置|mustSpell
+diagram|图解|official
+dial|表面,钟面,拨号盘|official
+diet|/vi. 饮食,规定的饮食,忌食|official,mustSpell
+difficulty|困难，困境，难题|official
+dig|挖，掘|official
+digital|数字的，数码的|mustSpell
+direction|方向|official
+directly|直接地，径直地|official
+dirt|污物，污垢|official
+disadvantage|不利，不利地位|official
+disagree|有分歧|official
+disappear|不见，消失|official
+disappoint|失望|official
+disappointed|失望的，扫兴的|official
+disappointing|令人失望的|official
+disappointment|失望|official
+disc/disk|光盘；磁盘|official
+discover|发现|official,readingFreq
+discussion|讨论，谈论|official
+disease|疾病|official,mustSpell
+disgusting|令人恶心的|official
+dishwasher|洗碗机|official
+disk|磁盘|official
+dislike|/v. 不喜欢，厌恶|official
+display|/n. 展览,陈列|official
+distance|距离|official
+district|地区，行政区|official
+disturb|打扰,扰乱|official
+dive|/n. 潜水，跳水，俯冲|official
+divide|分，划分，分开|official
+diving|潜水|official
+documentary|文献的n. 记录片|official,mustSpell
+donkey|驴子|official
+doubt|/v. 怀疑，疑虑|official
+dozen|一打，十二个|official
+drag|拖，拖曳|official
+drama|剧本，戏剧|official
+dreamt|dream 的过去式（做梦；梦想）|irregular
+driving licence|驾照|official
+drop|滴；落下；微量v. 落下；下降；失落|official
+drought|干旱|mustSpell
+due|正当的,预定应到的,由于|official
+dull|阴暗的,迟钝的,沉闷的,钝的|official
+duty|义务，责任|official
+duty-free|免税的|official
+duvet|羽绒被|official
+eager|渴望的，热切的|readingFreq
+earache|耳痛|official
+earn|赚钱|official,mustSpell
+earth|地球|official
+eastern|东方的，东部的|official
+easygoing|随和的|official
+economics|经济学，经济情况|official
+edge|边，棱|official
+editor|编辑|mustSpell
+education|教育，培养，训练|official,mustSpell
+effect|效果|official
+efficient|能胜任的,效率高的|official
+effort|努力|official
+either|也(不)pron. 两者之一a. (两者中)任一的|official
+elbow|肘,衣服肘部|official
+elder|年长的，资格老的n. 长辈|official
+elderly|过了中年的, 稍老的|official
+election|选举|mustSpell
+electrical|电的,电气科学的|official
+electronic|电子的|official,mustSpell
+elementary|基本的,初级的|official
+elephant|象|official
+embarrassed|尴尬的|official,mustSpell
+embarrassing|令人尴尬的|official
+embassy|大使馆|official
+emergency|紧急情况,突发事件|official
+employ|/v. 雇用|official,mustSpell
+employee|雇工，雇员|official,mustSpell
+employer|雇主|official,mustSpell
+employment|雇用,使用,职业|official
+encourage|鼓励，怂恿|official,readingFreq
+end|末端，端，梢|official
+endangered|濒危的|mustSpell
+ending|结尾，结局|official
+enemy|敌人，仇敌，反对者|official
+energy|活力，精力|official,mustSpell
+engaged|占用的，从事的|official
+engineering|工程学|official
+enormous|庞大的,巨大的|official,readingFreq
+enquiry|询问|official
+entertain|招待，款待|official
+entertainment|娱乐,招待,表演|official
+entry|进入,入口|official
+environment|环境|official,mustSpell
+environmental|环境的，环境产生的|official
+equal|/n./vt. 相等的,相等于,相等匹敌|official,mustSpell
+equipment|设备|official
+escape|逃脱|official
+essay|文章,小品文,随笔|official
+essential|/a. 本质(的),必要(的)|official,readingFreq
+event|事件|official
+evidence|证据，证明|mustSpell
+exam|考试|mustSpell
+examine|检查；考核|readingFreq
+except|除…之外v. 除外|official
+exchange|/n. 交换,兑换|official
+exchange rate|汇率|official
+excitement|刺激，激动，兴奋|official
+exhausted|精疲力竭的|official
+exist|存在|official
+expect|预期|official,readingFreq
+expedition|远征,探险(队),考察(队)|official
+experience|经验|official,mustSpell
+experienced|有经验的|official
+experiment|实验|official,readingFreq
+expert|专家，能手a. 熟练的，有经验的|official
+explain|解释，说明|readingFreq
+explanation|解释，说明|official
+explode|爆炸,爆发|official
+express|表达，表示|readingFreq
+extraordinary|非常的|official
+extreme sport|极限运动|official
+extremely|极端，极其，非常|official
+face-to-face|面对面的|official
+factory|工厂|official
+fail|不及格；失败|mustSpell
+fairly|公正地，正当地|official
+false|谬误的，虚伪的，伪造的，假的|official
+familiar|熟悉的，常见的|readingFreq
+family|家庭|official
+fancy|颜色鲜艳的|official
+fare|车费,船费|official
+farming|农业，种植业|official
+fascinating|迷人的，极有吸引力的|readingFreq
+fashionable|流行的，时髦的|official
+fasten|扎牢，使固定|official
+fault|缺点,毛病,过错,(地质)断层|official
+favour|亲切, 宠爱|official
+fax|传真|official
+fear|害怕，恐惧|official
+feature|特征，特点|readingFreq
+fee|费,报名费,会费|official
+feed|喂养，饲养|official
+feel like|想要；感觉像|official
+feeling|感情|official
+female|/a. 女性(的),[语|official
+ferry|/v. 渡口,渡船,摆渡|official,mustSpell
+fetch|取,拿来|official
+fever|发热，狂热|official,mustSpell
+fiction|虚构，编造|official
+fight|/n. 打(仗)，搏斗，斗争，战斗|official
+figure|体形|official
+film maker|电影制片人|official
+financial|财政的，金融的|official
+fine|罚款；处……以罚金|mustSpell
+firefighter|消防员|official
+firework|爆竹，花炮，烟火|official
+firm|坚固的|official
+fitness|适当，恰当|official,mustSpell
+fix|固定|official
+flag|旗|official
+flavour|滋味, 香味|official
+fled|flee 的过去式（逃跑，逃离）|irregular
+flight|航班，航程|mustSpell
+float|浮子,浮标|official
+flood|洪水，水灾v. 淹没，发大水，泛滥|official,mustSpell
+flour|面粉|official
+flow|流，流动n. 流量，流速|official
+flu|流感|official,mustSpell
+flute|长笛，笛子|official
+fold|折叠|official
+folk|人们|official
+following|下列的，下述的，其次的，接着的|official
+fond|喜爱的，爱好的|official
+food|食物|official
+fool|傻子，笨蛋vt. 欺骗，愚弄vi. 干蠢事|official
+forbade|forbid 的过去式（禁止，不许）|irregular
+forbidden|禁止的|official,irregular
+forecast|/n. 预报,预测|official
+foreigner|外国人|official
+forever|永远|official
+forgive|原谅,宽恕|official
+former|以前的，在前的pron. 前者|official
+fortnight|两星期|official
+fortunately|幸运地，幸亏|official
+fountain|泉水,喷泉,源泉|official
+frame|框架|official
+freedom|自由|mustSpell
+freeze|使结冰，使凝固|official
+freezer|冷冻箱|official
+freezing|极冷的|official
+frequent|时常发生的，频繁的v. 常到, 时常出入于, 常去|official
+friendship|友谊，友好|official
+frighten|使惊恐|official
+frightened|害怕的|official,mustSpell
+frightening|令人害怕的|official
+frog|蛙|official
+frozen|冷冻的|official
+fruit|水果|official
+fry|油煎,油炒|official
+frying pan|平底锅|official
+fuel|燃料vt. 给…加燃料|official
+full stop|句号|official
+full time|全职地|official
+full-time|全职的|official,mustSpell
+fully|完全，彻底|official
+fur|毛，毛皮|official
+furthest|最远的|official
+gadget|小装置，小器具|mustSpell
+gain|获得|official
+gap|缺口|official
+general|一般的，普通的|official
+generate|产生，发（电）|readingFreq
+generation|产生，发生|official,mustSpell
+generous|慷慨的|official,mustSpell
+gentle|文雅的,有礼貌的|official
+giant|巨人a. 巨大的|official,readingFreq
+giraffe|长颈鹿|official
+glance|扫视n. 匆匆看，一瞥，一眼|official
+global warming|全球变暖|official,mustSpell
+goalkeeper|守门员|official
+gorgeous|令人十分愉快的,极好的|official
+government|政府|official,mustSpell
+grab|/n. 攫取,抓取,掠夺|official
+grade|成绩；年级|mustSpell
+graduate|毕业|mustSpell
+grammar|语法，语法书|official
+grant|同意给予|official
+grateful|感激的|official,mustSpell
+greet|致敬，敬意，迎接|official
+greeting|问候，致敬|official
+grill|烤架, 铁格子, 烤肉。v.烧, 烤, 严加盘问|official
+groom|新郎|official
+ground|地，地面，土地|official,irregular
+guarantee|保证，担保|readingFreq
+guard|/n. 保卫，守卫，提防n. 哨兵，警卫，看守|official
+guess|/n. 猜测，推测|official
+guidebook|旅行指南|mustSpell
+guilty|有罪的，内疚的|official,mustSpell
+guitarist|吉他手|official
+gum|树胶|official
+gun|枪，炮，手枪|official
+gymnastics|体操|official
+habit|习惯|official
+haircut|理发|official
+hairdresser|理发师|official
+hairdryer|吹风机|official
+hand|手，人手，雇员|official
+hand-held|手持的|official
+handkerchief|手帕|official
+handle|柄，把手，拉手v. 处理，对待，操纵|official
+handsome|漂亮的,大方的|official
+handwriting|笔迹，手迹，书法|official
+hang|悬挂，垂吊|official
+happily|幸运地|official
+harbour|海港|official
+hard work|努力工作|official
+hardly|几乎不|official
+hardship|艰难，困苦|readingFreq
+hardware|金属日用器皿,(计算机)硬件|official,mustSpell
+headline|大字标题，新闻标题|official,mustSpell
+heal|愈合，治愈|mustSpell
+heat|热，热度|official
+heater|取暖器|official
+heel|脚后跟，踵，鞋跟|official
+helmet|头盔，钢盔|official
+herb|草木植物,药草|official
+hero|英雄，勇士|official
+heroine|女英雄|official
+hidden|隐藏的|official
+hide|隐藏，躲藏|official
+hire|/v. 雇用，租借|official
+historic|有历史意义的|official
+historical|历史的|official
+hitchhike|免费搭乘他人便车|official
+hole|洞，孔|official
+homeless|无家可归的|mustSpell
+homepage|主页|official
+honest|诚实的，正直的，老实的|official,mustSpell
+honestly|诚实地|official
+honeymoon|蜜月|official
+hopeful|给人希望的，抱有希望的|official
+hopefully|可以指望|official
+hopeless|没有希望的，绝望的|official
+horrible|可怕的,恐怖的|official
+horror|恐怖，战栗|official
+hostel|廉价旅馆|official
+how much|多少|official
+hug|/n. 紧抱,拥抱|official
+huge|巨大的，庞大的|official
+human|人的，人类的n. 人|official
+humid|湿的，湿气重的|official
+hung|hang 的过去式（悬挂，吊）|irregular
+hunger|/v. 饥饿|official
+hunt|/n. 打猎，猎取|official
+hurricane|飓风|mustSpell
+hut|小屋，棚屋|official
+ice hockey|冰球|official
+icy|冰冷的|official
+identify|辨认，确认|readingFreq
+illegal|非法的，违法的|mustSpell
+illness|病，疾病|official
+imagination|想象(力)|official
+imagine|想象，设想，料想|official
+immigration|移居入境|official
+importance|重要，重要性|official
+impossible|不可能的|official
+improvement|改进，进步，增进|official
+inch|英寸|official
+incorrect|不正确的，错误的|official
+increase|增加|official
+incredible|不可相信的，惊人的，不可思议的|official
+indeed|确实，实在|official
+independent|独立的，自主的|official
+individual|个人|official
+industry|工业|official
+infection|感染，传染|mustSpell
+inform|通知，告诉，报告|official
+ingredient|成分, 因素|official
+initial|最初的,开始的|official
+injure|损害，损伤，伤害|official,mustSpell
+ink|墨水，油墨|official
+innocent|无辜的，清白的|mustSpell
+inquiry|询问，打听，调查|official
+insist|坚持要求，坚决主张，坚持|official
+install|任命|official,mustSpell
+instance|例子，事例，例证|official
+intelligent|聪明的，明智的，理智的|official
+intend|打算|official
+interest|兴趣，重要性|official
+intermediate|/n. 中间的,中间物|official
+interrupt|中断，遮断，阻碍|official
+interval|间隔的时间,间隔,间歇|official
+interview|/n. 接见，会见|official,mustSpell
+introduce|介绍|official,readingFreq
+introduction|介绍|official
+invent|发明，创造|official,mustSpell
+invention|发明，创造，发明物|official,mustSpell
+involve|涉及|official
+iron|铁，铁制品，烙铁，熨斗v. 熨(衣)，熨平|official
+ironing|熨衣服|official
+issue|问题|official
+item|条款,项目,一条(新闻)|official
+jail|监狱|official
+jar|罐坛，广口瓶|official
+jealous|妒忌的,妒羡的|official,mustSpell
+joke|笑话，玩笑v. 说笑话，开玩笑|official
+journalist|新闻工作者,记者|official,mustSpell
+journey|旅行，旅程|mustSpell
+judge|法官|official,mustSpell
+jug|大壶，罐，盂|official
+jungle|丛林,密林|official
+kangaroo|带鼠|official
+keen|锋利的,尖锐的,强烈的|official
+keep fit|保持健康|official
+keeper|看护人|official
+kettle|水壶|official
+keyboard|键盘|mustSpell
+kid|小孩，儿童v. 戏弄，取笑|official
+knee|膝，膝盖|official
+knelt|kneel 的过去式（跪下，跪着）|irregular
+knit|编织|official
+knock|敲，敲打，碰撞n. 敲，击|official
+knowledge|知识，学识|official,mustSpell
+label|标签v. 把…称为|official
+lack|缺乏|official
+ladder|梯子，阶梯|official
+lady|女士，夫人|official
+lamb|小羊,羊羔肉|official
+land|陆地，土地，国家v. (使)靠岸(登陆，降落)|official
+landing|着陆，登陆|mustSpell
+landscape|风景,景色|official
+laptop|笔记本电脑|mustSpell
+lately|最近，不久前|official
+law|法律，法规，法学，规律，定律|official
+lawyer|律师|official,mustSpell
+lay|放,放置,安置,下蛋|official
+lead|领导；引领|official
+leader|领导者|official
+leaf|叶子|official
+league|同盟，联盟|official
+leant|lean 的过去式（倚靠；倾斜）|irregular
+leapt|leap 的过去式（跳，跳跃）|irregular
+lecture|/v. 演讲，讲课|official,mustSpell
+legal|法律的，合法的|mustSpell
+length|长，长度|official
+lettuce|生菜|official
+lie|躺，平放|official
+light switch|电灯开关|official
+lighter|打火机，引燃器|official
+lightning|闪电a. 闪电般的，快速的|official
+likely|很可能的，有希望的ad. 大概，多半|official
+limit|限制|official
+limited|有限的，被限制的|official
+link|连接，联系n. 环节，链环|official
+lip|嘴唇|official
+liquid|液体a. 液体的，液态的|official
+lit|light 的过去式（点燃；照亮）|irregular
+literature|文学,文学作品,文献,著作|official
+litter|杂乱物|official
+lively|活泼的，活跃的|official
+load|装(货)，装载n. 装载(量)，负荷(量)；(一)|official
+loan|借出物,贷款,借出|official
+local|当地的，本地的|mustSpell
+locate|查出，探出，查找…地点，使…坐落于，位于|official
+lock|锁v. 锁，锁上|official
+locker|上锁的人, 有锁的橱柜, 锁扣装置, 有锁的存物柜|official
+logo|标志；商标|official
+lonely|孤独的，寂寞的|official,mustSpell
+look forward to|期待，盼望|mustSpell
+lottery|彩票|official
+luck|运气|official
+lucky|幸运的，侥幸的|official
+luggage|行李|mustSpell
+luxury|奢侈,奢侈品|official
+magic|魔术，魔(魅)力，巫术a. 有魔力的，魔术的|official
+magnificent|宏伟的,壮丽的|official
+main|主要的，总的n. 总管道|official
+make sure|确保|official
+male|/a. 男性(的)，雄性(的)|official
+manage|管理；设法|official
+manager|经理|mustSpell
+mark|打分；分数|mustSpell
+marriage|结婚，婚姻|official
+marry|结婚，嫁，娶|official
+marvellous|奇异的，绝妙的|official
+mate|伙伴，同事，同伴，配偶v. 结伴，配对，交配|official
+material|材料|official
+mathematics|数学|official
+maximum|最大量,最大限度|official
+meaning|意思，意义，含义|official
+meanwhile|其时，其间ad. 当时，与此同时|official
+medicine|药；医学|mustSpell
+medium|媒介,艺术形式|official
+meeting|会议|mustSpell
+membership|会员资格，成员资格|official
+mend|修理，缝补|official
+mental|精神的，心理的|mustSpell
+mention|提到|official
+mess|凌乱状态,脏乱状态|official
+messy|肮脏的, 凌乱的, 杂乱|official
+metal|金属，金属制品|official
+method|方法|official
+microwave|微波|official
+middle-aged|中年的|official
+mild|温和的，轻微的，味淡的，不含有害物质的的|official
+miserable|悲惨的|official
+misled|mislead 的过去式（误导，引入歧途）|irregular
+monkey|猴子|official
+monument|纪念碑，纪念馆，遗迹，不朽的业绩|official
+mood|心情，情绪|official,mustSpell
+mosquito|蚊子|official
+motorbike|摩托车|official
+motorcycle|摩托车|official
+motorway|高速公路|mustSpell
+moustache|胡子|official
+multiply|/vi. [数|official
+murder|谋杀|mustSpell
+murderer|杀人犯，凶手|mustSpell
+mystery|神秘，神秘的事物|official
+narrow|狭窄的，狭的，狭隘的|official
+nasty|令人讨厌的|official
+natural|正常的|official
+navy blue|海军蓝|official
+nearby|附近的ad. 在附近prep. 在…附近|official
+neat|整洁的|official
+necessary|必需的，必要的|official
+negative|否定的，消极的，阴性的n. 负数|official
+neighbourhood|邻近地区；街区|official
+nephew|侄子，外甥|official
+nervous|神经的|official,mustSpell
+network|网状物|official,mustSpell
+niece|侄女，甥女|official
+nightclub|夜总会|official
+nightlife|夜生活|official
+nightmare|恶梦|official
+noisy|吵闹的，喧闹的|official
+none|没有任何人(东西)|official
+normally|通常，正常地|official
+northeast|东北a. 东北方的ad. 向东北，在东北|official
+northern|北方的，北部的|official
+northwest|西北方，西北部a. 西北的ad. 向西北，在西北|official
+notepaper|信纸|official
+noticeboard|公告栏|official
+novel|新奇的|official
+nowadays|现今，现在|official
+nowhere|什么地方都没有|official
+object|物体；反对|official
+obvious|明显的,清楚的|official
+obviously|明显地，显然地|official
+occasion|的时刻|official
+occupation|职业，工作|mustSpell
+ocean|海洋|official
+officer|官员，办事员|official
+oil|油，石油v. 给…加润滑油|official
+old-fashioned|过时的|official
+olive|橄榄，橄榄树|official
+onto|在…上面|official
+operate|操作，运转，开动，起作用，动手术|official
+operation|运转，开动，操作，手术，运算，经营|official
+opinion|意见,鉴定|official
+opportunity|机会|official
+opposite|对面的,相对的,相反的,对立的|official
+or|或，或者(表示选择)|official
+orchestra|管弦乐队|official
+organisation|组织|official
+organise|组织；安排|official
+original|最初的,新颖的|official
+otherwise|另样，用别的方法|official
+ought|应该(使用时，之后应接to，再接动词原形)|official
+ourselves|我们自己|official
+outdoor|室外的，野外的|official
+oven|炉，灶，灶箱|official
+overnight|通宵的，晚上的ad. 在昨夜，一夜工夫，突然|official
+owe|/vi 欠债,感激,由于|official
+owner|物主，所有者|official
+packet|小包裹，小捆|official
+painful|疼痛的，使痛苦的，费力[心|official
+palace|宫，宫殿|official
+pan|平底锅，盘子，面板|official
+pants|裤子|official
+paragraph|段，节|official
+parcel|包裹，邮包，部分v. 打包，捆扎，分配|official
+parking|停放车辆|official
+parrot|鹦鹉|official
+part time|兼职地|official
+part-time|计时(干活)的|official,mustSpell
+particular|特别的|official
+partly|部分地，不完全地，在一定程度上|official
+pass|通过（考试等）|mustSpell
+passenger|乘客|mustSpell
+passport|护照,保障,手段|official,mustSpell
+password|密码|official,mustSpell
+patient|有耐心的，能忍耐的n. 病人，患者|official,mustSpell
+pause|/n. 中止，暂停|official
+pavement|人行道|official
+pea|豌豆|official
+peach|桃，桃树|official
+peak|山顶，最高点|official
+pedestrian|步行者a. 徒步的，呆板的，通俗的|official
+peel|/n. 剥皮|official
+penguin|企鹅|official
+pepper|胡椒粉，胡椒|official
+percent|百分之…的|official
+perform|表演|official
+performance|演出,表演|official
+period|时期，时代|official
+permanent|永久的,持久的|official
+permission|允许，同意|official
+permit|许可，允许n. 许可证，执照|official
+permitted|被允许的|official
+personal|个人的，私人的|official
+personally|亲自，就个人而言|official
+petrol|汽油|mustSpell
+petrol station|加油站|official
+photo|照片|official
+photocopy|复印件|official
+phrase|短语，词语，习语|official
+physics|物理(学)|official
+pick|拾，采，摘|official
+picnic|/vi. 野餐|official
+pie|馅饼|official
+pig|猪，猪肉|official
+pile|堆，大量，大数目v. (up)堆，叠，堆积|official
+pill|药丸|official
+pilot|/vt. 飞行员,试验|official
+pin|大头针|official
+pineapple|凤梨，波萝|official
+pipe|管子，导管|official
+pirate|/v. 海盗，盗版(者)|official
+plain|明白的|official
+planet|行星|official
+plastic|塑料（的）|mustSpell
+pleasure|愉快，快乐|official
+plenty|大量|official
+plug|/v. 塞子,栓,插头,通电|official
+pocket money|零花钱|official
+poet|诗人|official
+poetry|诗歌，诗集|official
+policeman|警察|official
+policy|政策，方针|mustSpell
+political|政治的|official
+politician|政治家，政客|official
+pollution|污染|mustSpell
+population|人口，(全体)居民|official,mustSpell
+positive|积极的|official
+possibility|可能，可能性|official
+poster|海报，招贴画|mustSpell
+postpone|推迟,延缓|official
+pot|罐，壶|official
+pour|/vi. (液体)灌,注,倒|official
+poverty|贫穷，贫困|mustSpell
+powder|粉末，药粉|official
+powerful|强大的，有力的，有权的|official
+practice|练习，实践，实际，业务，惯例，习惯|official
+pray|请求，恳求|official
+prayer|祈祷，祷告，祷文|official
+predict|预言，预测，预告|official
+pregnant|怀孕的,意义深远的|official
+preparation|准备，预备|official
+prepare|准备|readingFreq
+prepared|准备好的，愿意的,期望的|official
+prescription|药方，处方|official,mustSpell
+presentation|赠送|official
+president|总统，校长，会长，主席|official
+press|压；压榨；紧迫，催促n. 报刊，通讯社；压榨机|official,mustSpell
+prevent|防止|official
+previous|之前的|official
+previously|先前，预先|official
+primary school|小学|official,mustSpell
+prince|王子，亲王|official
+princess|公主，王妃|official
+principal|主要的|official
+print|印刷，印刷品，字体v. 印刷，出版|official
+prison|监狱|official,mustSpell
+prisoner|囚犯|official,mustSpell
+private|私人的，个人的，秘密的，私下的n. 士兵，列兵|official
+prize|奖赏，奖金，奖品v. 珍视，珍惜|official
+produce|生产|official
+product|产品，产物|official
+profession|职业，专业，表白，宣布|official,mustSpell
+professional|职业的|official
+professor|教授|official,mustSpell
+programme|节目|mustSpell
+progress|进步|official
+promise|/v. 诺言|official
+promote|开放|official,mustSpell
+pronunciation|发音，发音方法|official
+proper|适合的|official
+protect|保护|mustSpell
+proud|自豪的|official,mustSpell
+prove|证明，证实|official
+proved|prove 的过去式（证明，证实）|irregular
+proven|prove 的过去分词（证明，证实）|irregular
+provide|提供|official
+public|公共的，公用的|official,mustSpell
+public transport|公共交通|official
+publish|出版，刊印|official,mustSpell
+pullover|套头毛衣|official
+pump|泵,抽水机|official
+punish|惩罚，处罚|official,mustSpell
+puppy|小狗|official
+pure|纯的，纯洁的|official
+purpose|目的|official
+put|放|official
+qualification|资格|official
+qualified|有资格的|official
+qualify|取得资格|mustSpell
+quality|质量|official
+question|问题|official
+questionnaire|问题单,调查表,征求意见表|official
+queue|行列，长队v. (up)排队，排队等待|official
+quickly|快，迅速|official
+rainforest|雨林|official
+raise|提高；筹集|official
+range|/vi. 排列|official
+rare|稀有的，难得的，珍奇的|official
+rarely|难得,非常地|official
+rather|相当，有一点儿|official
+raw|生的|official
+reach|抵达|official
+reader|读者|official
+real|真的，真实的|official
+realise|意识到|official
+realistic|现实(主义)的|official
+reasonable|明智的|official
+reasonably|合理地，适当地|official
+rebuild|重建|official
+recent|新近的，近来的|official
+recipe|烹饪法,食谱,配方|official
+recognise|认出；识别|official
+recommend|推荐，介绍|official,readingFreq
+recording|录音；录像|official
+recover|重新找到,复原,痊愈|official,mustSpell
+recycle|回收利用|mustSpell
+recycled|回收再利用的|official
+recycling|回收利用|official
+reduce|减少|official,mustSpell
+refund|归还|official
+refuse|拒绝|official
+regarding|关于，有关|official
+regards|问候|official
+region|地区，地带，行政区，(科学等)领域|official
+register|/v. 登记，注册v. (仪表等)指示，(邮件)挂|official
+registration|登记|official
+regret|/n. 遗憾，懊悔，抱歉|official
+regular|有规律的|official
+relation|关系，联系|official
+relationship|关系|official
+relative|相对的，比较的，有关系的n. 亲戚，关系词|official
+relax|松驰，放松|official
+relaxation|放松，松弛|official
+relaxed|放松的|official
+reliable|可靠的，可信赖的|mustSpell
+remain|剩下，余留|official
+remind|提醒|official
+remote control|遥控器|official
+remove|移动，脱掉，调动，免职|official
+renewable|可再生的|mustSpell
+replace|代替|official
+reply|/n. (to)回答，答复，以…作答|official
+report|报告|official
+reporter|报告人，通讯员|official,mustSpell
+request|/vt. 要求,请求|official
+require|需要|official
+rescue|/n. 援救|official
+research|研究|official
+reservation|保留，保留意见|official,mustSpell
+reserve|/v. 保存|official
+resident|居民，住户|mustSpell
+resign|辞职|mustSpell
+resort|/n. 求助|official
+responsible|负责的，有责任的|mustSpell
+result|结果|official
+retire|退休，引退|official,mustSpell
+reusable|可重复使用的|mustSpell
+review|/n. 回顾,检查,评论|official,mustSpell
+revise|修订|official,mustSpell
+revision|修改，修订,复习,温习|official
+reward|/v. 奖赏|official
+rewritten|rewrite 的过去分词（重写，改写）|irregular
+rewrote|rewrite 的过去式（重写，改写）|irregular
+rider|骑手|official
+right-hand|右手的|official
+rise|升起|official
+rob|抢劫，盗取|official
+robber|抢劫犯，强盗|mustSpell
+robbery|抢劫（案）|mustSpell
+role|角色|official
+roll|/v. 卷,滚动,隆隆声|official
+romance|传奇，爱情故事|official
+romantic|浪漫的，传奇式的|official
+rose|玫瑰，蔷薇|official
+rough|不平的|official
+route|路线，路程|official,mustSpell
+routine|例行公事,惯例,常规|official
+row|排，(一)行|official
+rubbish|垃圾，废物|official,mustSpell
+rude|粗鲁的|official
+rug|地毯|official
+ruin|毁灭|official
+rule|统治|official
+rural|乡村的，农村的|mustSpell
+safely|安全地|official
+salary|薪金，薪水|official,mustSpell
+salesman/saleswoman|销售员|official
+salmon|鲑，大马哈鱼|official
+sand|沙；(pl.)沙滩，沙地|official
+sank|sink 的过去式（下沉，沉没）|irregular
+saucepan|炖锅|official
+scared|害怕的|official
+scary|可怕的|official
+scenery|风景|official
+scholarship|奖学金|mustSpell
+school work|学校功课|official
+science fiction|科幻小说|official
+scientific|科学上的|official
+scientist|科学家|official
+score|/v. 刻痕,记分,乐谱|official
+scream|/n. 尖声叫，喊叫着说出，(风)呼啸|official
+screen|屏幕|mustSpell
+sculpture|/v. 雕塑,雕刻|official
+search|/n. (for)搜索，寻找，探查|official
+seaside|海滨，海边|official
+season|季节|official
+seat belt|安全带|official
+secondary school|中学|mustSpell
+section|部分,零件|official
+security|安全(感)，防御(物)，保证(人)，(pl.)证券|official
+seem|好像，似乎|official
+select|选择，挑选a. 精选的，选择的|official
+self-service|自助服务的|official
+selfish|自私的，利己的|official
+sense|感官|official
+sensible|明智的|official,mustSpell
+sensitive|敏感的，体贴的|mustSpell
+separate|分离的，分开的v. (from)分离，分开|official
+series|连续,系列|official
+serious|严肃的|official
+seriously|严肃地，认真地|official
+session|一段时间|official
+sew|缝，缝纫|official
+sex|性别，性|official
+shade|荫，阴影|official
+shake|/v. 摇动，摇|official
+shark|鲨鱼|official
+sharp|锋利的|official
+shave|/n. 剃,刮|official
+shine|照耀，发光|official
+shiny|耀眼的|official
+shock|/vt. (使)震惊|official
+shocked|震惊的|official
+shocking|令人震惊的|official
+shone|shine 的过去式（发光，照耀）|irregular
+shoot|发射|official
+shore|海滨，湖滨|official
+shoulder|肩，肩部v. 肩负，承担|official
+shrank|shrink 的过去式（缩小；（衣服）缩水）|irregular
+shrunk|shrink 的过去分词（缩小；（衣服）缩水）|irregular
+shy|怕羞的，腼腆的|official,mustSpell
+signal|/v. (发)信号|official
+signature|签名|official
+signpost|路标，广告柱|official
+silence|寂静，沉默v. 使沉默，使安静|official
+silk|丝，绸|official
+silly|傻的，糊涂的，愚蠢的|official
+similar|相似的|official
+sincerely|真诚地|official
+sir|先生，长官|official
+situation|情况|official
+skiing|滑雪|official
+skill|技能|official,mustSpell
+skin|皮，皮肤|official
+sleeve|袖子|official
+slid|slide 的过去式（滑动，滑行）|irregular
+slip|/v. 滑|official
+smart|漂亮的|official
+smell|气味|official
+smile|微笑|official
+snack|小吃,快餐|official
+snake|蛇|official
+so-so|一般般|official
+soap opera|肥皂剧|official
+sociable|友好的,喜好交际的|official
+social|社会的|official
+social media|社交媒体|mustSpell
+society|社会|mustSpell
+software|软件|mustSpell
+solar|太阳的，太阳能的|mustSpell
+soldier|士兵，军人|official
+solution|解答，解决办法|official
+solve|解决|official
+somehow|以某种方式，用某种方法|official
+someone/something|某人/某物|official
+sore|疼痛的|official
+sore throat|喉咙痛|mustSpell
+soul|灵魂，心灵|official
+sour|酸的|official
+southeast|/a. 东南(的)，东南部(的)|official
+southern|南方的，南部的|official
+southwest|/a. 西南(的)，西南部(的)|official
+souvenir|纪念品|official,mustSpell
+spare time|业余时间|official
+sparkling|闪闪发光的|official
+spectacular|壮观的|official
+speech|演说，讲话|official
+speed|速度，快v. 迅速，前进，急行|official
+spice|香料，调味品|official
+spicy|加很多香料的|official
+spill|/vi. (使)溢出,(使)溅出|official
+spite|恶意|official
+spoil|破坏|official
+spot|斑点|official
+spun|spin 的过去式（旋转；纺纱）|irregular
+spy|间谍v. 当间谍，刺探|official
+squash|压碎n.鲜果汁|official
+staff|木棍,杆,工作人员|official
+statue|塑像，雕像|official
+steep|陡峭的|official
+step|步；台阶，梯级；步骤，措施v. 踏，走，举步|official
+stick|棍，棒，手杖v. 刺，戳，扎|official
+sticky|粘的，粘性的|official
+stir|搅拌，搅动|official
+stone|石，石头|official
+stranger|陌生人，生客|official
+strawberry|草莓|official
+stress|压力,重压|official
+stressed|压力大的|official
+stressful|令人紧张的|official
+struck|strike 的过去式（撞击；罢工；突然想到）|irregular
+stubborn|固执的，倔强的|mustSpell
+studio|画室|official,mustSpell
+stuff|原料|official
+stung|sting 的过去式（刺，蜇；使剧痛）|irregular
+stupid|愚蠢的，迟钝的|official
+subject|学科；主题|mustSpell
+subscribe|订阅|mustSpell
+subtract|减去|official
+suburb|郊区，城郊|mustSpell
+subway|地铁|official
+succeed|成功|official
+success|成就，成功|official
+successful|圆满的|official
+sudden|出乎意料的，突然的|official
+suffer|遭受|official
+suggest|建议|official
+suggestion|建议，意见|official
+suitable|合适的，适宜的|official
+sum|总数，和|official
+sun|太阳|official
+sunbathe|晒日光浴|official
+sunk|sink 的过去分词（下沉，沉没）|irregular
+sunrise|日出，拂晓|official
+sunset|日落，傍晚|official
+sunshine|日光，日照|official
+support|支持|official
+supporter|支持者|official
+surgery|手术；外科诊所|mustSpell
+surprising|惊人的|official
+surround|包围，环绕n. 环绕物|official
+sweatshirt|运动衫|official
+sweet food|甜食|official
+swelled|swell 的过去式（膨胀；肿胀）|irregular
+swimmer|游泳者|official
+switch|开关|official
+swollen|swell 的过去分词（膨胀；肿胀）|irregular
+swore|swear 的过去式（发誓；咒骂）|irregular
+sworn|swear 的过去分词（发誓；咒骂）|irregular
+swung|swing 的过去式（摇摆；荡秋千）|irregular
+sympathy|同情（心）|mustSpell
+symptom|症状|mustSpell
+system|系统，体系|official
+table-cloth|桌布|official
+tablet|碑,书板|official
+tabloid|通俗小报|mustSpell
+takeaway|外卖|official
+talented|有才能的|official
+tap|龙头|official
+taste|品尝|official
+tasty|美味的|official
+tax|税(款)，负担v. 对…征税，使负重担|official
+tear|眼泪|official
+technique|技术,技能,行家手法|official
+technology|技术|official,mustSpell
+tell|告诉|official
+temperature|温度，气温|mustSpell
+temporary|暂时的,临时的|official
+tense|时态v. 拉紧，(使)紧张a. 绷紧的，紧张的|official
+term|学期|mustSpell
+terribly|可怕地，极|official
+theft|盗窃（罪）|mustSpell
+therefore|因此|official
+thick|厚的，粗的，稠的，浓的ad. 厚，浓，密|official
+thief|贼；小偷|official,mustSpell
+though|可是，然而，不过conj. 尽管，虽然|official
+thought|思想，思考，思维|official
+thriller|惊险小说，电影|official
+throat|咽喉,嗓子|official
+thumb|大拇指|official
+thunder|雷,雷声,轰隆声|official
+tick|滴答声,一刹那|official
+tight|紧的|official
+timetable|时间表，课表|mustSpell
+tin|罐头|official
+tiring|令人疲倦的|official
+tissue|生理组织|official
+title|标题,题目,称号,法律权利,所有权|official
+tongue|舌头|official
+toothache|牙疼|official
+toothpaste|牙膏|official
+topic|话题|official
+tore|tear 的过去式（撕裂，撕碎）|irregular
+torn|tear 的过去分词（撕裂，撕碎）|irregular
+totally|统统，完全地|official
+touch|触，碰，摸|official
+tour|旅行，观光|mustSpell
+tourism|旅游事业|official
+tournament|比赛, 锦标赛, 联赛|official
+tower|塔v. 高耸|official
+track|/v. 行踪|official
+trade|贸易，商业|official
+tradition|传统|mustSpell
+traffic|交通|mustSpell
+traffic jam|交通堵塞|official
+training|训练，培养|official
+transfer|转移,传递|official
+translate|翻译，解释|official
+translation|翻译|official
+transport|交通|official
+trash can|垃圾桶|official
+travel agent|旅行社|official
+treatment|治疗，疗法|mustSpell
+trend|倾向,趋势|official
+trick|诡计,恶作剧,技艺|official
+trumpet|喇叭,喇叭声|official
+trunk|树干,(人)躯干,大衣箱|official
+trust|信任|official
+truth|真实，真相|official
+tube|管，软管|official
+tuna|金枪鱼|official
+tune|曲调,旋律,协调,调动|official
+tunnel|隧道,地道|official
+turkey|火鸡(肉)|official
+turning|旋转|official
+typical|典型的|official
+typically|通常|official
+ugly|丑陋的,险恶的|official
+unable|不能的，不会的|official
+unbelievable|难以置信的|official
+underground trains|地铁|official
+underline|划线于…之下|official
+underpants|内裤|official
+underwear|衫衣，内衣，贴身衣|official
+undress|脱衣服|official
+unemployed|失业的|official
+unexpected|想不到的，意外的，未预料到|official
+unfair|不公平的，不公正的|official
+unfit|不合适的|official
+unforgettable|难忘的|official
+unfriendly|不友好的|official
+unhealthy|不健康的|official
+unimportant|不重要的|official
+uninterested|不感兴趣的|official
+union|联合，团结|official
+unit|单位，单元|official
+universe|宇宙，万物|official
+unkind|不仁慈的，不和善的|official
+unknown|不知道的|official
+unless|除非|official
+unlikey|不可能的|official
+unlucky|不幸的|official
+unnecessary|不必要的，多余的|official
+unpack|打开行李|official
+unpleasant|令人不快的，讨厌的|official
+unwell|不舒服的|official
+update|使现代化, 修正, 校正, 更新。n.现代化, 更|official,mustSpell
+upload|上传|official,mustSpell
+upon|在…上|official
+upper|上面的|official
+upset|难过的，沮丧的|mustSpell
+urban|城市的，城镇的|mustSpell
+urgent|急迫的，紧要的，紧急的|official
+urgently|紧急地|official
+used to|过去常常|official
+valley|谷；流域|official
+valuable|贵重的，有价值的n. (pl.)贵重物品，财宝|official
+value|价格|official
+van|有篷汽车|official
+vanilla|香草|official
+vase|花瓶，瓶|official
+vegetarian|素食者, 食草动物。adj.素食的|official
+vet|兽医|official
+via|径,由|official
+victim|受害者，被害人|mustSpell
+video clip|视频片段|official
+virus|病毒|official
+visa|签证|official
+vitamin|维生素|mustSpell
+vlog|视频博客|mustSpell
+voice|声音|official
+volume|容积，体积|official
+volunteer|志愿者；自愿做|mustSpell
+vote|投票，选举|mustSpell
+vowel|元音，元音字母|official
+wage|工资（常按周）|mustSpell
+war|战争(状态)|official
+wardrobe|衣柜,衣橱,全部服装,剧服,行头|official
+warn|警告vi. 发出警告|official
+warning|警告，告诫，鉴诫|official
+waste|浪费|official,mustSpell
+waterfall|瀑布|official
+wave|波浪|official
+wealth|财富，钱财|mustSpell
+weather forecast|天气预报|official
+webcam|网络摄像头|official
+weight|重量|official
+well|好，令人满意地|official
+well-dressed|穿着考究的|official
+well-known|有名的，著名的|official
+well-made|做工精良的|official
+wept|weep 的过去式（哭泣，流泪）|irregular
+western|西方的，西部的|official
+whale|鲸；庞然大物|official
+whatever|无论什么a. 无论什么样的|official
+whenever|无论何时，随时|official
+wherever|无论在哪里ad. 无论在哪里，究竟在哪里|official
+whether|是否，会不会，不管，无论|official
+whilst|当…时候,有时,时时|official
+wi-fi|无线网络|mustSpell
+wildlife|野生动物|official,mustSpell
+will|/v. 将|official
+willing|愿意的|official
+windscreen|挡风玻璃|official
+wing|翅，翅膀|official
+withdrawn|withdraw 的过去分词（撤回；取（钱））|irregular
+withdrew|withdraw 的过去式（撤回；取（钱））|irregular
+within|在…里面，在…以内ad. 在内|official
+witness|目击者；目击|mustSpell
+woman|妇女，成年女子|official
+wonder|惊奇，惊异|official
+working|工作的；运转的|official
+workout|锻炼|official
+worth|值得|official
+wound|伤口，创伤|mustSpell,irregular
+wove|weave 的过去式（编织；编排）|irregular
+woven|weave 的过去分词（编织；编排）|irregular
+written|写作的，书面的|official
+yard|院,场地,码|official
+yoga|瑜伽|official
+you know|你知道|official
+youth|青年|official
+zebra|斑马|official
+zone|地区，区域v. 分区，划分地带|official

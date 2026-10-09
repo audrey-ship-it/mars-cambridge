@@ -7,7 +7,7 @@ import { EXAM_CONFIGS, EXAM_LIST, getExamGrade } from '../data/cambridgeScoreTab
 const LEVELS = [
   { code: 'C2', name: 'Proficiency', abbr: 'CPE', hex: '#e11d48', dot: 'bg-rose-500',    btn: 'bg-rose-500    hover:bg-rose-600'    },
   { code: 'C1', name: 'Advanced',    abbr: 'CAE', hex: '#7c3aed', dot: 'bg-violet-500',  btn: 'bg-violet-500  hover:bg-violet-600'  },
-  { code: 'B2', name: 'First',       abbr: 'FCE', hex: '#4338ca', dot: 'bg-indigo-500',  btn: 'bg-indigo-500  hover:bg-indigo-600'  },
+  { code: 'B2', name: 'First',       abbr: 'FCE', hex: '#0ea5e9', dot: 'bg-sky-500',  btn: 'bg-sky-500  hover:bg-sky-600'  },
   { code: 'B1', name: 'Preliminary', abbr: 'PET', hex: '#2563eb', dot: 'bg-blue-500',    btn: 'bg-blue-500    hover:bg-blue-600'    },
   { code: 'A2', name: 'Key',         abbr: 'KET', hex: '#059669', dot: 'bg-emerald-500', btn: 'bg-emerald-500 hover:bg-emerald-600', isNew: true },
 ]
@@ -163,7 +163,7 @@ export function LevelTestModal({ onClose }) {
     else {
       const avg = next.reduce((a, b) => a + b, 0) / next.length
       const rec = avg < 1 ? 'KET' : avg < 2 ? 'PET' : avg < 3 ? 'FCE' : 'CAE'
-      try { localStorage.setItem('cambridge_level', rec) } catch {}
+      try { localStorage.setItem('cambridge_level', rec) } catch { /* ignore */ }
       navigate(`/cambridge/${rec.toLowerCase()}`)
       onClose()
     }
@@ -410,10 +410,9 @@ export default function CambridgeLanding() {
   const navigate = useNavigate()
   const [showModal, setShowModal] = useState(false)
   const [hoveredLevel, setHoveredLevel] = useState(null)
-  const modulesRef = { current: null }
 
   function selectLevel(abbr) {
-    try { localStorage.setItem('cambridge_level', abbr) } catch {}
+    try { localStorage.setItem('cambridge_level', abbr) } catch { /* ignore */ }
     navigate(`/cambridge/${abbr.toLowerCase()}`)
   }
 

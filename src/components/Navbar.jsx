@@ -12,46 +12,6 @@ function findLibrary(itemName) {
   return allLibraries.find(l => l.name === parts[0]) ?? null
 }
 
-/* ── 学习阶段 数据 ── */
-const stageGroups = [
-  {
-    group: '基础学段',
-    color: 'text-teal-600',
-    items: [
-      { name: '小学', sub: '人教版 1-6 年级', words: '1,500词', desc: '小学生 · 夯实基础' },
-      { name: '初中 / 中考', sub: '人教版 · 外研版', words: '2,000词', desc: '初中生 · 中考英语必备' },
-    ],
-  },
-  {
-    group: '高中阶段',
-    color: 'text-blue-600',
-    items: [
-      { name: '高中 / 高考', sub: '人教版必修 + 选修', words: '3,500词', desc: '高中生 · 高考英语必备' },
-      { name: 'KET', sub: 'A2 Key', words: '1,300词', desc: '零基础入门，剑桥认证', free: true },
-      { name: 'PET', sub: 'B1 Preliminary', words: '3,500词', desc: '衔接高中，剑桥 B1' },
-    ],
-  },
-  {
-    group: '大学阶段',
-    color: 'text-indigo-600',
-    items: [
-      { name: '四级', sub: 'CET-4', words: '4,500词', desc: '大学英语四级必过' },
-      { name: '六级', sub: 'CET-6', words: '6,000词', desc: '六级冲刺，拉开差距' },
-      { name: 'FCE', sub: 'B2 First', words: '6,000词', desc: '出国留学，剑桥 B2' },
-    ],
-  },
-  {
-    group: '研究生 / 高端留学',
-    color: 'text-purple-600',
-    items: [
-      { name: '考研', sub: '研究生入学', words: '5,500词', desc: '考研英语高频核心词' },
-      { name: 'CAE', sub: 'C1 Advanced', words: '10,000词', desc: '顶尖学术，剑桥 C1' },
-      { name: 'CPE', sub: 'C2 Proficiency', words: '12,000词', desc: '母语级别，剑桥 C2' },
-      { name: 'SAT/GRE', sub: 'SAT · GRE', words: '10,000词', desc: '高端留学，学术精英' },
-    ],
-  },
-]
-
 /* ── 备考目标 数据 ── */
 const examGroups = [
   {

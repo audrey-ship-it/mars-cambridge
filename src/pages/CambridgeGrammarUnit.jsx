@@ -3,9 +3,11 @@ import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { GRAMMAR_QUESTIONS } from '../data/grammarQuestions'
 import { PET_GRAMMAR_QUESTIONS } from '../data/petGrammarQuestions'
+import { FCE_GRAMMAR_QUESTIONS } from '../data/fceGrammarQuestions'
 import { CambridgeLayout } from './CambridgeApp'
 import { GRAMMAR_GROUPS, GrammarTabBar } from './CambridgeGrammar'
 import { PET_GRAMMAR_GROUPS } from '../data/petGrammarSets'
+import { FCE_GRAMMAR_GROUPS } from '../data/fceGrammarSets'
 import { grammarMistakeId, markGrammarMistakeCorrect, recordGrammarMistake } from '../utils/grammarMistakes'
 import { markGrammarModeCompleted, markGrammarModeStarted } from '../utils/grammarProgress'
 
@@ -51,6 +53,22 @@ const GRAMMAR_VARS = {
     '--g-border-light': '#ddd6fe',
     '--g-border-faint': '#ede9fe',
   },
+  FCE: {
+    '--g-deep': '#0369a1',
+    '--g-deep-hover': '#075985',
+    '--g-deep-tint': 'rgba(3,105,161,.05)',
+    '--g-deep-line': 'rgba(3,105,161,.1)',
+    '--g-accent': '#0284c7',
+    '--g-accent-strong': '#0369a1',
+    '--g-accent-border': '#38bdf8',
+    '--g-deep-text': '#075985',
+    '--g-soft': '#f0f9ff',
+    '--g-soft-60': 'rgba(240,249,255,.6)',
+    '--g-soft-hover': '#e0f2fe',
+    '--g-border': '#7dd3fc',
+    '--g-border-light': '#bae6fd',
+    '--g-border-faint': '#e0f2fe',
+  },
 }
 
 const containsChinese = value => /[㐀-鿿]/.test(String(value || ''))
@@ -69,16 +87,17 @@ function chineseExplanation(item, correctLabel) {
 export default function CambridgeGrammarUnit() {
   const { unit } = useParams()
   const [searchParams] = useSearchParams()
-  const isPet = /^p/i.test(String(unit))
-  const unitNum = parseInt(String(unit).replace(/^p/i, ''), 10)
-  const data = isPet ? PET_GRAMMAR_QUESTIONS[unitNum] : GRAMMAR_QUESTIONS[unitNum]
+  // 单元号前缀：fN = FCE，pN = PET，纯数字 = KET
+  const unitStr = String(unit)
+  const isFce = /^f/i.test(unitStr)
+  const isPet = !isFce && /^p/i.test(unitStr)
+  const unitNum = parseInt(unitStr.replace(/^[fp]/i, ''), 10)
+  const data = isFce ? FCE_GRAMMAR_QUESTIONS[unitNum] : isPet ? PET_GRAMMAR_QUESTIONS[unitNum] : GRAMMAR_QUESTIONS[unitNum]
   const [level, setLevel] = useState(() => { try { return localStorage.getItem('cambridge_level') || 'KET' } catch { return 'KET' } })
-  const levelCode = isPet ? 'PET' : 'KET'
+  const levelCode = isFce ? 'FCE' : isPet ? 'PET' : 'KET'
   const requestedMode = searchParams.get('mode')
   const [mode, setMode] = useState(MODES.some(item => item.id === requestedMode) ? requestedMode : 'questions')
-  const group = isPet
-    ? PET_GRAMMAR_GROUPS.find(item => item.unitNums.includes(unitNum))
-    : GRAMMAR_GROUPS.find(item => item.unitNums.includes(unitNum))
+  const group = (isFce ? FCE_GRAMMAR_GROUPS : isPet ? PET_GRAMMAR_GROUPS : GRAMMAR_GROUPS).find(item => item.unitNums.includes(unitNum))
 
   useEffect(() => {
     if (data) markGrammarModeStarted(unitNum, mode, levelCode)
@@ -96,7 +115,7 @@ export default function CambridgeGrammarUnit() {
   if (!data) {
     return (
       <CambridgeLayout activeModule="grammar" level={level} setLevel={setLevel}>
-        <div style={GRAMMAR_VARS[levelCode === 'PET' ? 'PET' : 'KET']}>
+        <div style={GRAMMAR_VARS[levelCode] || GRAMMAR_VARS.KET}>
           <div className="flex items-center justify-center h-full">
             <div className="text-center">
               <div className="text-4xl mb-4">🔒</div>
@@ -115,7 +134,7 @@ export default function CambridgeGrammarUnit() {
 
   return (
     <CambridgeLayout activeModule="grammar" level={level} setLevel={setLevel}>
-      <div style={GRAMMAR_VARS[levelCode === 'PET' ? 'PET' : 'KET']}>
+      <div style={GRAMMAR_VARS[levelCode] || GRAMMAR_VARS.KET}>
 
       <GrammarTabBar active={group?.id || 'home'} level={levelCode} />
 
@@ -221,6 +240,11 @@ function MCQSection({ data, unitNum, levelCode }) {
   const [selected, setSelected] = useState(() => questions.map(() => []))
   const [feedback, setFeedback] = useState(() => questions.map(() => null))
 
+  function reset() {
+    setSelected(questions.map(() => []))
+    setFeedback(questions.map(() => null))
+  }
+
   function answerIndexes(item) {
     return Array.isArray(item.ans) ? item.ans : [item.ans]
   }
@@ -264,7 +288,10 @@ function MCQSection({ data, unitNum, levelCode }) {
     <div className="max-w-4xl mx-auto px-6 pb-12">
       <div className="mb-4 flex items-end justify-between gap-4">
         <div><h2 className="text-xl font-extrabold text-gray-950">{data.title}选择题</h2><p className="mt-1 text-sm text-gray-500">从上到下完成15题，每题作答后立即获得反馈。</p></div>
-        <span className="text-sm font-bold text-[var(--g-accent)]">{completed}/{questions.length} 已掌握</span>
+        <div className="flex items-center gap-3">
+          <span className="text-sm font-bold text-[var(--g-accent)]">{completed}/{questions.length} 已掌握</span>
+          <button onClick={reset} className="shrink-0 rounded-xl border border-gray-200 px-4 py-2 text-xs font-bold text-gray-500 hover:border-[var(--g-accent-border)] hover:text-[var(--g-accent)]">重置本 Part</button>
+        </div>
       </div>
       {completed === questions.length && <div className="mb-4 rounded-2xl border border-[var(--g-border-light)] bg-[var(--g-soft)] px-5 py-4 font-extrabold text-[var(--g-accent-strong)]">🎉 太棒了！15道题已全部答对。</div>}
       <div className="space-y-4">
@@ -341,7 +368,10 @@ function BlanksSection({ data, unitNum, levelCode }) {
     <div className="max-w-4xl mx-auto px-6 pb-12">
       <div className="mb-4 flex items-end justify-between gap-4">
         <div><h2 className="text-xl font-extrabold text-gray-950">{data.title}填空</h2><p className="mt-1 text-sm text-gray-500">完成全部 {blanks.length} 题后统一提交。（根据句意及括号提示填写正确答案）</p></div>
-        <span className="text-sm font-bold text-[var(--g-accent)]">{inputs.filter(value => value.trim()).length}/{blanks.length} 已填写</span>
+        <div className="flex items-center gap-3">
+          <span className="text-sm font-bold text-[var(--g-accent)]">{inputs.filter(value => value.trim()).length}/{blanks.length} 已填写</span>
+          <button onClick={restart} className="shrink-0 rounded-xl border border-gray-200 px-4 py-2 text-xs font-bold text-gray-500 hover:border-[var(--g-accent-border)] hover:text-[var(--g-accent)]">重置本 Part</button>
+        </div>
       </div>
       <div className="overflow-hidden rounded-[22px] border border-gray-200 bg-white shadow-sm">
         {blanks.map((item, index) => {
@@ -493,7 +523,10 @@ function CorrectionsSection({ data, unitNum, levelCode }) {
     <div className="max-w-4xl mx-auto px-6 pb-12">
       <div className="mb-4 flex items-end justify-between gap-4">
         <div><h2 className="text-xl font-extrabold text-gray-950">{data.title}改错</h2><p className="mt-1 text-sm text-gray-500">先点击错误部分，再输入改正后的部分。</p></div>
-        <span className="text-sm font-bold text-[var(--g-accent)]">{completed}/{corrections.length} 已完成</span>
+        <div className="flex items-center gap-3">
+          <span className="text-sm font-bold text-[var(--g-accent)]">{completed}/{corrections.length} 已完成</span>
+          <button onClick={restart} className="shrink-0 rounded-xl border border-gray-200 px-4 py-2 text-xs font-bold text-gray-500 hover:border-[var(--g-accent-border)] hover:text-[var(--g-accent)]">重置本 Part</button>
+        </div>
       </div>
       {submitted && (
         <div className="mb-4 flex items-center justify-between rounded-2xl bg-[var(--g-soft)] px-5 py-4 text-[var(--g-deep-text)]">

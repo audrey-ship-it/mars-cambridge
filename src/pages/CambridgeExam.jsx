@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { Component, useState, useRef, useEffect } from 'react'
 import { Link, useParams, useSearchParams, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { KET_EXAMS } from '../data/ketExamData'
@@ -6,8 +6,13 @@ import { getKetReadingTest, hasCompleteKetReadingPaper } from '../data/ketReadin
 import { KET_STANDARD_EXAM_SOURCES } from '../data/ketStandardExamSources'
 import { KET_STANDARD_WRITING } from '../data/ketStandardWritingData'
 import { OFFICIAL_LISTENING_SETS } from '../data/officialListeningManifest'
+import { setMockWrongBatch } from '../data/mockWrongBook'
 import { CambridgeLayout } from './CambridgeApp'
 import { PetListeningExam, PetReadingExam, PetWritingExam, PetSpeakingExam } from './PetExam'
+import { FceExamOverview, FceBookOverview } from './FceExam'
+import { FceReadingExam, FceListeningExam, FceWritingExam, FceSpeakingExam } from './FceMockExam'
+import { readFceProgress, fceProgressStatus } from '../data/fceExamProgress'
+import { FCE_EDITIONS, fceExamPapers } from '../data/fceTestRegistry'
 
 const ORDERED_KET_EXAMS = [...KET_EXAMS].sort((left, right) => {
   const [, leftBook, leftTest] = left.id.match(/^ket-(\d+)-test(\d+)$/) || []
@@ -29,7 +34,8 @@ function useExamLevel() {
   return [level, setLevel]
 }
 
-function adaptReadingTest(test) {
+// eslint-disable-next-line react-refresh/only-export-components -- 供错题本页面复用的数据装配函数
+export function adaptReadingTest(test) {
   if (!test) return []
   const p1 = test.part1
   const p2 = test.part2
@@ -184,7 +190,8 @@ const PET_PENDING_ITEMS = {
   })),
 }
 
-function examSetNumber(exam) {
+// eslint-disable-next-line react-refresh/only-export-components -- 供错题本页面复用的编号换算函数
+export function examSetNumber(exam) {
   const [, standardBook, standardTest] = exam.id.match(/^ket-standard-(\d+)-test(\d+)$/) || []
   if (standardBook) return 12 + (Number(standardBook) - 1) * 4 + Number(standardTest)
   const [, book, test] = exam.id.match(/^ket-(\d+)-test(\d+)$/) || []
@@ -291,11 +298,20 @@ function readPetExamListProgress(testN, kind = 'mock') {
 export function ExamList() {
   const [level, setLevel] = useExamLevel()
   const isPet = level === 'PET'
-  const [collection, setCollection] = useState(() => (isPet ? 'mock' : 'schools'))
-  useEffect(() => { setCollection(isPet ? 'mock' : 'schools') }, [isPet])
+  const isFce = level === 'FCE'
+  const [collection, setCollection] = useState(() => (isPet ? 'mock' : isFce ? 'fce-mock' : 'schools'))
+  const [prevLevel, setPrevLevel] = useState(level)
+  if (prevLevel !== level) {
+    setPrevLevel(level)
+    setCollection(isPet ? 'mock' : isFce ? 'fce-mock' : 'schools')
+  }
   const sectionSummary = () => '听力 30分钟 · 阅读与写作 60分钟 · 口语 8–10分钟'
   const petSummary = () => '听力约30分钟 · 阅读与写作各45分钟 · 口语12–17分钟'
-  const displayedExams = isPet
+  const displayedExams = isFce
+    ? (collection === 'fce-mock'
+        ? Array.from({ length: 8 }, (_, index) => ({ id: `fce-mock-${index + 1}`, n: index + 1, name: `Test ${index + 1}`, source: 'FCE 8套全真模拟试题' }))
+        : FCE_EDITIONS.find(e => `fce-${e.edition}` === collection)?.books.map(b => ({ ...b, id: b.examId, name: b.title })) || [])
+    : isPet
     ? PET_PENDING_ITEMS[collection]
     : collection === 'schools'
       ? ORDERED_KET_EXAMS.map((exam, index) => ({ exam, id: exam.id, name: `真题 ${index + 1}`, source: exam.title }))
@@ -303,18 +319,24 @@ export function ExamList() {
         ? PENDING_EXAMS.standard.map(item => ({ ...item, exam: STANDARD_READY_EXAMS.find(exam => exam.id === item.id) }))
         : PENDING_EXAMS[collection]
 
-  const collections = isPet ? PET_EXAM_COLLECTIONS : EXAM_COLLECTIONS
+  const collections = isFce
+    ? [
+        { id: 'fce-mock', label: '全真模拟试题', count: 8, help: 'FCE 全真模拟试题 1–8 · 四卷全收录' },
+        { id: 'fce-standard', label: '标准版真题', count: 16, help: 'Cambridge English First 1–4 · 每册 4 套' },
+        { id: 'fce-schools', label: '校园版真题', count: 16, help: 'B2 First for Schools 1–4 · 每册 4 套' },
+      ]
+    : isPet ? PET_EXAM_COLLECTIONS : EXAM_COLLECTIONS
 
   return (
     <CambridgeLayout activeModule="exams" level={level} setLevel={setLevel}>
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <div className="mb-6">
-          <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${isPet ? 'bg-violet-100 text-violet-700' : 'bg-emerald-100 text-emerald-700'}`}>{level === 'KET' ? 'A2 KET' : level === 'PET' ? 'B1 PET' : level}</span>
-          <h1 className="text-2xl font-bold text-gray-900 mt-2 mb-1">{isPet ? 'PET 全真模考' : `${level} 官方真题`}</h1>
-          <p className="text-sm text-gray-500">{isPet ? '每套模拟题按正式考试分为听力、阅读、写作、口语四个部分' : '每套真题按正式考试分为听力、阅读与写作、口语三张试卷'}</p>
+          <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${isFce ? 'bg-sky-100 text-sky-700' : isPet ? 'bg-violet-100 text-violet-700' : 'bg-emerald-100 text-emerald-700'}`}>{level === 'KET' ? 'A2 KET' : level === 'PET' ? 'B1 PET' : level === 'FCE' ? 'B2 FCE' : level}</span>
+          <h1 className="text-2xl font-bold text-gray-900 mt-2 mb-1">{isFce ? 'FCE 全真模考' : isPet ? 'PET 全真模考' : `${level} 官方真题`}</h1>
+          <p className="text-sm text-gray-500">{isFce ? '每套模拟题按正式考试分为听力、阅读、写作、口语四张试卷' : isPet ? '每套模拟题按正式考试分为听力、阅读、写作、口语四个部分' : '每套真题按正式考试分为听力、阅读与写作、口语三张试卷'}</p>
         </div>
 
-        {level !== 'KET' && !isPet && (
+        {level !== 'KET' && !isPet && !isFce && (
           <section className="mb-6 rounded-[22px] border border-amber-200 bg-amber-50 p-6">
             <h2 className="text-lg font-bold text-amber-900">{level} 模考正在筹备中</h2>
             <p className="mt-2 text-sm text-amber-800">
@@ -388,6 +410,64 @@ export function ExamList() {
         </div>
         </div>
         )}
+
+        {isFce && (
+        <div>
+          <section className="mb-6 rounded-[22px] border border-gray-200 bg-white p-4 shadow-sm">
+            <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
+              {collections.map(item => (
+                <button key={item.id} type="button" onClick={() => setCollection(item.id)} aria-current={collection === item.id ? 'page' : undefined}
+                  className={`rounded-2xl border px-4 py-3 text-left transition ${collection === item.id ? 'border-sky-600 bg-sky-600 text-white shadow-sm' : 'border-gray-200 bg-white text-gray-600 hover:border-sky-300'}`}>
+                  <span className="block text-sm font-extrabold">{item.label} · {item.count}套</span>
+                  <span className={`mt-1 block text-[11px] leading-4 ${collection === item.id ? 'text-sky-100' : 'text-gray-400'}`}>{item.help}</span>
+                </button>
+              ))}
+            </div>
+          </section>
+
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {displayedExams.map(item => {
+              const isBookCard = collection !== 'fce-mock'
+              const papers = isBookCard
+                ? [1, 2, 3, 4].map(t => fceExamPapers(`${item.id}-test${t}`))
+                : null
+              const readyTests = isBookCard ? papers.filter(p => p && (p.reading || p.listening || p.writing || p.speaking)).length : 0
+              const open = isBookCard ? readyTests > 0 : true
+              const pct = open ? readFceProgress(item.id).overallPct : 0
+              return (
+              <Link key={item.id} to={`/cambridge/exams/${item.id}`}
+                className={`group block aspect-square rounded-[22px] border border-gray-200 bg-white p-5 shadow-sm lg:p-6 ${open ? 'transition-all hover:-translate-y-0.5 hover:border-sky-300 hover:shadow-md' : 'opacity-75'}`}>
+                <div className="flex h-full flex-col">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-sky-500">
+                      <span className="text-xl text-white">📝</span>
+                    </div>
+                    <span className={`rounded-full px-2.5 py-1 text-xs font-bold ${pct >= 100 ? 'bg-sky-100 text-sky-700' : pct > 0 ? 'bg-amber-100 text-amber-800' : open ? 'bg-gray-100 text-gray-500' : 'bg-gray-100 text-gray-400'}`}>
+                      {!open ? '录入中' : fceProgressStatus(pct)}{pct > 0 ? ` ${pct}%` : ''}
+                    </span>
+                  </div>
+                  <div className="mt-5">
+                    <div className="text-xl font-extrabold leading-snug text-gray-900 transition-colors group-hover:text-sky-800">{item.name}</div>
+                    <div className="mt-2 text-sm text-gray-400">{item.source}</div>
+                    <div className="mt-1 text-sm text-gray-400">听力 4 Part · 阅读 7 Part · 写作 2 Part · 口语 4 Part{isBookCard && open && readyTests < 4 ? ` · 已上线 ${readyTests}/4 套` : ''}</div>
+                  </div>
+                  <div className="mt-auto pt-5">
+                    <div className="mb-2 flex items-center justify-between gap-3">
+                      <span className="text-xs font-semibold text-gray-400">练习进度</span>
+                      <span className="whitespace-nowrap text-xs font-bold text-gray-500">{open ? `${pct}%` : '尚未开放'}</span>
+                    </div>
+                    <div className="h-1.5 overflow-hidden rounded-full bg-gray-100">
+                      <div className={`h-full rounded-full bg-sky-600 ${open ? '' : 'opacity-30'}`} style={{ width: `${pct}%` }} />
+                    </div>
+                    <div className={`mt-4 text-right text-sm font-extrabold ${open ? 'text-sky-700 transition-colors group-hover:text-sky-800' : 'text-gray-400'}`}>{open ? (isBookCard ? '进入真题册 →' : '进入模拟题 →') : '录入中'}</div>
+                  </div>
+                </div>
+              </Link>
+              )
+            })}
+          </div>
+        </div>
+        )}
       </main>
     </CambridgeLayout>
   )
@@ -427,6 +507,10 @@ function ExamOverview({ exam }) {
             </Card>
           })}
         </section>
+
+        <div className="mt-8 text-center">
+          <Link to="/cambridge/wrong/ket" className="inline-flex rounded-xl border border-emerald-200 bg-white px-5 py-2.5 text-sm font-extrabold text-emerald-700 shadow-sm transition hover:border-emerald-400">✗ 错题本（阅读 · 听力）</Link>
+        </div>
       </main>
     </CambridgeLayout>
   )
@@ -492,9 +576,70 @@ function PetExamOverview({ testN, kind = 'mock' }) {
             </Card>
           })}
         </section>
+
+        <div className="mt-8 text-center">
+          <Link to="/cambridge/wrong/pet" className="inline-flex rounded-xl border border-violet-200 bg-white px-5 py-2.5 text-sm font-extrabold text-violet-700 shadow-sm transition hover:border-violet-400">✗ 错题本（阅读 · 听力）</Link>
+        </div>
       </main>
     </CambridgeLayout>
   )
+}
+
+function FceNotFound() {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-[#f8f9fc]">
+      <div className="text-center">
+        <div className="mb-4 text-4xl">🔒</div>
+        <h2 className="mb-2 text-xl font-bold text-gray-800">找不到该试卷</h2>
+        <Link to="/cambridge/exams" className="text-sm font-semibold text-sky-700 hover:underline">返回试卷列表</Link>
+      </div>
+    </div>
+  )
+}
+
+/* ══════════════════════════════
+   Exam runner error boundary — 恢复旧进度/数据异常时避免整页白屏
+══════════════════════════════ */
+class ExamRunnerErrorBoundary extends Component {
+  constructor(props) {
+    super(props)
+    this.state = { error: null }
+  }
+
+  static getDerivedStateFromError(error) {
+    return { error }
+  }
+
+  render() {
+    if (!this.state.error) return this.props.children
+    const { examId, section, resetKey } = this.props
+    const sectionLabel = { reading: '阅读与写作', listening: '听力', writing: '写作', speaking: '口语' }[section] || '模考'
+    return (
+      <CambridgeLayout activeModule="exams" level="KET" setLevel={() => {}}>
+        <main className="mx-auto max-w-3xl px-6 py-16">
+          <div className="rounded-[24px] border border-rose-200 bg-white p-8 text-center shadow-sm">
+            <div className="text-5xl">⚠️</div>
+            <h1 className="mt-4 text-2xl font-extrabold text-slate-950">{sectionLabel}模考页面出错了</h1>
+            <p className="mt-2 text-sm text-slate-500">可能是本机保存的旧进度与新数据不兼容。清除本套进度后重新开始即可恢复；把下方错误信息发给开发者有助于定位问题。</p>
+            <pre className="mt-4 max-h-40 overflow-auto whitespace-pre-wrap rounded-xl bg-slate-50 p-4 text-left text-xs text-rose-700">{String((this.state.error && (this.state.error.stack || this.state.error.message)) || this.state.error)}</pre>
+            <div className="mt-6 flex flex-wrap justify-center gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  try { if (resetKey) localStorage.removeItem(resetKey) } catch { /* ignore */ }
+                  window.location.reload()
+                }}
+                className="rounded-xl bg-[#064e3b] px-5 py-3 text-sm font-extrabold text-white transition hover:bg-[#0d7656]"
+              >
+                清除本套进度并重新开始
+              </button>
+              <Link to={`/cambridge/exams/${examId}`} className="rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-extrabold text-slate-600 transition hover:border-emerald-300 hover:text-emerald-700">返回真题总览</Link>
+            </div>
+          </div>
+        </main>
+      </CambridgeLayout>
+    )
+  }
 }
 
 /* ══════════════════════════════
@@ -502,7 +647,35 @@ function PetExamOverview({ testN, kind = 'mock' }) {
 ══════════════════════════════ */
 export default function CambridgeExam() {
   const { id } = useParams()
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
+  // section 直接派生自 URL：从总览页点卡片进入时组件不会重挂载，
+  // 若用 useState 缓存初始 tab，section 会停留在默认值导致打开错误的试卷部分
+  const requestedTabEarly = searchParams.get('tab')
+  const section = requestedTabEarly || 'listening'
+  const setSection = (next) => setSearchParams(next ? { tab: next } : {})
+  const fceMatch = id?.match(/^fce-(mock|standard|schools)-(\d+)(?:-test(\d+))?$/)
+  if (fceMatch) {
+    const [, fceEdition, fceBook, fceTest] = fceMatch
+    const examId = fceTest
+      ? `fce-${fceEdition}-${fceBook}-test${fceTest}`
+      : `fce-${fceEdition}-${fceBook}`
+    if (fceEdition === 'mock') {
+      const testN = Number(fceBook)
+      if (testN < 1 || testN > 8) return <FceNotFound />
+    } else {
+      const book = Number(fceBook)
+      if (book < 1 || book > 4 || (fceTest && Number(fceTest) > 4)) return <FceNotFound />
+      if (!fceTest) return <FceBookOverview edition={fceEdition} book={book} />
+    }
+    // ?tab= 进入对应模考运行器（体验对齐 PET）；缺卷回落总览页。key 强制换卷时重置运行器状态
+    const fceTab = searchParams.get('tab')
+    const fcePapers = (fceTest || fceEdition === 'mock') ? fceExamPapers(examId) : null
+    if (fcePapers && fceTab === 'reading' && fcePapers.reading) return <FceReadingExam key={examId} examId={examId} />
+    if (fcePapers && fceTab === 'listening' && fcePapers.listening) return <FceListeningExam key={examId} examId={examId} />
+    if (fcePapers && fceTab === 'writing' && fcePapers.writing) return <FceWritingExam key={examId} examId={examId} />
+    if (fcePapers && fceTab === 'speaking' && fcePapers.speaking) return <FceSpeakingExam key={examId} examId={examId} />
+    return <FceExamOverview examId={examId} />
+  }
   const petMockMatch = id?.match(/^pet-mock-(\d+)$/)
   const petSampleMatch = id?.match(/^pet-sample-(\d+)$/)
   const petStandardMatch = id?.match(/^pet-standard-(\d+)$/)
@@ -537,9 +710,6 @@ export default function CambridgeExam() {
     ? { ...baseExam, reading: { ...baseExam.reading, parts: adaptReadingTest(readingSet) } }
     : baseExam
   const requestedTab = searchParams.get('tab')
-  const initialTab = requestedTab
-    || (exam?.listening ? 'listening' : exam?.reading?.parts?.length ? 'reading' : exam?.reading?.writing?.length ? 'writing' : 'speaking')
-  const [section, setSection] = useState(initialTab)
 
   if (!exam) return (
     <div className="min-h-screen bg-[#f8f9fc] flex items-center justify-center">
@@ -553,10 +723,18 @@ export default function CambridgeExam() {
 
   if (!requestedTab) return <ExamOverview exam={exam} />
 
-  if (section === 'listening') return <ListeningExam exam={exam} section={section} onSection={setSection} />
-  if (section === 'speaking')  return <SpeakingExam  exam={exam} section={section} onSection={setSection} />
-  if (section === 'writing')   return <WritingExam   exam={exam} section={section} onSection={setSection} />
-  return <ReadingExam exam={exam} section={section} onSection={setSection} />
+  const runner = section === 'listening'
+    ? <ListeningExam exam={exam} section={section} onSection={setSection} />
+    : section === 'speaking'
+      ? <SpeakingExam exam={exam} section={section} onSection={setSection} />
+      : section === 'writing'
+        ? <WritingExam exam={exam} section={section} onSection={setSection} />
+        : <ReadingExam exam={exam} section={section} onSection={setSection} />
+  return (
+    <ExamRunnerErrorBoundary key={`${exam.id}:${section}`} examId={exam.id} section={section} resetKey={`mars_ket_exam_progress_v1:${exam.id}:${section}`}>
+      {runner}
+    </ExamRunnerErrorBoundary>
+  )
 }
 
 /* ══════════════════════════════
@@ -592,6 +770,23 @@ function ListeningExam({ exam, section, onSection }) {
   const [partIndex, setPartIndex] = useState(0)
   const [allAnswers, setAllAnswers] = useState({})
   const [done, setDone] = useState(false)
+
+  // KET 听力模考走独立路由 /cambridge/listening；exam.listening 可能未内联
+  if (!exam.listening?.parts?.length) {
+    const setNumber = examSetNumber(exam)
+    return (
+      <CambridgeLayout activeModule="exams" level="KET" setLevel={() => {}}>
+        <main className="mx-auto max-w-3xl px-6 py-16 text-center">
+          <div className="rounded-[24px] border border-amber-200 bg-white p-8 shadow-sm">
+            <div className="text-5xl">🎧</div>
+            <h1 className="mt-4 text-2xl font-extrabold text-slate-950">听力模考</h1>
+            <p className="mt-2 text-sm text-slate-500">KET 听力模考请从独立入口进入。</p>
+            <Link to={`/cambridge/listening?mode=mock&exam=${exam.id}&part=1&set=${setNumber}`} className="mt-6 inline-flex rounded-xl bg-[#064e3b] px-5 py-3 text-sm font-extrabold text-white transition hover:bg-[#0d7656]">进入听力模考 →</Link>
+          </div>
+        </main>
+      </CambridgeLayout>
+    )
+  }
 
   const parts = exam.listening.parts
   const part  = parts[partIndex]
@@ -1157,6 +1352,24 @@ function countReadingMistakes(part, answers = []) {
   return 0
 }
 
+/* 交卷时生成某 Part 的错题集合（key = 题在 Part 内的序号，value = 用户答案展示文本） */
+function ketReadingWrongMap(part, answers = []) {
+  const wrong = {}
+  part.questions.forEach((question, index) => {
+    const value = answers[index]
+    const isRight = part.type === 'open_gap_fill'
+      ? (question.ans || []).some(answer => answer.trim().toLowerCase() === String(value || '').trim().toLowerCase())
+      : value === question.ans
+    if (isRight) return
+    let userAnswer
+    if (['text_mcq', 'article_mcq', 'gap_fill_mcq'].includes(part.type)) userAnswer = value != null ? ABC[value] : '—'
+    else if (part.type === 'multiple_matching') userAnswer = value || '—'
+    else userAnswer = String(value || '').trim() || '—'
+    wrong[String(index)] = userAnswer
+  })
+  return wrong
+}
+
 function ReadingExam({ exam, section, onSection }) {
   const readingParts = exam.reading.parts
   const writingParts = (exam.reading.writing || []).map(task => ({ ...task, type: 'writing_task', instructions: task.part === 6 ? 'Write an email or note of 25 words or more.' : 'Write a story of 35 words or more based on the three pictures.', questions: [{ n: task.part === 6 ? 31 : 32 }] }))
@@ -1165,16 +1378,29 @@ function ReadingExam({ exam, section, onSection }) {
   const [savedProgress] = useState(() => {
     try {
       const value = JSON.parse(localStorage.getItem(progressKey) || 'null')
-      return value && typeof value === 'object' ? value : {}
+      if (!value || typeof value !== 'object' || Array.isArray(value)) return {}
+      // 旧版本进度形状不兼容时整份丢弃，避免恢复后渲染崩溃（各 Part 答案应为数组）
+      if (value.allAnswers != null) {
+        if (typeof value.allAnswers !== 'object' || Array.isArray(value.allAnswers)) return {}
+        if (Object.values(value.allAnswers).some(item => !Array.isArray(item))) return {}
+      }
+      if (value.partIndex != null && !Number.isFinite(Number(value.partIndex))) return {}
+      return value
     } catch { return {} }
   })
-  const [partIndex, setPartIndex] = useState(() => Math.min(savedProgress.partIndex || 0, parts.length - 1))
+  const [partIndex, setPartIndex] = useState(() => Math.min(Math.max(0, Math.floor(Number(savedProgress.partIndex) || 0)), Math.max(0, parts.length - 1)))
   const [allAnswers, setAllAnswers] = useState(() => savedProgress.allAnswers || {})
   const [done, setDone] = useState(() => savedProgress.done === true)
   const [startedAt, setStartedAt] = useState(() => savedProgress.startedAt || Date.now())
   const [pausedAt, setPausedAt] = useState(() => savedProgress.pausedAt || null)
   const [totalPausedMs, setTotalPausedMs] = useState(() => savedProgress.totalPausedMs || 0)
   const [redoOnly, setRedoOnly] = useState(() => savedProgress.redo === true)
+  // 恢复了中途进度时显示提示横幅（提供"从头开始"出口，避免用户误以为做不了题）
+  const [restoredBanner, setRestoredBanner] = useState(() => {
+    if (savedProgress.done === true || savedProgress.redo === true) return false
+    if (Number(savedProgress.partIndex) > 0) return true
+    return Boolean(savedProgress.allAnswers && Object.keys(savedProgress.allAnswers).length > 0)
+  })
   const [timerSeconds, setTimerSeconds] = useState(() => {
     const endpoint = savedProgress.finishedAt || savedProgress.pausedAt || Date.now()
     return Math.max(0, Math.floor((endpoint - (savedProgress.startedAt || Date.now()) - (savedProgress.totalPausedMs || 0)) / 1000))
@@ -1217,6 +1443,7 @@ function ReadingExam({ exam, section, onSection }) {
     setTotalPausedMs(0)
     setTimerSeconds(0)
     setRedoOnly(false)
+    setRestoredBanner(false)
     setPartIndex(0)
     setAllAnswers({})
     setDone(false)
@@ -1267,6 +1494,10 @@ function ReadingExam({ exam, section, onSection }) {
       const finishedAt = Date.now()
       const finalPausedMs = totalPausedMs + (pausedAt ? finishedAt - pausedAt : 0)
       setTimerSeconds(Math.max(0, Math.floor((finishedAt - startedAt - finalPausedMs) / 1000)))
+      // 整套交卷：同步阅读错题本（覆盖式，本次答对的旧错题自动移出；写作不进错题本）
+      readingParts.forEach((part, index) => {
+        setMockWrongBatch('ket', 'reading', exam.id, String(part.part), ketReadingWrongMap(part, updated[index] || []))
+      })
       setDone(true)
       saveProgress({ partIndex, allAnswers: updated, wrongCounts, done: true, finishedAt, pausedAt: null, totalPausedMs: finalPausedMs })
     } else {
@@ -1288,6 +1519,12 @@ function ReadingExam({ exam, section, onSection }) {
           initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}>
           {redoOnly && <div className="mb-4 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-3 text-sm font-extrabold text-amber-800">错题重做模式 · 本页只显示上次答错的题</div>}
+          {restoredBanner && (
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-3">
+              <span className="text-sm font-extrabold text-emerald-800">已恢复上次作答进度（当前 Part {part.part}）· 已答过的题会自动选中</span>
+              <button onClick={resetReading} className="rounded-lg border border-emerald-300 bg-white px-3 py-1.5 text-xs font-extrabold text-emerald-700 transition hover:border-emerald-500">从头开始</button>
+            </div>
+          )}
           <ReadingPartRouter part={part} initialAnswers={allAnswers[partIndex]} redoOnly={redoOnly} isLast={redoOnly ? !readingParts.some((candidate, index) => index > partIndex && candidate.questions.some((_, questionIndex) => allAnswers[index]?.[questionIndex] === null || allAnswers[index]?.[questionIndex] === undefined || String(allAnswers[index][questionIndex]).trim() === '')) : partIndex + 1 >= parts.length} onDone={handlePartDone} />
         </motion.div>
       </AnimatePresence>
@@ -1715,7 +1952,7 @@ function scoreWriting(text, w) {
   const errors = []
   if (/ i /i.test(text.replace(/^i /i, ''))) errors.push('代词"I"需大写')
   if (/\bim\b|\bdont\b|\bcant\b|\bwont\b|\bisnt\b|\barent\b/i.test(text)) errors.push('缺少撇号（I\'m / don\'t）')
-  if (/  /.test(text)) errors.push('双空格')
+  if (/ {2}/.test(text)) errors.push('双空格')
   const sentList = text.split(/(?<=[.!?])\s+/)
   const badCaps = sentList.filter(s => s && s[0] === s[0].toLowerCase() && /[a-z]/.test(s[0])).length
   if (badCaps > 0) errors.push('句首需大写')
@@ -2007,7 +2244,7 @@ function ReadingFinalResult({ exam, parts, allAnswers, elapsed, onRestart, onRed
    Writing Exam (standalone)
 ══════════════════════════════ */
 function WritingExam({ exam, section, onSection }) {
-  const writings = exam.reading.writing
+  const writings = exam.reading?.writing
   const [searchParams] = useSearchParams()
   const writingBaseKey = `mars_ket_exam_progress_v1:${exam.id}:writing`
   const requestedPart = searchParams.get('part')
@@ -2015,6 +2252,22 @@ function WritingExam({ exam, section, onSection }) {
     try { return Number(localStorage.getItem(`${writingBaseKey}:lastPart`)) || 0 } catch { return 0 }
   })()
   const [partIndex, setPartIndex] = useState(initialPart)
+
+  if (!Array.isArray(writings) || writings.length === 0) {
+    return (
+      <CambridgeLayout activeModule="exams" level="KET" setLevel={() => {}}>
+        <main className="mx-auto max-w-3xl px-6 py-16 text-center">
+          <div className="rounded-[24px] border border-amber-200 bg-white p-8 shadow-sm">
+            <div className="text-5xl">✍️</div>
+            <h1 className="mt-4 text-2xl font-extrabold text-slate-950">写作暂未开放</h1>
+            <p className="mt-2 text-sm text-slate-500">本套试卷的写作题目正在核对中。</p>
+            <Link to={`/cambridge/exams/${exam.id}`} className="mt-6 inline-flex rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-extrabold text-slate-600 transition hover:border-emerald-300 hover:text-emerald-700">返回真题总览</Link>
+          </div>
+        </main>
+      </CambridgeLayout>
+    )
+  }
+
   const w = writings[partIndex]
 
   function selectWritingPart(index) {
@@ -2082,6 +2335,7 @@ function WritingExam({ exam, section, onSection }) {
 /* ══════════════════════════════
    Speaking Exam
 ══════════════════════════════ */
+// eslint-disable-next-line react-refresh/only-export-components -- PetExam.jsx 复用
 export function useTTS() {
   const [speaking, setSpeaking] = useState(null)
 
@@ -2115,9 +2369,25 @@ function SpeakingExam({ exam, section, onSection }) {
   const [searchParams] = useSearchParams()
   const initialPart = searchParams.get('part') === '2' ? 1 : 0
   const [partIndex, setPartIndex] = useState(initialPart)
-  const sp = exam.speaking
-  const part = sp.parts[partIndex]
   const { speaking, speak, stop } = useTTS()
+  const sp = exam.speaking
+
+  if (!sp?.parts?.length) {
+    return (
+      <CambridgeLayout activeModule="exams" level="KET" setLevel={() => {}}>
+        <main className="mx-auto max-w-3xl px-6 py-16 text-center">
+          <div className="rounded-[24px] border border-amber-200 bg-white p-8 shadow-sm">
+            <div className="text-5xl">🎙️</div>
+            <h1 className="mt-4 text-2xl font-extrabold text-slate-950">口语暂未开放</h1>
+            <p className="mt-2 text-sm text-slate-500">本套试卷的口语材料正在核对中。</p>
+            <Link to={`/cambridge/exams/${exam.id}`} className="mt-6 inline-flex rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-extrabold text-slate-600 transition hover:border-emerald-300 hover:text-emerald-700">返回真题总览</Link>
+          </div>
+        </main>
+      </CambridgeLayout>
+    )
+  }
+
+  const part = sp.parts[partIndex]
 
   return (
     <div className="min-h-screen bg-[#f8f9fc]">
@@ -2414,7 +2684,7 @@ export function SpeakingRecordingPractice({ examId, topic }) {
             </div>
           ))}
         </div>
-        <p className="mt-2 text-xs text-gray-400">1＝需要加强　2＝基本完成　3＝表现良好</p>
+        <p className="mt-2 text-xs text-gray-400">1＝需要加强 · 2＝基本完成 · 3＝表现良好</p>
       </div>
     </section>
   )

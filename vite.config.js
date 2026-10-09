@@ -21,8 +21,9 @@ export default defineConfig(({ mode }) => {
     // dev 监听排除构建产物目录，避免离线构建写文件时触发 EBUSY 崩溃
     // allowedHosts：允许通过 localtunnel（*.loca.lt）公网访问 dev server
     server: {
+      host: true,
       watch: { ignored: ['**/dist/**', '**/dist-offline/**'] },
-      allowedHosts: ['.loca.lt'],
+      allowedHosts: ['.loca.lt', '.trycloudflare.com'],
     },
   }
 })

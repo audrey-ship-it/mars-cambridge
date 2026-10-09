@@ -45,6 +45,7 @@ function HighlightableText({ text, storageKey, className = '' }) {
   useEffect(() => {
     try {
       const saved = JSON.parse(localStorage.getItem(`ket_read_highlights_${storageKey}`) || '[]')
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- 从 localStorage 恢复高亮标记
       setMarks(Array.isArray(saved) ? saved : [])
     } catch {
       setMarks([])
@@ -244,6 +245,7 @@ export default function CambridgeReading() {
 
   // ── Reset on part / batch / p5 set change ─────────────
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- 切换 Part/批次时重置作答状态
     setAnswers({})
     setBatchChecked(false)
     setRetrying({})
@@ -253,10 +255,12 @@ export default function CambridgeReading() {
   // ── Clamp partId when level changes (PET has 6 parts, KET has 5) ──
   useEffect(() => {
     const max = partMeta(level).count
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- 切换级别时收敛越界的 Part 序号
     if (partId > max) { setPartId(1); setBatchIdx(0) }
-  }, [level])
+  }, [level, partId])
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- 切换 Part5 题组时重置判分状态
     setP5Checked(false)
     setP5Score(null)
     setAnswers({})
@@ -266,10 +270,6 @@ export default function CambridgeReading() {
   function isCorrect14(q) {
     const ua = (answers[q._key] || '').trim().toLowerCase()
     return ua === (q.answer || '').toLowerCase()
-  }
-
-  function isWrong14(q) {
-    return batchChecked && !retrying[q._key] && answers[q._key] && !isCorrect14(q)
   }
 
   function handleRetry(key) {

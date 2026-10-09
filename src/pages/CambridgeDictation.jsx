@@ -1,6 +1,6 @@
-import React, { useState, useRef, useMemo } from 'react'
+import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { ketDictationTracks } from '../data/ketDictationData'
 import { CambridgeLayout } from './CambridgeApp'
 
@@ -120,10 +120,11 @@ function SentenceBlock({ track, sentence, sKey, state, onUpdate, audioRefs, play
   function playClip() {
     // stop any playing
     clearTimeout(stopTimer.current)
-    Object.values(audioRefs.current).forEach(a => { try { a.pause() } catch {} })
+    Object.values(audioRefs.current).forEach(a => { try { a.pause() } catch { /* ignore */ } })
     setPlayingKey(null)
 
     if (!audioRefs.current[track.id]) {
+      // eslint-disable-next-line react-hooks/immutability -- 播放事件回调中缓存 Audio 元素，非渲染期修改
       audioRefs.current[track.id] = new Audio(track.audio)
     }
     const audio = audioRefs.current[track.id]
@@ -143,7 +144,7 @@ function SentenceBlock({ track, sentence, sKey, state, onUpdate, audioRefs, play
     audio.addEventListener('timeupdate', onTick)
     stopTimer.current = setTimeout(() => {
       audio.removeEventListener('timeupdate', onTick)
-      try { audio.pause() } catch {}
+      try { audio.pause() } catch { /* ignore */ }
       setPlayingKey(null)
     }, (sentence.endTime - sentence.startTime + 1) * 1000)
   }
@@ -183,8 +184,6 @@ function SentenceBlock({ track, sentence, sKey, state, onUpdate, audioRefs, play
     })
   }
 
-  const done = dictChecked && chineseChecked
-
   return (
     <div className="space-y-4">
 
@@ -192,10 +191,11 @@ function SentenceBlock({ track, sentence, sKey, state, onUpdate, audioRefs, play
       <AudioPlayer
         sKey={sKey}
         isPlaying={isPlaying}
+        /* eslint-disable-next-line react-hooks/immutability -- 播放控制回调，仅在用户点击时操作音频缓存 */
         onPlay={() => {
           if (isPlaying) {
             clearTimeout(stopTimer.current)
-            Object.values(audioRefs.current).forEach(a => { try { a.pause() } catch {} })
+            Object.values(audioRefs.current).forEach(a => { try { a.pause() } catch { /* ignore */ } })
             setPlayingKey(null)
           } else {
             playClip()
@@ -274,7 +274,6 @@ function SentenceBlock({ track, sentence, sKey, state, onUpdate, audioRefs, play
             ? <span className="text-gray-300 text-xs self-center mx-auto">点击下方词块添加…</span>
             : selected.map((ci, pos) => {
                 const ok  = chineseChecked && ci === pos
-                const bad = chineseChecked && ci !== pos
                 return (
                   <button key={pos}
                     onClick={() => !chineseChecked && deselectChunk(pos)}

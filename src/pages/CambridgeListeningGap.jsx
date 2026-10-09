@@ -9,9 +9,6 @@ export default function CambridgeListeningGap() {
     try { return Number(localStorage.getItem('mars_ket_gap_progress_v1:last')) || 1 } catch { return 1 }
   })
   const [rate, setRate] = useState(1)
-  const [responses, setResponses] = useState(Array(5).fill(''))
-  const [checked, setChecked] = useState(Array(5).fill(false))
-  const [submitted, setSubmitted] = useState(false)
   const [clozeResponses, setClozeResponses] = useState({})
   const [clozeSubmitted, setClozeSubmitted] = useState(false)
   const [completedExercises, setCompletedExercises] = useState(() => {
@@ -32,9 +29,7 @@ export default function CambridgeListeningGap() {
     hydratedRef.current = false
     let saved = null
     try { saved = JSON.parse(localStorage.getItem(`mars_ket_gap_progress_v1:exercise-${exerciseNumber}`) || 'null') } catch { /* storage may be unavailable */ }
-    setResponses(Array(5).fill(''))
-    setChecked(Array(5).fill(false))
-    setSubmitted(false)
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- 切换练习时重置与水合，含防抖设计
     setClozeResponses(saved?.responses || {})
     setClozeSubmitted(saved?.submitted === true)
     try { localStorage.setItem('mars_ket_gap_progress_v1:last', String(exerciseNumber)) } catch { /* storage may be unavailable */ }
@@ -60,25 +55,12 @@ export default function CambridgeListeningGap() {
         updatedAt: new Date().toISOString(),
       }))
     } catch { /* storage may be unavailable */ }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- 仅在作答变化时持久化，避免循环
   }, [clozeResponses, clozeSubmitted, exerciseNumber])
 
   useEffect(() => { if (audioRef.current) audioRef.current.playbackRate = rate }, [rate, current])
 
   function normalise(value) { return String(value).toLowerCase().replace(/[^a-z0-9]/g, '') }
-  function isCorrect(index) {
-    const accepted = Array.isArray(current.answers[index]) ? current.answers[index] : [current.answers[index]]
-    return accepted.some(answer => normalise(answer) === normalise(responses[index]))
-  }
-  function updateResponse(index, value) {
-    setResponses(items => items.map((item, itemIndex) => itemIndex === index ? value : item))
-    setChecked(items => items.map((item, itemIndex) => itemIndex === index ? false : item))
-    setSubmitted(false)
-  }
-  function checkOne(index) {
-    if (!responses[index].trim()) return
-    setChecked(items => items.map((item, itemIndex) => itemIndex === index ? true : item))
-  }
-  function submitAll() { setChecked(Array(5).fill(true)); setSubmitted(true) }
   const clozeAnswers = useMemo(() => current.cloze ? current.cloze.flatMap((question, questionIndex) => question.lines.flatMap((line, lineIndex) => line.parts.flatMap((part, partIndex) => typeof part === 'object' ? [{ key: `${questionIndex}-${lineIndex}-${partIndex}`, answer: part.answer }] : []))) : [], [current])
   function clozeIsCorrect(item) { return normalise(clozeResponses[item.key] || '') === normalise(item.answer) }
   function submitCloze() {

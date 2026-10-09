@@ -1,6 +1,10 @@
 export const GRAMMAR_MISTAKES_KEY = 'mars_grammar_mistakes_v1'
-const PET_MISTAKES_KEY = 'mars_grammar_mistakes_pet_v1'
-const storageKey = level => (level === 'PET' ? PET_MISTAKES_KEY : GRAMMAR_MISTAKES_KEY)
+const LEVEL_MISTAKES_KEY = {
+  KET: GRAMMAR_MISTAKES_KEY,
+  PET: 'mars_grammar_mistakes_pet_v1',
+  FCE: 'mars_grammar_mistakes_fce_v1',
+}
+const storageKey = level => LEVEL_MISTAKES_KEY[level] || GRAMMAR_MISTAKES_KEY
 
 export function readGrammarMistakes(level = 'KET') {
   try {

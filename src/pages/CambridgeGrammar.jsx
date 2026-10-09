@@ -3,11 +3,13 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { readGrammarMistakes } from '../utils/grammarMistakes'
 import { grammarUnitStatus, readGrammarProgress } from '../utils/grammarProgress'
-import { isGrammarUnitReady, isPetGrammarUnitReady } from '../utils/grammarUnitReady'
+import { isGrammarUnitReady, isPetGrammarUnitReady, isFceGrammarUnitReady } from '../utils/grammarUnitReady'
 import { CambridgeLayout } from './CambridgeApp'
 import { PET_GRAMMAR_GROUPS, PET_GRAMMAR_POINTS } from '../data/petGrammarSets'
+import { FCE_GRAMMAR_GROUPS, FCE_GRAMMAR_POINTS } from '../data/fceGrammarSets'
 
 /* ── KET 语法考点数据 ── */
+// eslint-disable-next-line react-refresh/only-export-components -- 数据常量供他页复用
 export const GRAMMAR_POINTS = [
   {
     id: 1, title: '名词', color: 'bg-emerald-500', light: 'bg-emerald-50 text-emerald-700 border-emerald-200',
@@ -133,6 +135,7 @@ export const GRAMMAR_POINTS = [
   },
 ]
 
+// eslint-disable-next-line react-refresh/only-export-components -- 数据常量供他页复用
 export const GRAMMAR_GROUPS = [
   { id: 'tenses', number: '01', title: '高频时态', desc: '六大 KET 高频时态及过去式变化，辨清用途、结构和时间标志词', unitNums: [29, 30, 37, 35, 31, 36, 32, 33, 34], icon: 'T', featured: true },
   { id: 'word-grammar', number: '02', title: '核心词法', desc: '名词、冠词、代词、介词、连词和数词', unitNums: [...Array.from({ length: 28 }, (_, i) => i + 1), 50, 54, 55], icon: 'Aa' },
@@ -152,18 +155,28 @@ const THEMES = {
     featuredBg: 'bg-violet-50/40', featuredBorder: 'border-violet-500', cardHover: 'hover:border-violet-300',
     iconFeatured: 'bg-violet-700 text-white', icon: 'bg-violet-50 text-violet-700', accent: 'text-violet-700',
   },
+  FCE: {
+    tag: 'FCE GRAMMAR', tagClass: 'text-sky-700',
+    featuredBg: 'bg-sky-50/40', featuredBorder: 'border-sky-500', cardHover: 'hover:border-sky-300',
+    iconFeatured: 'bg-sky-700 text-white', icon: 'bg-sky-50 text-sky-700', accent: 'text-sky-700',
+  },
 }
 
 export function GrammarTabBar({ active, level }) {
   const navigate = useNavigate()
+  const isFce = level === 'FCE'
   const isPet = level === 'PET'
-  const groups = isPet ? PET_GRAMMAR_GROUPS : GRAMMAR_GROUPS
-  const activeStyle = isPet
-    ? 'border-violet-600 bg-violet-600 text-white shadow-sm'
-    : 'border-emerald-600 bg-emerald-600 text-white shadow-sm'
-  const tabStyle = isPet
-    ? 'border-violet-200 bg-violet-50 text-violet-800 hover:bg-violet-100'
-    : 'border-emerald-200 bg-emerald-50 text-emerald-800 hover:bg-emerald-100'
+  const groups = isFce ? FCE_GRAMMAR_GROUPS : isPet ? PET_GRAMMAR_GROUPS : GRAMMAR_GROUPS
+  const activeStyle = isFce
+    ? 'border-sky-600 bg-sky-600 text-white shadow-sm'
+    : isPet
+      ? 'border-violet-600 bg-violet-600 text-white shadow-sm'
+      : 'border-emerald-600 bg-emerald-600 text-white shadow-sm'
+  const tabStyle = isFce
+    ? 'border-sky-200 bg-sky-50 text-sky-800 hover:bg-sky-100'
+    : isPet
+      ? 'border-violet-200 bg-violet-50 text-violet-800 hover:bg-violet-100'
+      : 'border-emerald-200 bg-emerald-50 text-emerald-800 hover:bg-emerald-100'
   return (
     <nav className="w-full border-b border-gray-100 bg-white px-6 py-4">
       <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-2.5">
@@ -197,11 +210,12 @@ export default function CambridgeGrammar() {
     try { localStorage.setItem('cambridge_level', level) } catch { /* local storage may be unavailable */ }
   }, [level])
 
+  const isFce = level === 'FCE'
   const isPet = level === 'PET'
-  const theme = isPet ? THEMES.PET : THEMES.KET
-  const groups = isPet ? PET_GRAMMAR_GROUPS : GRAMMAR_GROUPS
-  const allUnits = (isPet ? PET_GRAMMAR_POINTS : GRAMMAR_POINTS).flatMap(point => point.units)
-  const readyCheck = isPet ? isPetGrammarUnitReady : isGrammarUnitReady
+  const theme = THEMES[level] || THEMES.KET
+  const groups = isFce ? FCE_GRAMMAR_GROUPS : isPet ? PET_GRAMMAR_GROUPS : GRAMMAR_GROUPS
+  const allUnits = (isFce ? FCE_GRAMMAR_POINTS : isPet ? PET_GRAMMAR_POINTS : GRAMMAR_POINTS).flatMap(point => point.units)
+  const readyCheck = isFce ? isFceGrammarUnitReady : isPet ? isPetGrammarUnitReady : isGrammarUnitReady
 
   const totalUnits    = allUnits.length
   const storedProgress = readGrammarProgress(level)
@@ -252,7 +266,7 @@ export default function CambridgeGrammar() {
                   group.featured ? `${theme.featuredBg} ${theme.featuredBorder} hover:-translate-y-0.5 hover:shadow-md` :
                   `bg-white border-gray-200 ${theme.cardHover} hover:-translate-y-0.5 hover:shadow-md`
                 }`}>
-                {group.featured && <div className={`absolute top-0 inset-x-0 h-1.5 ${isPet ? 'bg-violet-700' : 'bg-[#064e3b]'}`} />}
+                {group.featured && <div className={`absolute top-0 inset-x-0 h-1.5 ${isFce ? 'bg-sky-700' : isPet ? 'bg-violet-700' : 'bg-[#064e3b]'}`} />}
                 <div className="flex items-start justify-between">
                   <span className={`w-12 h-12 rounded-2xl grid place-items-center text-lg font-extrabold ${group.featured ? theme.iconFeatured : theme.icon}`}>{group.icon}</span>
                   <span className="text-[11px] font-extrabold tracking-[.14em] text-gray-300">{group.number}</span>
