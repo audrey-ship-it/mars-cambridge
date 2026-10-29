@@ -43,6 +43,11 @@ scripts/_ts_out/
 scripts/_pet8_out/*.png
 scripts/_pet8_out/**/*.png
 
+# transcript pipeline intermediate temp dirs (final data lives in src/data + scripts/_*_out)
+temp-fce-transcripts/
+temp-pet-mock/
+temp-pet-transcripts/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
