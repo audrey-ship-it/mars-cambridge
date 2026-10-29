@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { EXAM_CONFIGS, getExamGrade } from '../data/cambridgeScoreTables'
 import MyLearningDashboard from './MyLearningDashboard'
 import WordSelectionPopover from '../components/WordSelectionPopover'
 import { readSavedWords, SAVED_WORDS_EVENT } from '../utils/savedWords'
@@ -19,10 +18,8 @@ const SIDEBAR_MODULES = [
 
 const LEVELS = [
   { code: 'A2', abbr: 'KET', color: 'bg-emerald-500', light: 'text-emerald-600 bg-emerald-50' },
-  { code: 'B1', abbr: 'PET', color: 'bg-blue-500',    light: 'text-blue-600 bg-blue-50'       },
-  { code: 'B2', abbr: 'FCE', color: 'bg-indigo-500',  light: 'text-indigo-600 bg-indigo-50'   },
-  { code: 'C1', abbr: 'CAE', color: 'bg-violet-500',  light: 'text-violet-600 bg-violet-50'   },
-  { code: 'C2', abbr: 'CPE', color: 'bg-rose-500',    light: 'text-rose-600 bg-rose-50'       },
+  { code: 'B1', abbr: 'PET', color: 'bg-violet-500',  light: 'text-violet-600 bg-violet-50'   },
+  { code: 'B2', abbr: 'FCE', color: 'bg-sky-500',     light: 'text-sky-600 bg-sky-50'         },
 ]
 
 /* ── App 外壳（左侧栏 + 顶栏）── */
@@ -31,7 +28,28 @@ export function CambridgeLayout({ children, activeModule, level, setLevel }) {
   const location = useLocation()
   const current = LEVELS.find(l => l.abbr === level) || LEVELS[0]
   const [showLevelMenu, setShowLevelMenu] = useState(false)
+  const levelMenuRef = useRef(null)
   const sourceLabel = `${SIDEBAR_MODULES.find(module => module.id === activeModule)?.label || 'KET'}学习`
+
+  useEffect(() => {
+    if (!showLevelMenu) return
+    const onClickOutside = (e) => {
+      if (levelMenuRef.current && !levelMenuRef.current.contains(e.target)) {
+        setShowLevelMenu(false)
+      }
+    }
+    document.addEventListener('mousedown', onClickOutside)
+    return () => document.removeEventListener('mousedown', onClickOutside)
+  }, [showLevelMenu])
+
+  const handlePickLevel = (abbr) => {
+    setShowLevelMenu(false)
+    if (setLevel && location.pathname === '/cambridge/exams') {
+      setLevel(abbr)
+    } else {
+      navigate(`/cambridge/${abbr.toLowerCase()}`)
+    }
+  }
 
   return (
     <div className="flex h-screen bg-white overflow-hidden">
@@ -44,7 +62,7 @@ export function CambridgeLayout({ children, activeModule, level, setLevel }) {
         {/* 模块图标 */}
         {SIDEBAR_MODULES.map(m => (
           <button key={m.id}
-            onClick={() => navigate(m.id === 'grammar' ? '/cambridge/grammar/category/tenses' : m.id === 'listening' ? (level === 'FCE' ? '/cambridge/listening/fce' : '/cambridge/listening') : m.id === 'reading' ? (level === 'FCE' ? '/cambridge/reading/fce' : '/cambridge/reading') : m.id === 'writing' ? (level === 'FCE' ? '/cambridge/writing/fce' : '/cambridge/writing') : m.id === 'speaking' ? (level === 'FCE' ? '/cambridge/speaking/fce' : '/cambridge/speaking') : m.id === 'exams' ? '/cambridge/exams' : `/cambridge/${m.path}`)}
+            onClick={() => navigate(m.id === 'grammar' ? '/cambridge/grammar' : m.id === 'listening' ? (level === 'FCE' ? '/cambridge/listening/fce' : '/cambridge/listening') : m.id === 'reading' ? (level === 'FCE' ? '/cambridge/reading/fce' : '/cambridge/reading') : m.id === 'writing' ? (level === 'FCE' ? '/cambridge/writing/fce' : '/cambridge/writing') : m.id === 'speaking' ? (level === 'FCE' ? '/cambridge/speaking/fce' : '/cambridge/speaking') : m.id === 'exams' ? '/cambridge/exams' : `/cambridge/${m.path}`)}
             title={m.label}
             className={`w-[78px] h-14 rounded-xl flex flex-col items-center justify-center gap-1 transition-all group ${
               activeModule === m.id
@@ -72,7 +90,7 @@ export function CambridgeLayout({ children, activeModule, level, setLevel }) {
         {/* 顶栏 */}
         <header className="h-14 border-b border-gray-100 flex items-center px-3 sm:px-6 gap-2 sm:gap-4 flex-shrink-0 bg-white">
           {/* 级别选择 */}
-          <div className="relative">
+          <div className="relative" ref={levelMenuRef}>
             <button
               onClick={() => setShowLevelMenu(o => !o)}
               className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-gray-200 hover:border-[#064e3b]/40 transition-colors text-sm font-semibold text-gray-800"
@@ -87,7 +105,7 @@ export function CambridgeLayout({ children, activeModule, level, setLevel }) {
               <div className="absolute top-full mt-1.5 left-0 bg-white rounded-xl shadow-xl border border-gray-100 py-1.5 min-w-[160px] z-50">
                 {LEVELS.map(l => (
                   <button key={l.abbr}
-                    onClick={() => { setLevel(l.abbr); setShowLevelMenu(false) }}
+                    onClick={() => handlePickLevel(l.abbr)}
                     className={`w-full flex items-center gap-2.5 px-3 py-2 text-sm hover:bg-gray-50 transition-colors ${level === l.abbr ? 'bg-[#064e3b]/8' : ''}`}
                   >
                     <span className={`w-2 h-2 rounded-full ${l.color}`} />
@@ -236,26 +254,64 @@ function VocabCenterButton({ onClick, className = '' }) {
 }
 
 /* ── 话题选择器 (for 必默词汇 topic mode) ── */
-function TopicChooser({ level, onSelect, onBack, hideBack = false }) {
+function TopicChooser({ level, onSelect, onBack, onAll, hideBack = false }) {
   const topics = level === 'PET' ? PET_MUST_SPELL_TOPICS : level === 'FCE' ? FCE_MUST_SPELL_TOPICS : MUST_SPELL_TOPICS
-  const hover = level === 'PET' ? 'hover:border-violet-300 hover:bg-violet-50/40' : level === 'FCE' ? 'hover:border-sky-300 hover:bg-sky-50/40' : 'hover:border-emerald-300 hover:bg-emerald-50/40'
+  const [showTopicsList, setShowTopicsList] = useState(false)
+  const totalWords = topics.reduce((s, t) => s + t.words.length, 0)
+  const isPet = level === 'PET'
+  const isFce = level === 'FCE'
+  const iconBox = isFce ? 'bg-sky-100 text-sky-700' : isPet ? 'bg-violet-100 text-violet-700' : 'bg-emerald-100 text-emerald-700'
+  const cardBg = isFce ? 'bg-gradient-to-br from-sky-50/60 to-white border-sky-200' : isPet ? 'bg-gradient-to-br from-violet-50/60 to-white border-violet-200' : 'bg-gradient-to-br from-emerald-50/60 to-white border-emerald-200'
+  const topBar = isFce ? 'bg-sky-400' : isPet ? 'bg-violet-400' : 'bg-[#0d7656]'
+  const numberColor = isFce ? 'text-sky-300' : isPet ? 'text-violet-300' : 'text-emerald-300'
+  const ctaBg = isFce ? 'bg-sky-50/80 text-sky-700' : isPet ? 'bg-violet-50/80 text-violet-700' : 'bg-emerald-50/80 text-emerald-700'
+  const hoverRing = isFce ? 'hover:border-sky-300 hover:shadow-sky-100/70' : isPet ? 'hover:border-violet-300 hover:shadow-violet-100/70' : 'hover:border-emerald-300 hover:shadow-emerald-100/70'
+  const topicHover = isFce ? 'hover:border-sky-300 hover:bg-sky-50/40' : isPet ? 'hover:border-violet-300 hover:bg-violet-50/40' : 'hover:border-emerald-300 hover:bg-emerald-50/40'
+  const pageBg = isFce ? 'bg-sky-50/40' : isPet ? 'bg-violet-50/40' : 'bg-emerald-50/40'
+  const modeCards = [
+    { id: 'byCategory', emoji: '🗂️', title: '必默词汇分类练习', desc: '将必默词汇按生活话题分类，每次专注练习一类单词。', stat: `${topics.length} 个话题`, cta: showTopicsList ? '收起 ▲' : '展开话题 ▼', action: () => setShowTopicsList(s => !s) },
+    { id: 'random', emoji: '🔀', title: '必默词汇任意练习', desc: '不按话题顺序，全部必默词混合在一起练习。', stat: `${totalWords} 词`, cta: '进入 →', action: onAll },
+  ]
   return (
-    <div className="max-w-2xl mx-auto px-6 py-8">
+    <div className={pageBg}>
+    <div className="max-w-4xl mx-auto px-6 py-8 min-h-[80vh]">
       {!hideBack && <VocabCenterButton onClick={onBack} className="mb-6" />}
       <h2 className="text-xl font-bold text-gray-900 mb-1">选择话题</h2>
       <p className="text-sm text-gray-400 mb-6">专项突破，每次专注一个主题</p>
-      <div className="grid grid-cols-2 gap-3">
-        {topics.map(t => (
-          <button key={t.id} onClick={() => onSelect(t)}
-            className={`flex items-center gap-3 bg-white border border-gray-100 rounded-2xl px-4 py-3.5 ${hover} hover:shadow-sm transition-all text-left group`}>
-            <span className="text-2xl">{t.emoji}</span>
-            <div className="min-w-0">
-              <div className="font-bold text-gray-900 text-sm leading-tight">{t.titleZh}</div>
-              <div className="text-xs text-gray-400 mt-0.5">{t.title} · {t.words.length} 词</div>
+      <div className="grid sm:grid-cols-2 gap-3.5 mb-6">
+        {modeCards.map((card, i) => (
+          <button key={card.id} type="button" onClick={card.action} className={`relative text-left rounded-[22px] border p-5 lg:p-6 min-h-[190px] flex flex-col transition-all overflow-hidden ${cardBg} ${hoverRing} hover:-translate-y-0.5 hover:shadow-lg`}>
+            <div className={`absolute top-0 left-0 right-0 h-1.5 ${topBar}`} />
+            <div className="relative flex items-start justify-between mt-2">
+              <span className={`w-11 h-11 rounded-2xl grid place-items-center text-2xl ${iconBox}`}>{card.emoji}</span>
+              <span className={`text-[10px] font-extrabold tracking-[.14em] ${numberColor}`}>0{i + 1}</span>
+            </div>
+            <div className="relative mt-4">
+              <h3 className="font-extrabold text-2xl text-gray-950">{card.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-gray-500">{card.desc}</p>
+            </div>
+            <div className={`relative mt-auto -mx-5 lg:-mx-6 -mb-5 lg:-mb-6 mt-4 px-5 lg:px-6 py-3 flex items-center justify-between text-sm rounded-b-[22px] ${ctaBg}`}>
+              <span className="font-bold">{card.stat}</span>
+              <span className="font-extrabold">{card.cta}</span>
             </div>
           </button>
         ))}
       </div>
+      {showTopicsList && (
+        <div className="grid grid-cols-2 gap-3">
+          {topics.map(t => (
+            <button key={t.id} onClick={() => onSelect(t)}
+              className={`flex items-center gap-3 bg-white border border-gray-100 rounded-2xl px-4 py-3.5 ${topicHover} hover:shadow-sm transition-all text-left group`}>
+              <span className="text-2xl">{t.emoji}</span>
+              <div className="min-w-0">
+                <div className="font-bold text-gray-900 text-sm leading-tight">{t.titleZh}</div>
+                <div className="text-xs text-gray-400 mt-0.5">{t.title} · {t.words.length} 词</div>
+              </div>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
     </div>
   )
 }
@@ -300,6 +356,7 @@ function VocabSetChooser({ level, onSelect, onCollocation }) {
       <TopicChooser
         level={level}
         onBack={() => setShowTopics(false)}
+        onAll={() => onSelect({ mode: 'allMust' })}
         onSelect={(topic) => onSelect({ mode: isFce ? 'fceTopic' : isPet ? 'petTopic' : 'topic', topic })}
       />
     )
@@ -363,7 +420,7 @@ function VocabSetChooser({ level, onSelect, onCollocation }) {
         { id: 'petIrregular', title: '不规则动词进阶', mode: 'petIrregular', count: petIrregularVerbWords.length, arrow: true,
           desc: 'KET 之外的 B1 不规则动词过去式与过去分词变化。' },
       ]
-    : VOCAB_SETS.map(vs => ({ ...vs, arrow: ['must500', 'reading288', 'irregular'].includes(vs.id) }))
+    : VOCAB_SETS.map(vs => ({ ...vs, topicMode: vs.id === 'topic', arrow: ['must500', 'reading288', 'irregular'].includes(vs.id) }))
 
   const cards = [
     ...mainSets.map(vs => ({ ...vs, action: () => openSet(vs) })),
@@ -744,14 +801,6 @@ function CollocationsContent({ level, onBack }) {
   )
 }
 
-const WORDS_TABS = [
-  { id: 'must', label: '必默词汇' },
-  { id: 'reading', label: '阅读高频' },
-  { id: 'official', label: '综合词表' },
-  { id: 'irregular', label: '不规则动词' },
-  { id: 'collocations', label: '固定搭配' },
-]
-
 function WordsTabBar({ active, level, onTab }) {
   const isPet = level === 'PET'
   const isFce = level === 'FCE'
@@ -760,13 +809,7 @@ function WordsTabBar({ active, level, onTab }) {
     : isPet
     ? 'border-violet-600 bg-violet-600 text-white shadow-sm'
     : 'border-emerald-600 bg-emerald-600 text-white shadow-sm'
-  const tabStyle = isFce
-    ? 'border-sky-200 bg-sky-50 text-sky-800 hover:bg-sky-100'
-    : isPet
-    ? 'border-violet-200 bg-violet-50 text-violet-800 hover:bg-violet-100'
-    : 'border-emerald-200 bg-emerald-50 text-emerald-800 hover:bg-emerald-100'
-  // tab 过滤：无（FCE 已补齐综合词表与固定搭配专项）
-  const tabs = WORDS_TABS
+  // 仅保留「我的单词中心」入口，其他专项通过总览卡片进入
   return (
     <nav className="w-full border-b border-gray-100 bg-white px-6 py-4">
       <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-2.5">
@@ -778,14 +821,6 @@ function WordsTabBar({ active, level, onTab }) {
           }`}>
           我的单词中心
         </button>
-        {tabs.map(tab => (
-          <button key={tab.id} type="button" onClick={() => onTab(tab.id)}
-            className={`rounded-xl border px-4 py-2.5 text-sm font-extrabold transition ${
-              active === tab.id ? activeStyle : tabStyle
-            }`}>
-            {tab.label}
-          </button>
-        ))}
       </div>
     </nav>
   )
@@ -805,7 +840,7 @@ function WordsContent({ level }) {
     } catch { return null }
   })()
   const directChoice = directMode === 'reading288' ? { mode: isFce ? 'fceReading' : isPet ? 'petReading' : 'reading288' } : reviewChoice
-  const [view, setView] = useState(directChoice ? 'words' : 'topics') // 'centre' | 'topics' | 'words' | 'collocation'
+  const [view, setView] = useState(directChoice ? 'words' : 'centre') // 'centre' | 'topics' | 'words' | 'collocation'
   const [vocabChoice, setVocabChoice] = useState(directChoice)
   const [topicMode, setTopicMode] = useState(isFce ? 'fceMust' : isPet ? 'petMust' : 'must')
 
@@ -848,6 +883,7 @@ function WordsContent({ level }) {
           level={level}
           hideBack
           onBack={() => setView('centre')}
+          onAll={() => { setVocabChoice({ mode: 'allMust' }); setView('words') }}
           onSelect={(topic) => {
             setVocabChoice({ mode: topicMode === 'fceMust' ? 'fceTopic' : topicMode === 'petMust' ? 'petTopic' : 'topic', topic })
             setView('words')
@@ -880,6 +916,15 @@ function WordsPractice({ level, vocabChoice, onBack }) {
     }
     if (vocabChoice.mode === 'must500') {
       return mustSpell500.map(w => ({
+        word: w.word, part: w.part, chinese: w.chinese,
+        phonetic: getVocabPhonetic(w.word), english: getVocabEnglishDefinition(w.word), sentence: w.sentence,
+        topic: w.topicTitleZh,
+      }))
+    }
+    if (vocabChoice.mode === 'allMust') {
+      // 任意练习：不按话题，使用当前级别的全部必默词
+      const allMustList = level === 'FCE' ? fceMustSpell : level === 'PET' ? petMustSpell : mustSpell500
+      return allMustList.map(w => ({
         word: w.word, part: w.part, chinese: w.chinese,
         phonetic: getVocabPhonetic(w.word), english: getVocabEnglishDefinition(w.word), sentence: w.sentence,
         topic: w.topicTitleZh,
@@ -991,6 +1036,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
     : vocabChoice.mode === 'fceTopic' ? vocabChoice.topic.titleZh
     : vocabChoice.mode === 'review' ? '待复习错词'
     : vocabChoice.mode === 'must500' ? 'KET 必默词汇'
+    : vocabChoice.mode === 'allMust' ? (level === 'FCE' ? 'FCE 必默词汇（全部）' : level === 'PET' ? 'PET 必默词汇（全部）' : 'KET 必默词汇（全部）')
     : vocabChoice.mode === 'reading288' ? '阅读常用词'
     : vocabChoice.mode === 'irregular' ? '不规则动词'
     : vocabChoice.mode === 'petReading' ? 'PET 阅读高频词'
@@ -1647,440 +1693,6 @@ function WordsPractice({ level, vocabChoice, onBack }) {
   )
 }
 
-/* ════════════════════════════════════════════
-   级别仪表盘（首屏，无侧栏）
-════════════════════════════════════════════ */
-
-const LEVEL_FULL = [
-  { code: 'A2', abbr: 'KET', name: 'Key',         from: '#064e3b', to: '#0d7a5c', accent: '#10b981', dot: 'bg-emerald-500', textColor: 'text-emerald-600', lightBg: 'bg-emerald-50' },
-  { code: 'B1', abbr: 'PET', name: 'Preliminary', from: '#0c2a48', to: '#144270', accent: '#3b82f6', dot: 'bg-blue-500',    textColor: 'text-blue-600',    lightBg: 'bg-blue-50'    },
-  { code: 'B2', abbr: 'FCE', name: 'First',       from: '#082f49', to: '#0c4a6e', accent: '#0ea5e9', dot: 'bg-sky-500', textColor: 'text-sky-600',  lightBg: 'bg-sky-50'  },
-  { code: 'C1', abbr: 'CAE', name: 'Advanced',    from: '#28104e', to: '#3e1872', accent: '#8b5cf6', dot: 'bg-violet-500', textColor: 'text-violet-600',  lightBg: 'bg-violet-50'  },
-  { code: 'C2', abbr: 'CPE', name: 'Proficiency', from: '#18060e', to: '#2e0d1e', accent: '#f43f5e', dot: 'bg-rose-500',   textColor: 'text-rose-600',    lightBg: 'bg-rose-50'    },
-]
-
-const LEVEL_INFO = {
-  KET: {
-    headline: 'A2 Key — 剑桥英语入门',
-    desc: 'KET 是剑桥英语考试体系的入门级别，证明你能在简单的日常场合中读写和理解英语。通过 KET 标志着英语学习的重要第一步，建立自信、打好基础。',
-    words: '1,500', target: '初学者 / 小学高年级', skills: '听力 · 阅读 · 写作 · 口语',
-  },
-  PET: {
-    headline: 'B1 Preliminary — 初级水平',
-    desc: 'PET 证明你能在工作、学习或旅行中自信地处理日常英语。适合已有一定英语基础、希望进一步提升的学习者。',
-    words: '3,500', target: '初中生 / 基础提升', skills: '听力 · 阅读 · 写作 · 口语',
-  },
-  FCE: {
-    headline: 'B2 First — 独立使用英语',
-    desc: 'FCE 证明你具备独立使用英语的能力，被全球众多大学和企业认可，是留学申请的重要资质。',
-    words: '5,000', target: '高中生 / 出国申请', skills: '听力 · 阅读 · 写作 · 口语',
-  },
-  CAE: {
-    headline: 'C1 Advanced — 高级水平',
-    desc: 'CAE 证明你能流利、自信地使用英语，满足高水平学术和专业场合的需求，受到数千家院校和企业认可。',
-    words: '7,500', target: '大学生 / 职场申请', skills: '听力 · 阅读 · 写作 · 口语',
-  },
-  CPE: {
-    headline: 'C2 Proficiency — 精通英语',
-    desc: 'CPE 是剑桥英语考试最高级别，代表接近英语母语者水平，适用于最高要求的学术研究和专业认证场合。',
-    words: '10,000+', target: '学术研究 / 语言认证', skills: '听力 · 阅读 · 写作 · 口语',
-  },
-}
-
-const DASH_SECTIONS = [
-  {
-    id: 'words', icon: '📖', title: '单词练习',
-    parts: [
-      { label: '立即开始', fullWidth: true, available: true, link: () => '/cambridge/words' },
-    ],
-  },
-  {
-    id: 'grammar', icon: '📐', title: '语法训练', onlyKET: true,
-    parts: [
-      { label: '名词',     available: true,  link: () => '/cambridge/grammar' },
-      { label: '冠词',     available: false },
-      { label: '代词',     available: false },
-      { label: '介词',     available: false },
-      { label: '形容词',   available: false },
-      { label: '副词',     available: false },
-      { label: '动词时态', available: false },
-      { label: '情态动词', available: false },
-    ],
-  },
-  {
-    id: 'reading', icon: '📄', title: '阅读练习', onlyKET: true,
-    parts: [
-      { label: 'Part 1', available: true,  link: () => '/cambridge-reading' },
-      { label: 'Part 2', available: true,  link: () => '/cambridge-reading' },
-      { label: 'Part 3', available: true,  link: () => '/cambridge-reading' },
-      { label: 'Part 4', available: true,  link: () => '/cambridge-reading' },
-      { label: 'Part 5', available: true,  link: () => '/cambridge-reading', fullWidth: true },
-    ],
-  },
-  {
-    id: 'listening', icon: '🎧', title: '听力练习',
-    parts: [
-      { label: 'Part 1 · 图片选择', available: true,  link: () => '/cambridge/listening' },
-      { label: 'Part 2 · 配对题',   available: true,  link: () => '/cambridge/listening' },
-      { label: 'Part 3 · 填空题',   available: true,  link: () => '/cambridge/listening' },
-      { label: 'Part 4 · 单选题',   available: true,  link: () => '/cambridge/listening' },
-      { label: 'Part 5 · 配对题',   available: true,  link: () => '/cambridge/listening', fullWidth: true },
-      { label: '✍️ 听写专项练习', available: true,  link: () => '/cambridge/dictation', fullWidth: true },
-    ],
-  },
-  {
-    id: 'writing', icon: '✍️', title: '写作练习',
-    parts: [
-      { label: 'Part 6 · Email', available: true, link: () => '/cambridge/writing?part=6&set=1' },
-      { label: 'Part 7 · 看图写话', available: true, link: () => '/cambridge/writing?part=7&set=1' },
-    ],
-  },
-  {
-    id: 'speaking', icon: '🎙️', title: '口语练习',
-    parts: [
-      { label: 'Part 1 · 个人问答', available: true, link: () => '/cambridge/speaking?part=1&set=1' },
-      { label: 'Part 2 · 图片讨论', available: true, link: () => '/cambridge/speaking?part=2&set=1' },
-    ],
-  },
-  {
-    id: 'exams', icon: '📝', title: '真题练习',
-    parts: [
-      { label: 'KET 3 · Test 1', available: true, link: () => '/cambridge/exams/ket-3-test1' },
-      { label: 'KET 3 · Test 2', available: false },
-      { label: 'KET 3 · Test 3', available: false },
-      { label: 'KET 3 · Test 4', available: false },
-    ],
-  },
-]
-
-// Legacy multi-level dashboard retained temporarily while the KET learning home is validated.
-// eslint-disable-next-line no-unused-vars
-function LevelDashboard({ level, setLevel }) {
-  const navigate  = useNavigate()
-  const cur       = LEVEL_FULL.find(l => l.abbr === level) || LEVEL_FULL[0]
-  const info      = LEVEL_INFO[level] || LEVEL_INFO.KET
-
-  return (
-    <div className="min-h-screen bg-[#f8f9fc]">
-
-      {/* ── 顶栏 ── */}
-      <header className="bg-white border-b border-gray-100 sticky top-0 z-30 shadow-sm">
-        <div className="max-w-4xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-1.5 text-gray-400 hover:text-gray-700 transition-colors group">
-            <svg className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            <span className="text-sm font-medium">首页</span>
-          </Link>
-          <span className="font-sans font-bold text-gray-900">火星<span className="text-[#064e3b]">剑桥</span></span>
-          <div className="flex items-center gap-3">
-            <button className="text-sm text-gray-400 hover:text-gray-700 font-medium transition-colors">登录</button>
-            <button className="px-4 py-1.5 bg-[#064e3b] text-white text-sm font-semibold rounded-lg hover:bg-[#065f46] transition-colors">
-              免费注册
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <div className="max-w-4xl mx-auto px-6 py-8">
-
-        {/* ── 级别选择 tabs ── */}
-        <div className="flex gap-2 mb-7 overflow-x-auto pb-1">
-          {LEVEL_FULL.map(l => (
-            <motion.button key={l.abbr}
-              whileTap={{ scale: 0.96 }}
-              onClick={() => setLevel(l.abbr)}
-              style={level === l.abbr ? { background: `linear-gradient(135deg, ${l.from}, ${l.to})` } : {}}
-              className={`flex-shrink-0 flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold border transition-all ${
-                level === l.abbr
-                  ? 'text-white border-transparent shadow-md'
-                  : 'bg-white border-gray-200 text-gray-500 hover:border-gray-300 hover:text-gray-700'
-              }`}
-            >
-              <span className="w-2 h-2 rounded-full"
-                style={{ background: level === l.abbr ? 'rgba(255,255,255,0.5)' : l.accent }} />
-              {l.code} {l.abbr}
-            </motion.button>
-          ))}
-        </div>
-
-        {/* ── 级别简介卡 ── */}
-        <AnimatePresence mode="wait">
-          <motion.div key={level}
-            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.2 }}
-            style={{ background: `linear-gradient(135deg, ${cur.from} 0%, ${cur.to} 100%)` }}
-            className="relative rounded-2xl overflow-hidden mb-8 text-white shadow-xl"
-          >
-            {/* subtle grid texture overlay */}
-            <div className="absolute inset-0 opacity-[0.04]"
-              style={{ backgroundImage: 'repeating-linear-gradient(0deg,#fff 0,#fff 1px,transparent 1px,transparent 40px),repeating-linear-gradient(90deg,#fff 0,#fff 1px,transparent 1px,transparent 40px)' }} />
-
-            <div className="relative px-7 pt-7 pb-5">
-              {/* top row */}
-              <div className="flex items-start justify-between mb-4">
-                <div>
-                  <div className="text-[10px] font-sans font-semibold uppercase tracking-[0.22em] text-white/40 mb-2">
-                    Cambridge English
-                  </div>
-                  <h1 className="font-sans italic text-[1.75rem] font-bold leading-tight tracking-tight">
-                    {info.headline}
-                  </h1>
-                </div>
-                <span className="text-[72px] font-extrabold leading-none text-white/[0.07] select-none hidden sm:block -mt-1 -mr-1 tracking-widest">
-                  {cur.abbr}
-                </span>
-              </div>
-
-              {/* desc */}
-              <p className="text-white/65 text-sm leading-relaxed mb-6 max-w-2xl font-sans">
-                {info.desc}
-              </p>
-
-              {/* thin divider */}
-              <div className="border-t border-white/10 mb-5" />
-
-              {/* stats */}
-              <div className="grid grid-cols-3 gap-3">
-                {[
-                  { label: '核心词汇', value: info.words + ' 词' },
-                  { label: '考试科目', value: info.skills },
-                  { label: '适合人群', value: info.target },
-                ].map((s, i) => (
-                  <div key={i} className="bg-white/[0.08] border border-white/[0.10] rounded-xl px-4 py-3">
-                    <div className="text-white/40 text-[9px] font-semibold uppercase tracking-widest mb-1.5 font-sans">{s.label}</div>
-                    <div className="text-white/90 font-bold text-sm leading-snug font-sans">{s.value}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        </AnimatePresence>
-
-        {/* ── 专项练习分区 ── */}
-        <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
-          {DASH_SECTIONS.map((sec, si) => {
-            const sectionAvail = !sec.onlyKET || level === 'KET'
-            return (
-              <motion.div key={sec.id}
-                initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: si * 0.05 }}
-                className={`px-6 py-5 ${si < DASH_SECTIONS.length - 1 ? 'border-b border-gray-100' : ''}`}
-              >
-                {/* 标题行 */}
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="text-xl">{sec.icon}</span>
-                  <span className="font-bold text-gray-900 text-base">{sec.title}</span>
-                  <div className="flex-1 flex items-center gap-2 ml-2">
-                    <span className="text-xs text-gray-400">0%</span>
-                    <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                      <div className="h-full bg-[#064e3b] rounded-full" style={{ width: '0%' }} />
-                    </div>
-                    <span className="text-xs text-gray-400">100%</span>
-                  </div>
-                </div>
-
-                {/* Parts 按钮 */}
-                <div className="flex flex-wrap gap-2 mb-3">
-                  {sec.parts.map((part, pi) => {
-                    const partAvail = sectionAvail && part.available
-                    const dest = partAvail && part.link ? part.link(level) : null
-                    return (
-                      <button key={pi}
-                        onClick={() => dest && navigate(dest)}
-                        className={`py-2.5 px-4 rounded-lg text-sm font-semibold transition-all ${
-                          part.fullWidth ? 'w-full' : 'flex-1 min-w-[80px]'
-                        } ${
-                          partAvail
-                            ? 'bg-[#064e3b] text-white hover:bg-[#065f46] cursor-pointer'
-                            : 'bg-gray-100 text-gray-400 cursor-default'
-                        }`}
-                      >
-                        {part.label}
-                      </button>
-                    )
-                  })}
-                </div>
-
-                {/* 得分行 */}
-                <div className="flex justify-end gap-4 text-xs text-gray-400">
-                  <span>Level: <strong className="text-gray-600">N/A</strong></span>
-                  <span>Score: <strong className="text-gray-600">N/A</strong></span>
-                </div>
-              </motion.div>
-            )
-          })}
-        </div>
-
-        {/* ── 分数换算计算器 ── */}
-        <ScoreCalculator level={level} />
-
-      </div>
-    </div>
-  )
-}
-
-/* ════════════════════════════════════════════
-   成绩换算计算器（支持全部五级）
-════════════════════════════════════════════ */
-
-function ScoreCalculator({ level }) {
-  const [raw, setRaw] = useState({ reading: '', writing: '', listening: '', speaking: '' })
-  const cfg = EXAM_CONFIGS[level] || EXAM_CONFIGS['KET']
-
-  // Reset inputs when switching levels
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setRaw({ reading: '', writing: '', listening: '', speaking: '' })
-  }, [level])
-
-  const converted = {}
-  cfg.sections.forEach(s => { converted[s.key] = cfg.convert(s.key, raw[s.key]) })
-
-  const validScores = Object.values(converted).filter(v => v !== null)
-  const finalScore = validScores.length === 4 ? Math.round(validScores.reduce((a, b) => a + b, 0) / 4) : null
-  const finalGrade = finalScore !== null ? getExamGrade(finalScore, level) : null
-  const hasAny = Object.values(raw).some(v => v !== '')
-
-  function barPct(val) {
-    if (val === null) return 0
-    return Math.max(0, Math.min(100, Math.round((val - cfg.scaleMin) / (cfg.scaleMax - cfg.scaleMin) * 100)))
-  }
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-      className="mt-4 bg-white rounded-2xl border border-gray-100 overflow-hidden"
-    >
-      {/* Header */}
-      <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <span className="text-xl">🎯</span>
-          <div>
-            <div className="font-bold text-gray-900 text-base">成绩换算计算器</div>
-            <div className="text-xs text-gray-400 mt-0.5">输入各科卷面分，自动换算标准分和最终成绩</div>
-          </div>
-        </div>
-        <span className={`text-[10px] font-bold px-2 py-1 rounded-full ${cfg.exact ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
-          {cfg.exact ? '官方精确换算' : '近似换算'}
-        </span>
-      </div>
-
-      <div className="px-6 py-5">
-        {/* Section inputs */}
-        <div className="grid grid-cols-2 gap-4 mb-5">
-          {cfg.sections.map(s => {
-            const std = converted[s.key]
-            const grade = std !== null ? getExamGrade(std, level) : null
-            const invalid = raw[s.key] !== '' && std === null
-            const pct = barPct(std)
-            return (
-              <div key={s.key} className="bg-gray-50 rounded-xl p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-base">{s.emoji}</span>
-                    <span className="font-bold text-gray-800 text-sm">{s.label}</span>
-                    <span className="text-[10px] text-gray-400">{s.note}</span>
-                  </div>
-                  {grade && (
-                    <span className="text-xs font-bold px-2 py-0.5 rounded-full"
-                      style={{ background: grade.bg, color: grade.color }}>
-                      {grade.label}
-                    </span>
-                  )}
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <div className="relative flex-1">
-                    <input type="number" min={0} max={s.max}
-                      value={raw[s.key]}
-                      onChange={e => setRaw(prev => ({ ...prev, [s.key]: e.target.value }))}
-                      placeholder="0"
-                      className={`w-full px-3 py-2 rounded-lg border text-sm font-bold text-center focus:outline-none transition-colors ${
-                        invalid ? 'border-red-300 bg-red-50 text-red-500' :
-                        std !== null ? 'border-emerald-300 bg-white text-gray-900' :
-                        'border-gray-200 bg-white text-gray-700'
-                      }`}
-                    />
-                    <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-gray-300 font-normal">/{s.max}</span>
-                  </div>
-                  <div className="text-right min-w-[52px]">
-                    {std !== null ? (
-                      <div className="text-xl font-extrabold" style={{ color: grade?.color }}>{std}</div>
-                    ) : (
-                      <div className="text-xl font-extrabold text-gray-200">—</div>
-                    )}
-                    <div className="text-[9px] text-gray-400">标准分</div>
-                  </div>
-                </div>
-
-                {std !== null && (
-                  <div className="h-2 bg-gray-100 rounded-full overflow-hidden mt-2">
-                    <motion.div className="h-full rounded-full"
-                      style={{ background: grade?.color || '#d1d5db' }}
-                      initial={{ width: 0 }} animate={{ width: `${pct}%` }}
-                      transition={{ duration: 0.4, ease: 'easeOut' }}
-                    />
-                  </div>
-                )}
-                {invalid && <p className="text-[10px] text-red-400 mt-1">低于最低有效分</p>}
-              </div>
-            )
-          })}
-        </div>
-
-        {/* Final score */}
-        <div className={`rounded-xl p-5 flex items-center justify-between transition-all ${
-          finalScore !== null ? 'border-2' : 'bg-gray-50 border border-gray-100'
-        }`}
-          style={finalScore !== null ? { background: finalGrade.bg, borderColor: finalGrade.color + '40' } : {}}
-        >
-          <div>
-            <div className="text-xs font-semibold text-gray-500 mb-0.5">最终标准分</div>
-            <div className="text-[10px] text-gray-400">= (阅读 + 写作 + 听力 + 口语) ÷ 4</div>
-            {finalScore !== null && (
-              <div className="mt-2 text-xs" style={{ color: finalGrade.color }}>
-                ({validScores.join(' + ')}) ÷ 4 = <strong>{finalScore}</strong>
-              </div>
-            )}
-            {finalGrade && (
-              <div className="mt-1 text-xs text-gray-500">{finalGrade.note}</div>
-            )}
-          </div>
-          <div className="text-right">
-            {finalScore !== null ? (
-              <>
-                <div className="text-4xl font-extrabold" style={{ color: finalGrade.color }}>{finalScore}</div>
-                <div className="text-sm font-bold mt-0.5" style={{ color: finalGrade.color }}>{finalGrade.label}</div>
-              </>
-            ) : (
-              <div className="text-3xl font-extrabold text-gray-200">?</div>
-            )}
-          </div>
-        </div>
-
-        {/* Grade legend */}
-        <div className="flex flex-wrap gap-2 mt-4">
-          {cfg.grades.map((g, i) => (
-            <span key={g.label} className="flex items-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-full"
-              style={{ background: g.bg, color: g.color }}>
-              <span className="w-1.5 h-1.5 rounded-full inline-block" style={{ background: g.color }} />
-              {g.label}{i < cfg.grades.length - 1 ? ` ≥${g.min}` : ''}
-            </span>
-          ))}
-        </div>
-
-        {hasAny && (
-          <button onClick={() => setRaw({ reading: '', writing: '', listening: '', speaking: '' })}
-            className="mt-3 text-xs text-gray-400 hover:text-gray-600 transition-colors underline-offset-2 hover:underline">
-            清除重置
-          </button>
-        )}
-      </div>
-    </motion.div>
-  )
-}
-
 /* ── Coming Soon 页面（其他模块）── */
 function ComingSoon({ module }) {
   const m = SIDEBAR_MODULES.find(m => m.id === module)
@@ -2128,8 +1740,15 @@ export default function CambridgeApp() {
     try { localStorage.setItem('cambridge_level', level) } catch { /* ignore */ }
   }, [level])
 
-  // module 是级别 slug（ket/pet/fce/cae/cpe）→ 显示该级别仪表盘
+  // module 是级别 slug（ket/pet/fce/cae/cpe）→ 显示该级别仪表盘，并同步级别状态与 localStorage，
+  // 保证从仪表盘侧边栏进入词汇/语法/阅读等模块时落在同一级别
   const levelFromSlug = module ? LEVEL_SLUGS[module.toLowerCase()] : null
+  useEffect(() => {
+    if (!levelFromSlug) return
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- 级别 slug 派生的状态重置（同 URL 参数变化同步级别，先例同 MyLearningDashboard 今日任务）
+    setLevel(levelFromSlug)
+    try { localStorage.setItem('cambridge_level', levelFromSlug) } catch { /* storage may be unavailable */ }
+  }, [levelFromSlug])
   if (!module || levelFromSlug) {
     return <MyLearningDashboard level={levelFromSlug || level} />
   }

@@ -59,6 +59,7 @@ export default function CambridgeListeningGap() {
   }, [clozeResponses, clozeSubmitted, exerciseNumber])
 
   useEffect(() => { if (audioRef.current) audioRef.current.playbackRate = rate }, [rate, current])
+  useEffect(() => () => { if (audioRef.current) audioRef.current.pause() }, [])
 
   function normalise(value) { return String(value).toLowerCase().replace(/[^a-z0-9]/g, '') }
   const clozeAnswers = useMemo(() => current.cloze ? current.cloze.flatMap((question, questionIndex) => question.lines.flatMap((line, lineIndex) => line.parts.flatMap((part, partIndex) => typeof part === 'object' ? [{ key: `${questionIndex}-${lineIndex}-${partIndex}`, answer: part.answer }] : []))) : [], [current])
@@ -104,7 +105,7 @@ export default function CambridgeListeningGap() {
         </section>
 
         <section className="sticky top-3 z-40 mt-5 rounded-[20px] border border-white/10 bg-[#064e3b]/[.97] p-3 text-white shadow-[0_12px_35px_rgba(6,78,59,.22)] backdrop-blur-md lg:px-5 lg:py-4">
-          <div className="flex flex-col gap-3 md:flex-row md:items-center"><div className="flex min-w-[120px] items-center gap-3 md:block"><div className="text-[10px] font-bold tracking-wider text-[#f7cd60]">LISTENING</div><h2 className="text-lg font-extrabold md:mt-0.5">练习{exerciseNumber}</h2></div><audio ref={audioRef} key={current.audio} controls preload="metadata" className="h-10 w-full flex-1" src={current.audio} /><div className="flex shrink-0 gap-1.5">{[0.75,1,1.25].map(value => <button key={value} onClick={() => setRate(value)} className={`rounded-lg px-2.5 py-2 text-xs font-bold ${rate === value ? 'bg-[#f7cd60] text-[#4c3a00]' : 'bg-white/10 text-white hover:bg-white/20'}`}>{value}×</button>)}</div></div>
+          <div className="flex flex-col gap-3 md:flex-row md:items-center"><div className="flex min-w-[120px] items-center gap-3 md:block"><div className="text-[10px] font-bold tracking-wider text-[#f7cd60]">LISTENING</div><h2 className="text-lg font-extrabold md:mt-0.5">练习{exerciseNumber}</h2></div><audio ref={audioRef} key={current.audio} controls preload="auto" className="h-10 w-full flex-1" src={current.audio} /><div className="flex shrink-0 gap-1.5">{[0.75,1,1.25].map(value => <button key={value} onClick={() => setRate(value)} className={`rounded-lg px-2.5 py-2 text-xs font-bold ${rate === value ? 'bg-[#f7cd60] text-[#4c3a00]' : 'bg-white/10 text-white hover:bg-white/20'}`}>{value}×</button>)}</div></div>
           <p className="mt-2 hidden border-t border-white/10 pt-2 text-xs leading-relaxed text-white/65 lg:block">随页面固定 · 可随时暂停、拖动进度或调整播放速度</p>
         </section>
 

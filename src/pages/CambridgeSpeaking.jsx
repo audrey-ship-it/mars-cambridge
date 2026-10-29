@@ -3,11 +3,16 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { CambridgeLayout } from './CambridgeApp'
 import { KET_EXAMS } from '../data/ketExamData'
 import { KET_SPEAKING_PART1_TOPICS } from '../data/ketSpeakingTopicBank'
+import { KET_SPEAKING_BOOSTER_PART1_TOPICS, KET_SPEAKING_BOOSTER_SETS } from '../data/ketSpeakingBooster'
+
 import { petSpeakingTests } from '../data/petSpeakingData'
 import { PET_SPEAKING_SAMPLES } from '../data/petSpeakingSamples'
 import { PET_SPEAKING_STANDARD } from '../data/petSpeakingStandard'
 import { PET_SPEAKING_TRAINER1 } from '../data/petSpeakingTrainer1'
 import { PET_SPEAKING_TRAINER2 } from '../data/petSpeakingTrainer2'
+
+// Exam Booster 口语：Part 1 主题与 Part 2 图卡（本书无官方参考答案，答案为原创）
+const KET_PART1_TOPIC_LIST = [...KET_SPEAKING_PART1_TOPICS, ...KET_SPEAKING_BOOSTER_PART1_TOPICS]
 
 // PET 口语扁平序列：主20 + 样题3 + 标准8 + Trainer1 6 + Trainer2 6 = 43
 const PET_SPEAKING_FLAT = [
@@ -31,8 +36,10 @@ const SPEAKING_SETS = [1, 2, 3].flatMap(book => [1, 2, 3, 4].map(test => {
   return exam ? { exam, book, test } : null
 })).filter(Boolean)
 
+const ALL_SPEAKING_SETS = [...SPEAKING_SETS, ...KET_SPEAKING_BOOSTER_SETS]
+
 const PART_INFO = {
-  1: { label: 'Part 1 · 个人问答', title: 'Part 1 个人问答', help: '按15个常考主题练习考官问答，用完整句子回答，并补充理由或细节。' },
+  1: { label: 'Part 1 · 个人问答', title: 'Part 1 个人问答', help: '按常考主题练习考官问答，用完整句子回答，并补充理由或细节。' },
   2: { label: 'Part 2 · 图片讨论', title: 'Part 2 图片讨论', help: '观察官方话题图卡，围绕图片表达观点并进行比较。' },
 }
 
@@ -571,8 +578,8 @@ function PetSpeakingPractice({ level, setLevel }) {
 export default function CambridgeSpeaking() {
   const [searchParams, setSearchParams] = useSearchParams()
   const initialPart = searchParams.get('part') === '2' ? 2 : searchParams.get('part') === '1' ? 1 : 0
-  const initialSet = Math.min(12, Math.max(1, Number(searchParams.get('set')) || 1))
-  const initialTopic = Math.max(0, KET_SPEAKING_PART1_TOPICS.findIndex(item => item.id === searchParams.get('topic')))
+  const initialSet = Math.min(ALL_SPEAKING_SETS.length, Math.max(1, Number(searchParams.get('set')) || 1))
+  const initialTopic = Math.max(0, KET_PART1_TOPIC_LIST.findIndex(item => item.id === searchParams.get('topic')))
   const [level, setLevel] = useState(() => {
     try { return localStorage.getItem('cambridge_level') || 'KET' } catch { return 'KET' }
   })
@@ -583,9 +590,9 @@ export default function CambridgeSpeaking() {
   const [questionIndex, setQuestionIndex] = useState(0)
   const [part1ShowAnswer, setPart1ShowAnswer] = useState(false)
   const [part2ShowAnswer, setPart2ShowAnswer] = useState(false)
-  const selected = SPEAKING_SETS[setIndex]
+  const selected = ALL_SPEAKING_SETS[setIndex]
   const sourcePart = selected?.exam.speaking?.parts?.find(item => item.part === 2)
-  const selectedTopic = KET_SPEAKING_PART1_TOPICS[topicIndex]
+  const selectedTopic = KET_PART1_TOPIC_LIST[topicIndex]
   const topics = useMemo(() => {
     if (part === 1) return selectedTopic?.questions || []
     return sourcePart?.topics || []
@@ -650,7 +657,7 @@ export default function CambridgeSpeaking() {
                 <div className="p-6">
                   <div className="text-xs font-extrabold tracking-widest text-emerald-600">PART 1</div>
                   <h2 className="mt-1 text-2xl font-extrabold text-slate-900 group-hover:text-emerald-700">个人问答</h2>
-                  <p className="mt-2 leading-7 text-slate-500">围绕个人信息、家庭、学校、兴趣等 15 个常考主题，练习用完整句子自然作答。</p>
+                  <p className="mt-2 leading-7 text-slate-500">{'围绕个人信息、家庭、学校、兴趣等 ' + KET_PART1_TOPIC_LIST.length + ' 个常考主题，练习用完整句子自然作答。'}</p>
                   <span className="mt-5 inline-flex items-center font-bold text-emerald-700">进入主题练习 <span className="ml-2">→</span></span>
                 </div>
               </button>
@@ -688,11 +695,11 @@ export default function CambridgeSpeaking() {
         {part !== 0 && <section className="mt-6 rounded-[24px] border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
           <div className="mb-3 flex items-center justify-between gap-3">
             <strong className="text-sm text-slate-700">{part === 1 ? '选择主题' : '选择练习'}</strong>
-            <span className="text-xs text-slate-400">{part === 1 ? `共15个主题 · 当前：${selectedTopic.label}` : `共 ${SPEAKING_SETS.length} 套 · 当前为练习${setIndex + 1}`}</span>
+            <span className="text-xs text-slate-400">{part === 1 ? `共${KET_PART1_TOPIC_LIST.length}个主题 · 当前：${selectedTopic.label}` : `共 ${ALL_SPEAKING_SETS.length} 套 · 当前为练习${setIndex + 1}`}</span>
           </div>
           {part === 1 ? (
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
-              {KET_SPEAKING_PART1_TOPICS.map((item, index) => (
+              {KET_PART1_TOPIC_LIST.map((item, index) => (
                 <button key={item.id} type="button" onClick={() => setTopicIndex(index)} aria-current={topicIndex === index ? 'page' : undefined}
                   className={`rounded-xl border px-3 py-3 text-left transition ${topicIndex === index ? 'border-emerald-600 bg-emerald-600 text-white shadow-sm' : 'border-emerald-100 bg-emerald-50 text-emerald-800 hover:border-emerald-300'}`}>
                   <span className="block text-sm font-extrabold">{index + 1}. {item.label}</span>
@@ -702,7 +709,7 @@ export default function CambridgeSpeaking() {
             </div>
           ) : (
             <div className="grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-12">
-              {SPEAKING_SETS.map((item, index) => (
+              {ALL_SPEAKING_SETS.map((item, index) => (
                 <button key={item.exam.id} type="button" onClick={() => { setSetIndex(index); setPart2ShowAnswer(false) }} aria-current={setIndex === index ? 'page' : undefined}
                   title={`${item.exam.label} · ${PART_INFO[part].label}`}
                   className={`rounded-xl border px-3 py-3 text-sm font-extrabold transition ${setIndex === index ? 'border-emerald-600 bg-emerald-600 text-white shadow-sm' : 'border-emerald-100 bg-emerald-50 text-emerald-800 hover:border-emerald-300'}`}>

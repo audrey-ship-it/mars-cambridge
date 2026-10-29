@@ -1,4 +1,4 @@
-import { Component, useState, useRef, useEffect, useCallback } from "react";
+import { Component, useState, useMemo, useRef, useEffect, useCallback } from "react";
 import { Link, Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { KET_LISTENING_DATA } from "../data/ketListeningData";
@@ -11,6 +11,9 @@ import {
   OFFICIAL_LISTENING_SETS,
   officialListeningAudio,
 } from "../data/officialListeningManifest";
+import { BOOSTER_PART1_SETS, BOOSTER_PART2_SETS, BOOSTER_PART3_SETS, BOOSTER_PART4_SETS, BOOSTER_PART5_SETS } from '../data/ketListeningBooster';
+import { extractQuotes, renderTranscriptWithHighlights, TranscriptBox } from '../utils/transcriptHighlight';
+import { applyKetOfficialEnrich } from '../data/ketOfficialListeningTranscripts';
 import { CambridgeLayout } from "./CambridgeApp";
 import { setMockWrongBatch } from "../data/mockWrongBook";
 
@@ -198,6 +201,8 @@ function SpeedAudioPlayer({
     if (audioRef.current) audioRef.current.playbackRate = value;
   }
 
+  useEffect(() => () => { if (audioRef.current) audioRef.current.pause(); }, []);
+
   const isPet = tone === "pet";
   const barBg = isPet ? "bg-[#5b21b6]" : "bg-[#075741]";
 
@@ -213,7 +218,7 @@ function SpeedAudioPlayer({
         <audio
           ref={audioRef}
           controls
-          preload="metadata"
+          preload="auto"
           className="h-12 w-full flex-1"
           src={src}
         />
@@ -960,7 +965,91 @@ const KET3_TEST1_PART1 = [
   },
 ];
 
-const OFFICIAL_PART1_SETS = {
+const OFFICIAL_PART1_BASE = {
+  21: [
+    { question: "Where's the girl going this afternoon?", image: "/images/listening/trainer1-test1/q1.jpg", answer: 1, explanation: "爸爸约她去商店买滑板、妈妈想去 Bridge Street 的新咖啡馆，但女孩下午要和同学 Susan 去看新上映的日本动画片，即去电影院，因此选择 B。" },
+    { question: "Which is the boy's new desk?", image: "/images/listening/trainer1-test1/q2.jpg", answer: 0, explanation: "Aunt Barbara 在网上看的是带四个抽屉的款式，但男孩的新书桌是左边两个抽屉、右边三层书架，因此选择 A。" },
+    { question: "How will they get to their tennis class?", image: "/images/listening/trainer1-test1/q3.jpg", answer: 2, explanation: "男孩的自行车后轮出了问题，他原本想坐公交车，但对方提议路不远可以走路，男孩表示同意，因此选择 C。" },
+    { question: "Which woman is Laura's new English teacher?", image: "/images/listening/trainer1-test1/q4.jpg", answer: 2, explanation: "书店外长黑发的女士并不是老师（那是金发的 Susanna 阿姨），Laura 的新英语老师是另一位留黑色短发、戴眼镜的女士，因此选择 C。" },
+    { question: "What might Harry do if it rains on Saturday?", image: "/images/listening/trainer1-test1/q5.jpg", answer: 0, explanation: "跑步是户外计划，下雨就不能进行；羽毛球 Harry 喜欢但朋友们不喜欢，而排球大家都喜欢又能在室内进行，所以他可能去打排球，因此选择 A。" },
+  ],
+  22: [
+    { question: "What are they going to have for lunch?", image: "/images/listening/trainer1-test2/q1.jpg", answer: 2, explanation: "妈妈提议做意面，也可以拌沙拉，还说昨晚剩了披萨；Pete 回答吃和昨晚一样的就行，而昨晚吃的正是披萨，因此选择 C。" },
+    { question: "Which family are Emily's new neighbours?", image: "/images/listening/trainer1-test2/q2.jpg", answer: 2, explanation: "Emily 说新邻居家有一位很友好的奶奶，两个和她年龄相仿的孩子，而且“just girls”（都是女孩）；图 A 是老爷爷、图 B 是一男一女两个孩子，只有图 C 是奶奶加两个女儿，因此选择 C。" },
+    { question: "What was Oscar doing when Isabel phoned him?", image: "/images/listening/trainer1-test2/q3.jpg", answer: 0, explanation: "Oscar 说他正在帮爸爸搬卧室里的家具，搬完之后才打算刷墙；吃饭也不是此刻在做的事，因此选择 A。" },
+    { question: "Why didn’t Niesha go to the party?", image: "/images/listening/trainer1-test2/q4.jpg", answer: 0, explanation: "Niesha 生病卧床是她之前错过学校运动会的原因；这次错过派对是因为全家正开车从度假地返回，因此选择 A。" },
+    { question: "Where’s Oliver’s phone now?", image: "/images/listening/trainer1-test2/q5.jpg", answer: 1, explanation: "手机早些时候在厨房餐桌上，之后用过；朋友提醒他常忘在沙发上，但最后发现手机在书桌上、被书遮住了所以没看到，因此选择 B。" },
+  ],
+  23: [
+    { question: "What time does the nature programme start?", image: "/images/listening/trainer1-test3/q1.jpg", answer: 1, explanation: "Catherine 以为七点半开始，爸爸查看后说自然节目排在六点半的体育节目之后，即七点十分（ten past seven）开始，因此选择 B。" },
+    { question: "Who is Diana talking to on her mobile?", image: "/images/listening/trainer1-test3/q2.jpg", answer: 2, explanation: "Diana 是在给朋友 Sarah（邻居家的女儿）打电话问数学作业；Aunt Christine 是儿子猜测的对象，David 是来一起做项目的男孩，因此选择 C。" },
+    { question: "Where will Henry put his mum’s watch?", image: "/images/listening/trainer1-test3/q3.jpg", answer: 0, explanation: "手表原本在灶台旁，妈妈让 Henry 放到她卧室床边的小桌上；沙发是她之前寻找的地方，因此选择 A。" },
+    { question: "Why is the girl tired?", image: "/images/listening/trainer1-test3/q4.jpg", answer: 2, explanation: "打网球的是 Jane 和别人，整理房间是哥哥请她帮忙做的事；女孩累是因为公交车晚点，她一路走回家花了一个小时，因此选择 C。" },
+    { question: "What will the weather be like on Sunday?", image: "/images/listening/trainer1-test3/q5.jpg", answer: 0, explanation: "对方问周日是不是多云，女孩说没关系、气温约 25 度，即周日多云；下雨是她度假时的经历，25 度说的是温度而非晴天，因此选择 A。" },
+  ],
+  24: [
+    { question: "How much did the boy’s football shirt cost?", image: "/images/listening/trainer1-test4/q1.jpg", answer: 1, explanation: "奶奶给了他 35 英镑，但球衣在市中心的运动用品店只花了 20.50 英镑；11.75 英镑是对方 T 恤的价格，因此选择 B。" },
+    { question: "What did Sophie enjoy doing most at the weekend?", image: "/images/listening/trainer1-test4/q2.jpg", answer: 2, explanation: "打排球脚疼打得不好，和弟弟游泳觉得一般；爸爸教她钓鱼，她说“真的很酷”，即最喜欢钓鱼，因此选择 C。" },
+    { question: "Where did Paul stay on holiday this year?", image: "/images/listening/trainer1-test4/q3.jpg", answer: 0, explanation: "去年他们住在船上，今年妈妈想住带大泳池的酒店，但其他人都想去露营，最后就去露营了，因此选择 A。" },
+    { question: "Which subject will they study first today?", image: "/images/listening/trainer1-test4/q4.jpg", answer: 1, explanation: "周二通常先上数学，但今天数学是第三节，在地理之后，所以地理之前的化学是第一节课，因此选择 B。" },
+    { question: "Why was Tina late for school today?", image: "/images/listening/trainer1-test4/q5.jpg", answer: 2, explanation: "她 7 点正常起床，公交车来了却因为客满没停，这是她迟到的原因；之后回家让妈妈开车送她，但堵车不严重，因此选择 C。" },
+  ],
+  25: [
+    { question: "How will Luciana invite her friends to her birthday party?", image: "/images/listening/trainer1-test5/q1.jpg", answer: 2, explanation: "图片 A 是打电话、B 是寄请帖、C 是在电脑前发邮件。妈妈最先建议用邮件邀请朋友，Luciana 说“你的第一个主意最好”就照做；姐姐当年寄请帖只是随口提起、打电话又太费时间，因此选择 C（用电脑发邮件）。" },
+    { question: "What does Charlie want to borrow from his brother, James?", image: "/images/listening/trainer1-test5/q2.jpg", answer: 1, explanation: "图片 A 是运动鞋、B 是太阳镜、C 是牛仔裤。James 先提议借运动鞋，Charlie 说牛仔裤自己会穿（不是借的），最后说“其实我需要一副太阳镜”，因此选择 B。" },
+    { question: "How will Carol get to her dance class?", image: "/images/listening/trainer1-test5/q3.jpg", answer: 0, explanation: "图片 A 是和同伴步行、B 是坐小汽车、C 是坐公交车。爸爸没法开车送她，妈妈提到公交站离 Tessa 家很远，Carol 说“别担心，路不远”，决定和 Tessa 一起走过去，因此选择 A。" },
+    { question: "Which film do they decide to watch first?", image: "/images/listening/trainer1-test5/q4.jpg", answer: 0, explanation: "图片 A 是舞蹈比赛影片、B 是攀登山峰的影片、C 是讲未来生活的《Zooter》。他们说《Zooter》留到下周末表兄弟来时再看，现在先看关于舞蹈比赛的那部，因此选择 A。" },
+    { question: "Which T-shirt does the girl like best?", image: "/images/listening/trainer1-test5/q5.jpg", answer: 2, explanation: "图片 A 印着棕榈树小岛、B 印着冲浪板、C 印着海豚。她说网站上印小岛的那件很棒、店里见过印冲浪板的，但最喜欢的是杂志上看到的那件（海豚图案），因此选择 C。" },
+  ],
+  26: [
+    { question: "How did Carrie hurt her leg?", image: "/images/listening/trainer1-test6/q1.jpg", answer: 2, explanation: "图片 A 是骑自行车摔倒、B 是跑步比赛、C 是下楼梯。Carrie 说昨天赛跑时只是差点摔倒，腿其实是昨晚在家下楼时弄伤的；骑车摔倒是听话同学自己的经历，因此选择 C。" },
+    { question: "Which backpack has the boy bought?", image: "/images/listening/trainer1-test6/q2.jpg", answer: 1, explanation: "图片 A 是一个大外袋、B 是两个小前袋、C 是一个大前袋（三款都有星星图案）。男孩说网上看中的款是一个大口袋，而他在市场买的这个有两个小口袋，因此选择 B。" },
+    { question: "Where will Daisy have her birthday party?", image: "/images/listening/trainer1-test6/q3.jpg", answer: 0, explanation: "图片 A 是带花园的房子、B 是餐厅内部、C 是体育俱乐部。体育俱乐部是妈妈的建议、那里没有餐厅，最后妈妈同意像去年一样在自家花园办，因此选择 A。" },
+    { question: "Which job does Dylan's dad do now?", image: "/images/listening/trainer1-test6/q4.jpg", answer: 2, explanation: "图片 A 是办公室职员、B 是医生、C 是救护车司机。Dylan 说爸爸在医院工作但不是医生，而是开救护车；办公室工作是他以前做了很久的旧工作，因此选择 C。" },
+    { question: "What did they both do yesterday?", image: "/images/listening/trainer1-test6/q5.jpg", answer: 0, explanation: "图片 A 是冲浪、B 是帆船、C 是沙滩排球。两人都说冲浪最棒（一个说 I loved going surfing，另一个说 that was the best thing for me too）；帆船没去成、排球是下次的约定，因此选择 A。" },
+  ],
+  27: [
+    { question: "What do they still need to buy in the shop?", image: "/images/listening/trainer2-test1/q1.jpg", answer: 2, explanation: "爸爸问东西是否都买齐了，女孩说买了蘑菇和不少别的蔬菜、胡萝卜不用买，然后想起妈妈叮嘱要买的鱼还没拿，爸爸说这就去取，因此选择 C。" },
+    { question: "What has just happened?", image: "/images/listening/trainer2-test1/q2.jpg", answer: 2, explanation: "男孩说那名球员带着球突然摔倒，周围并没有人碰他，现在还躺在草地上起不来，应该是受伤了需要帮助，因此选择 C。" },
+    { question: "Which is the woman’s suitcase?", image: "/images/listening/trainer2-test1/q3.jpg", answer: 0, explanation: "女士的行李箱有轮子、带黑白条纹，但上面没有任何照片或人脸图案，因此选择 A。" },
+    { question: "What is the girl going to have?", image: "/images/listening/trainer2-test1/q4.jpg", answer: 0, explanation: "女孩想点茶再加一块柠檬蛋糕，但蛋糕已经卖完，她又说自己今天已经吃过一个冰淇淋，最后只要了茶，因此选择 A。" },
+    { question: "What have they just watched?", image: "/images/listening/trainer2-test1/q5.jpg", answer: 1, explanation: "男孩说很喜欢小提琴，女孩说她全程都在看舞蹈演员、他们穿特制的鞋子立起脚尖，还庆幸今天没有演唱，舞者的动作很优美，因此选择 B。" },
+  ],
+  28: [
+    { question: "Where are the boy’s jeans now?", image: "/images/listening/trainer2-test2/q1.jpg", answer: 0, explanation: "妈妈说正在洗，牛仔裤还在洗衣机里——是厨房里那台洗衣机，不是浴室里那台，因此选择 A。" },
+    { question: "Where is the girl’s phone?", image: "/images/listening/trainer2-test2/q2.jpg", answer: 0, explanation: "女孩说手机被窗帘挡住了一部分所以没看见，它就在窗户边、窗帘后面，因此选择 A。" },
+    { question: "What did the boy do for his neighbour?", image: "/images/listening/trainer2-test2/q3.jpg", answer: 0, explanation: "男孩说邻居家的门旧了，她想找人刷漆就请他帮忙，他已经把门漆好了，因此选择 A。" },
+    { question: "What did the girl break?", image: "/images/listening/trainer2-test2/q4.jpg", answer: 1, explanation: "女孩说妈妈把几个盘子放在花园的桌子上，她踢球时球撞到桌子，盘子全都摔碎了，因此选择 B。" },
+    { question: "What will be the pupils’ first lesson tomorrow?", image: "/images/listening/trainer2-test2/q5.jpg", answer: 2, explanation: "老师说地理是化学之后的第二节课，所以明天第一节课是化学，因此选择 C。" },
+  ],
+  29: [
+    { question: "Which man is the girl’s French teacher?", image: "/images/listening/trainer2-test3/q1.jpg", answer: 2, explanation: "女孩说法语老师没有胡子，但戴一副很小的眼镜；留胡子的是数学老师 Hamswell，因此选择 C。" },
+    { question: "What is the boy going to do?", image: "/images/listening/trainer2-test3/q2.jpg", answer: 1, explanation: "妈妈说不能穿足球衫去打网球，男孩又让妈妈等他拿球拍，说明他要去打网球，因此选择 B。" },
+    { question: "Which bike was the woman riding?", image: "/images/listening/trainer2-test3/q3.jpg", answer: 1, explanation: "女孩说前轮比后轮大得多，座位高高装在前轮上方，与 B 图老式自行车一致，因此选择 B。" },
+    { question: "Which game is the boy playing?", image: "/images/listening/trainer2-test3/q4.jpg", answer: 0, explanation: "男孩说他在玩叫 Yesterday 的游戏，要捉住恐龙、和它成为朋友并骑恐龙赛跑；赛车游戏是明天才玩，因此选择 A。" },
+    { question: "How are the people going to travel?", image: "/images/listening/trainer2-test3/q5.jpg", answer: 0, explanation: "女孩说出租车太贵，男孩说坐公交要换车太费时，最后提议干脆步行，女孩同意，因此选择 A。（官方 Key 误印为 B，但 B 图是出租车，与文稿明确矛盾，按文稿取 A。）" },
+  ],
+  30: [
+    { question: "Which is the girl’s mother?", image: "/images/listening/trainer2-test4/q1.jpg", answer: 1, explanation: "女孩说妈妈的外套有花、围巾不是条纹的，平时戴眼镜但今天没戴；A 是条纹围巾、C 戴着眼镜，因此选择 B。" },
+    { question: "What is in the girl’s pencil case?", image: "/images/listening/trainer2-test4/q2.jpg", answer: 1, explanation: "女孩说铅笔盒里有钢笔、老师要求带的尺子和从不忘记带的铅笔，但没有橡皮，因此选择 B。" },
+    { question: "What job does the boy’s father do?", image: "/images/listening/trainer2-test4/q3.jpg", answer: 2, explanation: "爸爸常接送人们去机场、赛后从体育场接人，还载过著名球星，是出租车司机，因此选择 C。" },
+    { question: "What was the problem in the bathroom?", image: "/images/listening/trainer2-test4/q4.jpg", answer: 0, explanation: "洗衣机在浴室里，昨天水从洗衣机里流出来，漫过地板流进楼下的厨房，因此选择 A。" },
+    { question: "Where are the people?", image: "/images/listening/trainer2-test4/q5.jpg", answer: 2, explanation: "妈妈让孩子在蔬菜区等着，自己去那边拿肉，还提到自己做薯条，说明他们在超市，因此选择 C。" },
+  ],
+  31: [
+    { question: "Which is the boy’s bedroom?", image: "/images/listening/trainer2-test5/q1.jpg", answer: 0, explanation: "男孩说床沿着左墙、对面是书桌和椅子，房间太小放不下书柜，衣柜在门外走廊里；B 有衣柜、C 有书架，因此选择 A。" },
+    { question: "What does the girl want to buy?", image: "/images/listening/trainer2-test5/q2.jpg", answer: 2, explanation: "女孩要为音乐节买帐篷，要完全防水、不透光，晴天也能在里面睡，因此选择 C。" },
+    { question: "What did the man do on his holiday?", image: "/images/listening/trainer2-test5/q3.jpg", answer: 1, explanation: "男士说这是他第一次玩单板滑雪，觉得比滑雪容易，因此选择 B。" },
+    { question: "What does the boy’s mother do?", image: "/images/listening/trainer2-test5/q4.jpg", answer: 0, explanation: "妈妈是摄影师，本周拍过工程师的加油站和音乐人的吉他照片，因此选择 A。" },
+    { question: "What does the girl want to do with her friends?", image: "/images/listening/trainer2-test5/q5.jpg", answer: 1, explanation: "女孩说不想像 11 岁时那样去滑冰，只想邀请朋友们来家里看音乐视频，因此选择 B。" },
+  ],
+  32: [
+    { question: "Which is Jonas’s band?", image: "/images/listening/trainer2-test6/q1.jpg", answer: 0, explanation: "Nick 是主唱兼吉他手，乐队里有两台键盘——一台代替钢琴、另一台代替鼓，没有真钢琴也没有鼓手；B 有鼓组、C 有钢琴，因此选择 A。（题目页印 Jonas、文稿说 Nick，为同一乐队。）" },
+    { question: "What is in the fridge?", image: "/images/listening/trainer2-test6/q2.jpg", answer: 2, explanation: "女孩说冰箱里有蘑菇，牛奶也快喝完了，但鸡蛋一个都不剩，因此选择 C。" },
+    { question: "How does the boy’s mother want him to travel home?", image: "/images/listening/trainer2-test6/q3.jpg", answer: 0, explanation: "妈妈说不会付双程出租车费，提议他干脆走路回家；男孩最后坐公交，但问题问妈妈的建议，因此选择 A。" },
+    { question: "Which platform does the train to London leave from?", image: "/images/listening/trainer2-test6/q4.jpg", answer: 0, explanation: "开往伦敦的火车通常从 11 号站台发车，但那个站台正在维修，现在改从 1 号站台发车，因此选择 A。" },
+    { question: "Where is the boy’s pencil case now?", image: "/images/listening/trainer2-test6/q5.jpg", answer: 0, explanation: "男孩说可能在车里从外套口袋掉出来了，妈妈确认看见它在汽车后座上，因此选择 A。（官方 Key 误印为 C，C 图是厨房，只对应妈妈放车钥匙的位置，与文稿明确矛盾，按文稿取 A。）" },
+  ],
   20: [
     {question:'What has Paul bought Timothy for his birthday?',image:'/images/listening/standard-book2-test4/q1.jpg',answer:0},{question:'Where did John go last weekend?',image:'/images/listening/standard-book2-test4/q2.jpg',answer:0},{question:'Where’s Sally now?',image:'/images/listening/standard-book2-test4/q3.jpg',answer:2},{question:'Which sport is the woman going to do at the sports centre?',image:'/images/listening/standard-book2-test4/q4.jpg',answer:1},{question:'What has the woman bought for her new apartment?',image:'/images/listening/standard-book2-test4/q5.jpg',answer:2},
   ],
@@ -1160,8 +1249,9 @@ function ListeningTabBar({ active, isPet = false, setId, onSelect }) {
     <nav className="border-b border-gray-100 bg-white px-6 py-4">
       <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-2.5">
         {pill("centre", "我的听力中心")}
-        {pill("common", "听力常见考点")}
-        {pill("dictation", "听力挖空练习")}
+        {/* 听力常见考点 / 听力挖空练习目前只有 KET 内容，PET 不显示入口 */}
+        {!isPet && pill("common", "听力常见考点")}
+        {!isPet && pill("dictation", "听力挖空练习")}
         {Array.from({ length: partCount }, (_, i) => i + 1).map((p) =>
           pill(p, `Part ${p}`),
         )}
@@ -1199,7 +1289,7 @@ function ListeningSetChecking({ part, setId, level, setLevel }) {
 }
 
 function OfficialPartOneSample({ level, setLevel, setId = 9 }) {
-  const questions = OFFICIAL_PART1_SETS[setId] || KET3_TEST1_PART1;
+  const questions = PART1_SETS_ALL[setId] || KET3_TEST1_PART1;
   const saved = readListeningProgress(setId, 1);
   const [answers, setAnswers] = useState(() =>
     saved?.answers?.length === questions.length
@@ -1207,6 +1297,7 @@ function OfficialPartOneSample({ level, setLevel, setId = 9 }) {
       : Array(questions.length).fill(null),
   );
   const [localSubmitted, setLocalSubmitted] = useState(() => Boolean(saved?.submitted));
+  const [revealExplanation, setRevealExplanation] = useState({});
   useEffect(() => {
     saveListeningProgress(setId, 1, {
       answers,
@@ -1324,12 +1415,32 @@ function OfficialPartOneSample({ level, setLevel, setId = 9 }) {
                       <div
                         className={`mt-4 rounded-xl px-4 py-3 text-sm ${right ? "bg-emerald-50 text-emerald-800" : "bg-rose-50 text-rose-700"}`}
                       >
-                        <strong>
-                          {right
-                            ? "✓ 回答正确！"
-                            : `再听一次。正确答案是 ${String.fromCharCode(65 + item.answer)}。`}
-                        </strong>
-                        <span className="ml-2">{item.explanation}</span>
+                        <div className="flex flex-wrap items-center gap-x-2">
+                          <strong>
+                            {right
+                              ? "✓ 回答正确！"
+                              : `再听一次。正确答案是 ${String.fromCharCode(65 + item.answer)}。`}
+                          </strong>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setRevealExplanation((v) => ({
+                                ...v,
+                                [index]: !v[index],
+                              }))
+                            }
+                            className="text-xs font-extrabold text-emerald-700 hover:underline"
+                          >
+                            {revealExplanation[index] ? "收起解析" : "查看解析"}
+                          </button>
+                        </div>
+                        {revealExplanation[index] && item.explanation && (
+                          <p className="mt-1.5 leading-6">{item.explanation}</p>
+                        )}
+                        <TranscriptBox
+                          transcript={item.transcript}
+                          highlights={extractQuotes(item.explanation || item.exp || '')}
+                        />
                       </div>
                     )}
                   </div>
@@ -1513,7 +1624,79 @@ const OFFICIAL_TEST1_PARTS = {
   },
 };
 
-const OFFICIAL_PART2_SETS = {
+const OFFICIAL_PART2_BASE = {
+  21:{title:'Part 2 信息填空题',instruction:'听老师向全班介绍一个新的音乐俱乐部，填写一个单词、数字或时间。',type:'blanks',items:[
+    {q:'New music club — Day club will meet:',answer:['Thursday','Thursdays','thursday','thursdays'],show:'Thursday'},
+    {q:'New music club — Time: from ___ to 5 p.m.',answer:['4.20','4:20','16.20','16:20','twenty past four','four twenty'],show:'4:20'},
+    {q:'New music club — Teacher’s name: Mr ___',answer:['Taylor','taylor'],show:'Taylor'},
+    {q:'New music club — Teacher’s phone number:',answer:['0779386521','07793 86521'],show:'0779386521'},
+    {q:'New music club — Place:',answer:['library','the library'],show:'library'}]},
+  22:{title:'Part 2 信息填空题',instruction:'听一位女士向学生介绍动物园参观活动，填写一个单词、数字或时间。',type:'blanks',items:[
+    {q:'Zoo visit — Animal to draw:',answer:['tiger','a tiger','the tiger'],show:'tiger'},
+    {q:'Zoo visit — Time to give animals water: ___ a.m.',answer:['10.45','10:45','ten forty-five','quarter to eleven'],show:'10:45'},
+    {q:'Zoo visit — Name of baby lion:',answer:['Sohatu','sohatu'],show:'Sohatu'},
+    {q:'Zoo visit — Age of oldest dolphin:',answer:['37','thirty-seven','thirty seven'],show:'37'},
+    {q:'Zoo visit — Get free:',answer:['poster','a poster','the poster'],show:'poster'}]},
+  23:{title:'Part 2 信息填空题',instruction:'听男孩给朋友留言介绍一场足球比赛的安排，填写一个单词或数字。',type:'blanks',items:[
+    {q:'Football match — Name of stadium:',answer:['Bridge','bridge','the Bridge'],show:'Bridge'},
+    {q:'Football match — Bus number:',answer:['395','three nine five','three ninety-five'],show:'395'},
+    {q:'Football match — Cost of ticket: £',answer:['4.50','4:50','4.5','four fifty','four pounds fifty'],show:'4.50'},
+    {q:'Football match — Wear:',answer:['coat','a coat'],show:'coat'},
+    {q:'Football match — Bring:',answer:['snack','a snack','snacks'],show:'snack'}]},
+  24:{title:'Part 2 信息填空题',instruction:'听 Rosie 的姑姑介绍一场舞蹈比赛，填写一个单词或数字。',type:'blanks',items:[
+    {q:'Dance competition — Date to enter by:',answer:['12th July','12 July','July 12','12/07','07/12','twelfth July','12 jul'],show:'12th July'},
+    {q:'Dance competition — Send:',answer:['video','a video'],show:'video'},
+    {q:'Dance competition — Website address: www.',answer:['jittersea','jittersea.com'],show:'jittersea'},
+    {q:'Dance competition — Place:',answer:['college','the college'],show:'college'},
+    {q:'Dance competition — First prize: £',answer:['175','175.00','one hundred and seventy-five'],show:'175'}]},
+  25:{title:'Part 2 信息填空题',instruction:'听男孩给朋友留言介绍英语作业的安排，填写一个单词或数字/日期。',type:'blanks',items:[
+    {q:'Homework — What to write:',answer:['story','a story'],show:'story'},
+    {q:'Homework — Number of words:',answer:['250','two hundred and fifty'],show:'250'},
+    {q:'Homework — Remember to add:',answer:['photo','a photo','photograph','a photograph'],show:'photo'},
+    {q:'Homework — Get ideas from: www.___.com',answer:['collatra','collatra.com'],show:'collatra'},
+    {q:'Homework — Date to give to teacher:',answer:['22nd May','22 May','May 22','22/05','05/22','twenty-second May','the 22nd of May'],show:'22nd May'}]},
+  26:{title:'Part 2 信息填空题',instruction:'听老师向学生介绍去城堡的班级旅行安排，填写一个单词或数字/时间。',type:'blanks',items:[
+    {q:'Class trip — Cost: £',answer:['5.60','5,60','five pounds sixty','5 pounds 60'],show:'5.60'},
+    {q:'Class trip — Day of trip:',answer:['Saturday','saturday','Sat'],show:'Saturday'},
+    {q:'Class trip — Time bus leaves school: ___ a.m.',answer:['9:10','9.10','ten past nine','910'],show:'9:10'},
+    {q:'Class trip — Bring:',answer:['camera','a camera'],show:'camera'},
+    {q:'Class trip — Name of special exhibition:',answer:['Modana','modana'],show:'Modana'}]},
+  27:{title:'Part 2 信息填空题',instruction:'听一位导游介绍布里斯托尔的街头艺术徒步游览，填写一个单词、数字或日期。',type:'blanks',items:[
+    {q:'Street art tour — Where Bristol’s best street art is: next to a',answer:['motorway'],show:'motorway'},
+    {q:'Street art tour — Bristol’s biggest piece of street art: a picture of a',answer:['baby'],show:'baby'},
+    {q:'Street art tour — Artist whose art you’ll see:',answer:['inkie'],show:'Inkie'},
+    {q:'Street art tour — Date of next available tour:',answer:['25 april','april 25','april 25th','25th april','25th of april','the 25th of april','april the twenty-fifth','25/04','04/25'],show:'25 April'},
+    {q:'Street art tour — What visitors usually enjoy: the guide’s',answer:['stories','the stories'],show:'stories'}]},
+  28:{title:'Part 2 信息填空题',instruction:'听 Rosie 给 Freddie 留的语音留言，填写一个单词、数字或日期。',type:'blanks',items:[
+    {q:'Bike ride — Time to meet:',answer:['10:30','10.30','ten thirty','half past ten','1030'],show:'10:30'},
+    {q:'Bike ride — Where we’ll cycle to: the',answer:['lake'],show:'lake'},
+    {q:'Bike ride — Where to meet: in the park on',answer:['hartley'],show:'Hartley'},
+    {q:'Bike ride — What Rosie wants to take photos of: the',answer:['bees','the bees'],show:'bees'},
+    {q:'Bike ride — Rosie’s new phone number:',answer:['0766823901','0766 823901','0766-823901'],show:'0766 823901'}]},
+  29:{title:'Part 2 信息填空题',instruction:'听 Jemima 给 Lisa 留的语音留言，填写一个单词、数字、日期或时间。',type:'blanks',items:[
+    {q:'Visit to Jemima — Time to meet:',answer:['3:15','3.15','three fifteen','quarter past three','1515'],show:'3:15'},
+    {q:'Visit to Jemima — Place to meet (by the ___ near the park):',answer:['chemist'],show:'chemist'},
+    {q:'Visit to Jemima — Phone number for Jemima’s mother:',answer:['07905965433'],show:'07905965433'},
+    {q:'Visit to Jemima — What to bring (a ___):',answer:['toothbrush'],show:'toothbrush'},
+    {q:'Visit to Jemima — Possible film to watch:',answer:['Kazoom'],show:'Kazoom'}]},
+  30:{title:'Part 2 信息填空题',instruction:'听妈妈留的语音留言，了解爷爷生日派对的安排，填写一个单词、数字或时间。',type:'blanks',items:[
+    {q:'Grandad’s birthday party — Name of hotel (the ___):',answer:['Yeovil','yeovil'],show:'Yeovil'},
+    {q:'Grandad’s birthday party — Address of hotel (57 ___ Road):',answer:['Airport','airport'],show:'Airport'},
+    {q:'Grandad’s birthday party — Time to meet there:',answer:['4:15','4.15','quarter past four','four fifteen','1615'],show:'4:15'},
+    {q:'Grandad’s birthday party — Which bus to get:',answer:['84','the 84','bus 84'],show:'84'},
+    {q:'Grandad’s birthday party — Mum’s work phone number:',answer:['01172387922','0117 238 7922','0117-238-7922'],show:'0117 238 7922'}]},
+  31:{title:'Part 2 信息填空题',instruction:'听活动中心经理 Mark 的语音留言，填写一个单词、数字或时间。',type:'blanks',items:[
+    {q:'Longnor Activity Centre — Manager’s phone number:',answer:['07302874266','07302 874 266','07302-874-266'],show:'07302 874 266'},
+    {q:'Longnor Activity Centre — Time to meet after lunch:',answer:['1:45','1.45','quarter to two','one forty-five','1345'],show:'1:45'},
+    {q:'Longnor Activity Centre — First activity:',answer:['climbing'],show:'climbing'},
+    {q:'Longnor Activity Centre — Place for supper (___ Lake):',answer:['Fairbourne'],show:'Fairbourne'},
+    {q:'Longnor Activity Centre — What to take (a ___):',answer:['towel'],show:'towel'}]},
+  32:{title:'Part 2 信息填空题',instruction:'听女孩给朋友留的语音留言，了解看电影的安排，填写一个单词、数字、日期或时间。',type:'blanks',items:[
+    {q:'Trip to the cinema — Date:',answer:['June 5','5 June','June 5th','5th June','jun 5'],show:'June 5'},
+    {q:'Trip to the cinema — Cinema (The ___ Cinema):',answer:['Mercia'],show:'Mercia'},
+    {q:'Trip to the cinema — Address (___ Street):',answer:['Green'],show:'Green'},
+    {q:'Trip to the cinema — Time to meet:',answer:['3:10','3.10','ten past three','1510'],show:'3:10'},
+    {q:'Trip to the cinema — Length of film (___ minutes):',answer:['75'],show:'75'}]},
   20:{title:'Part 2 信息填空题',instruction:'听旅游巴士司机介绍动物园参观安排，填写一个单词、数字或时间。',type:'blanks',items:[
     {q:'Langate Animal Park — Famous for:',answer:['monkey','monkeys'],show:'monkeys'},{q:'Langate Animal Park — Good place to take photos:',answer:['river','the river'],show:'river'},{q:'Langate Animal Park — Start time of guide’s talk: ___ a.m.',answer:['10.15','10:15','ten fifteen','quarter past ten'],show:'10:15'},{q:'Langate Animal Park — Cost of lunch: €',answer:['8.99','€8.99'],show:'8.99'},{q:'Langate Animal Park — Wait for coach at entrance called:',answer:['Chepstow','chepstow'],show:'Chepstow'}]},
   19:{title:'Part 2 信息填空题',instruction:'听 Maria 留给 Bill 的生日派对留言，填写一个单词、数字或时间。',type:'blanks',items:[
@@ -1696,7 +1879,127 @@ const OFFICIAL_PART2_SETS = {
   },
 };
 
-const OFFICIAL_PART3_SETS = {
+const OFFICIAL_PART3_BASE = {
+  21: {
+    title: "Part 3 长篇听力题",
+    instruction: "听 Luis 和朋友 Charlotte 谈论一款电脑游戏，选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "Where did Luis first find out about the game?", opts: ["from a game website", "from a school friend", "from a magazine advertisement"], answer: 2, explanation: "Luis 借了同学的杂志，在上面看到游戏广告；网站是妈妈购买游戏的渠道，同学只是借给他杂志，因此选择 C。" },
+      { q: "Charlotte likes the game because", opts: ["it’s funny.", "it’s hard.", "it’s new."], answer: 1, explanation: "Charlotte 说游戏并不新、也完全不好笑，但并不简单（isn’t easy），这正是她最喜欢的地方，因此选择 B。" },
+      { q: "Who does Luis want to play the game with?", opts: ["his brother", "his granddad", "his cousin"], answer: 1, explanation: "哥哥忙于学习、表（堂）妹 Amy 只喜欢棋盘游戏，而爷爷时间充裕，所以 Luis 想和爷爷一起玩，因此选择 B。" },
+      { q: "How long did Charlotte play the game for last Saturday?", opts: ["forty-five minutes", "one hour", "one hour and thirty minutes"], answer: 0, explanation: "上周三她玩了一个半小时、周五玩了一小时，而上周六玩了四分之三小时，即 45 分钟，因此选择 A。" },
+      { q: "Which part of the game does Luis like best?", opts: ["finding food", "building a hut", "crossing the river"], answer: 0, explanation: "过河很不错，但 Luis 最喜欢的环节是寻找食物，搭建小屋反而是他最不喜欢的，因此选择 A。" },
+    ],
+  },
+  22: {
+    title: "Part 3 长篇听力题",
+    instruction: "听 Jasmine 和阿姨谈论一次露营旅行，选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "Where did Jasmine and her aunt go swimming?", opts: ["in the sea", "in the river", "in the lake"], answer: 2, explanation: "海上风太大无法游泳，在河里游只是她们“下次可以试试”的计划；她们这次是在湖里游得很开心，因此选择 C。" },
+      { q: "How did Jasmine feel about sleeping in a tent to start with?", opts: ["excited", "afraid", "unhappy"], answer: 1, explanation: "Jasmine 说第一晚她很担心（worried），很快才发现睡帐篷很刺激；unhappy 是没能同行的哥哥的感受，属于干扰项，因此选择 B。" },
+      { q: "What did Jasmine’s aunt like cooking?", opts: ["omelette", "steak", "pasta"], answer: 1, explanation: "煎蛋卷很难做，而阿姨说自己喜欢在烧烤架上烤牛排；意面是 Jasmine 亲手做的，不是阿姨做的，因此选择 B。" },
+      { q: "Jasmine’s aunt thought the campsite", opts: ["needed a shop.", "had good showers.", "was too small."], answer: 0, explanation: "阿姨说营地相当大（排除 C），遗憾的是没有地方可买食物和用品，即需要一家商店；淋浴只是“有点脏但还可以”（排除 B），因此选择 A。" },
+      { q: "Which activity did Jasmine like best?", opts: ["cycling", "fishing", "running"], answer: 1, explanation: "Jasmine 说在森林里跑步还行但很累，而钓鱼太棒了，甚至比骑自行车还有趣，因此她最喜欢的是钓鱼，选择 B。" },
+    ],
+  },
+  23: {
+    title: "Part 3 长篇听力题",
+    instruction: "听 Hitomi 和朋友 Freddie 谈论她参观 Hardin Castle 的经历，选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "Who did Hitomi go to Hardin Castle with?", opts: ["her classmates", "her family", "her neighbours"], answer: 2, explanation: "Hitomi 的班级去的是工厂，她和住在隔壁的一家人去的城堡，即邻居，因此选择 C。" },
+      { q: "What was the weather like?", opts: ["cold", "wet", "windy"], answer: 1, explanation: "周六下了雨，即 wet；又冷又刮风的是“今天”，不是参观当天，因此选择 B。" },
+      { q: "What do Hitomi and Freddie both like best at Hardin Castle?", opts: ["the Queen’s bathroom", "the yellow bedroom", "the dining room"], answer: 0, explanation: "Freddie 说最喜欢楼上的女王浴室，Hitomi 说“me too”；餐厅只是看过，黄色卧室则让她觉得奇怪，因此选择 A。" },
+      { q: "Freddie went to the castle because he wanted", opts: ["to learn about history.", "to take photos.", "to find out about birds."], answer: 2, explanation: "拍照只是 Freddie 的爱好、并非此行目的；他在那里碰巧见到历史老师，而真正目的是了解野生鸟类，因此选择 C。" },
+      { q: "What’s on at the castle next month?", opts: ["a running race", "an exhibition of old cars", "a painting course"], answer: 1, explanation: "五公里赛跑是下周、绘画课程要到明年夏天；下个月展出的是 50 多年车龄的老爷车，因此选择 B。" },
+    ],
+  },
+  24: {
+    title: "Part 3 长篇听力题",
+    instruction: "听 Tommy 和朋友 Olga 谈论班级聚会，选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "Which date is the class party?", opts: ["25th June", "28th June", "1st July"], answer: 1, explanation: "Olga 的生日在 7 月 1 日；班级聚会定在 6 月底，28 号是周五比 25 号更好，因此聚会日期是 6 月 28 日，选择 B。" },
+      { q: "What does Olga think Tommy should wear to the party?", opts: ["his black jeans", "his blue shorts", "his green T-shirt"], answer: 1, explanation: "Tommy 在黑色牛仔裤和蓝色短裤之间犹豫，Olga 让他穿新的黑色 T 恤配蓝色短裤，因此推荐的是蓝色短裤，选择 B。" },
+      { q: "What’s Olga worried about?", opts: ["singing at the party", "playing the guitar", "helping tidy up"], answer: 2, explanation: "Tommy 让她像学校音乐会那样唱歌或像去年那样弹吉他，Olga 担心的是聚会后帮忙收拾打扫会花很长时间，因此选择 C。" },
+      { q: "Why will Tommy arrive at the party late?", opts: ["He’ll have to wait for a lift.", "There aren’t many buses.", "He wants to play tennis first."], answer: 2, explanation: "Tommy 要先参加体育俱乐部的网球比赛，没时间坐公交，之后妈妈开车送他，所以会迟到，原因是先打网球，选择 C。" },
+      { q: "What’s Olga going to take to the party?", opts: ["some balloons", "some paper plates", "some food"], answer: 0, explanation: "Olga 的妈妈会做食物、他们带纸盘；Tommy 问她有没有气球，Olga 说有，因此她要带的是气球，选择 A。" },
+    ],
+  },
+  25: {
+    title: "Part 3 长篇听力题",
+    instruction: "听 Dan 在运动用品店和店员谈论买滑板的事，选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "Dan thinks plastic skateboards are", opts: ["cheap.", "popular.", "light."], answer: 1, explanation: "Dan 说塑料滑板并不总是便宜，但朋友们都用塑料的，所以他认为塑料滑板受欢迎；“heavy wheels”是他哥哥那块板的轮子，因此选择 B。" },
+      { q: "What colour skateboard does Dan prefer?", opts: ["purple", "yellow", "grey"], answer: 2, explanation: "Dan 说紫色好看、黄色有趣，但“灰色对我来说是更好的颜色”，因此他更喜欢灰色，选择 C。" },
+      { q: "The shop assistant says the best skateboard for Dan is about", opts: ["16 cm wide.", "18 cm wide.", "20 cm wide."], answer: 0, explanation: "店员说 20 厘米最适合进阶玩家、18 厘米次之，而 Dan 是初学者，所以 16 厘米的最好，因此选择 A。" },
+      { q: "What free gift can Dan get from the shop?", opts: ["a backpack", "some gloves", "a scarf"], answer: 1, explanation: "海报挂背包旁、本月赠送一副手套；围巾是 Dan 觉得好看但并非赠品，因此选择 B。" },
+      { q: "When will Dan buy a skateboard?", opts: ["on Wednesday", "on Friday", "on Saturday"], answer: 1, explanation: "店员提醒周三店不开门，Dan 的爸爸周六很忙，于是他们决定周五来买，因此选择 B。" },
+    ],
+  },
+  26: {
+    title: "Part 3 长篇听力题",
+    instruction: "听 Nadia 和 Tom 谈论他们的新学校，选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "How will Nadia get to their new school?", opts: ["by bike", "by bus", "on foot"], answer: 0, explanation: "Nadia 说学校不远不用坐公交，但书太重走路去不了，所以骑车去，因此选择 A。" },
+      { q: "What doesn't Tom like about the school uniform?", opts: ["the jacket", "the shirt", "the trousers"], answer: 2, explanation: "对话说外套很棒、蓝衬衫最好，而裤子很无聊（not boring like the trousers），即 Tom 不喜欢的是裤子，因此选择 C。" },
+      { q: "How many students are there in the new school?", opts: ["under 500", "about 800", "more than 1000"], answer: 2, explanation: "Tom 说妈妈告诉他新学校有 1055 人；800 是旧学校、475 是小学的人数，因此选择 C。" },
+      { q: "Which subject does Nadia like?", opts: ["chemistry", "maths", "biology"], answer: 1, explanation: "化学是没人上过的新课、Nadia 不确定会不会喜欢，但她喜欢数学、所以觉得自己会喜欢化学；生物在哪上还不确定，因此选择 B。" },
+      { q: "What will they do on the first day?", opts: ["have a class quiz", "visit the school library", "meet all their teachers"], answer: 2, explanation: "第一天他们要和所有老师见面谈话；图书馆参观和关于图书馆的小测验都在第二周，因此选择 C。" },
+    ],
+  },
+  27: {
+    title: "Part 3 长篇听力题",
+    instruction: "听 Ben 和朋友 Gabby 谈论镇上新开的滑板公园，选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "Who told Ben about the new skate park?", opts: ["his brother", "his girlfriend", "his sister"], answer: 0, explanation: "Gabby 猜是 Ben 的姐姐告诉他的，Ben 说姐姐从来什么都不告诉他，其实是哥哥告诉他的，因此选择 A。" },
+      { q: "How does Gabby feel about the new skate park?", opts: ["excited that it is near her home", "pleased that it is so big", "surprised that it is already open"], answer: 0, explanation: "Gabby 说滑板公园就在她家附近，一开放她就迫不及待想去试试，即因为离家近而兴奋，因此选择 A。" },
+      { q: "When will Ben go to the skate park?", opts: ["today", "tomorrow", "at the weekend"], answer: 2, explanation: "有朋友今天约他但他放学后没空，明天他有空朋友却没空，Gabby 建议周末去，Ben 说这正是他们的计划，因此选择 C。" },
+      { q: "They think the skate park will be popular if", opts: ["skateboard lessons are offered there.", "skateboarding videos are made there.", "skateboards are available to rent there."], answer: 1, explanation: "Ben 建议大家在公园里自己拍视频再分享出去，Gabby 说大家看到视频就会更想去，因此选择 B。" },
+      { q: "What new activity would Ben and Gabby like at the park?", opts: ["golf", "climbing", "tennis"], answer: 1, explanation: "公园已经有网球，场地也放不下高尔夫，Ben 希望建一面攀岩墙，Gabby 说她也想要，因此选择 B。" },
+    ],
+  },
+  28: {
+    title: "Part 3 长篇听力题",
+    instruction: "听同学 Emily 和 Joe 谈论学校正在学习的剧本《暴风雨》（Thunderstorm），选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "Why did Emily miss the English lesson?", opts: ["she forgot about it", "she was at the doctor’s", "she had a music lesson"], answer: 2, explanation: "Emily 说自己正在学小提琴，小提琴课和英语课时间冲突，因此选择 C。" },
+      { q: "Where does the action in the play happen?", opts: ["on a boat", "in a castle", "on an island"], answer: 2, explanation: "Emily 说剧中人们乘船来到一座岛上，Joe 说对，整部戏都发生在那座岛上，因此选择 C。" },
+      { q: "How does Joe feel about the play?", opts: ["surprised at how interesting it is", "pleased that it is on a new topic", "bored because it is difficult"], answer: 0, explanation: "Joe 原以为老剧本会又无聊又难，结果发现自己完全想错了，还很想接着看，因此选择 A。" },
+      { q: "Emily and Joe agree they’d like to", opts: ["act in Thunderstorm", "watch Thunderstorm at the local theatre", "see another play by the same writer"], answer: 0, explanation: "Joe 提议全班自己来演这部剧，Emily 说他们来演、Joe 演国王，两人都觉得会很有趣，因此选择 A。" },
+      { q: "How will Emily know what the homework is?", opts: ["it will be on the class webpage", "her classmates will email her", "the teacher will phone her"], answer: 1, explanation: "老师把作业分给小组，Joe 说其他组员会发邮件告诉 Emily 作业内容，因此选择 B。" },
+    ],
+  },
+  29:{title:'Part 3 长篇听力题',instruction:'听 Olivia 和爸爸讨论学校组织的汽车厂参观，选择正确答案。',type:'mcq',items:[
+    {q:'What date is the visit?',opts:['November 2','November 3','November 4'],answer:2,explanation:'Olivia 说 2 日是周六、3 日是周日，参观定在 4 日那个上学日，因此选择 C。'},
+    {q:'What does Olivia’s dad want to know?',opts:['if the visit is free','how long the visit lasts','which car factory they are visiting'],answer:0,explanation:'爸爸说邮件里没提到参观是否要付费（if we pay for it or not），因此选择 A。'},
+    {q:'Olivia was surprised when she heard the school trip was to a car factory',opts:['because her teacher thinks visiting factories is boring.','because the school usually only takes pupils to museums.','because cars are not this term’s subject.'],answer:1,explanation:'Olivia 说老师最喜欢博物馆，平时出游都去博物馆，所以这次去工厂让她很意外，因此选择 B。'},
+    {q:'What is Olivia excited about seeing at the factory?',opts:['some racing cars and motorbikes','the most modern cars','a car that was used in a film'],answer:2,explanation:'Olivia 说迫不及待想看在那部动作片里出现过的那辆车（爸爸补充它还和摩托车比赛过），因此选择 C。'},
+    {q:'What does Olivia’s dad say she should do at the factory?',opts:['ask questions','take photos','listen quietly'],answer:0,explanation:'爸爸说如果厂里的人问“有没有问题”，一定要开口提问，因此选择 A。'}]},
+  30:{title:'Part 3 长篇听力题',instruction:'听两个同学讨论一场关于生活中数学的演讲，选择正确答案。',type:'mcq',items:[
+    {q:'How does the girl feel about the talk?',opts:['pleased that she went to it','surprised by what the teacher said','happy that her friends told her about it'],answer:0,explanation:'朋友们决定不去，但女孩说自己很高兴去了（I’m glad I did），因此选择 A。'},
+    {q:'What does the boy say is difficult to know?',opts:['how fast he is going','how far he has travelled','how long a journey will take'],answer:2,explanation:'男孩说全家开车去 90 公里外时喜欢猜几点能到，但有的路快有的路慢，总是很难猜准，因此选择 C。'},
+    {q:'The girl didn’t know that maths can be useful for',opts:['buying paint.','playing a sport.','shopping for food.'],answer:1,explanation:'女孩说大家都知道数学能在买食物时核对价格，涂料是男孩说的；她不知道的是数学能帮网球运动员判断击球位置，因此选择 B。'},
+    {q:'Tomorrow, maths will help the boy to decide',opts:['what temperature to use.','how much food he needs.','how long to cook the cake.'],answer:1,explanation:'男孩明天要做更大的蛋糕，所有配料都要翻倍（黄油从 175 克变 350 克），烘烤时间和温度都不变，因此选择 B。'},
+    {q:'What does the girl say about going to university in the future?',opts:['It’s too early to think about it.','She’d like to do a degree in maths.','Her parents would like her to study maths.'],answer:0,explanation:'女孩说自己才 13 岁，18 岁才可能上大学，还早得很，以后再和父母谈，因此选择 A。'}]},
+  31:{title:'Part 3 长篇听力题',instruction:'听校长和 Isabel 谈论她本学期的学习情况，选择正确答案。',type:'mcq',items:[
+    {q:'The man says Isabel’s teachers are pleased that she',opts:['works so hard in lessons.','always does her homework.','often answers their questions in class.'],answer:2,explanation:'老师们说有她在课堂上很棒：常在提问时给出好的回答，即使是很难的作业问题，因此选择 C。'},
+    {q:'Isabel says that she enjoys learning physics because she',opts:['likes the teacher.','is getting better at it.','thinks the subject is interesting.'],answer:1,explanation:'Isabel 说自己的物理成绩进步了很多（marks have improved so much），这正是她喜欢物理的原因，因此选择 B。'},
+    {q:'Which activity did Isabel choose on her theatre studies course?',opts:['writing the play','acting in the play','making clothes for the actors'],answer:2,explanation:'Isabel 说有一组人写剧本，她的任务是给演员做服装（costumes），因此选择 C。'},
+    {q:'Why does the headteacher say Isabel should study chemistry?',opts:['She’s very good at chemistry.','Chemistry might help her in the future.','She might do a chemistry course at university.'],answer:1,explanation:'校长说 Isabel 想当兽医，需要了解动物药品的知识，学校化学课对此有帮助，因此选择 B。'},
+    {q:'How does Isabel feel about her Italian classes?',opts:['pleased she will still have the same teacher','surprised that she did well in the exam','interested what she will learn next term'],answer:1,explanation:'校长夸她意大利语考试考得好，Isabel 说自己简直不敢相信（I couldn’t believe it），因此选择 B。'}]},
+  32:{title:'Part 3 长篇听力题',instruction:'听 Marina 给弟弟讲朋友 Jack 的派对，选择正确答案。',type:'mcq',items:[
+    {q:'Why did Jack have the party?',opts:['It was his birthday.','He received some good news.','The school year has just finished.'],answer:1,explanation:'Jack 听说自己入选同龄组国家冰球队才办派对，不是学年末，生日也在八月，因此选择 B。'},
+    {q:'Which activity happened at the party?',opts:['dancing','watching a film','listening to music'],answer:2,explanation:'朋友的乐队在派对上演奏了电影歌曲；大家想跳舞但房间太小没跳成，因此选择 C。'},
+    {q:'What did the guests eat?',opts:['food that they took with them','a meal that Jack’s parents made','pizzas that they ordered'],answer:0,explanation:'Jack 的父母提出做饭但人太多做不了，Jack 让每人带零食来分享，因此选择 A。'},
+    {q:'How did Marina feel at the end of the party?',opts:['worried about getting home','angry about losing her jacket','surprised it was finished already'],answer:2,explanation:'派对 11 点就结束了，Marina 说简直不敢相信这么快就到回家时间，因此选择 C。'},
+    {q:'What did Marina enjoy most at the party?',opts:['meeting lots of new people','hearing some funny stories','knowing that a friend was having fun'],answer:2,explanation:'同学 Zara 因姐姐搬去澳大利亚一直很难过，派对结束时她看起来很开心，Marina 说自己确实为她高兴，因此选择 C。'}]},
   20:{title:'Part 3 长篇听力题',instruction:'听 Sophie 和 John 讨论一年一度的邻里野餐，选择正确答案。',type:'mcq',items:[
     {q:'What does Sophie like most about the picnic?',opts:['eating great food','spending time outdoors','becoming better friends with people'],answer:2},{q:'Where is the picnic going to be this year?',opts:['a park','a lake','a garden'],answer:0},{q:'What happened at last year’s picnic?',opts:['The weather wasn’t very good.','Some people didn’t enjoy themselves.','Some people didn’t know where to go.'],answer:2},{q:'What does Sophie want guests to bring?',opts:['something to do','something to eat with','something to barbecue'],answer:0},{q:'Which job does John say he’ll do?',opts:['speak to people','put signs in the area','send a group email'],answer:1}]},
   19:{title:'Part 3 长篇听力题',instruction:'听 Andy 和 Sara 讨论一次徒步活动，选择正确答案。',type:'mcq',items:[
@@ -1855,7 +2158,127 @@ const OFFICIAL_PART3_SETS = {
   },
 };
 
-const OFFICIAL_PART4_SETS = {
+const OFFICIAL_PART4_BASE = {
+  21: {
+    title: "Part 4 短篇听力题",
+    instruction: "听五段独立短对话或独白，选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "What did the boy buy yesterday?", opts: ["something to wear", "something to eat", "something to read"], answer: 0, explanation: "两个朋友谈论购物：课本和杂志是妈妈之前就买好的，T恤太贵没买，零食是打算现在去买的；男孩昨天真正买到的是大家都夸很酷的手套，属于穿戴之物，因此选择 A。" },
+      { q: "Why didn’t Lyn come to school yesterday?", opts: ["She was sick.", "She was in a competition.", "She arrived back late from holiday."], answer: 2, explanation: "老师以为 Lyn 病了，但她解释说全家在瑞士露营一周，周日航班被取消、周一才飞回，所以没能赶上昨天的课，因此选择 C。" },
+      { q: "How did he learn to surf?", opts: ["by doing a course", "by watching videos", "by practising by himself"], answer: 1, explanation: "他起初自己反复练习却没有进步，冲浪课程又恰好安排在他踢足球的周五；最终是一个网站上著名冲浪者的教学视频真正帮到了他，因此选择 B。" },
+      { q: "Which subject did she like best?", opts: ["geography", "English", "biology"], answer: 2, explanation: "海洋与水温的地理课在前，但她说最有趣的是关于蜜蜂如何群居、如何从卵发育为成虫的课，这属于生物，因此选择 C。" },
+      { q: "Why did they both sleep badly?", opts: ["Their bedroom was hot.", "There were noises in the street.", "They were excited about going on holiday."], answer: 0, explanation: "兄弟俩一致认为要让爸爸把房间暖气调小，并说“那就是问题所在”，即卧室太热；楼下的音乐和外面装车的声音不是主要原因，因此选择 A。" },
+    ],
+  },
+  22: {
+    title: "Part 4 短篇听力题",
+    instruction: "听五段独立短对话或独白，选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "Who’s Teresa waiting for?", opts: ["a classmate", "a member of her family", "a teacher"], answer: 1, explanation: "Teresa 在校门口等阿姨开车来接她一起去市中心买生日礼物，阿姨是家庭成员；在那边和体育老师说话的是她的弟弟，因此选择 B。" },
+      { q: "Why is he phoning her?", opts: ["to ask about something", "to give her some news", "to say sorry for something"], answer: 0, explanation: "男孩打电话问妈妈是否同意他放学后去 Frank 家一起做科学项目、并留在那里吃晚饭，是在征求许可，因此选择 A。" },
+      { q: "How will they find out where the new café is?", opts: ["They’ll ask another friend.", "They’ll check on the internet.", "They’ll look at a poster."], answer: 2, explanation: "他本想上网查，但 Wi-Fi 连不上；同学 Sophia 虽去过但不在场，最后两人决定去看图书馆墙上那张大大的告示，即海报，因此选择 C。" },
+      { q: "Why do they decide to go on the boat tour today?", opts: ["It’s cheap today.", "The weather’s good.", "They know the guide."], answer: 2, explanation: "天气有点多云（排除 B），网上订票并不便宜、只是方便（排除 A）；真正吸引她们的是 Pablo 叔叔今天在船上当讲解，想去听他讲，因此选择 C。" },
+      { q: "What must Hugo do first?", opts: ["Help another teacher.", "Help the school secretary.", "Help another student."], answer: 1, explanation: "Hugo 主动提出帮老师把书送到图书馆，但老师说在办公室工作的 Spencer 女士更需要人把箱子搬到电脑室，即先帮学校秘书；给六年级学生演示上传作业是老师自己要做的事，因此选择 B。" },
+    ],
+  },
+  23: {
+    title: "Part 4 短篇听力题",
+    instruction: "听五段独立短对话或独白，选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "You will hear a girl talking about a video. Which part of the video didn’t she understand?", opts: ["the beginning", "the middle", "the end"], answer: 1, explanation: "开头介绍动物栖息地的部分很清楚，结尾她也能看懂；只有中间那段难到要妈妈解释，即视频的中间部分，因此选择 B。" },
+      { q: "You will hear two friends talking about a concert. What’s the boy’s opinion of the concert?", opts: ["It was boring.", "It was terrible.", "It was unusual."], answer: 2, explanation: "女孩觉得乐手练习不足、很糟糕；男孩却说他从没听过这样的音乐、也没见过那些乐器，演奏新东西一定很有趣，即他觉得音乐会很不寻常，因此选择 C。" },
+      { q: "You will hear a boy talking to his dad about going to the city centre. Why are they going to the city centre?", opts: ["to meet someone", "to buy something", "to watch something"], answer: 0, explanation: "父子俩看完球赛就去市中心，和妈妈约在大广场的咖啡馆碰面，即去见一个人；买报纸是请妈妈帮忙做的事，看球赛是在家里，因此选择 A。" },
+      { q: "You will hear a teacher talking to his class. What information is he giving his students?", opts: ["They’re going to start a new project.", "They’re going to have their lesson outside.", "They’re going to have a longer lesson."], answer: 1, explanation: "老师说同学们的地理项目还需要照片，今天获准去公园上课、十点回教室收拾，即要到户外上课；项目不是新开的，课时也没有变长，因此选择 B。" },
+      { q: "You will hear a boy talking about his sister, Emma. Who has Emma married?", opts: ["an artist", "a tour guide", "a cook"], answer: 1, explanation: "画画是 Emma 自己的工作，餐厅只是她公寓楼下的店面；她丈夫的工作是带游客游览不同的城市，即导游，因此选择 B。" },
+    ],
+  },
+  24: {
+    title: "Part 4 短篇听力题",
+    instruction: "听五段独立短对话或独白，选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "You will hear two classmates talking together. How did the girl come to school today?", opts: ["by car", "by train", "on foot"], answer: 1, explanation: "同学猜她爸爸开车送她，但女孩说今天地铁没问题、很幸运，7:45 那班车还准时到，说明她是乘地铁/火车来的，因此选择 B。" },
+      { q: "You will hear a girl talking to a man who works at a museum. What’s the girl looking for?", opts: ["her bag", "her coat", "her folder"], answer: 2, explanation: "工作人员提醒她不要背着包在馆内走动，女孩说她把装着学校论文的蓝色塑料文件夹弄丢了，因此她在找文件夹，选择 C。" },
+      { q: "You will hear a boy talking about learning French. How did he improve his French?", opts: ["by visiting France", "by watching French cartoons", "by emailing his French penpal"], answer: 1, explanation: "去法国时他几乎不会说法语；老师让和法国学校的孩子通信，但几周后大家都放弃了；真正有效的是找法语搞笑动画片，他喜欢有会说话动物的那种，因此选择 B。" },
+      { q: "You will hear a girl talking to her aunt about her hobbies. Which hobby does the girl like doing now?", opts: ["looking after animals", "taking photos of animals", "collecting toy animals"], answer: 0, explanation: "塑料恐龙玩具已送给邻居小男孩；她现在一有空就去骑术学校刷马喂马，即照顾动物；相机是生日礼物、将来去动物园拍照用，不是现在的爱好，因此选择 A。" },
+      { q: "You will hear a headteacher talking to the whole school. What’s new at the school this year?", opts: ["a cafeteria", "a sports hall", "a music room"], answer: 0, explanation: "校长先祝贺排球队赢得夏季锦标赛（这不是新设施），然后说现在大家有了买午餐和吃饭的好地方，在图书馆旁边，即新开了食堂，因此选择 A。" },
+    ],
+  },
+  25: {
+    title: "Part 4 短篇听力题",
+    instruction: "听五段独立短对话或独白，选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "You will hear two friends talking about eating healthy food. Why are they talking about eating healthy food?", opts: ["They’ve just read about it.", "They’ve just watched a video about it.", "They’ve just listened to a talk about it."], answer: 2, explanation: "女孩说有位医生来到生物课上讲解心脏的知识，之后她就决定多吃沙拉；看烹饪视频是下节课原本要做、后换成课本单元的事，因此选择 C。" },
+      { q: "You will hear a boy talking about his history project. Who gave him some information about it?", opts: ["a person who works as a guide", "a woman who lives near him", "a teacher he knows"], answer: 0, explanation: "男孩本想问 80 岁的邻居 Ashton 太太，但她去美国看孙子了，于是他参加博物馆参观团、向带队讲解员问了很多问题，即导游/讲解员给了他信息，因此选择 A。" },
+      { q: "You will hear a girl talking about her clothes. Why does she want to buy some new clothes?", opts: ["to look nice at a party", "to go on holiday", "to play a new sport"], answer: 2, explanation: "女孩在酒店旁的滑板公园爱上了滑板、想把它当爱好，需要新手套保护自己不受伤，即为了玩一项新运动，因此选择 C。" },
+      { q: "You will hear a teacher talking about a problem. Where is there a problem?", opts: ["in the playground", "in the sports hall", "in the cafeteria"], answer: 1, explanation: "老师说水管破了、水漫到球场上，今天的排球赛不能在场馆内进行、只能到户外打，即问题出在体育馆/运动馆，因此选择 B。" },
+      { q: "You will hear a brother and sister talking about their pet rabbit. What don’t they like about having pets?", opts: ["talking to them", "brushing them", "giving them food"], answer: 1, explanation: "妹妹说给兔子梳毛清理毛里的脏东西后到处是兔毛、很可怕，哥哥也说“我也讨厌那样”，因此他们不喜欢的是给兔子梳毛，选择 B。" },
+    ],
+  },
+  26: {
+    title: "Part 4 短篇听力题",
+    instruction: "听五段独立短对话或独白，选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "You will hear a teacher talking about a trip. What has changed?", opts: ["the cost", "the time", "the transport"], answer: 0, explanation: "老师原来说要交 10 英镑，但团体票更便宜，现在只需交 8 英镑，即费用变了；到校时间和乘巴士前往都没变，因此选择 A。" },
+      { q: "You will hear two students talking about a problem. Where's the boy's phone?", opts: ["in the teacher's desk", "in his brother's bag", "in his house"], answer: 0, explanation: "男孩在化学课上偷看手机被 Clemens 老师发现，手机被收进她的抽屉、午饭时间才能拿回，即在老师的桌子里，因此选择 A。" },
+      { q: "You will hear a boy talking about buying some boots. Why did he buy the boots?", opts: ["They're comfortable.", "He likes the colour.", "They're in fashion."], answer: 2, explanation: "靴子和歌手 Jason 在最新视频里穿的同一款，男孩觉得特别酷，即因为流行；皮革还有点硬、棕色是妈妈选的，因此选择 C。" },
+      { q: "You will hear a girl talking about playing tennis. How does she feel after playing?", opts: ["angry", "hungry", "tired"], answer: 0, explanation: "双打搭档一直不让她接球，她非常生气（so mad），气得晚上睡不着、连饭都不想吃，因此选择 A。" },
+      { q: "You will hear two friends talking about a new teacher. What do they like about the new teacher?", opts: ["He's clever.", "He's friendly.", "He's famous."], answer: 1, explanation: "新音乐老师 Martinez 总是微笑、乐于帮助学生，即很友好；长得像曼联球员只是长相、40 岁才当老师与是否聪明无关，因此选择 B。" },
+    ],
+  },
+  27: {
+    title: "Part 4 短篇听力题",
+    instruction: "听五段独立短对话或独白，选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "You will hear two friends talking about a film. What was the problem with the film?", opts: ["The acting was bad.", "The music was terrible.", "The story was hard to understand."], answer: 2, explanation: "男孩说一半时间都在想“到底在演什么”，女孩也承认电影并不总是看得很明白，即故事难懂；配乐虽然奇怪但男孩并不介意，因此选择 C。" },
+      { q: "You will hear the beginning of a talk for school pupils about nature. What is the woman going to talk about?", opts: ["why it is important to help nature", "how nature can make people feel", "ways to learn more about nature"], answer: 1, explanation: "她说大家已经听惯了保护自然有多重要，今天要讲的是自然如何对我们有益、如何帮助我们放松，身处树林能让人停止焦虑，因此选择 B。" },
+      { q: "You will hear two classmates talking about the guide on a school trip to the countryside. What do they say about the guide?", opts: ["She knew a lot.", "She was very funny.", "She asked some interesting questions."], answer: 0, explanation: "女孩说她在想“还有什么问题是她答不上来的”，男孩说这位导游确实非常在行、显然很懂植物，因此选择 A。" },
+      { q: "You will hear a man talking to his daughter about playing tennis after school. What does the girl want to know?", opts: ["who else might play", "how long the game will be", "which day she can play"], answer: 0, explanation: "女儿说哪天上课都无所谓，她想先确认有没有同学也报名参加，有的话她再去，因此选择 A。" },
+      { q: "You will hear two friends planning a trip to the beach. What are they trying to decide?", opts: ["which part of the beach to go to", "what to do on the beach", "how to get to the beach"], answer: 0, explanation: "上次野餐、离火车站近的那片沙滩太挤不适合打排球，女孩建议往大停车场方向再远一点、空间更大的区域，他们在商量去海滩哪一段，因此选择 A。" },
+    ],
+  },
+  28: {
+    title: "Part 4 短篇听力题",
+    instruction: "听五段独立短对话或独白，选择正确答案。",
+    type: "mcq",
+    items: [
+      { q: "You will hear a boy leaving a message for his sister. Why is he sorry?", opts: ["he can’t meet her", "he will arrive late", "he gave her some wrong information"], answer: 2, explanation: "男孩说他之前把电影开始时间 6:30 说错了，其实是 5:30，他为给出了错误信息而道歉，因此选择 C。" },
+      { q: "You will hear a woman phoning a department store. Why is she phoning?", opts: ["to explain what is wrong with the clock", "to return the clock", "to ask if she paid the correct price"], answer: 1, explanation: "女士说闹钟的闹铃坏了，28 天内可以退回，她想把钟退掉，因此选择 B。" },
+      { q: "You will hear a boy in a clothes shop. What does he want the assistant to do?", opts: ["find a larger size", "give a better price", "give an opinion of the jacket"], answer: 1, explanation: "男孩问能不能给他打个折，即想要更便宜的价格，因此选择 B。" },
+      { q: "You will hear a girl talking about a party. What is she surprised about?", opts: ["how many people were there", "how much she enjoyed it", "how good the music was"], answer: 0, explanation: "她原以为只有家人和几个朋友会来，结果客人特别多，让她非常吃惊，因此选择 A。" },
+      { q: "You will hear a hotel guest phoning the receptionist. What is the problem?", opts: ["The bed is too small.", "The heating doesn’t work.", "The room is not quiet enough."], answer: 2, explanation: "他说暖气一直发出水声、吵得他睡不着，即房间不够安静，因此选择 C。" },
+    ],
+  },
+  29:{title:'Part 4 短篇听力题',instruction:'听五段独立短对话，选择正确答案。',type:'mcq',items:[
+    {q:'You will hear a girl and her father talking about what’s on TV. What have they forgotten?',opts:['the name of the main actor','how the film ends','when they last saw the film'],answer:0,explanation:'爸爸说女孩大概是在别的片子里见过这位演员，暗示她把别的片的演员错当成本片主演——两人其实记不清这部片主演的名字；对话没提结局和上次观看时间，因此选择 A。'},
+    {q:'You will hear a boy talking to his mother about his homework. What does she think he should do?',opts:['rest before starting it','finish some of it as soon as possible','check when the teacher wants it'],answer:1,explanation:'妈妈说先立刻完成要交给老师的那部分作业，做完之后再休息，因此选择 B。'},
+    {q:'You will hear a girl telling her classmate about a cake she made. What was the problem with the cake?',opts:['The cake tasted horrible.','It was hard to work the cooker.','She cooked the cake for too long.'],answer:2,explanation:'女孩说蛋糕没有及时从烤箱里取出来，看起来有点糊（didn’t take it out soon enough），不过味道还好，因此选择 C。'},
+    {q:'You will hear a boy who has just watched a video of himself. What was he surprised about?',opts:['how different he looked','how fast he was speaking','how clearly he explained things'],answer:1,explanation:'男孩说完全没想到自己说话那么快（I had no idea I was talking so quickly），老师还建议他以后讲慢一点、清楚一点，因此选择 B。'},
+    {q:'You will hear two classmates talking about a school play. Why doesn’t the boy want to be in the play?',opts:['His friends aren’t in it.','He isn’t interested in acting.','He doesn’t have enough time.'],answer:0,explanation:'男孩说朋友们兴趣各不相同、都不会参演，这才是他不参加的原因；“太花时间”是女孩的理由，男孩说一周才一次，因此选择 A。'}]},
+  30:{title:'Part 4 短篇听力题',instruction:'听五段独立短对话或独白，选择正确答案。',type:'mcq',items:[
+    {q:'You will hear a boy and his mother talking about a drink. What does the boy’s mother want to know?',opts:['what the drink tastes like','how much sugar is in the drink','why the boy likes it so much'],answer:1,explanation:'妈妈问这种柠檬水每 100 毫升含多少克糖，想知道饮料的含糖量，因此选择 B。'},
+    {q:'You will hear two classmates talking about a friend called Maria. What are they interested in?',opts:['which hairdresser cuts Maria’s hair','how short Maria’s hair is at the moment','why Maria changes her hair so often'],answer:2,explanation:'两人讨论 Maria 一周内又换了新发型：她的理发师收费便宜所以她常去，她也喜欢不断变换发型，因此选择 C。'},
+    {q:'You will hear a boy talking about the gym he goes to. What does he say about it?',opts:['Using the exercise machines is boring.','His favourite exercise machine is too popular.','Some exercise machines are more useful than others.'],answer:0,explanation:'男孩说坐在机器前看着镜子反复做同样的动作，时间过得很慢，5 分钟就停下来，承认用机器有点无聊，因此选择 A。'},
+    {q:'You will hear a girl telling her father about a school trip. What was the problem on the trip?',opts:['The coach was late.','She got lost at the beach.','Someone was ill during the journey.'],answer:2,explanation:'Rosa 在去海边的路上晕车，大巴不得不中途停了几分钟，因此选择 C。'},
+    {q:'You will hear a school teacher talking to her class. What subject is the lesson?',opts:['maths','history','geography'],answer:2,explanation:'老师讲伊斯坦布尔的人口、地处欧洲和亚洲两大洲等城市地理知识，因此选择 C。'}]},
+  31:{title:'Part 4 短篇听力题',instruction:'听五段独立短对话或独白，选择正确答案。',type:'mcq',items:[
+    {q:'You will hear two classmates talking. What are they doing?',opts:['giving each other their email addresses','choosing which email address they want to have','discussing unusual email addresses'],answer:2,explanation:'两人聊哥哥的 bananaface@、表妹的 chocolatebiscuit@ 和 bigfootballfan@ 等奇怪的邮箱地址，因此选择 C。'},
+    {q:'You will hear a teacher talking to a boy who is late for a lesson. What is the teacher talking about?',opts:['the boy’s reasons for being late today','how people can make sure they aren’t late','why it’s important to arrive at the right time'],answer:2,explanation:'老师说不想听迟到的原因，重要的是必须准点到、课才能准点开始，一人迟到全班都得停下来，因此选择 C。'},
+    {q:'You will hear a boy telling his classmate about a book he is reading. How did he get the book?',opts:['He bought it.','A friend lent it to him.','He borrowed it from the library.'],answer:0,explanation:'图书馆那本已被借走，朋友愿意借但要等两周，最后他从书店自己买了一本，因此选择 A。'},
+    {q:'You will hear two friends discussing videos they have just watched. What are they talking about?',opts:['how to make a funny cat video','which cat videos were the funniest','why cats can be funnier than other animals'],answer:1,explanation:'两人比较几段猫视频——猫跳起来、猫狗共舞、猫看小兔子——讨论哪段最好笑，因此选择 B。'},
+    {q:'You will hear a girl telling her parents about a lesson. What is she doing?',opts:['explaining why she had to say ‘sorry’ to the teacher','saying how she feels about the biology exam','telling a story about a mistake that the teacher made'],answer:2,explanation:'生物老师误把真正的考卷当复习卷发下来，之后又收回并向全班道歉，女孩在讲老师的这次失误，因此选择 C。'}]},
+  32:{title:'Part 4 短篇听力题',instruction:'听五段独立短对话或独白，选择正确答案。',type:'mcq',items:[
+    {q:'You will hear a girl talking to her father about studying French. What does she want him to do?',opts:['watch a film with her in French','ask her some questions in French','explain what some French words mean'],answer:1,explanation:'女孩下周有法语口语考试，需要有人用法语向她提问来练习，因此选择 B。'},
+    {q:'You will hear two friends talking at a swimming pool. What are they talking about?',opts:['why the water in the pool is so cold','what kind of weather is best for swimming','how the water temperature makes them feel'],answer:2,explanation:'两人抱怨水太冷很难受，又提到水太热会很快累得游不动，讨论水温带来的感受，因此选择 C。'},
+    {q:'You will hear a maths teacher talking to two pupils. What does she want to know?',opts:['why the pupils made so many mistakes','how the pupils knew what the answers were','if one pupil copied the other one’s homework'],answer:2,explanation:'两人连错题都完全一样，老师问是不是一个看了另一个的作业抄答案，要求听真话，因此选择 C。'},
+    {q:'You will hear a girl talking about the school play that she has been in. What is she surprised about?',opts:['how tired it made her','how much fun she had','how many people came to watch'],answer:0,explanation:'演出很长，她完全没想到表演这么辛苦，每场结束都只想睡觉，因此选择 A。'},
+    {q:'You will hear a boy called Adam talking to a teacher. What is he explaining?',opts:['what he’s worried about','how he’s studying for his exams','which subjects are the most difficult'],answer:0,explanation:'Adam 担心下周考试考不好，比如忘掉历史日期、在物理里写错单位，他在说明自己的担心，因此选择 A。'}]},
   20:{title:'Part 4 短篇听力题',instruction:'听五段独立短对话或独白，选择正确答案。',type:'mcq',items:[
     {q:'What’s the woman’s job?',opts:['engineer','farmer','painter'],answer:0},{q:'Where did the man meet his new friend?',opts:['at work','at a party','at a sports match'],answer:0},{q:'Why do they decide to walk to the cinema?',opts:['There are no buses today.','They want some exercise.','The car isn’t working.'],answer:1},{q:'What problem did the man have on holiday?',opts:['The weather was bad.','The beach was dirty.','The hotel was noisy.'],answer:2},{q:'What did the girl like about her first Chinese lesson?',opts:['the other students','the teacher','the length of the lesson'],answer:1}]},
   19:{title:'Part 4 短篇听力题',instruction:'听五段独立短对话或独白，选择正确答案。',type:'mcq',items:[
@@ -2014,7 +2437,74 @@ const OFFICIAL_PART4_SETS = {
   },
 };
 
-const OFFICIAL_PART5_SETS = {
+const OFFICIAL_PART5_BASE = {
+  21:{options:['actor','coach','dentist','journalist','mechanic','pilot','receptionist','tour guide'],items:[{q:'Tyler',answer:2},{q:'Ava',answer:7},{q:'Mark',answer:4},{q:'Victoria',answer:3},{q:'Bobby',answer:0}]},
+  22:{options:['acting','being in a band','building models','climbing','learning languages','photography','swimming','watching movies'],items:[
+    {q:'Hannah',answer:1,explanation:'Hannah 在一个摇滚乐队里弹吉他，即参加乐队；“我上周给他们拍了照”是说话者的行为，不要误选摄影。'},
+    {q:'Christopher',answer:4,explanation:'他去西班牙参加了一次攀岩假期后，现在正在学西班牙语、还上阿拉伯语会话课，爱好是学语言；攀岩只是那次旅行的活动。'},
+    {q:'Samantha',answer:6,explanation:'她已经把飞机模型都送给了弟弟，现在去游泳池的专门俱乐部，还能从两米跳台跳下，爱好是游泳。'},
+    {q:'Andrew',answer:0,explanation:'他总在学校的戏剧里演出，而且喜欢扮演坏人，爱好是表演。'},
+    {q:'Grace',answer:5,explanation:'下周学校大厅将展出她拍摄的照片，她最好的作品是爸爸爬山的照片；爬山的是她爸爸，Grace 的爱好是摄影。'}]},
+  23:{options:['crowded','noisy','not clean','not modern','not useful','too far','too small','too warm'],items:[
+    {q:'cafeteria',answer:1,explanation:'餐厅里总能听到外面街道上的车声和等公交的人群声，问题是吵闹；排队拥挤并未提及。'},
+    {q:'library',answer:2,explanation:'图书馆并不小，只是脏、也不够暖和；不够暖说明偏冷而非 too warm，脏对应 not clean。'},
+    {q:'classrooms',answer:3,explanation:'教室在二楼的那些没有最新的设备，即设备不够现代化，对应 not modern。'},
+    {q:'lift',answer:4,explanation:'电梯慢到走路都比它快，Angela 说“不知道我们为什么要有它们”，即没什么用，对应 not useful。'},
+    {q:'office',answer:6,explanation:'办公室里放不下两张办公桌和书架，空间不足，问题是太小；秘书喜欢书架不代表拥挤。'}]},
+  24:{options:['backpack','calendar','dictionary','guidebook','kite','mug','photo album','postcards'],items:[
+    {q:'Poland',answer:6,explanation:'在波兰给姑姑买的生日礼物是相册，用来放她用新相机拍的照片；明信片是湖景、只作为附赠品。'},
+    {q:'Switzerland',answer:1,explanation:'表妹喜欢把每天做的事记在日期上，所以从瑞士给她买的是日历，可以贴在厨房墙上。'},
+    {q:'Italy',answer:2,explanation:'叔叔在学意大利语，从意大利给他买的是词典，方便他查单词。'},
+    {q:'Spain',answer:5,explanation:'邻居总喝茶但杯子不够，从西班牙给她买的是印有她名字的马克杯。'},
+    {q:'Portugal',answer:0,explanation:'葡萄牙买的其实是给自己的礼物，可以装课本和其他东西，即背包。'}]},
+  26:{options:['boring','funny','good beginning','hard to understand','sad','scary','too short','useful'],items:[
+    {q:'Crunch',answer:6,explanation:'Crunch 读“一小时就读完了、本想读四天”，即觉得太短，选 G（too short）。'},
+    {q:'My Island',answer:1,explanation:'My Island“让我笑了很多、一点也不无聊”，即有趣好笑，选 B（funny）。'},
+    {q:'Dangerous Animals',answer:3,explanation:'Dangerous Animals“不吓人，但很多生词、读起来难”，即难以理解，选 D（hard to understand）。'},
+    {q:'The Invitation',answer:4,explanation:'The Invitation 读时哭了、尤其开头部分，即让人难过，选 E（sad）。'},
+    {q:'Skating Star',answer:2,explanation:'Skating Star“开头最好、后面也不错”，即开头很精彩，选 C（good beginning）。'}]},
+  25:{options:['finish a school project','go on a trip','go to a party','help a neighbour','make a meal','send emails','take money to school','visit the city library'],items:[
+    {q:'Tuesday',answer:6,explanation:'周二要记得带 55 英镑去学校，用来支付周末旅行的费用，即带钱去学校。'},
+    {q:'weekend',answer:1,explanation:'周末要去旅行，那 55 英镑就是为这次旅行交的钱。'},
+    {q:'Wednesday',answer:0,explanation:'周三不用去市图书馆，因为恐龙课题的资料已找齐，要在家里把课题剩余的做完。'},
+    {q:'Thursday',answer:3,explanation:'周四隔壁的 Brown 太太请他到花园帮忙干活，即帮助邻居。'},
+    {q:'Friday',answer:4,explanation:'周五他要给妈妈和自己做晚饭，爸爸则去打网球，即做饭。'}]},
+  27:{options:['baseball','cycling','golf','hockey','horse riding','sailing','surfboarding','swimming'],items:[
+    {q:'Katherine',answer:3,explanation:'她本想打高尔夫但没有名额，最后选了曲棍球；骑自行车她想过但最终放弃。'},
+    {q:'Ruben',answer:2,explanation:'滑板冲浪是初学者项目、他的水平太高，高尔夫他从来没试过，所以选了高尔夫。'},
+    {q:'Elsa',answer:1,explanation:'她最想做的帆船太贵了，最后去骑了自行车。'},
+    {q:'Celia',answer:4,explanation:'她原本在骑马和网球之间犹豫，看到动物的照片后决定一定要去骑马。'},
+    {q:'Andy',answer:7,explanation:'曲棍球没有名额，他去了游泳池，即游泳；他说下次想试滑板冲浪。'}]},
+  28:{options:['cloudy','cold','fog','snow','sunny','warm','wet','windy'],items:[
+    {q:'Monday',answer:4,explanation:'女孩说周一太阳会回来，会是很棒的一天，即晴天。'},
+    {q:'Tuesday',answer:7,explanation:'女孩说周二风会很大，朋友的风筝比赛正需要风，即刮风。'},
+    {q:'Wednesday',answer:2,explanation:'女孩说周三一整天都会有雾，爸爸担心影响骑行，即有雾。'},
+    {q:'Thursday',answer:1,explanation:'女孩说周四不会下雨，但气温会很低，感觉会很冷，即寒冷。'},
+    {q:'Friday',answer:6,explanation:'爸爸猜周五会下雨，女孩说他猜对了、会下雨而且雨很大，即潮湿多雨。'}]},
+  29:{options:['write an email','prepare for a test','choose a place to visit','draw a picture','study how something changes','finish an exercise','write some questions','learn about a person'],items:[
+    {q:'Geography',answer:4,explanation:'河流一直在变化，Katie 要查明河流如何变宽、变深，即研究事物如何变化。'},
+    {q:'Maths',answer:5,explanation:'课上发了一张十道题的练习，没做完的要课后完成，即完成练习。'},
+    {q:'Spanish',answer:0,explanation:'西班牙语老师要求用西语给她写邮件，介绍一个著名的地方，即写一封电子邮件。'},
+    {q:'Biology',answer:3,explanation:'生物课现在学花，Katie 要画出一朵花的内部结构并展示细节，即画一幅画。'},
+    {q:'Art',answer:7,explanation:'美术作业不是画画，而是了解一位著名画家，下学期还要去博物馆看她的画，即了解一个人物。'}]},
+  30:{options:['bike lights','book','chess set','concert ticket','jewellery','rugby ball','sports shoes','tennis equipment'],items:[
+    {q:'Amelia',answer:1,explanation:'Amelia 送了她最喜欢的作家的新书，讲一个人骑车环游世界的故事，即一本书。'},
+    {q:'Rajiv',answer:7,explanation:'Rajiv 没送运动鞋，而是送了网球，因为晚点要一起打比赛，即网球装备。'},
+    {q:'Daisy',answer:4,explanation:'Daisy 送了手链和项链，和她喜欢的歌手演唱会上戴的一样，即首饰。'},
+    {q:'Uncle Rick',answer:6,explanation:'Uncle Rick 去年送了橄榄球，今年送了打橄榄球穿的球鞋，即运动鞋。'},
+    {q:'Grandma',answer:0,explanation:'奶奶担心她骑车时的安全，送了车灯，即自行车灯。'}]},
+  31:{options:['build a home for an animal','learn about trains','make a film','make a model','speak to a doctor','study insects','visit a park','write an article'],items:[
+    {q:'Tom',answer:0,explanation:'Tom 养宠物鼠，要做一个里面有它所需要的一切的家，即给动物建一个家。'},
+    {q:'Emma',answer:6,explanation:'Emma 读了一篇网上文章，打算去公园看那里的不寻常植物，即参观公园。'},
+    {q:'Jack',answer:2,explanation:'Jack 要拍一段自己的视频，解释为什么想当医生，即拍一部影片。'},
+    {q:'Louisa',answer:3,explanation:'Louisa 要用木头做一个不能飞的小飞机模型，只用来展示它的样子，即做模型。'},
+    {q:'Alfredo',answer:1,explanation:'Alfredo 找到一篇讲老式火车引擎如何工作的文章，要了解火车。'}]},
+  32:{options:['boring','clever','funny','sad','scary','strange','too old','useful'],items:[
+    {q:'Dancer',answer:2,explanation:'舞者在商店里起舞时，旁观的人看起来吓了一跳，但女孩自己笑得特别厉害，即好笑的。'},
+    {q:'Tiger',answer:4,explanation:'女孩看的时候有点害怕，担心他醒来，自己也觉得 scared，即吓人的。'},
+    {q:'Waterwoman',answer:7,explanation:'老太太用一杯水演示各种现象，讲解非常好，对科学课有帮助，即有用的。'},
+    {q:'Sleeping baby',answer:0,explanation:'宝宝虽然可爱，但看几秒就觉得够了，男孩直言没意思，即无聊的。'},
+    {q:'Mirrorman',answer:3,explanation:'他总是看起来不开心，看着视频的女孩也产生了同样的感觉，即悲伤的。'}]},
   20:{options:['beach umbrella','blanket','football','games','photos','picnic','sunglasses','towels'],items:[{q:'Katy',answer:1},{q:'Jacob',answer:6},{q:'Suzana',answer:4},{q:'Martin',answer:5},{q:'Carla',answer:3}]},
   19:{options:['armchair','bookcase','cupboard','desk','lamp','mirror','picture','shelf'],items:[{q:'kitchen',answer:2},{q:'living room',answer:3},{q:'bedroom',answer:4},{q:'bathroom',answer:6},{q:'garage',answer:7}]},
   18:{options:['bathroom','bedroom','dining room','garden','hall','kitchen','living room','stairs'],items:[{q:'bowl',answer:0},{q:'lamp',answer:3},{q:'box',answer:5},{q:'clock',answer:1},{q:'chair',answer:4}]},
@@ -2143,8 +2633,16 @@ const OFFICIAL_PART5_SETS = {
   },
 };
 
+
+// Exam Booster 《Cambridge Exam Booster for A2 Key》听力合并层：setId 33-35
+const PART1_SETS_ALL = applyKetOfficialEnrich(1, { ...OFFICIAL_PART1_BASE, ...BOOSTER_PART1_SETS });
+const PART2_SETS_ALL = applyKetOfficialEnrich(2, { ...OFFICIAL_PART2_BASE, ...BOOSTER_PART2_SETS });
+const PART3_SETS_ALL = applyKetOfficialEnrich(3, { ...OFFICIAL_PART3_BASE, ...BOOSTER_PART3_SETS });
+const PART4_SETS_ALL = applyKetOfficialEnrich(4, { ...OFFICIAL_PART4_BASE, ...BOOSTER_PART4_SETS });
+const PART5_SETS_ALL = applyKetOfficialEnrich(5, { ...OFFICIAL_PART5_BASE, ...BOOSTER_PART5_SETS });
+
 function OfficialPartFiveBoard({ level, setLevel, setId = 9 }) {
-  const data = OFFICIAL_PART5_SETS[setId] || OFFICIAL_TEST1_PARTS[5];
+  const data = PART5_SETS_ALL[setId] || OFFICIAL_TEST1_PARTS[5];
   const saved = readListeningProgress(setId, 5);
   const [answers, setAnswers] = useState(() =>
     saved?.answers?.length === data.items.length
@@ -2301,6 +2799,7 @@ function OfficialPartFiveBoard({ level, setLevel, setId = 9 }) {
             </div>
           </section>
         </div>
+        {data.transcript && <PartTranscriptBlock data={data} />}
         <section className="mt-6 rounded-[22px] bg-[#064e3b] p-5 text-white">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
@@ -2347,11 +2846,34 @@ function OfficialPartFiveBoard({ level, setLevel, setId = 9 }) {
   );
 }
 
+// 专项练习：整 Part 听力原文（黄色荧光标出答案句）
+function PartTranscriptBlock({ data }) {
+  const [open, setOpen] = useState(false);
+  const items = data.items || [];
+  const quotes = data.type === "blanks"
+    ? items.flatMap(item => (item.answer || []).map(a => String(a))).filter(Boolean)
+    : items.flatMap(item => extractQuotes(item.explanation || item.exp || ""));
+  return (
+    <section className="mt-6 rounded-2xl border border-amber-200 bg-amber-50/40 p-4">
+      <button type="button" onClick={() => setOpen(v => !v)} className="w-full text-left">
+        <div className="text-xs font-extrabold tracking-[.16em] text-amber-700">AUDIOSCRIPT</div>
+        <h3 className="mt-1 text-lg font-extrabold text-slate-900">听力原文{open ? " ▾" : " ▸"}</h3>
+        <p className="mt-1 text-xs text-slate-500">官方文稿全文，黄色荧光标出与答案对应的原文句。</p>
+      </button>
+      {open && (
+        <div className="mt-3 whitespace-pre-line rounded-xl bg-white p-3 text-xs leading-6 text-slate-600">
+          {renderTranscriptWithHighlights(data.transcript, quotes)}
+        </div>
+      )}
+    </section>
+  );
+}
+
 function OfficialListeningPartSample({ part, level, setLevel, setId = 9 }) {
   const data =
-    (part === 2 && OFFICIAL_PART2_SETS[setId]) ||
-    (part === 3 && OFFICIAL_PART3_SETS[setId]) ||
-    (part === 4 && OFFICIAL_PART4_SETS[setId]) ||
+    (part === 2 && PART2_SETS_ALL[setId]) ||
+    (part === 3 && PART3_SETS_ALL[setId]) ||
+    (part === 4 && PART4_SETS_ALL[setId]) ||
     OFFICIAL_TEST1_PARTS[part];
   const saved = readListeningProgress(setId, part);
   const [answers, setAnswers] = useState(() =>
@@ -2364,6 +2886,7 @@ function OfficialListeningPartSample({ part, level, setLevel, setId = 9 }) {
       ? saved.checked
       : Array(data.items.length).fill(false),
   );
+  const [revealExplanation, setRevealExplanation] = useState({});
   const normalise = (value) =>
     String(value)
       .toLowerCase()
@@ -2498,20 +3021,38 @@ function OfficialListeningPartSample({ part, level, setLevel, setId = 9 }) {
                       <div
                         className={`mt-4 rounded-xl px-4 py-3 text-sm ${right ? "bg-emerald-50 text-emerald-800" : "bg-rose-50 text-rose-700"}`}
                       >
-                        <strong>{right ? "✓ 回答正确！" : "再听一次。"}</strong>
-                        {!right && (
-                          <span className="ml-2">
-                            正确答案：
-                            {data.type === "blanks"
-                              ? item.show
-                              : data.type === "match"
-                                ? data.options[item.answer]
-                                : item.opts[item.answer]}
-                          </span>
-                        )}
-                        {item.explanation && (
+                        <div className="flex flex-wrap items-center gap-x-2">
+                          <strong>{right ? "✓ 回答正确！" : "再听一次。"}</strong>
+                          {!right && (
+                            <span>
+                              正确答案：
+                              {data.type === "blanks"
+                                ? item.show
+                                : data.type === "match"
+                                  ? data.options[item.answer]
+                                  : item.opts[item.answer]}
+                            </span>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setRevealExplanation((v) => ({
+                                ...v,
+                                [index]: !v[index],
+                              }))
+                            }
+                            className="text-xs font-extrabold text-emerald-700 hover:underline"
+                          >
+                            {revealExplanation[index] ? "收起解析" : "查看解析"}
+                          </button>
+                        </div>
+                        {revealExplanation[index] && item.explanation && (
                           <p className="mt-2 leading-6">{item.explanation}</p>
                         )}
+                        <TranscriptBox
+                          transcript={item.transcript}
+                          highlights={extractQuotes(item.explanation || item.exp || '')}
+                        />
                       </div>
                     )}
                   </div>
@@ -2520,6 +3061,7 @@ function OfficialListeningPartSample({ part, level, setLevel, setId = 9 }) {
             );
           })}
         </div>
+        {data.transcript && <PartTranscriptBlock data={data} part={part} />}
         <section className="mt-6 rounded-[22px] bg-[#064e3b] p-5 text-white">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
@@ -3785,13 +4327,75 @@ function ListeningPractice({ initialPart = 1 }) {
 
 const MOCK_LISTENING_PREFIX = "mars_ket_mock_listening_v2";
 
+// KET 听力模考原文面板：官方文稿全文，荧光笔标注答案句（transcript 逐字取自官方 Key 区 Track 灰框；缺页 Part 显示未收录）
+function ListeningMockTranscriptPanel({ setId }) {
+  const [open, setOpen] = useState(false);
+  const blocks = useMemo(() => [1, 2, 3, 4, 5].map(partNo => {
+    const partData = mockListeningData(setId, partNo);
+    if (!partData) return { partNo, missing: true };
+    if (partNo === 1 || partNo === 3) {
+      const items = (partData.items || []).map((item, index) => ({
+        label: `第 ${index + 1} 题`,
+        transcript: item.transcript,
+        quotes: extractQuotes(item.explanation || item.exp || ""),
+      }));
+      return { partNo, items, missing: items.every(entry => !entry.transcript) };
+    }
+    const items = partData.items || [];
+    const quotes = partNo === 2
+      ? items.flatMap(item => (item.answer || []).map(a => String(a))).filter(Boolean)
+      : items.flatMap(item => extractQuotes(item.explanation || item.exp || ""));
+    return {
+      partNo,
+      transcript: partData.transcript,
+      quotes,
+      missing: !partData.transcript,
+    };
+  }), [setId]);
+  if (!blocks.some(block => !block.missing)) return null;
+  return (
+    <section className="mt-6 rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+      <button type="button" onClick={() => setOpen(value => !value)} className="w-full text-left">
+        <div className="text-xs font-extrabold tracking-[.16em] text-emerald-700">AUDIOSCRIPT</div>
+        <h2 className="mt-1 text-2xl font-extrabold text-slate-950">听力原文{open ? " ▾" : " ▸"}</h2>
+        <p className="mt-2 text-sm text-slate-500">官方文稿全文，黄色荧光标出与答案对应的原文句。</p>
+      </button>
+      {open && (
+        <div className="mt-5 space-y-5">
+          {blocks.map(block => (
+            <article key={block.partNo} className="rounded-2xl border border-slate-100 bg-slate-50/60 p-4">
+              <h3 className="text-sm font-extrabold text-slate-700">Part {block.partNo}</h3>
+              {block.missing ? (
+                <p className="mt-2 text-xs text-slate-400">官方原文随书 127-128 页缺失，暂未收录。</p>
+              ) : block.items && !block.transcript ? (
+                <div className="mt-3 space-y-3">
+                  {block.items.map((entry, index) => (
+                    <div key={index} className="whitespace-pre-line rounded-xl bg-white p-3 text-xs leading-6 text-slate-600">
+                      <div className="mb-1 text-[11px] font-extrabold text-emerald-700">{entry.label}</div>
+                      {renderTranscriptWithHighlights(entry.transcript, entry.quotes)}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="mt-3 whitespace-pre-line rounded-xl bg-white p-3 text-xs leading-6 text-slate-600">
+                  {renderTranscriptWithHighlights(block.transcript, block.quotes)}
+                </div>
+              )}
+            </article>
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
 // eslint-disable-next-line react-refresh/only-export-components -- 供其他页面复用的数据装配函数
 export function mockListeningData(setId, part) {
-  if (part === 1) return OFFICIAL_PART1_SETS[setId] ? { title: "Part 1 图片选择题", type: "picture", items: OFFICIAL_PART1_SETS[setId] } : null;
-  if (part === 2) return OFFICIAL_PART2_SETS[setId] || null;
-  if (part === 3) return OFFICIAL_PART3_SETS[setId] || null;
-  if (part === 4) return OFFICIAL_PART4_SETS[setId] || null;
-  return OFFICIAL_PART5_SETS[setId] ? { title: "Part 5 配对题", instruction: "听对话，将每个人与正确选项配对。", type: "match", ...OFFICIAL_PART5_SETS[setId] } : null;
+  if (part === 1) { const raw = PART1_SETS_ALL[setId]; if (!raw) return null; return Array.isArray(raw) ? { title: "Part 1 图片选择题", type: "picture", items: raw } : { title: "Part 1 图片选择题", type: "picture", ...raw, items: raw.items }; }
+  if (part === 2) return PART2_SETS_ALL[setId] || null;
+  if (part === 3) return PART3_SETS_ALL[setId] || null;
+  if (part === 4) return PART4_SETS_ALL[setId] || null;
+  return PART5_SETS_ALL[setId] ? { title: "Part 5 配对题", instruction: "听对话，将每个人与正确选项配对。", ...PART5_SETS_ALL[setId], type: "match" } : null;
 }
 
 function normaliseMockAnswer(value) {
@@ -3874,12 +4478,12 @@ function ListeningMockExam({ level, setLevel, setId, part, examId }) {
   const [attempt, setAttempt] = useState(() => {
     try { return JSON.parse(localStorage.getItem(storageKey) || '{"parts":{}}'); } catch { return { parts: {} }; }
   });
-  const [startedAt] = useState(() => attempt.startedAt || Date.now());
+  const [startedAt, setStartedAt] = useState(() => attempt.startedAt || null);
   const [paused, setPaused] = useState(() => Boolean(attempt.pausedAt));
   const [pausedAt, setPausedAt] = useState(() => attempt.pausedAt || null);
   const [totalPausedMs, setTotalPausedMs] = useState(() => attempt.totalPausedMs || 0);
-  const [elapsed, setElapsed] = useState(() => Math.max(0, Math.floor(((attempt.pausedAt || Date.now()) - startedAt - (attempt.totalPausedMs || 0)) / 1000)));
-  const [finalElapsed, setFinalElapsed] = useState(() => attempt.finishedAt ? Math.max(0, Math.floor((attempt.finishedAt - startedAt - (attempt.totalPausedMs || 0)) / 1000)) : null);
+  const [elapsed, setElapsed] = useState(() => startedAt ? Math.max(0, Math.floor(((attempt.pausedAt || Date.now()) - startedAt - (attempt.totalPausedMs || 0)) / 1000)) : 0);
+  const [finalElapsed, setFinalElapsed] = useState(() => attempt.finishedAt && startedAt ? Math.max(0, Math.floor((attempt.finishedAt - startedAt - (attempt.totalPausedMs || 0)) / 1000)) : null);
   const emptyValue = data.type === "blanks" ? "" : null;
   const [answers, setAnswers] = useState(() => {
     const saved = attempt.parts?.[part];
@@ -3905,7 +4509,7 @@ function ListeningMockExam({ level, setLevel, setId, part, examId }) {
   }, [answers]);
 
   useEffect(() => {
-    if (submitted || paused) return undefined;
+    if (submitted || paused || startedAt === null) return undefined;
     const timer = window.setInterval(() => setElapsed(Math.max(0, Math.floor((Date.now() - startedAt - totalPausedMs) / 1000))), 1000);
     return () => window.clearInterval(timer);
   }, [paused, startedAt, submitted, totalPausedMs]);
@@ -3957,7 +4561,7 @@ function ListeningMockExam({ level, setLevel, setId, part, examId }) {
     const finalPausedMs = totalPausedMs + (paused && pausedAt ? finishedAt - pausedAt : 0);
     const next = { ...scoringAttempt, startedAt, finishedAt, pausedAt: null, totalPausedMs: finalPausedMs, completed: true, wrongCount: wrongAnswers.length, level: 'KET', examId };
     setAttempt(next);
-    setFinalElapsed(Math.max(0, Math.floor((finishedAt - startedAt - finalPausedMs) / 1000)));
+    setFinalElapsed(Math.max(0, Math.floor((finishedAt - (startedAt ?? finishedAt) - finalPausedMs) / 1000)));
     try { localStorage.setItem(storageKey, JSON.stringify(next)); } catch { /* ignore */ }
     // 交卷同步错题本（覆盖式：本次答对的旧错题自动移出；key = 题在 Part 内的序号）
     allData.forEach((partData, partIndex) => {
@@ -3974,6 +4578,14 @@ function ListeningMockExam({ level, setLevel, setId, part, examId }) {
 
   function toggleTimer() {
     const now = Date.now();
+    if (startedAt === null) {
+      const next = { ...attempt, startedAt: now, pausedAt: null, totalPausedMs };
+      setStartedAt(now);
+      setPaused(false);
+      try { localStorage.setItem(storageKey, JSON.stringify(next)); } catch { /* ignore */ }
+      setAttempt(next);
+      return;
+    }
     if (paused) {
       const nextTotal = totalPausedMs + (pausedAt ? now - pausedAt : 0);
       const next = { ...attempt, startedAt, pausedAt: null, totalPausedMs: nextTotal };
@@ -4050,12 +4662,19 @@ function ListeningMockExam({ level, setLevel, setId, part, examId }) {
                     <div className="rounded-xl border border-rose-200 bg-white p-4"><div className="text-xs font-bold text-slate-400">你的答案</div><strong className="mt-1 block text-rose-700">{mockAnswerLabel(entry.data, entry.item, entry.value)}</strong></div>
                     <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4"><div className="text-xs font-bold text-emerald-600">正确答案</div><strong className="mt-1 block text-emerald-800">{mockCorrectAnswerLabel(entry.data, entry.item)}</strong></div>
                   </div>
+                  {(entry.item.transcript || entry.data.transcript) && (
+                    <TranscriptBox
+                      transcript={entry.item.transcript || entry.data.transcript}
+                      highlights={extractQuotes(entry.item.explanation || entry.item.exp || "")}
+                    />
+                  )}
                 </article>
               ))}
               {wrongAnswers.length === 0 && <div className="rounded-2xl bg-emerald-50 p-6 text-center font-extrabold text-emerald-700">全部答对，没有错题 🎉</div>}
             </div>
           </section>
         )}
+        <ListeningMockTranscriptPanel setId={setId} />
       </main>
     </CambridgeLayout>
   );
@@ -4070,11 +4689,13 @@ function ListeningMockExam({ level, setLevel, setId, part, examId }) {
             const saved = attempt.parts?.[partId] || [];
             const indexes = redoTargets ? redoTargets.filter(target => target.part === partId).map(target => target.index) : [0, 1, 2, 3, 4];
             const done = indexes.every(index => saved[index] !== null && saved[index] !== undefined && String(saved[index]).trim() !== "");
-            return <span key={partId} className={`rounded-xl border px-4 py-2.5 text-sm font-extrabold ${partId === part ? 'border-emerald-700 bg-emerald-700 text-white' : done ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : 'border-slate-200 bg-white text-slate-400'}`}>Part {partId}{done ? ' ✓' : ''}</span>;
+            const tone = partId === part ? 'border-emerald-700 bg-emerald-700 text-white' : done ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : 'border-slate-200 bg-white text-slate-400';
+            const cursor = partId === part ? '' : ' cursor-pointer hover:border-emerald-300 hover:text-emerald-700';
+            return <button key={partId} type="button" title={`跳到 Part ${partId} 作答`} onClick={() => navigate(`/cambridge/listening?mode=mock&exam=${examId}&part=${partId}&set=${setId}`)} className={`rounded-xl border px-4 py-2.5 text-sm font-extrabold ${tone}${cursor}`}>Part {partId}{done ? ' ✓' : ''}</button>;
           })}
           <div className="ml-auto flex items-center gap-2">
             <span className={`rounded-xl px-4 py-2.5 font-mono text-sm font-extrabold ${paused ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-700'}`}>⏱ {mockDurationLabel(elapsed)}</span>
-            <button type="button" onClick={toggleTimer} className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-extrabold text-slate-600 hover:border-emerald-300 hover:text-emerald-700">{paused ? '▶ 继续计时' : 'Ⅱ 暂停计时'}</button>
+            <button type="button" onClick={toggleTimer} className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-extrabold text-slate-600 hover:border-emerald-300 hover:text-emerald-700">{startedAt === null ? '▶ 开始计时' : paused ? '▶ 继续计时' : 'Ⅱ 暂停计时'}</button>
             <button type="button" onClick={resetMock} className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-extrabold text-slate-600 hover:border-rose-300 hover:text-rose-600">↺ 重置模考</button>
           </div>
         </div>
@@ -4416,6 +5037,7 @@ function PetListeningPractice({ level, setLevel }) {
     }
     return Array(count).fill(false);
   });
+  const [revealExplanation, setRevealExplanation] = useState({});
   useEffect(() => {
     try {
       localStorage.setItem(storageKey, JSON.stringify({ answers, checked }));
@@ -4693,18 +5315,36 @@ function PetListeningPractice({ level, setLevel }) {
                             : "bg-rose-50 text-rose-700"
                         }`}
                       >
-                        <strong>{right ? "✓ 回答正确！" : "再听一次。"}</strong>
-                        {!right && (
-                          <span className="ml-2">
-                            正确答案：
-                            {data.type === "blanks"
-                              ? item.show
-                              : `${LABELS[item.answer]}`}
-                          </span>
+                        <div className="flex flex-wrap items-center gap-x-2">
+                          <strong>{right ? "✓ 回答正确！" : "再听一次。"}</strong>
+                          {!right && (
+                            <span>
+                              正确答案：
+                              {data.type === "blanks"
+                                ? item.show
+                                : `${LABELS[item.answer]}`}
+                            </span>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setRevealExplanation((v) => ({
+                                ...v,
+                                [index]: !v[index],
+                              }))
+                            }
+                            className="text-xs font-extrabold text-violet-700 hover:underline"
+                          >
+                            {revealExplanation[index] ? "收起解析" : "查看解析"}
+                          </button>
+                        </div>
+                        {revealExplanation[index] && item.explanation && (
+                          <p className="mt-1 leading-6">{item.explanation}</p>
                         )}
-                        {item.explanation && (
-                          <p className="mt-1">{item.explanation}</p>
-                        )}
+                        <TranscriptBox
+                          transcript={data.transcript}
+                          highlights={extractQuotes(item.explanation || item.exp || "")}
+                        />
                       </div>
                     )}
                   </div>
@@ -4713,6 +5353,8 @@ function PetListeningPractice({ level, setLevel }) {
             );
           })}
         </div>
+
+        {data.transcript && <PartTranscriptBlock data={data} />}
 
         <section className="mt-6 rounded-[22px] bg-violet-700 p-5 text-white">
           <div className="flex flex-wrap items-center justify-between gap-3">

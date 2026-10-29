@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { CambridgeLayout } from './CambridgeApp'
 import { readSavedWords, removeSavedWord, SAVED_WORDS_EVENT, updateSavedWord } from '../utils/savedWords'
 
@@ -30,6 +31,9 @@ export default function CambridgeSavedWords() {
   return (
     <CambridgeLayout activeModule="words" level={level} setLevel={setLevel}>
       <div className="mx-auto max-w-6xl px-6 py-8 lg:px-9">
+        <Link to="/cambridge" className="mb-4 inline-flex items-center gap-1 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-extrabold text-emerald-800 transition-colors hover:border-emerald-400 hover:bg-emerald-100">
+          ← 返回我的学习
+        </Link>
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div><div className="text-[11px] font-extrabold tracking-[.18em] text-emerald-700">MY WORD BANK</div><h1 className="mt-1 text-4xl font-extrabold tracking-tight text-gray-950">我的生词库</h1><p className="mt-2 text-sm text-gray-500">在学习页面选中英文单词，查看中文翻译并加入这里。</p></div>
           <div className="flex flex-wrap gap-2" data-no-word-select>

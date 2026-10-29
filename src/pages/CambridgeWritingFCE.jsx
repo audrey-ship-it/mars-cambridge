@@ -237,17 +237,19 @@ export default function CambridgeWritingFCE() {
           </div>
           <div className="space-y-2">
             {FCE_EDITIONS.map(ed => {
-              const chips = ed.books.flatMap(b => {
+              const chips = []
+              ed.books.forEach(b => {
                 if (ed.edition === 'mock') {
                   const t = fceWritingTests[b.book - 1]
-                  return t ? [{ key: b.examId, label: `Test ${b.book}`, examId: b.examId }] : []
+                  if (t) chips.push({ key: b.examId, label: String(chips.length + 1), examId: b.examId })
+                } else {
+                  ;[1, 2, 3, 4].forEach(t => {
+                    const examId = `${b.examId}-test${t}`
+                    if (fceExamPapers(examId)?.writing) {
+                      chips.push({ key: examId, label: String(chips.length + 1), examId })
+                    }
+                  })
                 }
-                return [1, 2, 3, 4].map(t => {
-                  const examId = `${b.examId}-test${t}`
-                  return fceExamPapers(examId)?.writing
-                    ? { key: examId, label: `${ed.edition === 'standard' ? '标准' : '校园'}${b.book}·T${t}`, examId }
-                    : []
-                })
               })
               if (!chips.length) return null
               return (

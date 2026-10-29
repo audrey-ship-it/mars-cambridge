@@ -43,10 +43,10 @@ const ACCENT = {
   timerOff: 'bg-white text-sky-500 shadow-sm',
 }
 
-function renderPassageWithGaps(passage, answers, onAnswer, gapColor = ACCENT.text) {
+function renderPassageWithGaps(passage, answers, onAnswer, gapColor = ACCENT.text, mcqItems = null, checked = false) {
   if (!passage) return null
   // 匹配 "(1)....." 或 "(1)\u00A0\u00A0\u00A0..." 或 "(1) " 这样的空位标记
-  const regex = /\((\d+)\)[\s.··]+/g
+  const regex = /\((\d+)\)[\s.··_]+/g
   const parts = []
   let lastIndex = 0
   let m
@@ -56,19 +56,40 @@ function renderPassageWithGaps(passage, answers, onAnswer, gapColor = ACCENT.tex
       parts.push(<span key={`t-${m.index}`}>{passage.slice(lastIndex, m.index)}</span>)
     }
     const qNum = Number(m[1])
-    const val = answers[qNum] || ''
-    parts.push(
-      <input
-        key={`g-${qNum}`}
-        value={val}
-        onChange={e => onAnswer(qNum, e.target.value)}
-        className={`mx-1 inline-block w-20 border-b-2 bg-transparent text-center font-semibold uppercase outline-none transition-colors ${
-          val ? `${gapColor} border-sky-400` : 'text-slate-400 border-slate-300'
-        } focus:border-sky-500`}
-        maxLength={12}
-        style={{ fontSize: '0.9em' }}
-      />,
-    )
+    const raw = answers[qNum]
+    const hasVal = raw !== undefined && raw !== null && raw !== ''
+    if (mcqItems) {
+      // 多选模式：横线只读展示右侧所选选项的文本（颜色随作答/批改状态变化）
+      const it = mcqItems.find(x => x.q === qNum)
+      const ok = checked && it && hasVal && Number(raw) === it.answer
+      const bad = checked && it && hasVal && Number(raw) !== it.answer
+      const lineCls = checked && it
+        ? ok ? 'text-emerald-600 border-emerald-500' : bad ? 'text-red-500 border-red-400' : 'text-slate-400 border-slate-300'
+        : hasVal ? `${gapColor} border-sky-400` : 'text-slate-400 border-slate-300'
+      parts.push(
+        <span key={`g-${qNum}`} className="inline-block whitespace-nowrap">
+          <span className={`mx-1 inline-block min-w-[64px] border-b-2 px-1 text-center font-semibold ${lineCls}`} style={{ fontSize: '0.9em' }}>
+            {hasVal ? (it?.opts?.[Number(raw)] ?? raw) : '\u00A0'}
+          </span>
+          {checked && it && !ok && (
+            <span className="text-xs font-bold text-emerald-600">→{String.fromCharCode(65 + it.answer)}</span>
+          )}
+        </span>,
+      )
+    } else {
+      parts.push(
+        <input
+          key={`g-${qNum}`}
+          value={raw || ''}
+          onChange={e => onAnswer(qNum, e.target.value)}
+          className={`mx-1 inline-block w-20 border-b-2 bg-transparent text-center font-semibold uppercase outline-none transition-colors ${
+            hasVal ? `${gapColor} border-sky-400` : 'text-slate-400 border-slate-300'
+          } focus:border-sky-500`}
+          maxLength={12}
+          style={{ fontSize: '0.9em' }}
+        />,
+      )
+    }
     lastIndex = m.index + m[0].length
   }
   if (lastIndex < passage.length) {
@@ -248,68 +269,70 @@ export default function CambridgeReadingFCE() {
   function renderOpenCloze() {
     const items = currentPart.items || []
     return (
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-stretch">
         <div className="min-w-0 bg-gray-50 rounded-xl border border-gray-100 p-5 overflow-y-auto" style={{ maxHeight: '70vh' }}>
           <div className="text-[19px] text-gray-700 leading-9 whitespace-pre-line">
-            {renderPassageWithGaps(currentPart.passage, answers, setAnswer)}
+            {(() => {
+              if (!currentPart.passage) return null
+              const regex = /\((\d+)\)[\s.··]*/g
+              const parts = []
+              let lastIndex = 0
+              let m
+              while ((m = regex.exec(currentPart.passage)) !== null) {
+                if (m.index > lastIndex) {
+                  parts.push(<span key={`t-${m.index}`}>{currentPart.passage.slice(lastIndex, m.index)}</span>)
+                }
+                const qNum = Number(m[1])
+                const userAns = (answers[qNum] || '').trim()
+                const correctAccepted = (items.find(it => it.q === qNum)?.answer || []).map(a => a.toUpperCase())
+                const isCorrect = batchChecked && correctAccepted.includes(userAns.toUpperCase())
+                const isWrong = batchChecked && userAns && !isCorrect
+                parts.push(
+                  <span key={`g-${qNum}`} className={`inline-flex items-end border-b-2 mx-0.5 px-1.5 min-w-[3.5em] justify-center align-baseline ${
+                    isCorrect ? 'border-emerald-500 text-emerald-700' :
+                    isWrong ? 'border-red-400 text-red-600' :
+                    userAns ? 'border-sky-400 text-sky-700' : 'border-gray-400'
+                  }`}>
+                    {userAns ? <span className="font-semibold">{userAns}</span> : <span className="text-gray-400 text-xs">{qNum}</span>}
+                  </span>
+                )
+                lastIndex = m.index + m[0].length
+              }
+              if (lastIndex < currentPart.passage.length) {
+                parts.push(<span key="t-end">{currentPart.passage.slice(lastIndex)}</span>)
+              }
+              return parts
+            })()}
           </div>
         </div>
-        <div className="min-w-0 space-y-3 overflow-y-auto pr-1" style={{ maxHeight: '70vh' }}>
-          {items.map((item, qi) => {
+        <div className="flex flex-col gap-3 h-full overflow-y-auto pr-1" style={{ maxHeight: '70vh' }}>
+          {items.map((item) => {
             const qKey = item.q
             const userAns = (answers[qKey] || '').trim().toUpperCase()
             const correctAccepted = (item.answer || []).map(a => a.toUpperCase())
             const isCorrect = correctAccepted.includes(userAns)
-            const showThis = showAns[qKey]
             return (
-              <motion.div key={qKey}
-                initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: qi * 0.04 }}
-                className={`border rounded-xl p-4 transition-colors ${
-                  batchChecked
-                    ? isCorrect ? 'border-emerald-200 bg-emerald-50/40' : 'border-red-200 bg-red-50/40'
-                    : 'border-slate-200 bg-white'
-                }`}
-              >
-                <div className="flex items-center gap-2 mb-2">
-                  <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-extrabold ${
-                    batchChecked
-                      ? isCorrect ? 'bg-emerald-500 text-white' : 'bg-red-400 text-white'
-                      : userAns ? 'bg-sky-500 text-white' : 'bg-sky-100 text-sky-600'
-                  }`}>{item.q}</span>
-                  {item.given && <span className="text-xs font-bold text-slate-400">({item.given})</span>}
-                </div>
-                <div className="flex items-center gap-2">
-                  <input
-                    value={answers[qKey] || ''}
-                    onChange={e => setAnswer(qKey, e.target.value)}
-                    placeholder="填入答案"
-                    className={`flex-1 border rounded-lg px-3 py-2 text-sm font-semibold uppercase outline-none transition-colors ${
-                      batchChecked
-                        ? isCorrect ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-red-300 bg-red-50 text-red-700'
-                        : 'border-slate-200 bg-white text-slate-700 focus:border-sky-400'
-                    }`}
-                  />
-                  {batchChecked && !isCorrect && (
-                    <span className="text-xs font-bold text-emerald-600">
-                      正确：{item.show || correctAccepted.join(' / ')}
-                    </span>
-                  )}
-                </div>
+              <div key={qKey} className={`flex-1 flex items-center gap-2 border rounded-xl px-3 py-2.5 transition-all ${
+                batchChecked
+                  ? isCorrect ? 'border-emerald-300 bg-emerald-50' : 'border-red-300 bg-red-50'
+                  : 'border-gray-200 focus-within:border-sky-400'
+              }`}>
+                <span className={`text-xs font-extrabold w-7 flex-shrink-0 ${
+                  batchChecked ? (isCorrect ? 'text-emerald-600' : 'text-red-500') : 'text-sky-600'
+                }`}>{item.q}</span>
+                {item.given && <span className="text-xs font-bold text-slate-400 flex-shrink-0">({item.given})</span>}
+                <input
+                  value={answers[qKey] || ''}
+                  onChange={e => setAnswer(qKey, e.target.value)}
+                  placeholder="填入答案"
+                  className="min-w-0 flex-1 bg-transparent text-base font-semibold uppercase focus:outline-none text-gray-700 placeholder:text-gray-300"
+                />
                 {batchChecked && !isCorrect && (
-                  <div className="mt-2">
-                    <button onClick={() => toggleShowAns(qKey)}
-                      className="text-xs font-bold text-sky-600 underline">
-                      {showThis ? '收起解析' : '查看解析'}
-                    </button>
-                  </div>
+                  <span className="text-xs text-emerald-600 font-semibold flex-shrink-0">
+                    正确：{item.show || correctAccepted.join(' / ')}
+                  </span>
                 )}
-                {showThis && item.explanation && (
-                  <div className="mt-2 rounded-lg bg-sky-50 border border-sky-200 p-3 text-sm text-sky-800 leading-6">
-                    <strong className="font-bold">解析：</strong>{item.explanation}
-                  </div>
-                )}
-              </motion.div>
+              </div>
             )
           })}
         </div>
@@ -438,9 +461,9 @@ export default function CambridgeReadingFCE() {
     const sections = currentPart.sections || []
     const items = currentPart.items || []
     return (
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:items-stretch">
         {/* 左：题目 */}
-        <div className="space-y-3">
+        <div className="flex flex-col gap-3 h-full overflow-y-auto pr-1 lg:max-h-[70vh]">
           {items.map((item, qi) => {
             const qKey = item.q
             const userAns = (answers[qKey] || '').toUpperCase()
@@ -449,7 +472,7 @@ export default function CambridgeReadingFCE() {
               <motion.div key={qKey}
                 initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: qi * 0.04 }}
-                className={`border rounded-xl p-4 transition-colors ${
+                className={`flex-1 border rounded-xl p-4 transition-colors ${
                   batchChecked
                     ? isCorrect ? 'border-emerald-200 bg-emerald-50/40' : 'border-red-200 bg-red-50/40'
                     : 'border-slate-200 bg-white'
@@ -483,9 +506,9 @@ export default function CambridgeReadingFCE() {
           })}
         </div>
         {/* 右：四篇文章 */}
-        <div className="space-y-3 overflow-y-auto" style={{ maxHeight: '70vh' }}>
+        <div className="flex flex-col gap-3 h-full overflow-y-auto lg:max-h-[70vh]">
           {sections.map(sec => (
-            <div key={sec.label} className="rounded-xl border border-slate-200 bg-white p-4">
+            <div key={sec.label} className="flex-1 rounded-xl border border-slate-200 bg-white p-4">
               <div className="flex items-center gap-2 mb-2">
                 <span className="w-7 h-7 rounded-full bg-sky-500 text-white font-bold text-sm flex items-center justify-center">{sec.label}</span>
                 <span className="text-sm font-bold text-slate-700">{sec.name}</span>
@@ -521,7 +544,7 @@ export default function CambridgeReadingFCE() {
           <div className="min-w-0 bg-gray-50 rounded-xl border border-gray-100 p-5 overflow-y-auto" style={{ maxHeight: '70vh' }}>
             <div className="text-center text-xl font-extrabold text-gray-900 mb-2">{currentPart.title}</div>
             <div className="text-[19px] text-gray-700 leading-9 whitespace-pre-line">
-              {renderPassageWithGaps(currentPart.passage, answers, setAnswer)}
+              {renderPassageWithGaps(currentPart.passage, answers, setAnswer, ACCENT.text, currentPart.items, batchChecked)}
             </div>
           </div>
           <div className="min-w-0 space-y-3 overflow-y-auto pr-1" style={{ maxHeight: '70vh' }}>
@@ -611,15 +634,19 @@ export default function CambridgeReadingFCE() {
           </div>
           <div className="space-y-2">
             {FCE_EDITIONS.map(ed => {
-              const chips = ed.books.flatMap(b => {
+              const chips = []
+              ed.books.forEach(b => {
                 if (ed.edition === 'mock') {
                   const t = fceReadingTests[b.book - 1]
-                  return t ? [{ key: b.examId, label: `Test ${b.book}`, examId: b.examId }] : []
+                  if (t) chips.push({ key: b.examId, label: String(chips.length + 1), examId: b.examId })
+                } else {
+                  ;[1, 2, 3, 4].forEach(t => {
+                    const examId = `${b.examId}-test${t}`
+                    if (fceExamPapers(examId)?.reading) {
+                      chips.push({ key: examId, label: String(chips.length + 1), examId })
+                    }
+                  })
                 }
-                return [1, 2, 3, 4].map(t => {
-                  const examId = `${b.examId}-test${t}`
-                  return fceExamPapers(examId)?.reading ? { key: examId, label: `${ed.label === '标准版真题' ? '标准' : '校园'}${b.book}·T${t}`, examId } : []
-                })
               })
               if (!chips.length) return null
               return (

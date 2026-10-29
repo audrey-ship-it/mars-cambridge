@@ -6,8 +6,8 @@ import PlacementTestModal from './PlacementTestModal'
 
 const levels = [
   { code: 'A2', abbr: 'KET', name: 'Key', zh: '基础英语', color: '#0d7656', bg: '#eaf7f1', note: '内容最完整', desc: '建立日常英语沟通基础，适合小学高年级及入门学习者。' },
-  { code: 'B1', abbr: 'PET', name: 'Preliminary', zh: '初级英语', color: '#2574a9', bg: '#edf6fb', note: '可进入', desc: '提升日常学习、旅行与生活场景中的独立英语能力。' },
-  { code: 'B2', abbr: 'FCE', name: 'First', zh: '独立英语', color: '#0ea5e9', bg: '#e0f2fe', note: '可进入', desc: '面向更复杂的学习与交流任务，发展独立使用英语的能力。' },
+  { code: 'B1', abbr: 'PET', name: 'Preliminary', zh: '初级英语', color: '#7c3aed', bg: '#f5f3ff', note: '可进入', desc: '提升日常学习、旅行与生活场景中的独立英语能力。' },
+  { code: 'B2', abbr: 'FCE', name: 'First', zh: '独立英语', color: '#0284c7', bg: '#f0f9ff', note: '可进入', desc: '面向更复杂的学习与交流任务，发展独立使用英语的能力。' },
 ]
 
 const coreModules = [

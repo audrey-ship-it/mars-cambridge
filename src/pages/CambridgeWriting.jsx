@@ -4,6 +4,9 @@ import { CambridgeLayout } from './CambridgeApp'
 import { WritingCard } from './CambridgeExam'
 import { KET_EXAMS } from '../data/ketExamData'
 import { KET_STANDARD_WRITING } from '../data/ketStandardWritingData'
+import { KET_TRAINER1_WRITING } from '../data/ketWritingTrainer1'
+import { KET_TRAINER2_WRITING } from '../data/ketWritingTrainer2'
+import { KET_WRITING_BOOSTER } from '../data/ketWritingBooster'
 import { petWritingTests } from '../data/petWritingData'
 import { PET_WRITING_SAMPLES } from '../data/petWritingSamples'
 import { PET_WRITING_STANDARD } from '../data/petWritingStandard'
@@ -34,6 +37,18 @@ const WRITING_SETS = [1, 2, 3].flatMap(book => [1, 2, 3, 4].map(test => {
   exam: { id, label: '标准版真题 1', reading: { writing } },
   book: 'standard',
   test: 1,
+}))).concat(Object.entries(KET_TRAINER1_WRITING).map(([id, writing], index) => ({
+  exam: { id, label: `Trainer 1 · Test ${index + 1}`, reading: { writing } },
+  book: 'trainer1',
+  test: index + 1,
+}))).concat(Object.entries(KET_TRAINER2_WRITING).map(([id, writing], index) => ({
+  exam: { id, label: `Trainer 2 · Test ${index + 1}`, reading: { writing } },
+  book: 'trainer2',
+  test: index + 1,
+}))).concat(Object.entries(KET_WRITING_BOOSTER).map(([id, writing], index) => ({
+  exam: { id, label: `Exam Booster · Test ${index + 1}`, reading: { writing } },
+  book: 'booster',
+  test: index + 1,
 })))
 
 const PART_INFO = {

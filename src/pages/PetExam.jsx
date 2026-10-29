@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CambridgeLayout } from './CambridgeApp'
 import { WritingCard, useTTS } from './CambridgeExam'
+import { extractQuotes, TranscriptBox, AudioscriptPanel } from '../utils/transcriptHighlight'
 import { petListeningTests } from '../data/petListeningData'
 import { petReadingTests } from '../data/petReadingData'
 import { petWritingTests } from '../data/petWritingData'
@@ -56,7 +57,7 @@ const ABC = ['A', 'B', 'C']
 /* ══════════════════════════════
    PET ExamShell —— 共享外壳（紫色主题，含返回总览、Part 进度、计时器）
 ══════════════════════════════ */
-function PetExamShell({ testN, kind = 'mock', section, parts, partIndex, allAnswers, isDone, onReset, timerSeconds, timerPaused, onToggleTimer, totalMinutes, children }) {
+function PetExamShell({ testN, kind = 'mock', section, parts, partIndex, allAnswers, isDone, onReset, onPartClick, timerSeconds, timerPaused, onToggleTimer, totalMinutes, children }) {
   const [level, setLevel] = useExamLevel()
   return (
     <CambridgeLayout activeModule="exams" level={level} setLevel={setLevel}>
@@ -73,7 +74,7 @@ function PetExamShell({ testN, kind = 'mock', section, parts, partIndex, allAnsw
           </div>
           {parts.map((p, index) => {
             const finished = allAnswers[index] !== undefined
-            return <span key={p.part} className={`rounded-xl border px-4 py-2.5 text-sm font-extrabold ${index === partIndex && !isDone ? 'border-violet-600 bg-violet-600 text-white' : finished || isDone ? 'border-violet-200 bg-violet-50 text-violet-700' : 'border-slate-200 bg-white text-slate-400'}`}>Part {p.part}{finished || isDone ? ' ✓' : ''}</span>
+            return <button key={p.part} type="button" onClick={() => onPartClick && onPartClick(index)} className={`rounded-xl border px-4 py-2.5 text-sm font-extrabold transition-colors ${onPartClick ? 'cursor-pointer hover:border-violet-300' : 'cursor-default'} ${index === partIndex && !isDone ? 'border-violet-600 bg-violet-600 text-white' : finished || isDone ? 'border-violet-200 bg-violet-50 text-violet-700' : 'border-slate-200 bg-white text-slate-400'}`}>Part {p.part}{finished || isDone ? ' ✓' : ''}</button>
           })}
           {onToggleTimer ? (
             <button type="button" onClick={onToggleTimer} className={`ml-auto rounded-xl px-4 py-2.5 font-mono text-sm font-extrabold ${timerPaused ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-700'}`}>
@@ -248,7 +249,7 @@ function PetAudioPlayer({ src }) {
     const onPause = () => setPlaying(false)
     const onTime = () => setProgress(a.currentTime / (a.duration || 1))
     a.addEventListener('play', onPlay); a.addEventListener('pause', onPause); a.addEventListener('timeupdate', onTime)
-    return () => { a.removeEventListener('play', onPlay); a.removeEventListener('pause', onPause); a.removeEventListener('timeupdate', onTime) }
+    return () => { a.removeEventListener('play', onPlay); a.removeEventListener('pause', onPause); a.removeEventListener('timeupdate', onTime); a.pause() }
   }, [])
 
   function toggle() {
@@ -259,7 +260,7 @@ function PetAudioPlayer({ src }) {
 
   return (
     <div className="rounded-2xl border border-violet-200 bg-violet-50 p-4">
-      <audio ref={ref} src={src} preload="metadata" />
+      <audio ref={ref} src={src} preload="auto" />
       <div className="flex items-center gap-3">
         <button type="button" onClick={toggle}
           className="grid h-12 w-12 place-items-center rounded-full bg-violet-600 text-white shadow-sm hover:bg-violet-700">
@@ -309,7 +310,7 @@ export function PetListeningExam({ testN, kind = 'mock' }) {
   if (done) return <PetListeningFinalResult parts={parts} allAnswers={allAnswers} testN={testN} kind={kind} />
 
   return (
-    <PetExamShell testN={testN} kind={kind} section="listening" parts={parts} partIndex={partIndex} allAnswers={allAnswers}>
+    <PetExamShell testN={testN} kind={kind} section="listening" parts={parts} partIndex={partIndex} allAnswers={allAnswers} onPartClick={setPartIndex}>
       <AnimatePresence mode="wait">
         <motion.div key={partIndex} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
           <div className="mb-5">
@@ -323,6 +324,7 @@ export function PetListeningExam({ testN, kind = 'mock' }) {
 }
 
 /* PET 听力最终结果 */
+// 荧光笔原文工具（extractQuotes / renderTranscriptWithHighlights / TranscriptBox）已提取至 utils/transcriptHighlight.jsx
 function PetListeningFinalResult({ parts, allAnswers, testN, kind = 'mock' }) {
   const [level, setLevel] = useExamLevel()
 
@@ -334,7 +336,7 @@ function PetListeningFinalResult({ parts, allAnswers, testN, kind = 'mock' }) {
         n: i + 1, question: item.q,
         userAns: ans[i] != null ? (part.type === 'image_mcq' ? ABC[ans[i]] : ABC[ans[i]]) : '—',
         correctAns: part.type === 'image_mcq' ? ABC[item.answer] : ABC[item.answer],
-        isRight: results[i], exp: item.explanation,
+        isRight: results[i], exp: item.explanation, transcript: item.transcript,
       }))
       return { part, correct: results.filter(Boolean).length, total: results.length, review }
     }
@@ -383,6 +385,7 @@ function PetListeningFinalResult({ parts, allAnswers, testN, kind = 'mock' }) {
               })}
             </div>
           </div>
+          <AudioscriptPanel parts={parts} tagClass="text-violet-700" />
           {partScores.map(({ part, correct: c, total: t, review }, pi) => (
             <div key={pi} className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
               <div className="flex items-center gap-3 px-5 py-3.5 bg-slate-50 border-b border-slate-100">
@@ -406,11 +409,20 @@ function PetListeningFinalResult({ parts, allAnswers, testN, kind = 'mock' }) {
                           <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-lg font-bold">正确：{r.correctAns}</span>
                         </div>
                         {!r.isRight && r.exp && <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">{r.exp}</p>}
+                        <TranscriptBox transcript={r.transcript} highlights={extractQuotes(r.exp)} />
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
+              {part.transcript && (
+                <div className="px-5 py-3.5 border-t border-slate-50 bg-amber-50/20">
+                  <TranscriptBox
+                    transcript={part.transcript}
+                    highlights={part.items.flatMap((it) => extractQuotes(it.explanation))}
+                  />
+                </div>
+              )}
             </div>
           ))}
           <div className="flex gap-3 pb-4">
@@ -1088,7 +1100,33 @@ function PetPart5ClozeMCQ({ part, initialAnswers, redoOnly, isLast, onDone }) {
         <div className="min-w-0">
           <div className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">文章（6 处空缺）</div>
           <div className="rounded-2xl bg-slate-50 px-6 py-5 text-[17px] leading-8 text-slate-800 whitespace-pre-line">
-            {(part.passage_segments || []).join('\n')}
+            {(() => {
+              const nToIdx = {}
+              part.questions.forEach((q, i) => { nToIdx[String(q.n)] = i })
+              const text = (part.passage_segments || []).join('\n')
+              return text.split(/(\(\d+\))/g).map((seg, si) => {
+                const m = seg.match(/^\((\d+)\)$/)
+                if (m) {
+                  const i = nToIdx[m[1]]
+                  if (i == null) return <span key={si}>{seg}</span>
+                  const q = part.questions[i]
+                  const sel = answers[i]
+                  const opt = sel != null ? q.opts[sel] : null
+                  const isRight = checked && sel === q.ans
+                  const isWrong = checked && sel != null && sel !== q.ans
+                  return (
+                    <span key={si} className={`inline-flex items-end border-b-2 mx-0.5 px-1.5 min-w-[3.5em] justify-center align-baseline ${
+                      isRight ? 'border-emerald-500 text-emerald-700' :
+                      isWrong ? 'border-rose-400 text-rose-600' :
+                      sel != null ? 'border-violet-500 text-violet-700' : 'border-gray-400'
+                    }`}>
+                      {opt ? <span className="font-semibold">{opt}</span> : <span className="text-gray-400 text-xs">{m[1]}</span>}
+                    </span>
+                  )
+                }
+                return <span key={si}>{seg}</span>
+              })
+            })()}
           </div>
         </div>
         <div className="space-y-3">
@@ -1134,23 +1172,48 @@ function PetPart6OpenCloze({ part, initialAnswers, redoOnly, isLast, onDone }) {
 
   return (
     <div>
-      <div className="grid gap-5 lg:grid-cols-2 items-start">
+      <div className="grid gap-5 lg:grid-cols-2 items-stretch">
         <div className="min-w-0">
           <div className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">文章（6 处空缺）</div>
           <div className="rounded-2xl bg-slate-50 px-6 py-5 text-[17px] leading-8 text-slate-800 whitespace-pre-line">
-            {(part.passage_segments || []).join('\n')}
+            {(() => {
+              const nToIdx = {}
+              part.questions.forEach((q, i) => { nToIdx[String(q.n)] = i })
+              const text = (part.passage_segments || []).join('\n')
+              return text.split(/(\(\d+\))/g).map((seg, si) => {
+                const m = seg.match(/^\((\d+)\)$/)
+                if (m) {
+                  const i = nToIdx[m[1]]
+                  if (i == null) return <span key={si}>{seg}</span>
+                  const q = part.questions[i]
+                  const userAns = (answers[i] || '').trim()
+                  const correct = checked && (q.ans || []).some(a => a.trim().toLowerCase() === userAns.toLowerCase())
+                  const wrong = checked && userAns && !correct
+                  return (
+                    <span key={si} className={`inline-flex items-end border-b-2 mx-0.5 px-1.5 min-w-[3.5em] justify-center align-baseline ${
+                      correct ? 'border-emerald-500 text-emerald-700' :
+                      wrong ? 'border-rose-400 text-rose-600' :
+                      userAns ? 'border-violet-500 text-violet-700' : 'border-gray-400'
+                    }`}>
+                      {userAns ? <span className="font-semibold">{userAns}</span> : <span className="text-gray-400 text-xs">{m[1]}</span>}
+                    </span>
+                  )
+                }
+                return <span key={si}>{seg}</span>
+              })
+            })()}
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="flex flex-col gap-3 h-full">
           {part.questions.map((q, i) => {
             if (!visibleIndexes.includes(i)) return null
             const userAns = (answers[i] || '').trim()
             const correct = checked && (q.ans || []).some(a => a.trim().toLowerCase() === userAns.toLowerCase())
             return (
-              <div key={i} className={`flex items-center gap-2 border rounded-xl px-3 py-2.5 ${!checked ? 'border-slate-200 focus-within:border-violet-400' : correct ? 'border-emerald-300 bg-emerald-50' : 'border-rose-300 bg-rose-50'}`}>
-                <span className={`text-xs font-extrabold w-8 flex-shrink-0 ${checked ? correct ? 'text-emerald-600' : 'text-rose-500' : 'text-violet-600'}`}>({q.n})</span>
+              <div key={i} className={`flex-1 flex items-center gap-2 border rounded-xl px-3 py-2.5 transition-all ${!checked ? 'border-slate-200 focus-within:border-violet-400' : correct ? 'border-emerald-300 bg-emerald-50' : 'border-rose-300 bg-rose-50'}`}>
+                <span className={`text-xs font-extrabold w-7 flex-shrink-0 ${checked ? correct ? 'text-emerald-600' : 'text-rose-500' : 'text-violet-600'}`}>({q.n})</span>
                 <input type="text" disabled={checked} value={answers[i]} onChange={e => set(i, e.target.value)}
-                  className="min-w-0 flex-1 rounded-lg border border-slate-200 px-3 py-1 text-base font-semibold text-center focus:outline-none focus:border-violet-500" placeholder="填词…" />
+                  className="min-w-0 flex-1 bg-transparent text-base font-semibold text-center focus:outline-none text-gray-700 placeholder:text-gray-300" placeholder="填词…" />
                 {checked && !correct && <span className="text-xs text-emerald-600 font-semibold flex-shrink-0">{q.ans[0]}</span>}
               </div>
             )
@@ -1313,7 +1376,7 @@ export function PetReadingExam({ testN, kind = 'mock' }) {
   const part = parts[partIndex]
   return (
     <PetExamShell testN={testN} section="reading" kind={kind} parts={parts} partIndex={partIndex} allAnswers={allAnswers}
-      onReset={resetReading} timerSeconds={timerSeconds} timerPaused={Boolean(pausedAt)} onToggleTimer={toggleTimer} totalMinutes={TOTAL_MINUTES}>
+      onReset={resetReading} onPartClick={setPartIndex} timerSeconds={timerSeconds} timerPaused={Boolean(pausedAt)} onToggleTimer={toggleTimer} totalMinutes={TOTAL_MINUTES}>
       <AnimatePresence mode="wait">
         <motion.div key={partIndex} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
           {redoOnly && <div className="mb-4 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-3 text-sm font-extrabold text-amber-800">错题重做模式 · 本页只显示上次答错的题</div>}

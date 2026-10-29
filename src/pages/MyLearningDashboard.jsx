@@ -3,6 +3,13 @@ import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { readSavedWords, SAVED_WORDS_EVENT } from '../utils/savedWords'
 
+// 级别主题色映射 —— 与习题页配色一致：KET=墨绿 / PET=紫 / FCE=蓝
+const LEVEL_THEME = {
+  KET: { deep: '#083f32', primary: '#0d7656', primaryHover: '#095f46', light: '#eaf7f1', lightBorder: '#a7d9c5', text: '#047857', textDeep: '#065f46', textDark: '#064e3b', gradientFrom: '#0c5e48' },
+  PET: { deep: '#2e1065', primary: '#7c3aed', primaryHover: '#6d28d9', light: '#f5f3ff', lightBorder: '#ddd6fe', text: '#6d28d9', textDeep: '#5b21b6', textDark: '#4c1d95', gradientFrom: '#5b21b6' },
+  FCE: { deep: '#0c4a6e', primary: '#0284c7', primaryHover: '#0369a1', light: '#f0f9ff', lightBorder: '#bae6fd', text: '#0369a1', textDeep: '#075985', textDark: '#0c4a6e', gradientFrom: '#075985' },
+}
+
 const EXAM_IDS = Array.from({ length: 20 }, (_, index) => index < 12
   ? `ket-${Math.floor(index / 4) + 1}-test${(index % 4) + 1}`
   : `ket-standard-${Math.floor((index - 12) / 4) + 1}-test${((index - 12) % 4) + 1}`)
@@ -277,7 +284,7 @@ function ProgressRing({ value }) {
     <div className="relative w-24 h-24 flex-shrink-0">
       <svg className="w-full h-full -rotate-90" viewBox="0 0 96 96">
         <circle cx="48" cy="48" r="38" fill="none" stroke="#e7eee9" strokeWidth="8" />
-        <circle cx="48" cy="48" r="38" fill="none" stroke="#0d7656" strokeWidth="8" strokeLinecap="round"
+        <circle cx="48" cy="48" r="38" fill="none" stroke="var(--g-primary)" strokeWidth="8" strokeLinecap="round"
           strokeDasharray={circumference} strokeDashoffset={circumference * (1 - value / 100)} />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -294,10 +301,35 @@ const LEVEL_PILL = { KET: 'A2 Key (KET)', PET: 'B1 Preliminary (PET)', FCE: 'B2 
 export default function MyLearningDashboard({ level = 'KET' }) {
   const abbr = LEVEL_PILL[level] ? level : 'KET'
   const levelPill = LEVEL_PILL[abbr]
-  const nav = useMemo(() => navGroups.map(group => ({
-    ...group,
-    items: group.items.map(item => item.id === 'exam' ? { ...item, label: `${abbr} 模考` } : item),
-  })), [abbr])
+  const theme = LEVEL_THEME[abbr] || LEVEL_THEME.KET
+  const themeVars = {
+    '--g-deep': theme.deep,
+    '--g-primary': theme.primary,
+    '--g-primary-hover': theme.primaryHover,
+    '--g-light': theme.light,
+    '--g-light-border': theme.lightBorder,
+    '--g-text': theme.text,
+    '--g-text-deep': theme.textDeep,
+    '--g-text-dark': theme.textDark,
+    '--g-gradient-from': theme.gradientFrom,
+  }
+  const nav = useMemo(() => {
+    const fceSuffix = abbr === 'FCE' ? '/fce' : ''
+    const levelPaths = {
+      reading: `/cambridge/reading${fceSuffix}`,
+      listening: `/cambridge/listening${fceSuffix}`,
+      writing: `/cambridge/writing${fceSuffix}`,
+      speaking: `/cambridge/speaking${fceSuffix}`,
+    }
+    return navGroups.map(group => ({
+      ...group,
+      items: group.items.map(item => ({
+        ...item,
+        path: levelPaths[item.id] || item.path,
+        label: item.id === 'exam' ? `${abbr} 模考` : item.label,
+      })).filter(item => item.id !== 'dictation' || abbr === 'KET'),
+    }))
+  }, [abbr])
   const navigate = useNavigate()
   const [tasks, setTasks] = useState(readTasks)
   const [panel, setPanel] = useState(null)
@@ -386,8 +418,8 @@ export default function MyLearningDashboard({ level = 'KET' }) {
     : null
 
   return (
-    <div className="min-h-screen bg-[#f5f7f4] text-gray-900 flex">
-      <aside className="hidden lg:flex w-[230px] bg-[#083f32] text-white flex-col fixed inset-y-0 left-0 z-40">
+    <div className="min-h-screen bg-[#f5f7f4] text-gray-900 flex" style={themeVars}>
+      <aside className="hidden lg:flex w-[230px] bg-[var(--g-deep)] text-white flex-col fixed inset-y-0 left-0 z-40">
         <Link aria-label="返回 Mars Cambridge 首页" to="/" className="h-20 px-6 flex items-center gap-3 border-b border-white/10 text-left hover:bg-white/[.04] transition-colors">
           <div className="w-10 h-10 rounded-2xl bg-[#f4c95d] text-[#083f32] grid place-items-center font-extrabold text-lg shadow-lg shadow-black/10">M</div>
           <div><div className="font-extrabold tracking-tight">Mars Cambridge</div><div className="text-[10px] text-white/45 tracking-[0.18em] uppercase">{abbr} Learning</div></div>
@@ -399,7 +431,7 @@ export default function MyLearningDashboard({ level = 'KET' }) {
               <div className="space-y-1">
                 {group.items.map(item => (
                   <button key={item.id} onClick={() => handleNav(item)}
-                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all ${item.id === 'home' ? 'bg-white text-[#083f32] font-bold shadow-sm' : item.id === 'exam' ? 'bg-[#f4c95d] text-[#083f32] font-extrabold shadow-md shadow-black/10 hover:bg-[#ffd96c] hover:-translate-y-0.5' : 'text-white/72 hover:bg-white/10 hover:text-white'}`}>
+                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all ${item.id === 'home' ? 'bg-white text-[var(--g-deep)] font-bold shadow-sm' : item.id === 'exam' ? 'bg-[var(--g-primary)] text-white font-extrabold shadow-md shadow-black/10 hover:bg-[var(--g-primary-hover)] hover:-translate-y-0.5' : 'text-white/72 hover:bg-white/10 hover:text-white'}`}>
                     <span className="w-5 text-center">{item.icon}</span><span>{item.label}</span>
                     {item.badge && <span className="ml-auto text-[9px] font-extrabold bg-amber-300 text-amber-950 rounded px-1.5 py-0.5">{item.badge}</span>}
                   </button>
@@ -410,18 +442,18 @@ export default function MyLearningDashboard({ level = 'KET' }) {
         </nav>
         <div className="p-4 border-t border-white/10">
           <div className="rounded-2xl bg-white/8 p-3 flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-[#f4c95d] text-[#083f32] grid place-items-center font-extrabold">学</div>
-            <div className="min-w-0"><div className="text-sm font-bold">学习者</div><div className="text-[10px] text-white/45">A2 Key 备考中</div></div>
+            <div className="w-9 h-9 rounded-full bg-[var(--g-primary)] text-white grid place-items-center font-extrabold">学</div>
+            <div className="min-w-0"><div className="text-sm font-bold">学习者</div><div className="text-[10px] text-white/45">{abbr} 备考中</div></div>
           </div>
         </div>
       </aside>
 
       <main className="flex-1 lg:ml-[230px] min-w-0">
         <header className="h-16 bg-white/90 backdrop-blur border-b border-gray-200/70 sticky top-0 z-30 px-4 sm:px-7 flex items-center">
-          <Link aria-label="返回 Mars Cambridge 首页" to="/" className="lg:hidden w-9 h-9 rounded-xl bg-[#083f32] text-white grid place-items-center font-extrabold mr-3">M</Link>
+          <Link aria-label="返回 Mars Cambridge 首页" to="/" className="lg:hidden w-9 h-9 rounded-xl bg-[var(--g-deep)] text-white grid place-items-center font-extrabold mr-3">M</Link>
           <div><div className="font-extrabold text-base">我的学习</div><div className="text-[11px] text-gray-400 hidden sm:block">专注 {abbr}，每天进步一点点</div></div>
           <div className="ml-auto flex items-center gap-2 sm:gap-4">
-            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold"><span className="w-2 h-2 rounded-full bg-emerald-500" />{levelPill}</div>
+            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--g-light)] text-[var(--g-text)] text-xs font-bold"><span className="w-2 h-2 rounded-full bg-[var(--g-primary)]" />{levelPill}</div>
             <div className="flex items-center gap-1.5 text-xs text-gray-500"><span>🔥</span><strong className="text-gray-900">{learning.streak}</strong> 天连续</div>
             <div className="w-9 h-9 rounded-full bg-amber-100 text-amber-800 grid place-items-center font-extrabold text-sm">学</div>
             <button aria-label="打开学习导航" onClick={() => setMobileNavOpen(true)} className="lg:hidden h-9 w-9 rounded-xl border border-gray-200 bg-white text-lg text-gray-700">☰</button>
@@ -430,11 +462,11 @@ export default function MyLearningDashboard({ level = 'KET' }) {
 
         <div className="max-w-[1280px] mx-auto p-4 sm:p-7">
           <section className="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
-            <div><p className="text-sm text-emerald-700 font-bold mb-1">{greeting}，同学 👋</p><h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">今天也继续向 {abbr} 目标前进</h1></div>
+            <div><p className="text-sm text-[var(--g-text)] font-bold mb-1">{greeting}，同学 👋</p><h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">今天也继续向 {abbr} 目标前进</h1></div>
           </section>
 
-          <section className="relative mb-6 overflow-hidden rounded-3xl border border-emerald-200 bg-emerald-50/80 p-5 text-gray-900 shadow-sm sm:p-6">
-            <div className="absolute -bottom-16 -right-10 h-48 w-48 rounded-full bg-emerald-200/35" />
+          <section className="relative mb-6 overflow-hidden rounded-3xl border border-[var(--g-light-border)] bg-[var(--g-light)] p-5 text-gray-900 shadow-sm sm:p-6">
+            <div className="absolute -bottom-16 -right-10 h-48 w-48 rounded-full bg-[var(--g-light-border)] opacity-35" />
             <div className="relative">
               <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
               <div className="min-w-0">
@@ -444,20 +476,20 @@ export default function MyLearningDashboard({ level = 'KET' }) {
                 </div>
                 <p className="mt-2 text-sm text-gray-500">{studyPlan.examDate ? `模拟考日期：${formatExamDate(studyPlan.examDate)}` : '设置模拟考日期和学习节奏，系统会自动生成本周任务。'}</p>
                 {studyPlan.examDate ? <div className="mt-4 grid grid-cols-3 gap-2 sm:gap-3">
-                  <div className="rounded-2xl border border-emerald-200 bg-white/75 px-3 py-3"><strong className="block text-lg text-emerald-800">{planDaysLeft}</strong><span className="text-[11px] text-gray-500">剩余天数</span></div>
-                  <div className="rounded-2xl border border-emerald-200 bg-white/75 px-3 py-3"><strong className="block text-lg text-emerald-800">{studyPlan.daysPerWeek} 天</strong><span className="text-[11px] text-gray-500">每周学习</span></div>
-                  <div className="rounded-2xl border border-emerald-200 bg-white/75 px-3 py-3"><strong className="block text-lg text-emerald-800">{studyPlan.minutesPerDay} 分钟</strong><span className="text-[11px] text-gray-500">每天学习</span></div>
-                </div> : <div className="mt-4 text-sm font-bold text-emerald-800">尚未设置专属学习计划</div>}
+                  <div className="rounded-2xl border border-[var(--g-light-border)] bg-white/75 px-3 py-3"><strong className="block text-lg text-[var(--g-text-deep)]">{planDaysLeft}</strong><span className="text-[11px] text-gray-500">剩余天数</span></div>
+                  <div className="rounded-2xl border border-[var(--g-light-border)] bg-white/75 px-3 py-3"><strong className="block text-lg text-[var(--g-text-deep)]">{studyPlan.daysPerWeek} 天</strong><span className="text-[11px] text-gray-500">每周学习</span></div>
+                  <div className="rounded-2xl border border-[var(--g-light-border)] bg-white/75 px-3 py-3"><strong className="block text-lg text-[var(--g-text-deep)]">{studyPlan.minutesPerDay} 分钟</strong><span className="text-[11px] text-gray-500">每天学习</span></div>
+                </div> : <div className="mt-4 text-sm font-bold text-[var(--g-text-deep)]">尚未设置专属学习计划</div>}
               </div>
-              <button onClick={() => setPanel('plan')} className="shrink-0 rounded-xl bg-[#f4c95d] px-6 py-3 text-sm font-extrabold text-[#083f32] shadow-md transition hover:bg-amber-300">{studyPlan.examDate ? '调整计划 →' : '设置学习计划 →'}</button>
+              <button onClick={() => setPanel('plan')} className="shrink-0 rounded-xl bg-[var(--g-primary)] px-6 py-3 text-sm font-extrabold text-white shadow-md transition hover:bg-[var(--g-primary-hover)]">{studyPlan.examDate ? '调整计划 →' : '设置学习计划 →'}</button>
               </div>
-              {weeklyPlan.length > 0 && <div className="mt-5 border-t border-emerald-200/80 pt-4">
-                <div className="mb-3 flex items-center justify-between"><h3 className="text-sm font-extrabold text-emerald-900">本周安排</h3><span className="text-[11px] text-gray-500">按顺序完成即可</span></div>
+              {weeklyPlan.length > 0 && <div className="mt-5 border-t border-[var(--g-light-border)] pt-4">
+                <div className="mb-3 flex items-center justify-between"><h3 className="text-sm font-extrabold text-[var(--g-text-dark)]">本周安排</h3><span className="text-[11px] text-gray-500">按顺序完成即可</span></div>
                 <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
                   {weeklyPlan.map(task => {
                     const current = task.id === currentWeeklyTask?.id
-                    return <button key={task.id} onClick={() => current ? navigate(taskDestination(tasks.find(item => !item.done) || task, learning)) : task.done ? navigate(task.path) : notify(`请先完成${currentWeeklyTask.day}的任务`)} className={`rounded-xl border p-3 text-left transition ${task.done ? 'border-emerald-200 bg-emerald-100/70' : current ? 'border-amber-300 bg-amber-50 ring-1 ring-amber-200' : 'border-emerald-100 bg-white/80 hover:border-emerald-300 hover:bg-white'}`}>
-                      <div className="flex items-center justify-between gap-2"><span className={`text-[10px] font-bold ${current ? 'text-amber-700' : 'text-emerald-600'}`}>{task.day}</span>{task.done && <span className="text-[10px] font-extrabold text-emerald-700">✓ 已完成</span>}{current && !task.done && <span className="text-[10px] font-extrabold text-amber-700">今日</span>}</div>
+                    return <button key={task.id} onClick={() => current ? navigate(taskDestination(tasks.find(item => !item.done) || task, learning)) : task.done ? navigate(task.path) : notify(`请先完成${currentWeeklyTask.day}的任务`)} className={`rounded-xl border p-3 text-left transition ${task.done ? 'border-[var(--g-light-border)] bg-[var(--g-light)]' : current ? 'border-[var(--g-primary)] bg-[var(--g-light)] ring-1 ring-[var(--g-light-border)]' : 'border-[var(--g-light-border)] bg-white/80 hover:border-[var(--g-primary)] hover:bg-white'}`}>
+                      <div className="flex items-center justify-between gap-2"><span className={`text-[10px] font-bold text-[var(--g-text)]`}>{task.day}</span>{task.done && <span className="text-[10px] font-extrabold text-[var(--g-text)]">✓ 已完成</span>}{current && !task.done && <span className="text-[10px] font-extrabold text-[var(--g-text)]">今日</span>}</div>
                       <strong className="mt-1 block text-xs text-gray-800">{task.title}</strong>
                     </button>
                   })}
@@ -475,32 +507,32 @@ export default function MyLearningDashboard({ level = 'KET' }) {
                     <p className="text-sm text-gray-500 mb-4">{studyPlan.examDate ? `预计共 ${studyPlan.minutesPerDay} 分钟，完成这 3 步后再进入下一天。` : '任选一项开始练习；设置学习计划后会按目标自动安排。'}</p>
                     <div className="grid md:grid-cols-3 gap-3">
                       {tasks.map(task => (
-                        <div key={task.id} className={`rounded-2xl border p-3.5 transition-all ${task.done ? 'bg-gray-50 border-gray-100' : 'bg-white border-gray-200 hover:border-emerald-300 hover:shadow-sm'}`}>
+                        <div key={task.id} className={`rounded-2xl border p-3.5 transition-all ${task.done ? 'bg-gray-50 border-gray-100' : 'bg-white border-gray-200 hover:border-[var(--g-primary)] hover:shadow-sm'}`}>
                           <div className="flex items-start gap-3">
-                            <button aria-label={`切换${task.title}完成状态`} onClick={() => toggleTask(task.id)} className={`mt-0.5 w-5 h-5 rounded-full grid place-items-center flex-shrink-0 ${task.done ? 'bg-emerald-500 text-white' : 'border-2 border-gray-300'}`}>{task.done && '✓'}</button>
+                            <button aria-label={`切换${task.title}完成状态`} onClick={() => toggleTask(task.id)} className={`mt-0.5 w-5 h-5 rounded-full grid place-items-center flex-shrink-0 ${task.done ? 'bg-[var(--g-primary)] text-white' : 'border-2 border-gray-300'}`}>{task.done && '✓'}</button>
                             <div className="min-w-0"><div className={`text-sm font-bold ${task.done ? 'line-through text-gray-400' : 'text-gray-900'}`}>{task.title}</div><div className="text-[11px] text-gray-400 mt-1">{task.detail}</div></div>
                           </div>
-                          {!task.done && <button onClick={() => navigate(taskDestination(task, learning))} className="mt-3 w-full py-2 rounded-lg bg-[#0d7656] text-white text-xs font-bold hover:bg-[#095f46]">开始任务 →</button>}
+                          {!task.done && <button onClick={() => navigate(taskDestination(task, learning))} className="mt-3 w-full py-2 rounded-lg bg-[var(--g-primary)] text-white text-xs font-bold hover:bg-[var(--g-primary-hover)]">开始任务 →</button>}
                         </div>
                       ))}
                     </div>
-                    {studyPlan.examDate && tasks.length > 0 && tasks.every(task => task.done) && <button onClick={startNextStudyDay} className="mt-4 w-full rounded-xl bg-[#f4c95d] py-3 text-sm font-extrabold text-[#083f32] transition hover:bg-amber-300">{currentWeeklyTask ? `完成${currentWeeklyTask.day}，进入下一天 →` : '本周计划已完成 ✓'}</button>}
+                    {studyPlan.examDate && tasks.length > 0 && tasks.every(task => task.done) && <button onClick={startNextStudyDay} className="mt-4 w-full rounded-xl bg-[var(--g-primary)] py-3 text-sm font-extrabold text-white transition hover:bg-[var(--g-primary-hover)]">{currentWeeklyTask ? `完成${currentWeeklyTask.day}，进入下一天 →` : '本周计划已完成 ✓'}</button>}
                   </div>
                 </div>
               </section>
 
-              <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0c5e48] to-[#083f32] text-white p-6 sm:p-7 shadow-lg shadow-emerald-950/10">
+              <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[var(--g-gradient-from)] to-[var(--g-deep)] text-white p-6 sm:p-7 shadow-lg shadow-black/10">
                 <div className="absolute -right-10 -top-16 w-64 h-64 rounded-full border-[42px] border-white/5" />
                 <div className="relative grid md:grid-cols-[1fr_auto] items-center gap-5">
-                  <div><div className="inline-flex items-center gap-1.5 text-[10px] font-extrabold tracking-widest uppercase bg-white/10 rounded-full px-2.5 py-1 mb-3">{continueItem ? '继续上次学习' : '开始第一次练习'}</div><h2 className="text-xl sm:text-2xl font-extrabold mb-2">{continueItem?.title || `选择一个 ${abbr} 专项开始学习`}</h2><p className="text-white/60 text-sm">{continueItem?.detail || '完成练习后，这里会自动显示最近的学习位置。'}</p>{continueItem && <div className="mt-4 max-w-md"><div className="flex justify-between text-[10px] text-white/50 mb-1.5"><span>学习进度</span><span>{continueItem.progress}%</span></div><div className="h-2 rounded-full bg-white/10 overflow-hidden"><div className="h-full bg-[#f4c95d] rounded-full" style={{ width: `${continueItem.progress}%` }} /></div></div>}</div>
-                  <button onClick={() => navigate(continueItem?.path || '/cambridge/words')} className="relative px-5 py-3 rounded-xl bg-[#f4c95d] text-[#083f32] font-extrabold text-sm hover:bg-amber-300 shadow-lg">{continueItem ? '继续学习 →' : '开始学习 →'}</button>
+                  <div><div className="inline-flex items-center gap-1.5 text-[10px] font-extrabold tracking-widest uppercase bg-white/10 rounded-full px-2.5 py-1 mb-3">{continueItem ? '继续上次学习' : '开始第一次练习'}</div><h2 className="text-xl sm:text-2xl font-extrabold mb-2">{continueItem?.title || `选择一个 ${abbr} 专项开始学习`}</h2><p className="text-white/60 text-sm">{continueItem?.detail || '完成练习后，这里会自动显示最近的学习位置。'}</p>{continueItem && <div className="mt-4 max-w-md"><div className="flex justify-between text-[10px] text-white/50 mb-1.5"><span>学习进度</span><span>{continueItem.progress}%</span></div><div className="h-2 rounded-full bg-white/10 overflow-hidden"><div className="h-full bg-white rounded-full" style={{ width: `${continueItem.progress}%` }} /></div></div>}</div>
+                  <button onClick={() => navigate(continueItem?.path || '/cambridge/words')} className="relative px-5 py-3 rounded-xl bg-white text-[var(--g-deep)] font-extrabold text-sm hover:bg-white/90 shadow-lg">{continueItem ? '继续学习 →' : '开始学习 →'}</button>
                 </div>
               </section>
 
-              <section className="rounded-3xl border border-emerald-200 bg-emerald-50/50 p-5 shadow-sm sm:p-6">
+              <section className="rounded-3xl border border-[var(--g-light-border)] bg-[var(--g-light)] p-5 shadow-sm sm:p-6">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                  <div className="flex items-center gap-4"><span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-[#086348] text-2xl text-white">🔖</span><div><div className="text-[10px] font-extrabold tracking-[.18em] text-emerald-700">MY WORD BANK</div><h2 className="mt-1 text-lg font-extrabold text-gray-950">我的生词库</h2><p className="mt-1 text-xs text-gray-500">已收集 {savedWordCount} 个生词，可集中复习、标记掌握或打印。</p></div></div>
-                  <button onClick={() => navigate('/cambridge/words/saved')} className="rounded-xl bg-[#086348] px-5 py-3 text-sm font-extrabold text-white transition hover:bg-[#064e3b]">查看生词库 →</button>
+                  <div className="flex items-center gap-4"><span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-[var(--g-primary)] text-2xl text-white">🔖</span><div><div className="text-[10px] font-extrabold tracking-[.18em] text-[var(--g-text)]">MY WORD BANK</div><h2 className="mt-1 text-lg font-extrabold text-gray-950">我的生词库</h2><p className="mt-1 text-xs text-gray-500">已收集 {savedWordCount} 个生词，可集中复习、标记掌握或打印。</p></div></div>
+                  <button onClick={() => navigate('/cambridge/words/saved')} className="rounded-xl bg-[var(--g-primary)] px-5 py-3 text-sm font-extrabold text-white transition hover:bg-[var(--g-deep)]">查看生词库 →</button>
                 </div>
               </section>
 
@@ -542,7 +574,7 @@ export default function MyLearningDashboard({ level = 'KET' }) {
       <AnimatePresence>
         {mobileNavOpen && <motion.div className="fixed inset-0 z-50 bg-black/35 backdrop-blur-sm lg:hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setMobileNavOpen(false)}>
           <motion.aside initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }} transition={{ type: 'spring', damping: 28, stiffness: 260 }} onClick={event => event.stopPropagation()} className="ml-auto flex h-full w-[min(86vw,360px)] flex-col bg-white p-5 shadow-2xl">
-            <div className="flex items-center justify-between"><div><span className="text-xs font-bold text-emerald-700">{abbr} LEARNING</span><h2 className="mt-1 text-xl font-extrabold">学习导航</h2></div><button aria-label="关闭学习导航" onClick={() => setMobileNavOpen(false)} className="h-9 w-9 rounded-full bg-gray-100 text-xl text-gray-500">×</button></div>
+            <div className="flex items-center justify-between"><div><span className="text-xs font-bold text-[var(--g-text)]">{abbr} LEARNING</span><h2 className="mt-1 text-xl font-extrabold">学习导航</h2></div><button aria-label="关闭学习导航" onClick={() => setMobileNavOpen(false)} className="h-9 w-9 rounded-full bg-gray-100 text-xl text-gray-500">×</button></div>
             <nav className="mt-6 flex-1 overflow-y-auto space-y-5">{nav.slice(1).map((group, index) => <div key={index}><div className="mb-2 text-[10px] font-extrabold uppercase tracking-[.18em] text-gray-400">{group.label}</div><div className="grid grid-cols-2 gap-2">{group.items.map(item => <button key={item.id} onClick={() => { setMobileNavOpen(false); handleNav(item) }} className="flex items-center gap-2 rounded-xl border border-gray-200 bg-gray-50 px-3 py-3 text-left text-sm font-bold text-gray-700"><span>{item.icon}</span><span>{item.label}</span>{item.badge && <span className="ml-auto rounded bg-amber-200 px-1 text-[8px]">{item.badge}</span>}</button>)}</div></div>)}</nav>
           </motion.aside>
         </motion.div>}
@@ -551,19 +583,19 @@ export default function MyLearningDashboard({ level = 'KET' }) {
       <AnimatePresence>
         {panel && <motion.div className="fixed inset-0 z-50 bg-black/35 backdrop-blur-sm flex items-center justify-center p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setPanel(null)}>
           <motion.div initial={{ scale: .96, y: 12 }} animate={{ scale: 1, y: 0 }} exit={{ scale: .96, y: 12 }} onClick={e => e.stopPropagation()} className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6">
-            <div className="flex justify-between items-start"><div><span className="text-xs font-bold text-emerald-700">学习管理</span><h2 className="text-xl font-extrabold mt-1">{panel === 'mistakes' ? '错题本' : panel === 'plan' ? '学习计划' : '历史成绩'}</h2></div><button onClick={() => setPanel(null)} className="w-8 h-8 rounded-full bg-gray-100 text-gray-500">×</button></div>
+            <div className="flex justify-between items-start"><div><span className="text-xs font-bold text-[var(--g-text)]">学习管理</span><h2 className="text-xl font-extrabold mt-1">{panel === 'mistakes' ? '错题本' : panel === 'plan' ? '学习计划' : '历史成绩'}</h2></div><button onClick={() => setPanel(null)} className="w-8 h-8 rounded-full bg-gray-100 text-gray-500">×</button></div>
             {panel === 'plan' ? (
               <div className="mt-5 space-y-4">
-                <label className="block"><span className="mb-1.5 block text-sm font-bold text-gray-700">模拟考日期</span><input type="date" min={new Date().toISOString().slice(0, 10)} value={studyPlan.examDate} onChange={event => setStudyPlan(value => ({ ...value, examDate: event.target.value }))} className="h-12 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 font-bold text-gray-800 outline-none focus:border-emerald-500" /></label>
-                <label className="block"><span className="mb-1.5 block text-sm font-bold text-gray-700">每周学习天数</span><select value={studyPlan.daysPerWeek} onChange={event => setStudyPlan(value => ({ ...value, daysPerWeek: Number(event.target.value) }))} className="h-12 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 font-bold text-gray-800 outline-none focus:border-emerald-500">{[3,4,5,6,7].map(value => <option key={value} value={value}>每周 {value} 天</option>)}</select></label>
-                <label className="block"><span className="mb-1.5 block text-sm font-bold text-gray-700">每天学习时长</span><select value={studyPlan.minutesPerDay} onChange={event => setStudyPlan(value => ({ ...value, minutesPerDay: Number(event.target.value) }))} className="h-12 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 font-bold text-gray-800 outline-none focus:border-emerald-500">{[20,30,45,60,90].map(value => <option key={value} value={value}>每天 {value} 分钟</option>)}</select></label>
-                <p className="rounded-xl bg-emerald-50 px-4 py-3 text-xs leading-relaxed text-emerald-800">保存后会根据学习天数生成本周安排，并同步更新首页的今日任务。</p>
-                <button onClick={saveStudyPlan} className="w-full rounded-xl bg-[#0d7656] py-3 font-bold text-white">保存计划</button>
+                <label className="block"><span className="mb-1.5 block text-sm font-bold text-gray-700">模拟考日期</span><input type="date" min={new Date().toISOString().slice(0, 10)} value={studyPlan.examDate} onChange={event => setStudyPlan(value => ({ ...value, examDate: event.target.value }))} className="h-12 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 font-bold text-gray-800 outline-none focus:border-[var(--g-primary)]" /></label>
+                <label className="block"><span className="mb-1.5 block text-sm font-bold text-gray-700">每周学习天数</span><select value={studyPlan.daysPerWeek} onChange={event => setStudyPlan(value => ({ ...value, daysPerWeek: Number(event.target.value) }))} className="h-12 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 font-bold text-gray-800 outline-none focus:border-[var(--g-primary)]">{[3,4,5,6,7].map(value => <option key={value} value={value}>每周 {value} 天</option>)}</select></label>
+                <label className="block"><span className="mb-1.5 block text-sm font-bold text-gray-700">每天学习时长</span><select value={studyPlan.minutesPerDay} onChange={event => setStudyPlan(value => ({ ...value, minutesPerDay: Number(event.target.value) }))} className="h-12 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 font-bold text-gray-800 outline-none focus:border-[var(--g-primary)]">{[20,30,45,60,90].map(value => <option key={value} value={value}>每天 {value} 分钟</option>)}</select></label>
+                <p className="rounded-xl bg-[var(--g-light)] px-4 py-3 text-xs leading-relaxed text-[var(--g-text-deep)]">保存后会根据学习天数生成本周安排，并同步更新首页的今日任务。</p>
+                <button onClick={saveStudyPlan} className="w-full rounded-xl bg-[var(--g-primary)] py-3 font-bold text-white">保存计划</button>
               </div>
             ) : panel === 'mistakes' ? (
-              <div className="mt-5"><div className="rounded-2xl border border-gray-100 bg-gray-50 p-5 text-sm leading-7 text-gray-600">当前共有 <strong className="text-gray-900">{learning.mistakeCount}</strong> 项待复习：词汇 {learning.vocabMistakeCount}、语法 {learning.grammarMistakeCount}、阅读 {learning.readingMistakeCount}、听力 {learning.listeningMistakeCount}、听写 {learning.gapMistakeCount}。</div><button onClick={() => { setPanel(null); navigate(`/cambridge/mistakes?type=${learning.readingMistakeCount ? 'reading' : learning.listeningMistakeCount ? 'listening' : learning.grammarMistakeCount ? 'grammar' : learning.vocabMistakeCount ? 'words' : 'dictation'}`) }} disabled={!learning.mistakeCount} className="mt-4 w-full rounded-xl bg-[#0d7656] py-3 font-bold text-white disabled:bg-gray-200">{learning.mistakeCount ? '进入错题复习' : '暂时没有错题'}</button></div>
+              <div className="mt-5"><div className="rounded-2xl border border-gray-100 bg-gray-50 p-5 text-sm leading-7 text-gray-600">当前共有 <strong className="text-gray-900">{learning.mistakeCount}</strong> 项待复习：词汇 {learning.vocabMistakeCount}、语法 {learning.grammarMistakeCount}、阅读 {learning.readingMistakeCount}、听力 {learning.listeningMistakeCount}、听写 {learning.gapMistakeCount}。</div><button onClick={() => { setPanel(null); navigate(`/cambridge/mistakes?type=${learning.readingMistakeCount ? 'reading' : learning.listeningMistakeCount ? 'listening' : learning.grammarMistakeCount ? 'grammar' : learning.vocabMistakeCount ? 'words' : 'dictation'}`) }} disabled={!learning.mistakeCount} className="mt-4 w-full rounded-xl bg-[var(--g-primary)] py-3 font-bold text-white disabled:bg-gray-200">{learning.mistakeCount ? '进入错题复习' : '暂时没有错题'}</button></div>
             ) : (
-              <div className="mt-5"><div className="rounded-2xl border border-gray-100 bg-gray-50 p-5 text-sm text-gray-600">{learning.records.length ? `当前设备已保存 ${learning.records.length} 条练习记录。` : '当前还没有练习记录，完成练习后会自动显示。'}</div><button onClick={() => setPanel(null)} className="mt-4 w-full rounded-xl bg-[#0d7656] py-3 font-bold text-white">关闭</button></div>
+              <div className="mt-5"><div className="rounded-2xl border border-gray-100 bg-gray-50 p-5 text-sm text-gray-600">{learning.records.length ? `当前设备已保存 ${learning.records.length} 条练习记录。` : '当前还没有练习记录，完成练习后会自动显示。'}</div><button onClick={() => setPanel(null)} className="mt-4 w-full rounded-xl bg-[var(--g-primary)] py-3 font-bold text-white">关闭</button></div>
             )}
           </motion.div>
         </motion.div>}

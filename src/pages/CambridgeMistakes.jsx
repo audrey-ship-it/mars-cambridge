@@ -222,7 +222,7 @@ function MistakeRedo({ redo, onCorrect }) {
 
   return <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4">
     <div className="text-sm font-extrabold text-amber-900">只重做这道错题</div>
-    {audio && <audio controls preload="metadata" src={audio} className="mt-3 w-full" />}
+    {audio && <audio controls preload="auto" src={audio} className="mt-3 w-full" />}
     {data?.type === 'picture' && item?.image && <img src={item.image} alt="本题 A、B、C 图片选项" className="mt-3 max-h-64 rounded-lg object-contain" />}
     {choices ? <><div className="mt-3 grid gap-2 sm:grid-cols-3">{choices.map((choice, index) => <button key={index} type="button" onClick={() => grammar ? (setSelected(values => values.includes(index) ? values.filter(value => value !== index) : [...values, index]), setFeedback('')) : submit(index)} className={`rounded-lg border px-3 py-2 text-left text-sm font-bold hover:border-emerald-500 ${selected.includes(index) ? 'border-emerald-600 bg-emerald-50' : 'border-amber-300 bg-white'}`}>{String.fromCharCode(65 + index)}. {data?.type === 'picture' ? '图片选项' : choice}</button>)}</div>{grammar && <button type="button" onClick={() => submit(selected)} className="mt-3 rounded-lg bg-emerald-700 px-4 py-2 text-sm font-bold text-white">提交选择</button>}</>
       : <div className="mt-3 flex gap-2"><input value={answer} onChange={event => { setAnswer(event.target.value); setFeedback('') }} onKeyDown={event => { if (event.key === 'Enter') submit() }} aria-label="重做答案" className="min-w-0 flex-1 rounded-lg border border-amber-300 bg-white px-3 py-2" /><button type="button" onClick={() => submit()} className="rounded-lg bg-emerald-700 px-4 py-2 text-sm font-bold text-white">提交答案</button></div>}

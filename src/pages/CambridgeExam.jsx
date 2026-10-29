@@ -3,8 +3,16 @@ import { Link, useParams, useSearchParams, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { KET_EXAMS } from '../data/ketExamData'
 import { getKetReadingTest, hasCompleteKetReadingPaper } from '../data/ketReadingCatalog'
+import { ketReadingTrainer2Tests } from '../data/ketReadingTrainer2'
 import { KET_STANDARD_EXAM_SOURCES } from '../data/ketStandardExamSources'
 import { KET_STANDARD_WRITING } from '../data/ketStandardWritingData'
+import { KET_TRAINER1_WRITING } from '../data/ketWritingTrainer1'
+import { KET_TRAINER2_WRITING } from '../data/ketWritingTrainer2'
+import { KET_TRAINER1_SPEAKING } from '../data/ketSpeakingTrainer1'
+import { KET_TRAINER2_SPEAKING } from '../data/ketSpeakingTrainer2'
+import { ketReadingBoosterTests } from '../data/ketReadingBooster'
+import { KET_WRITING_BOOSTER } from '../data/ketWritingBooster'
+import { KET_SPEAKING_BOOSTER_SETS } from '../data/ketSpeakingBooster'
 import { OFFICIAL_LISTENING_SETS } from '../data/officialListeningManifest'
 import { setMockWrongBatch } from '../data/mockWrongBook'
 import { CambridgeLayout } from './CambridgeApp'
@@ -45,7 +53,7 @@ export function adaptReadingTest(test) {
   return [
     { part: 1, title: 'Part 1 · 短文选义', type: 'text_mcq', instructions: p1.instructions, questions: p1.questions.map(q => ({ n: q.id, ...q, opts: Object.values(q.options), ans: answerIndex(q.answer) })) },
     { part: 2, title: `Part 2 · ${p2.title || '人物配对'}`, type: 'multiple_matching', instructions: p2.instructions, passages: (p2.people || p2.passages || []).map(p => ({ label: p.label, name: p.name, text: p.text })), questions: p2.questions.map(q => ({ n: q.id, text: q.text, ans: q.answer, exp: q.explanation })) },
-    { part: 3, title: `Part 3 · ${p3.title}`, type: 'article_mcq', instructions: p3.instructions || 'For each question, choose the correct answer.', articleTitle: p3.title, author: p3.author, passage: p3.passage, questions: p3.questions.map(q => ({ n: q.id, text: q.text, opts: Object.values(q.options), ans: answerIndex(q.answer), exp: q.explanation })) },
+    { part: 3, title: `Part 3 · ${p3.title || '阅读理解'}`, type: 'article_mcq', instructions: p3.instructions || 'For each question, choose the correct answer.', articleTitle: p3.title, author: p3.author, passage: p3.passage, questions: p3.questions.map(q => ({ n: q.id, text: q.text, opts: Object.values(q.options), ans: answerIndex(q.answer), exp: q.explanation })) },
     { part: 4, title: `Part 4 · ${p4.title || '选词填空'}`, type: 'gap_fill_mcq', instructions: p4.instructions || 'For each question, choose the correct answer.', articleTitle: p4.title, passage: p4.passage || (p4.passage_segments || []).map((segment, index) => `${segment}${p4.questions[index] ? `[${p4.questions[index].id}]` : ''}`).join(''), questions: p4.questions.map(q => ({ n: q.id, opts: Object.values(q.options), ans: answerIndex(q.answer), exp: q.explanation })) },
     { part: 5, title: 'Part 5 · 语法填词', type: 'open_gap_fill', instructions: p5.instructions, example: p5.example ? { hint: `Complete gap ${p5.example.number}.`, ans: p5.example.answer } : null, passages: p5.passages.map(p => ({ from: p.from, to: p.to, label: p.label, text: p.text || p.content })), questions: p5.questions.map(q => ({ n: q.id, ans: q.answers || [q.answer], exp: q.explanation })) },
   ]
@@ -63,6 +71,62 @@ const STANDARD_READY_EXAMS = KET_STANDARD_EXAM_SOURCES.flatMap(source => {
     reading: { parts: adaptReadingTest(reading), writing },
     speaking: { parts: [] },
   }]
+})
+
+// 《A2 Key for Schools Trainer》系列 Exam Practice 卷。
+// Trainer 1：听力从 officialListeningManifest 取；阅读/写作/口语从对应 Trainer 数据文件取，
+// 只有逐题核对完成的套卷才挂载对应模块（未录入的模块保持入口关闭）。
+// Trainer 2：听力、阅读/写作、口语均已按官方材料逐题核对完成。
+const TRAINER_READY_EXAMS = [
+  ...OFFICIAL_LISTENING_SETS
+    .filter(set => set.book === 'trainer-1' && set.readyParts?.length === 5)
+    .map(set => {
+      const testId = `ket-trainer1-test${set.test}`
+      const reading = getKetReadingTest(testId)
+      const writing = KET_TRAINER1_WRITING[testId]
+      const speaking = KET_TRAINER1_SPEAKING[testId]
+      return {
+        id: `trainer-1-${set.test}`,
+        kind: 'trainer',
+        title: 'A2 Key for Schools Trainer 1（Second Edition）',
+        label: `Trainer 1 · Test ${set.test}`,
+        listening: {},
+        ...(hasCompleteKetReadingPaper(reading) && writing?.length === 2
+          ? { reading: { parts: adaptReadingTest(reading), writing } }
+          : {}),
+        ...(speaking?.parts?.length ? { speaking } : {}),
+      }
+    }),
+  ...ketReadingTrainer2Tests.map(test => {
+    const n = test.source.test
+    const writing = KET_TRAINER2_WRITING[test.id]
+    const speaking = KET_TRAINER2_SPEAKING[test.id]
+    return {
+      id: `trainer-2-${n}`,
+      kind: 'trainer',
+      title: 'A2 Key for Schools Trainer 2',
+      label: `Trainer 2 · Test ${n}`,
+      listening: {},
+      ...(hasCompleteKetReadingPaper(test) && writing?.length === 2
+        ? { reading: { parts: adaptReadingTest(test), writing } }
+        : {}),
+      ...(speaking?.parts?.length ? { speaking } : {}),
+    }
+  }),
+]
+
+// Cambridge Exam Booster for A2 Key (2020): 3 worksheet-based practice sets (no full paper).
+// Reading/writing/listening verified against the official answer key; speaking reference answers are original.
+const BOOSTER_READY_EXAMS = ketReadingBoosterTests.map(test => {
+  const n = test.source.test
+  return {
+    id: 'booster-' + n,
+    kind: 'booster', listening: {},
+    title: 'Cambridge Exam Booster for A2 Key (2020)',
+    label: 'Exam Booster · Test ' + n,
+    reading: { parts: adaptReadingTest(test), writing: KET_WRITING_BOOSTER[test.id] },
+    speaking: { parts: KET_SPEAKING_BOOSTER_SETS[n - 1]?.exam.speaking?.parts || [] },
+  }
 })
 
 const EXAM_COLLECTIONS = [
@@ -194,6 +258,15 @@ const PET_PENDING_ITEMS = {
 export function examSetNumber(exam) {
   const [, standardBook, standardTest] = exam.id.match(/^ket-standard-(\d+)-test(\d+)$/) || []
   if (standardBook) return 12 + (Number(standardBook) - 1) * 4 + Number(standardTest)
+  // Trainer 1《A2 Key for Schools Trainer》6 套 Exam Practice：setId 21-26
+  const [, trainerTest] = exam.id.match(/^trainer-1-(\d+)$/) || []
+  if (trainerTest) return 20 + Number(trainerTest)
+  // Trainer 2：setId 27-32，听力/阅读/写作/口语均已录入
+  const [, trainer2Test] = exam.id.match(/^trainer-2-(\d+)$/) || []
+  if (trainer2Test) return 26 + Number(trainer2Test)
+  // Exam Booster: setId 33-35 (no listening)
+  const [, boosterTest] = exam.id.match(/^booster-(\d+)$/) || []
+  if (boosterTest) return 32 + Number(boosterTest)
   const [, book, test] = exam.id.match(/^ket-(\d+)-test(\d+)$/) || []
   return ((Number(book) - 1) * 4) + Number(test)
 }
@@ -214,7 +287,11 @@ function readExamListProgress(exam) {
   let latest = null
   let continuePath = readingParts
     ? `/cambridge/exams/${exam.id}?tab=reading`
-    : `/cambridge/exams/${exam.id}?tab=writing`
+    : writingParts
+      ? `/cambridge/exams/${exam.id}?tab=writing`
+      : listeningReady
+        ? `/cambridge/listening?mode=mock&exam=${exam.id}&part=1&set=${setId}`
+        : `/cambridge/exams/${exam.id}?tab=writing`
 
   try {
     const listening = listeningParts ? JSON.parse(localStorage.getItem(`mars_ket_mock_listening_v2:set-${setId}`) || 'null') : null
@@ -312,12 +389,14 @@ export function ExamList() {
         ? Array.from({ length: 8 }, (_, index) => ({ id: `fce-mock-${index + 1}`, n: index + 1, name: `Test ${index + 1}`, source: 'FCE 8套全真模拟试题' }))
         : FCE_EDITIONS.find(e => `fce-${e.edition}` === collection)?.books.map(b => ({ ...b, id: b.examId, name: b.title })) || [])
     : isPet
-    ? PET_PENDING_ITEMS[collection]
+    ? (PET_PENDING_ITEMS[collection] || [])
     : collection === 'schools'
       ? ORDERED_KET_EXAMS.map((exam, index) => ({ exam, id: exam.id, name: `真题 ${index + 1}`, source: exam.title }))
       : collection === 'standard'
         ? PENDING_EXAMS.standard.map(item => ({ ...item, exam: STANDARD_READY_EXAMS.find(exam => exam.id === item.id) }))
-        : PENDING_EXAMS[collection]
+        : collection === 'mock'
+          ? PENDING_EXAMS.mock.map(item => ({ ...item, exam: [...TRAINER_READY_EXAMS, ...BOOSTER_READY_EXAMS].find(exam => exam.id === item.id) }))
+          : (PENDING_EXAMS[collection] || [])
 
   const collections = isFce
     ? [
@@ -391,7 +470,7 @@ export function ExamList() {
                 <div className="mt-5">
                   <div className={`text-xl font-extrabold leading-snug text-gray-900 transition-colors ${isPet ? 'group-hover:text-violet-800' : 'group-hover:text-[#064e3b]'}`}>{item.name}</div>
                   <div className="mt-2 text-sm text-gray-400">{item.source}</div>
-                  <div className="mt-1 text-sm text-gray-400">{isPet ? (petFull ? petSummary() : petListen ? '听力已上线 · 阅读、写作、口语整理中' : '题目、答案与配套材料正在整理') : exam?.kind === 'standard' ? '听力 30分钟 · 阅读与写作 60分钟 · 口语待录入' : exam ? sectionSummary(exam) : '题目、答案与配套材料正在整理'}</div>
+                  <div className="mt-1 text-sm text-gray-400">{isPet ? (petFull ? petSummary() : petListen ? '听力已上线 · 阅读、写作、口语整理中' : '题目、答案与配套材料正在整理') : exam?.kind === 'standard' ? '听力 30分钟 · 阅读与写作 60分钟 · 口语待录入' : exam?.kind === 'trainer' ? '听力 30分钟 · 5个 Part 已核对 · 阅读与写作、口语整理中' : exam?.kind === 'booster' ? '听力 30分钟 · 阅读、写作与口语已核对' : exam ? sectionSummary(exam) : '题目、答案与配套材料正在整理'}</div>
                 </div>
                 <div className="mt-auto pt-5">
                   <div className="mb-2 flex items-center justify-between gap-3">
@@ -401,7 +480,7 @@ export function ExamList() {
                   <div className="h-1.5 overflow-hidden rounded-full bg-gray-100">
                     <div className={`h-full rounded-full ${isPet ? 'bg-violet-600' : 'bg-[#0d7656]'}`} style={{ width: `${progress.percent}%` }} />
                   </div>
-                  <div className={`mt-4 text-right text-sm font-extrabold ${linkTo ? (isPet ? 'text-violet-700' : 'text-[#0d7656]') : 'text-gray-400'}`}>{petFull ? '进入模拟题 →' : petListen ? '练听力 →' : isPet ? '整理中' : exam ? '进入真题 →' : '整理中'}</div>
+                  <div className={`mt-4 text-right text-sm font-extrabold ${linkTo ? (isPet ? 'text-violet-700' : 'text-[#0d7656]') : 'text-gray-400'}`}>{petFull ? '进入模拟题 →' : petListen ? '练听力 →' : isPet ? '整理中' : exam?.kind === 'trainer' ? '进入听力模考 →' : exam ? '进入真题 →' : '整理中'}</div>
                 </div>
               </div>
             </Card>
@@ -477,20 +556,25 @@ function ExamOverview({ exam }) {
   const [level, setLevel] = useExamLevel()
   const setNumber = examSetNumber(exam)
   const isStandard = exam.kind === 'standard'
+  const isTrainer = exam.kind === 'trainer'
+  const isBooster = exam.kind === 'booster'
   const listeningReady = OFFICIAL_LISTENING_SETS.find(set => set.id === setNumber)?.readyParts?.length === 5
+    const readingReady = Boolean(exam.reading?.parts?.length && exam.reading?.writing?.length)
+  const speakingReady = Boolean(exam.speaking?.parts?.length)
   const sections = [
     { icon: '🎧', title: '听力', en: 'Listening', detail: listeningReady ? '30分钟 · 5个 Part · 25道题' : '题目与音频正在逐题核对，暂不开放整套模考', href: listeningReady ? `/cambridge/listening?mode=mock&exam=${exam.id}&part=1&set=${setNumber}` : null },
-    { icon: '📖', title: '阅读与写作', en: 'Reading & Writing', detail: '60分钟 · 7个 Part · 阅读30题 + 写作2题', href: exam.reading?.parts?.length ? `/cambridge/exams/${exam.id}?tab=reading` : `/cambridge/reading?part=1&set=${setNumber}` },
-    { icon: '🎙️', title: '口语', en: 'Speaking', detail: isStandard ? '原卷口语材料核对中' : '8–10分钟 · Part 1 个人问答 · Part 2 图片讨论', href: isStandard ? null : `/cambridge/speaking?part=2&set=${setNumber}` },
+    { icon: '📖', title: '阅读与写作', en: 'Reading & Writing', detail: (readingReady || !isTrainer) ? '60分钟 · 7个 Part · 阅读30题 + 写作2题' : 'Trainer 阅读与写作正在逐题核对，暂未开放', href: readingReady ? `/cambridge/exams/${exam.id}?tab=reading` : isTrainer ? null : exam.reading?.parts?.length ? `/cambridge/exams/${exam.id}?tab=reading` : `/cambridge/reading?part=1` },
+    { icon: '🎙️', title: '口语', en: 'Speaking', detail: speakingReady ? '8–10分钟 · Part 1 个人问答 · Part 2 图片讨论' : isStandard ? '原卷口语材料核对中' : 'Trainer 口语材料正在整理，暂未开放', href: speakingReady ? `/cambridge/exams/${exam.id}?tab=speaking` : isStandard ? null : setNumber <= 20 ? `/cambridge/speaking?part=2&set=${setNumber}` : null },
   ]
+
 
   return (
     <CambridgeLayout activeModule="exams" level={level} setLevel={setLevel}>
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <Link to="/cambridge/exams" className="text-sm font-bold text-emerald-700 hover:text-emerald-900">← 返回真题列表</Link>
-        <div className="mt-5 text-[11px] font-extrabold tracking-[.18em] text-emerald-700">KET FULL PRACTICE TEST</div>
-        <h1 className="mt-1 text-3xl font-extrabold text-slate-950 sm:text-4xl">{isStandard ? exam.label : `真题 ${setNumber}`}</h1>
-        <p className="mt-2 text-slate-500">{exam.title} · {isStandard ? '听力和阅读与写作已核对；口语尚未开放。' : '按正式试卷结构完成听力、阅读与写作、口语。'}</p>
+        <div className="mt-5 text-[11px] font-extrabold tracking-[.18em] text-emerald-700">{isBooster ? 'KET EXAM BOOSTER · WORKSHEET' : isTrainer ? 'KET TRAINER · EXAM PRACTICE TEST' : 'KET FULL PRACTICE TEST'}</div>
+        <h1 className="mt-1 text-3xl font-extrabold text-slate-950 sm:text-4xl">{isStandard || isTrainer || isBooster ? exam.label : `真题 ${setNumber}`}</h1>
+        <p className="mt-2 text-slate-500">{exam.title} · {isBooster ? '听力、阅读、写作与口语已核对（本书口语参考答案为原创，无官方答案）。' : isStandard ? '听力和阅读与写作已核对；口语尚未开放。' : isTrainer ? '听力、阅读、写作与口语均按官方材料逐题核对。' : '按正式试卷结构完成听力、阅读与写作、口语。'}</p>
 
         <section className="mt-7 grid gap-4 sm:grid-cols-2">
           {sections.map((item, index) => {
@@ -615,7 +699,7 @@ class ExamRunnerErrorBoundary extends Component {
     const { examId, section, resetKey } = this.props
     const sectionLabel = { reading: '阅读与写作', listening: '听力', writing: '写作', speaking: '口语' }[section] || '模考'
     return (
-      <CambridgeLayout activeModule="exams" level="KET" setLevel={() => {}}>
+      <CambridgeLayout activeModule="exams" level="KET">
         <main className="mx-auto max-w-3xl px-6 py-16">
           <div className="rounded-[24px] border border-rose-200 bg-white p-8 text-center shadow-sm">
             <div className="text-5xl">⚠️</div>
@@ -704,7 +788,7 @@ export default function CambridgeExam() {
     if (petTab === 'speaking')  return <PetSpeakingExam testN={testN} kind={kind} />
     return <PetExamOverview testN={testN} kind={kind} />
   }
-  const baseExam = [...KET_EXAMS, ...STANDARD_READY_EXAMS].find(e => e.id === id)
+  const baseExam = [...KET_EXAMS, ...STANDARD_READY_EXAMS, ...TRAINER_READY_EXAMS, ...BOOSTER_READY_EXAMS].find(e => e.id === id)
   const readingSet = baseExam ? getKetReadingTest(baseExam.id) : null
   const exam = baseExam && !baseExam.reading?.parts?.length && hasCompleteKetReadingPaper(readingSet)
     ? { ...baseExam, reading: { ...baseExam.reading, parts: adaptReadingTest(readingSet) } }
@@ -775,7 +859,7 @@ function ListeningExam({ exam, section, onSection }) {
   if (!exam.listening?.parts?.length) {
     const setNumber = examSetNumber(exam)
     return (
-      <CambridgeLayout activeModule="exams" level="KET" setLevel={() => {}}>
+      <CambridgeLayout activeModule="exams" level="KET">
         <main className="mx-auto max-w-3xl px-6 py-16 text-center">
           <div className="rounded-[24px] border border-amber-200 bg-white p-8 shadow-sm">
             <div className="text-5xl">🎧</div>
@@ -804,14 +888,14 @@ function ListeningExam({ exam, section, onSection }) {
 
   if (done) return (
     <ExamShell exam={exam} section={section} onSection={onSection}
-      parts={parts} partIndex={partIndex} allAnswers={allAnswers} isDone>
+      parts={parts} partIndex={partIndex} allAnswers={allAnswers} isDone onPartClick={setPartIndex}>
       <ListeningFinalResult exam={exam} allAnswers={allAnswers} />
     </ExamShell>
   )
 
   return (
     <ExamShell exam={exam} section={section} onSection={onSection}
-      parts={parts} partIndex={partIndex} allAnswers={allAnswers}>
+      parts={parts} partIndex={partIndex} allAnswers={allAnswers} onPartClick={setPartIndex}>
       <AnimatePresence mode="wait">
         <motion.div key={partIndex}
           initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
@@ -831,7 +915,7 @@ function ListeningExam({ exam, section, onSection }) {
 /* ══════════════════════════════
    Shared Exam Shell (listening or reading)
 ══════════════════════════════ */
-function ExamShell({ exam, section, onSection, parts, partIndex, allAnswers, isDone, onReset, timerSeconds, timerPaused, onToggleTimer, children }) {
+function ExamShell({ exam, section, onSection, parts, partIndex, allAnswers, isDone, onReset, onPartClick, timerSeconds, timerPaused, onToggleTimer, children }) {
   const [level, setLevel] = useExamLevel()
   return (
     <CambridgeLayout activeModule="exams" level={level} setLevel={setLevel}>
@@ -848,7 +932,7 @@ function ExamShell({ exam, section, onSection, parts, partIndex, allAnswers, isD
           </div>
           {parts.map((p, index) => {
             const finished = allAnswers[index] !== undefined
-            return <span key={p.part} className={`rounded-xl border px-4 py-2.5 text-sm font-extrabold ${index === partIndex && !isDone ? 'border-emerald-700 bg-emerald-700 text-white' : finished || isDone ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : 'border-slate-200 bg-white text-slate-400'}`}>Part {p.part}{finished || isDone ? ' ✓' : ''}</span>
+            return <button key={p.part} type="button" onClick={() => onPartClick && onPartClick(index)} className={`rounded-xl border px-4 py-2.5 text-sm font-extrabold transition-colors ${onPartClick ? 'cursor-pointer hover:border-emerald-300' : 'cursor-default'} ${index === partIndex && !isDone ? 'border-emerald-700 bg-emerald-700 text-white' : finished || isDone ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : 'border-slate-200 bg-white text-slate-400'}`}>Part {p.part}{finished || isDone ? ' ✓' : ''}</button>
           })}
           {onToggleTimer ? (
             <button type="button" onClick={onToggleTimer} className={`ml-auto rounded-xl px-4 py-2.5 font-mono text-sm font-extrabold ${timerPaused ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-700'}`}>
@@ -948,7 +1032,7 @@ function AudioPlayer({ src, label = '播放录音' }) {
     return () => {
       a.removeEventListener('play', onPlay); a.removeEventListener('pause', onPause)
       a.removeEventListener('ended', onEnded); a.removeEventListener('timeupdate', onTime)
-      a.removeEventListener('loadedmetadata', onMeta)
+      a.removeEventListener('loadedmetadata', onMeta); a.pause()
     }
   }, [])
 
@@ -982,7 +1066,7 @@ function AudioPlayer({ src, label = '播放录音' }) {
 
   return (
     <div className="bg-white rounded-2xl border border-gray-200 shadow-sm px-5 py-4 mb-6">
-      <audio ref={audioRef} src={src} preload="metadata" />
+      <audio ref={audioRef} src={src} preload="auto" />
       <div className="flex items-center gap-3 mb-3">
         <button onClick={toggle} disabled={!canPlay}
           className={`w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 transition-all ${
@@ -1512,7 +1596,7 @@ function ReadingExam({ exam, section, onSection }) {
   const part = parts[partIndex]
   return (
     <ExamShell exam={exam} section={section} onSection={onSection}
-      parts={parts} partIndex={partIndex} allAnswers={allAnswers} onReset={resetReading}
+      parts={parts} partIndex={partIndex} allAnswers={allAnswers} onReset={resetReading} onPartClick={setPartIndex}
       timerSeconds={timerSeconds} timerPaused={Boolean(pausedAt)} onToggleTimer={toggleReadingTimer}>
       <AnimatePresence mode="wait">
         <motion.div key={partIndex}
@@ -1768,10 +1852,11 @@ function ArticleMCQPart({ part, initialAnswers, redoOnly, isLast, onDone }) {
     <div>
       <div className="mb-6 grid items-start gap-5 lg:grid-cols-2">
         <article className="rounded-[24px] border border-slate-200 bg-white shadow-sm lg:sticky lg:top-3 lg:max-h-[calc(100vh-1.5rem)] lg:overflow-y-auto">
-          <header className="border-b border-slate-100 bg-slate-50 px-6 py-5">
-            <h3 className="text-xl font-extrabold text-slate-900">{part.articleTitle}</h3>
+          {(part.articleTitle || part.author) && <header className="border-b border-slate-100 bg-slate-50 px-6 py-5">
+            {part.articleTitle && <h3 className="text-xl font-extrabold text-slate-900">{part.articleTitle}</h3>
+}
             {part.author && <div className="mt-1 text-sm text-slate-500">{part.author}</div>}
-          </header>
+          </header>}
           <div className="p-6">
             {part.passage.split('\n\n').map((para, i) => (
               <p key={i} className="mb-4 text-base leading-8 text-slate-700 last:mb-0">{para}</p>
@@ -1874,15 +1959,12 @@ function OpenGapFillPart({ part, initialAnswers, redoOnly, isLast, onDone }) {
       const n  = parseInt(match[1])
       const qi = part.questions.findIndex(q => q.n === n)
       if (redoOnly && !visibleIndexes.includes(qi)) return <span key={si} className="font-semibold text-slate-800">{inputs[qi]}</span>
+      const userAns = (inputs[qi] || '').trim()
       return (
-        <span key={si} className="inline-flex items-center gap-0.5 mx-0.5">
-          <span className="text-[10px] text-[#064e3b] font-bold">({n})</span>
-          <input
-            value={inputs[qi] || ''}
-            onChange={e => setInputs(prev => prev.map((v,k) => k===qi ? e.target.value : v))}
-            placeholder="___"
-            className="w-20 px-2 py-0.5 text-sm font-medium border-b-2 border-[#064e3b]/30 focus:border-[#064e3b] bg-transparent outline-none text-center transition-colors"
-          />
+        <span key={si} className={`inline-flex items-end border-b-2 mx-0.5 px-1.5 min-w-[3.5em] justify-center align-baseline ${
+          userAns ? 'border-[#064e3b] text-slate-800' : 'border-gray-400'
+        }`}>
+          {userAns ? <span className="font-semibold">{userAns}</span> : <span className="text-gray-400 text-xs">{n}</span>}
         </span>
       )
     })
@@ -1899,24 +1981,41 @@ function OpenGapFillPart({ part, initialAnswers, redoOnly, isLast, onDone }) {
         </div>
       )}
 
-      {/* Passages with inline inputs */}
-      <div className="space-y-4 mb-6">
-        {part.passages.map((p, pi) => (
-          <div key={pi} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-            <div className="bg-gray-50 border-b border-gray-100 px-5 py-2.5 text-xs text-gray-500 font-semibold">
-              {p.from ? `✉️ ${p.from} → ${p.to}` : `📝 ${p.label || 'Passage'}`}
+      {/* Passages + input boxes */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-stretch mb-6">
+        <div className="space-y-4">
+          {part.passages.map((p, pi) => (
+            <div key={pi} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+              <div className="bg-gray-50 border-b border-gray-100 px-5 py-2.5 text-xs text-gray-500 font-semibold">
+                {p.from ? `✉️ ${p.from} → ${p.to}` : `📝 ${p.label || 'Passage'}`}
+              </div>
+              <div className="px-5 py-4">
+                <p className="leading-loose">{renderPassage(p.text)}</p>
+              </div>
             </div>
-            <div className="px-5 py-4">
-              <p className="leading-loose">{renderPassage(p.text)}</p>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
+        <div className="flex flex-col gap-3 h-full">
+          {part.questions.map((q, i) => {
+            if (!visibleIndexes.includes(i)) return null
+            return (
+              <div key={i} className="flex-1 flex items-center gap-2 border rounded-xl px-3 py-2.5 transition-all border-gray-200 focus-within:border-[#064e3b]">
+                <span className="text-xs font-extrabold w-7 flex-shrink-0 text-[#064e3b]">({q.n})</span>
+                <input type="text" value={inputs[i] || ''}
+                  onChange={e => setInputs(prev => prev.map((v,k) => k===i ? e.target.value : v))}
+                  className="min-w-0 flex-1 bg-transparent text-base font-semibold text-center focus:outline-none text-gray-700 placeholder:text-gray-300" placeholder="填词…" />
+              </div>
+            )
+          })}
+        </div>
       </div>
 
-      <button onClick={() => onDone(inputs)} disabled={!allFilled}
-        className="w-full py-4 bg-[#064e3b] text-white font-bold rounded-2xl hover:bg-[#065f46] disabled:opacity-30 transition-all text-base">
-        {isLast ? '查看结果 →' : 'Next →'}
-      </button>
+      <div className="mt-6 text-right">
+        <button onClick={() => onDone(inputs)} disabled={!allFilled}
+          className="rounded-xl bg-[#064e3b] px-6 py-3 text-sm font-extrabold text-white disabled:bg-slate-200 disabled:text-slate-400">
+          {isLast ? '查看结果 →' : '完成本 Part →'}
+        </button>
+      </div>
     </div>
   )
 }
@@ -2255,7 +2354,7 @@ function WritingExam({ exam, section, onSection }) {
 
   if (!Array.isArray(writings) || writings.length === 0) {
     return (
-      <CambridgeLayout activeModule="exams" level="KET" setLevel={() => {}}>
+      <CambridgeLayout activeModule="exams" level="KET">
         <main className="mx-auto max-w-3xl px-6 py-16 text-center">
           <div className="rounded-[24px] border border-amber-200 bg-white p-8 shadow-sm">
             <div className="text-5xl">✍️</div>
@@ -2374,7 +2473,7 @@ function SpeakingExam({ exam, section, onSection }) {
 
   if (!sp?.parts?.length) {
     return (
-      <CambridgeLayout activeModule="exams" level="KET" setLevel={() => {}}>
+      <CambridgeLayout activeModule="exams" level="KET">
         <main className="mx-auto max-w-3xl px-6 py-16 text-center">
           <div className="rounded-[24px] border border-amber-200 bg-white p-8 shadow-sm">
             <div className="text-5xl">🎙️</div>

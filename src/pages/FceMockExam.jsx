@@ -11,6 +11,7 @@ import { useTTS } from './CambridgeExam'
 import { fceExamPapers, fceExamTitle } from '../data/fceTestRegistry'
 import { recordFcePart } from '../data/fceExamProgress'
 import { setFceWrongBatch } from '../data/fceWrongBook'
+import { extractQuotes, TranscriptBox, AudioscriptPanel } from '../utils/transcriptHighlight'
 
 const DURATION_LABEL = totalSeconds => `${String(Math.floor(totalSeconds / 60)).padStart(2, '0')}:${String(totalSeconds % 60).padStart(2, '0')}`
 const ABCD = ['A', 'B', 'C', 'D']
@@ -109,7 +110,7 @@ function listeningWrongMapOf(part, answers) {
    共享外壳（sky 主题：返回总览 + 徽章 + Part 进度 chips + 可暂停计时器）
 ══════════════════════════════ */
 
-function FceExamShell({ examId, section, parts, partIndex, allAnswers, isDone, onReset, timerSeconds, timerPaused, onToggleTimer, totalMinutes, children }) {
+function FceExamShell({ examId, section, parts, partIndex, allAnswers, isDone, onReset, onPartClick, timerSeconds, timerPaused, onToggleTimer, totalMinutes, children }) {
   const meta = SECTION_META[section] || SECTION_META.reading
   return (
     <CambridgeLayout activeModule="exams" level="FCE">
@@ -126,10 +127,13 @@ function FceExamShell({ examId, section, parts, partIndex, allAnswers, isDone, o
           </div>
           {parts.map((p, index) => {
             const finished = allAnswers[index] !== undefined
+            const active = index === partIndex && !isDone
+            const cls = `rounded-xl border px-3 py-2.5 text-sm font-extrabold sm:px-4 ${active ? 'border-sky-600 bg-sky-600 text-white' : finished || isDone ? 'border-sky-200 bg-sky-50 text-sky-700' : 'border-slate-200 bg-white text-slate-400'}`
+            const Tag = onPartClick ? 'button' : 'span'
             return (
-              <span key={p.part} className={`rounded-xl border px-3 py-2.5 text-sm font-extrabold sm:px-4 ${index === partIndex && !isDone ? 'border-sky-600 bg-sky-600 text-white' : finished || isDone ? 'border-sky-200 bg-sky-50 text-sky-700' : 'border-slate-200 bg-white text-slate-400'}`}>
+              <Tag key={p.part} type={onPartClick ? 'button' : undefined} onClick={onPartClick && !active ? () => onPartClick(index) : undefined} className={onPartClick ? `${cls} cursor-pointer transition-colors hover:border-sky-400 hover:text-sky-600` : cls}>
                 Part {p.part}{finished || isDone ? ' ✓' : ''}
-              </span>
+              </Tag>
             )
           })}
           {onToggleTimer ? (
@@ -739,7 +743,7 @@ export function FceReadingExam({ examId }) {
     : partIndex + 1 >= parts.length
 
   return (
-    <FceExamShell examId={examId} section="reading" parts={parts} partIndex={partIndex} allAnswers={allAnswers}
+    <FceExamShell examId={examId} section="reading" parts={parts} partIndex={partIndex} allAnswers={allAnswers} onPartClick={setPartIndex}
       onReset={resetReading} timerSeconds={timerSeconds} timerPaused={Boolean(pausedAt)} onToggleTimer={toggleTimer} totalMinutes={TOTAL_MINUTES}>
       <AnimatePresence mode="wait">
         <motion.div key={partIndex} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
@@ -877,7 +881,7 @@ function FceAudioPlayer({ src, compact }) {
     const onPause = () => setPlaying(false)
     const onTime = () => setProgress(a.currentTime / (a.duration || 1))
     a.addEventListener('play', onPlay); a.addEventListener('pause', onPause); a.addEventListener('timeupdate', onTime)
-    return () => { a.removeEventListener('play', onPlay); a.removeEventListener('pause', onPause); a.removeEventListener('timeupdate', onTime) }
+    return () => { a.removeEventListener('play', onPlay); a.removeEventListener('pause', onPause); a.removeEventListener('timeupdate', onTime); a.pause() }
   }, [])
 
   function toggle() {
@@ -886,17 +890,27 @@ function FceAudioPlayer({ src, compact }) {
     if (playing) { a.pause() } else { a.play().catch(() => {}) }
   }
 
+  function seek(e) {
+    const a = ref.current
+    if (!a || !a.duration) return
+    const bar = e.currentTarget
+    const rect = bar.getBoundingClientRect()
+    const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width))
+    a.currentTime = ratio * a.duration
+    setProgress(ratio)
+  }
+
   return (
     <div className={`rounded-2xl border border-sky-200 bg-sky-50 ${compact ? 'p-2.5' : 'p-4'}`}>
-      <audio ref={ref} src={src} preload="metadata" />
+      <audio ref={ref} src={src} preload="auto" />
       <div className="flex items-center gap-3">
         <button type="button" onClick={toggle}
           className={`grid shrink-0 place-items-center rounded-full bg-sky-600 text-white shadow-sm hover:bg-sky-700 ${compact ? 'h-9 w-9 text-sm' : 'h-12 w-12'}`}>
           {playing ? '⏸' : '▶'}
         </button>
         <div className="min-w-0 flex-1">
-          <div className="h-1.5 overflow-hidden rounded-full bg-sky-100">
-            <div className="h-full bg-sky-500" style={{ width: `${progress * 100}%` }} />
+          <div onClick={seek} className="h-1.5 cursor-pointer overflow-hidden rounded-full bg-sky-100 hover:h-2.5 transition-all">
+            <div className="h-full bg-sky-500 pointer-events-none" style={{ width: `${progress * 100}%` }} />
           </div>
         </div>
         <div className="flex shrink-0 gap-1">
@@ -928,21 +942,21 @@ function FceListenSituation({ part, isLast, onDone }) {
         {items.map((item, i) => (
           <div key={i} className="rounded-2xl border border-slate-200 bg-white p-4">
             <div className="flex items-start gap-2">
-              <span className="rounded bg-sky-500 px-2 py-0.5 text-xs font-extrabold text-white">Q{item.q ?? i + 1}</span>
-              {item.scenario && <span className="text-xs italic text-slate-500">{item.scenario}</span>}
+              <span className="shrink-0 rounded bg-sky-500 px-2 py-0.5 text-sm font-extrabold text-white">Q{i + 1}</span>
+              {item.scenario && <span className="text-sm italic text-slate-500">{item.scenario}</span>}
             </div>
             {!part.audio && item.audio && <div className="mt-2"><FceAudioPlayer src={item.audio} compact /></div>}
-            <p className="mt-2 text-sm font-bold text-slate-800">{item.q}</p>
-            <div className="mt-2 space-y-1.5">
+            <p className="mt-2 text-base font-bold leading-6 text-slate-800">{item.q}</p>
+            <div className="mt-2 space-y-2">
               {(item.opts || []).map((opt, oi) => {
                 const selected = answers[i] === oi
                 return (
                   <button key={oi} type="button" onClick={() => pick(i, oi)}
-                    className={`flex w-full items-center gap-2 rounded-lg border p-2.5 text-left text-sm transition ${selected ? 'border-sky-500 bg-sky-50 text-sky-800' : 'border-slate-200 text-slate-700 hover:border-sky-300'}`}>
-                    <span className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border text-[10px] font-extrabold ${selected ? 'border-sky-500 bg-sky-500 text-white' : 'border-current'}`}>
+                    className={`flex w-full items-center gap-2.5 rounded-lg border p-3 text-left text-base transition ${selected ? 'border-sky-500 bg-sky-50 text-sky-800' : 'border-slate-200 text-slate-700 hover:border-sky-300'}`}>
+                    <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-xs font-extrabold ${selected ? 'border-sky-500 bg-sky-500 text-white' : 'border-current'}`}>
                       {ABC[oi]}
                     </span>
-                    <span className="leading-5">{opt}</span>
+                    <span className="leading-6">{opt}</span>
                   </button>
                 )
               })}
@@ -967,18 +981,21 @@ function FceListenBlanks({ part, isLast, onDone }) {
     <div>
       <PartHeader part={part} />
       <FceAudioPlayer src={part.audio} />
-      <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-        {items.map((item, i) => (
-          <div key={i} className="rounded-xl border border-slate-200 bg-white p-3 focus-within:border-sky-400">
-            <div className="flex items-center gap-2 text-xs font-extrabold">
-              <span className="rounded bg-sky-500 px-2 py-0.5 text-white">Q{item.q ?? i + 1}</span>
-              <span className="min-w-0 flex-1 text-slate-700">{item.q}</span>
+      <div className="mt-4 space-y-3">
+        {items.map((item, i) => {
+          const qNum = (String(item.q).match(/\((\d+)\)/) || [])[1] || i + 1
+          return (
+          <div key={i} className="rounded-xl border border-slate-200 bg-white p-4 focus-within:border-sky-400">
+            <div className="flex items-start gap-2">
+              <span className="shrink-0 rounded bg-sky-500 px-2 py-0.5 text-sm font-extrabold text-white">Q{qNum}</span>
+              <span className="min-w-0 flex-1 text-base font-semibold leading-6 text-slate-700">{item.q}</span>
             </div>
             <input type="text" value={answers[i] ?? ''} onChange={e => set(i, e.target.value)}
-              className="mt-2 w-full rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-semibold focus:border-sky-400 focus:outline-none"
+              className="mt-2 w-full rounded-lg border border-slate-200 px-3 py-2 text-base font-semibold focus:border-sky-400 focus:outline-none"
               placeholder="填入听到的词…" />
           </div>
-        ))}
+          )
+        })}
       </div>
       <PartSubmitBar visibleIndexes={items.map((_, i) => i)} answers={answers} isLast={isLast} onDone={() => onDone(answers)} />
     </div>
@@ -998,25 +1015,25 @@ function FceListenMatch({ part, isLast, onDone }) {
     <div>
       <PartHeader part={part} />
       <FceAudioPlayer src={part.audio} />
-      <div className="mt-4 rounded-xl border border-sky-200 bg-sky-50/60 p-3">
-        <div className="mb-1 text-xs font-extrabold tracking-wide text-sky-700">选项（含多余选项）</div>
-        <ul className="grid grid-cols-1 gap-1 text-xs text-slate-700 sm:grid-cols-2">
+      <div className="mt-4 rounded-xl border border-sky-200 bg-sky-50/60 p-4">
+        <div className="mb-2 text-sm font-extrabold tracking-wide text-sky-700">选项（含多余选项）</div>
+        <ul className="grid grid-cols-1 gap-2 text-base text-slate-700 sm:grid-cols-2">
           {options.map(o => (
             <li key={o.label}><span className="font-extrabold text-sky-700">{o.label}.</span> {o.text}</li>
           ))}
         </ul>
       </div>
-      <div className="mt-4 space-y-2">
+      <div className="mt-4 space-y-3">
         {items.map((item, i) => (
           <div key={i} className="rounded-2xl border border-slate-200 bg-white p-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="text-sm font-bold text-slate-800">Speaker {i + 1}{item.speaker ? ` — ${item.speaker}` : ''}</span>
-              <div className="flex flex-wrap gap-1">
+              <span className="text-base font-bold text-slate-800">Speaker {i + 1}{item.speaker ? ` — ${item.speaker}` : ''}</span>
+              <div className="flex flex-wrap gap-1.5">
                 {options.map(o => {
                   const selected = answers[i] === o.label
                   return (
                     <button key={o.label} type="button" onClick={() => pick(i, o.label)}
-                      className={`h-8 w-8 rounded-lg text-xs font-extrabold transition ${selected ? 'bg-sky-600 text-white' : 'border border-slate-200 text-slate-500 hover:border-sky-300'}`}>
+                      className={`h-10 w-10 rounded-lg text-sm font-extrabold transition ${selected ? 'bg-sky-600 text-white' : 'border border-slate-200 text-slate-500 hover:border-sky-300'}`}>
                       {o.label}
                     </button>
                   )
@@ -1047,19 +1064,19 @@ function FceListenMcq({ part, isLast, onDone }) {
         {items.map((item, i) => (
           <div key={i} className="rounded-2xl border border-slate-200 bg-white p-4">
             <div className="flex items-start gap-2">
-              <span className="rounded bg-sky-500 px-2 py-0.5 text-xs font-extrabold text-white">Q{item.q ?? i + 1}</span>
-              <p className="min-w-0 flex-1 text-sm font-bold leading-6 text-slate-800">{item.q}</p>
+              <span className="shrink-0 rounded bg-sky-500 px-2 py-0.5 text-sm font-extrabold text-white">Q{i + 1}</span>
+              <p className="min-w-0 flex-1 text-base font-bold leading-6 text-slate-800">{item.q}</p>
             </div>
-            <div className="mt-2 space-y-1.5">
+            <div className="mt-2 space-y-2">
               {(item.opts || []).map((opt, oi) => {
                 const selected = answers[i] === oi
                 return (
                   <button key={oi} type="button" onClick={() => pick(i, oi)}
-                    className={`flex w-full items-center gap-2 rounded-lg border p-2.5 text-left text-sm transition ${selected ? 'border-sky-500 bg-sky-50 text-sky-800' : 'border-slate-200 text-slate-700 hover:border-sky-300'}`}>
-                    <span className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border text-[10px] font-extrabold ${selected ? 'border-sky-500 bg-sky-500 text-white' : 'border-current'}`}>
+                    className={`flex w-full items-center gap-2.5 rounded-lg border p-3 text-left text-base transition ${selected ? 'border-sky-500 bg-sky-50 text-sky-800' : 'border-slate-200 text-slate-700 hover:border-sky-300'}`}>
+                    <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-xs font-extrabold ${selected ? 'border-sky-500 bg-sky-500 text-white' : 'border-current'}`}>
                       {ABC[oi]}
                     </span>
-                    <span className="leading-5">{opt}</span>
+                    <span className="leading-6">{opt}</span>
                   </button>
                 )
               })}
@@ -1120,7 +1137,7 @@ export function FceListeningExam({ examId }) {
 
   const isLast = partIndex + 1 >= parts.length
   return (
-    <FceExamShell examId={examId} section="listening" parts={parts} partIndex={partIndex} allAnswers={allAnswers}>
+    <FceExamShell examId={examId} section="listening" parts={parts} partIndex={partIndex} allAnswers={allAnswers} onPartClick={setPartIndex}>
       <AnimatePresence mode="wait">
         <motion.div key={partIndex} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
           <FceListeningPartRouter part={part} isLast={isLast} onDone={handlePartDone} />
@@ -1147,6 +1164,7 @@ function FceListeningFinalResult({ examId, parts, allAnswers, onRestart }) {
           question: item.scenario ? `${item.scenario} — ${item.q}` : item.q,
           userAns: ua != null && ua < 26 ? ABC[ua] : '—',
           correctAns: `${ABC[item.answer]} · ${item.opts?.[item.answer] ?? ''}`,
+          transcript: item.transcript,
           isRight,
           exp: item.explanation,
         }
@@ -1157,6 +1175,7 @@ function FceListeningFinalResult({ examId, parts, allAnswers, onRestart }) {
           question: item.q,
           userAns: String(ua ?? '') || '—',
           correctAns: item.show || (item.answer || [])[0] || '',
+          transcript: item.transcript,
           isRight,
           exp: item.explanation,
         }
@@ -1166,6 +1185,7 @@ function FceListeningFinalResult({ examId, parts, allAnswers, onRestart }) {
         question: `Speaker ${i + 1}${item.speaker ? ` — ${item.speaker}` : ''}`,
         userAns: String(ua ?? '') || '—',
         correctAns: item.answer,
+        transcript: item.transcript,
         isRight,
         exp: item.explanation,
       }
@@ -1214,6 +1234,7 @@ function FceListeningFinalResult({ examId, parts, allAnswers, onRestart }) {
               })}
             </div>
           </div>
+          <AudioscriptPanel parts={parts} tagClass="text-sky-700" />
           {showReview && (
             <section className="mt-6 rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
               <div className="text-xs font-extrabold tracking-[.16em] text-sky-700">WRONG ANSWER REVIEW</div>
@@ -1231,6 +1252,7 @@ function FceListeningFinalResult({ examId, parts, allAnswers, onRestart }) {
                       <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4"><div className="text-xs font-bold text-emerald-600">正确答案</div><strong className="mt-1 block break-words text-emerald-800">{item.correctAns}</strong></div>
                     </div>
                     {item.exp && <p className="mt-3 text-xs leading-5 text-slate-500">解析：{item.exp}</p>}
+                      <TranscriptBox transcript={item.transcript} highlights={extractQuotes(item.exp)} />
                   </article>
                 ))}
               </div>
@@ -1429,7 +1451,7 @@ export function FceWritingExam({ examId }) {
   }
 
   return (
-    <FceExamShell examId={examId} section="writing" parts={shellParts} partIndex={partIndex} allAnswers={allTexts}
+    <FceExamShell examId={examId} section="writing" parts={shellParts} partIndex={partIndex} allAnswers={allTexts} onPartClick={setPartIndex}
       timerSeconds={timerSeconds} timerPaused={Boolean(pausedAt)} onToggleTimer={toggleTimer} totalMinutes={TOTAL_MINUTES}>
       <AnimatePresence mode="wait">
         <motion.div key={partIndex} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
@@ -1680,24 +1702,61 @@ function FceSpeakingP1({ part, tts }) {
 }
 
 // Part 2 · Long turn：Candidate A / B 两卡（图片为版权扫描件，只给书内页码）
-function FceSpeakingP2({ part, tts }) {
+function FceSpeakingP2({ part, tts, examId }) {
+  // 从 examId 提取图片路径
+  const imgBase = (() => {
+    if (!examId) return null
+    const mockM = examId.match(/fce-mock-(\d+)/)
+    if (mockM) return `/images/fce/speaking/mock-${mockM[1]}`
+    const stdM = examId.match(/fce-(standard|schools)-(\d+)-test(\d+)/)
+    if (stdM) return `/images/fce/speaking/${stdM[1]}-${stdM[2]}/test-${stdM[3]}`
+    return null
+  })()
+  const [imgErrors, setImgErrors] = useState({})
+
   return (
     <div className="space-y-4">
       <div className="rounded-xl border border-sky-200 bg-sky-50/60 p-3 text-xs leading-5 text-sky-800">
         💡 每位考生就一组图片独白约 1 分钟（含 15 秒构思时间）。图片为版权扫描件，请翻书对照（页码已标注）。作答时描述要点 + 回答问题 + 给出理由。
       </div>
-      {(part.tasks || []).map(t => (
+      {(part.tasks || []).map(t => {
+        const imgPath = imgBase ? `${imgBase}/task-${t.task}/page.png` : null
+        const imgOk = imgPath && !imgErrors[t.task]
+        return (
         <div key={t.task} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <div className="flex flex-wrap items-center gap-2">
             <span className={`rounded-lg px-2.5 py-1 text-xs font-extrabold text-white ${t.candidate === 'A' ? 'bg-sky-500' : 'bg-indigo-400'}`}>
               Candidate {t.candidate}
             </span>
             <span className="rounded-lg border border-slate-200 px-2.5 py-1 text-xs font-extrabold text-slate-500">Task {t.task}</span>
-            <span className="text-xs text-slate-400">图片：{t.imagesPage || '见书末彩色插页'}（共 {t.images} 张）</span>
+            <span className="text-xs text-slate-400">图片：{t.imagesPage || '见书末彩色插页'}（共 {(Array.isArray(t.images) ? t.images.length : t.images) || 2} 张）</span>
           </div>
           <div className="mt-3 flex items-start gap-3">
             <p className="flex-1 text-lg font-extrabold leading-7 text-slate-900">{t.q}</p>
             <FceSpeakButton id={`task-${t.task}`} text={t.q} tts={tts} />
+          </div>
+          {/* 图片区 */}
+          <div className="mt-3">
+            {imgOk ? (
+              <img
+                src={imgPath}
+                alt={`Speaking Part 2 Task ${t.task}`}
+                onError={() => setImgErrors(p => ({ ...p, [t.task]: true }))}
+                className="w-full rounded-xl border border-slate-200 shadow-sm"
+              />
+            ) : (
+              <div className="grid grid-cols-2 gap-3">
+                {Array.from({ length: (Array.isArray(t.images) ? t.images.length : t.images) || 2 }, (_, i) => (
+                  <div key={i} className="flex aspect-[4/3] items-center justify-center rounded-xl border-2 border-dashed border-slate-200 bg-slate-50">
+                    <div className="text-center">
+                      <div className="text-3xl text-slate-300">🖼️</div>
+                      <div className="mt-1 text-xs font-semibold text-slate-400">图片 {i + 1}</div>
+                      <div className="text-xs text-slate-400">见书第 {t.imagesPage || '彩色插页'} 页</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
           <ul className="mt-3 list-disc space-y-1 pl-5 text-xs leading-5 text-slate-500">
             <li>先花 15 秒看图构思：每张图找一个切入角度</li>
@@ -1709,7 +1768,8 @@ function FceSpeakingP2({ part, tts }) {
             <FceCountdown seconds={60} label={`Task ${t.task} 独白`} />
           </div>
         </div>
-      ))}
+        )
+      })}
     </div>
   )
 }
@@ -1859,7 +1919,7 @@ export function FceSpeakingExam({ examId }) {
         <AnimatePresence mode="wait">
           <motion.div key={partId} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
             {partId === 1 && part && <FceSpeakingP1 part={part} tts={tts} />}
-            {partId === 2 && part && <FceSpeakingP2 part={part} tts={tts} />}
+            {partId === 2 && part && <FceSpeakingP2 part={part} tts={tts} examId={examId} />}
             {partId === 3 && part && <FceSpeakingP3 part={part} tts={tts} />}
             {partId === 4 && part && <FceSpeakingP4 part={part} tts={tts} />}
           </motion.div>

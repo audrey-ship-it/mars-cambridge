@@ -3,8 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 const LEVELS = [
   { abbr: 'KET', code: 'A2', name: 'Key', color: '#0d7656', bg: '#eaf7f1' },
-  { abbr: 'PET', code: 'B1', name: 'Preliminary', color: '#2574a9', bg: '#edf6fb' },
-  { abbr: 'FCE', code: 'B2', name: 'First', color: '#0ea5e9', bg: '#e0f2fe' },
+  { abbr: 'PET', code: 'B1', name: 'Preliminary', color: '#7c3aed', bg: '#f5f3ff' },
+  { abbr: 'FCE', code: 'B2', name: 'First', color: '#0284c7', bg: '#f0f9ff' },
   { abbr: 'CAE', code: 'C1', name: 'Advanced', color: '#7c5aa6', bg: '#f5f0fa' },
   { abbr: 'CPE', code: 'C2', name: 'Proficiency', color: '#a14d68', bg: '#fbf0f4' },
 ]
@@ -56,11 +56,12 @@ const ANCHOR_HIGH = [
 const ANCHORS = { low: ANCHOR_LOW, mid: ANCHOR_MID, high: ANCHOR_HIGH }
 
 const SCREENING = [
-  { id:'s1', weight:.5, question:'你学习英语多久了？', options:[['刚开始学习',0],['不到 1 年',0],['1–3 年',1],['3–5 年',2],['5 年以上',3]] },
-  { id:'s2', weight:1.5, question:'你目前的学习目标是？', options:[['打好英语基础',0],['准备 KET',0],['准备 PET',1],['准备 FCE',2],['准备 CAE / CPE',3],['还不确定',1]] },
-  { id:'s3', weight:1.5, question:'阅读简单英文通知时，你通常觉得？', options:[['大部分看不懂',0],['能认出一些单词',0],['能理解主要意思',1],['基本可以完整理解',2],['能理解复杂文章',3]] },
-  { id:'s4', weight:1, question:'听日常英语对话时，你通常觉得？', options:[['很难听懂',0],['慢速、简单内容能懂一点',0],['能理解熟悉话题',1],['能理解大部分日常对话',2],['能理解较复杂的讨论',3]] },
-  { id:'s5', weight:1, question:'你是否参加过剑桥英语考试？', options:[['没有参加过',0],['参加过 KET',1],['参加过 PET',2],['参加过 FCE',3],['参加过 CAE / CPE',4]] },
+  // 初筛选项已按 QA 标注精简：去除过低的入门选项，避免与正式练习起点（KET/PET/FCE）冲突
+  { id:'s1', weight:.5, question:'你学习英语多久了？', options:[['1–3 年',1],['3–5 年',2],['5 年以上',3]] },
+  { id:'s2', weight:1.5, question:'你目前的学习目标是？', options:[['准备 KET',0],['准备 PET',1],['准备 FCE',2],['还不确定',1]] },
+  { id:'s3', weight:1.5, question:'阅读简单英文通知时，你通常觉得？', options:[['能理解主要意思',1],['基本可以完整理解',2],['能理解复杂文章',3]] },
+  { id:'s4', weight:1, question:'听日常英语对话时，你通常觉得？', options:[['慢速、简单内容能懂一点',0],['能理解熟悉话题',1],['能理解大部分日常对话',2],['能理解较复杂的讨论',3]] },
+  { id:'s5', weight:1, question:'你是否参加过剑桥英语考试？', options:[['没有参加过',0],['参加过 KET',1],['参加过 PET',2],['参加过 FCE',3]] },
 ]
 
 const ROUTES = {

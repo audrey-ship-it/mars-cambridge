@@ -508,17 +508,24 @@ export default function CambridgeReading() {
       const text = <span key={`text-${i}`} style={{ whiteSpace: 'pre-wrap' }}>{seg}</span>
       if (!q) return [text]
       const ua = answers[q?._key] || ''
-      const ok = batchChecked ? isCorrect14(q) : null
+      const isRetry = retrying[q?._key]
+      const effChk = batchChecked && !isRetry
+      const ok = effChk ? isCorrect14(q) : null
+      // 横线上实时显示右侧所选选项的文本（未填为空横线）
+      const uaText = ua
+        ? ((q.options && q.options[ua]) || (batch.options || []).find(o => o.label === ua)?.text || ua)
+        : ''
+      const gapCls = effChk
+        ? (ok ? 'border-emerald-500 text-emerald-700' : 'border-red-400 text-red-600')
+        : uaText ? 'border-violet-500 text-violet-700' : 'border-gray-300'
       const gap = (
         <span key={`gap-${i}`} className="inline-block mx-1.5 align-baseline">
           <span className="font-bold text-violet-600 text-base">({q.id})</span>
-          {batchChecked && (
-            <span className={`ml-1 px-1.5 py-0.5 rounded text-xs font-medium ${
-              ok ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-600'
-            }`}>
-              {ua || '—'}
-              {!ok && <span className="ml-1 text-emerald-600">→{q?.answer}</span>}
-            </span>
+          <span className={`ml-1 inline-block min-w-[76px] border-b-2 px-1 text-center font-semibold ${gapCls}`}>
+            {uaText || ' '}
+          </span>
+          {effChk && !ok && (
+            <span className="ml-1 px-1.5 py-0.5 rounded text-xs font-medium bg-red-100 text-red-600">→{q?.answer}</span>
           )}
         </span>
       )
@@ -869,22 +876,9 @@ export default function CambridgeReading() {
                     const personToQ = {}
                     for (const q of currentBatch.questions) personToQ[String(q.id)] = q
                     return (
-                      <div className="grid grid-cols-[minmax(0,1.25fr)_minmax(400px,.75fr)] gap-8 items-start">
-                        {/* LEFT: 8 course options (A-H) */}
-                        <div className="max-h-[125vh] space-y-4 overflow-y-auto pr-2 sticky top-5">
-                          {currentBatch.options.map(o => (
-                            <div key={o.label} className="bg-slate-50 rounded-2xl border border-slate-200 p-6">
-                              <div className="flex items-center gap-3 mb-3">
-                                <span className="w-9 h-9 bg-violet-600 text-white text-base font-extrabold rounded-full flex items-center justify-center flex-shrink-0">{o.label}</span>
-                                <span className="font-bold text-slate-800 text-xl">{o.name}</span>
-                              </div>
-                              <HighlightableText text={o.text} storageKey={`part2-${currentBatch.title}-${o.label}`}
-                                className="text-[17px] text-slate-700 leading-8" />
-                            </div>
-                          ))}
-                        </div>
-                        {/* RIGHT: 5 people (Q6-10) with descriptions + A-H buttons */}
-                        <div className="space-y-4 sticky top-5">
+                      <div className="grid grid-cols-[minmax(0,.75fr)_minmax(400px,1.25fr)] gap-8 items-stretch">
+                        {/* LEFT: 5 people (Q6-10) with descriptions + A-H buttons */}
+                        <div className="flex flex-col justify-between gap-4 max-h-[125vh] overflow-y-auto pr-2 sticky top-5">
                           {currentBatch.people.map((p, pi) => {
                             const q = personToQ[String(p.label)]
                             if (!q) return null
@@ -933,6 +927,19 @@ export default function CambridgeReading() {
                               </motion.div>
                             )
                           })}
+                        </div>
+                        {/* RIGHT: 8 course options (A-H) */}
+                        <div className="flex flex-col gap-4 max-h-[125vh] overflow-y-auto pr-2 sticky top-5">
+                          {currentBatch.options.map(o => (
+                            <div key={o.label} className="bg-slate-50 rounded-2xl border border-slate-200 p-6">
+                              <div className="flex items-center gap-3 mb-3">
+                                <span className="w-9 h-9 bg-violet-600 text-white text-base font-extrabold rounded-full flex items-center justify-center flex-shrink-0">{o.label}</span>
+                                <span className="font-bold text-slate-800 text-xl">{o.name}</span>
+                              </div>
+                              <HighlightableText text={o.text} storageKey={`part2-${currentBatch.title}-${o.label}`}
+                                className="text-[17px] text-slate-700 leading-8" />
+                            </div>
+                          ))}
                         </div>
                       </div>
                     )
@@ -1015,8 +1022,41 @@ export default function CambridgeReading() {
                           {currentBatch.author}
                         </p>
                       )}
-                      <HighlightableText text={currentBatch.passage || (currentBatch.passage_segments || []).join('\n')} storageKey={`part3-${batchIdx}`}
-                        className="text-[19px] text-gray-700 leading-9 whitespace-pre-line" />
+                      {(level === 'PET' && partId === 5) ? (
+                        <div className="text-[19px] text-gray-700 leading-9 whitespace-pre-line">
+                          {(() => {
+                            const qById = Object.fromEntries((currentBatch.questions || []).map(q => [String(q.id), q]))
+                            const passageText = currentBatch.passage || (currentBatch.passage_segments || []).join('\n')
+                            const parts = passageText.split(/(\(\d+\))/g)
+                            return parts.map((part, i) => {
+                              const m = part.match(/^\((\d+)\)$/)
+                              if (m) {
+                                const q = qById[m[1]]
+                                if (!q) return <span key={i}>{part}</span>
+                                const key = q._key
+                                const sel = answers[key]
+                                const effChk = batchChecked && !retrying[key]
+                                const opt = sel ? q.options[sel] : null
+                                const isRight = effChk && sel === q.answer
+                                const isWrong = effChk && sel && sel !== q.answer
+                                return (
+                                  <span key={i} className={`inline-flex items-end border-b-2 mx-0.5 px-1.5 min-w-[3.5em] justify-center align-baseline ${
+                                    isRight ? 'border-emerald-500 text-emerald-700' :
+                                    isWrong ? 'border-red-400 text-red-600' :
+                                    sel ? 'border-violet-500 text-violet-700' : 'border-gray-400'
+                                  }`}>
+                                    {opt ? <span className="font-semibold">{opt}</span> : <span className="text-gray-400 text-xs">{m[1]}</span>}
+                                  </span>
+                                )
+                              }
+                              return <span key={i}>{part}</span>
+                            })
+                          })()}
+                        </div>
+                      ) : (
+                        <HighlightableText text={currentBatch.passage || (currentBatch.passage_segments || []).join('\n')} storageKey={`part3-${batchIdx}`}
+                          className="text-[19px] text-gray-700 leading-9 whitespace-pre-line" />
+                      )}
                     </div>
                     <div className="min-w-0 space-y-4 overflow-y-auto" style={{ maxHeight: '70vh' }}>
                       {currentBatch.questions.map((q, qi) => (
@@ -1128,7 +1168,7 @@ export default function CambridgeReading() {
                 )}
 
                 {partId === 5 && p5Part && !p5Part.scanPages && (
-                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 items-start">
+                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 items-stretch">
                     <div className="min-w-0 space-y-4">
                       {p5Part.example && (
                         <div className="flex items-center gap-2 text-sm text-gray-500 bg-gray-50 px-4 py-2 rounded-xl">
@@ -1149,12 +1189,12 @@ export default function CambridgeReading() {
                         </div>
                       ))}
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 xl:sticky xl:top-5">
+                    <div className="flex flex-col gap-3 h-full">
                       {p5Part.questions.map(q => {
                         const ua = answers[q.id] || ''
                         const ok = p5Checked ? isP5Correct(q) : null
                         return (
-                          <div key={q.id} className={`flex items-center gap-2 border rounded-xl px-3 py-2.5 transition-all ${
+                          <div key={q.id} className={`flex-1 flex items-center gap-2 border rounded-xl px-3 py-2.5 transition-all ${
                             !p5Checked ? 'border-gray-200 focus-within:border-emerald-400'
                             : ok       ? 'border-emerald-300 bg-emerald-50'
                                        : 'border-red-300 bg-red-50'
@@ -1179,23 +1219,45 @@ export default function CambridgeReading() {
 
                 {/* ── PET PART 6 (open cloze) ── */}
                 {level === 'PET' && partId === 6 && currentBatch && !currentBatch.scanPages && (
-                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 items-start">
+                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 items-stretch">
                     <div className="min-w-0 space-y-4">
                       {currentBatch.title && (
                         <h3 className="mb-2 text-center text-2xl font-extrabold text-gray-900">{currentBatch.title}</h3>
                       )}
                       <div className="bg-gray-50 border border-gray-100 rounded-xl p-5">
-                        <p className="text-[18px] text-gray-700 leading-9 whitespace-pre-line">
-                          {(currentBatch.passage_segments || []).join('\n')}
-                        </p>
+                        <div className="text-[18px] text-gray-700 leading-9 whitespace-pre-line">
+                          {(() => {
+                            const qById = Object.fromEntries((currentBatch.questions || []).map(q => [String(q.id), q]))
+                            const text = (currentBatch.passage_segments || []).join('\n')
+                            return text.split(/(\(\d+\))/g).map((seg, si) => {
+                              const m = seg.match(/^\((\d+)\)$/)
+                              if (m) {
+                                const q = qById[m[1]]
+                                if (!q) return <span key={si}>{seg}</span>
+                                const ua = (answers[q._key] || '').trim()
+                                const ok = batchChecked ? isCorrect14(q) : null
+                                return (
+                                  <span key={si} className={`inline-flex items-end border-b-2 mx-0.5 px-1.5 min-w-[3.5em] justify-center align-baseline ${
+                                    ok === true ? 'border-emerald-500 text-emerald-700' :
+                                    ok === false ? 'border-red-400 text-red-600' :
+                                    ua ? 'border-violet-500 text-violet-700' : 'border-gray-400'
+                                  }`}>
+                                    {ua ? <span className="font-semibold">{ua}</span> : <span className="text-gray-400 text-xs">{m[1]}</span>}
+                                  </span>
+                                )
+                              }
+                              return <span key={si}>{seg}</span>
+                            })
+                          })()}
+                        </div>
                       </div>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 xl:sticky xl:top-5">
+                    <div className="flex flex-col gap-3 h-full">
                       {currentBatch.questions.map(q => {
                         const ua = answers[q._key] || ''
                         const ok = batchChecked ? isCorrect14(q) : null
                         return (
-                          <div key={q._key} className={`flex items-center gap-2 border rounded-xl px-3 py-2.5 transition-all ${
+                          <div key={q._key} className={`flex-1 flex items-center gap-2 border rounded-xl px-3 py-2.5 transition-all ${
                             !batchChecked ? 'border-gray-200 focus-within:border-violet-400'
                             : ok       ? 'border-emerald-300 bg-emerald-50'
                                        : 'border-red-300 bg-red-50'

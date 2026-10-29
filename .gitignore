@@ -17,6 +17,32 @@ dist-offline
 # Tesseract OCR language model
 *.traineddata
 
+# OCR intermediate page renders (regenerable from source PDFs, not archives)
+scripts/_check/
+scripts/_ket_sch1/
+scripts/_ket_sch2/
+scripts/_ket_sch3_t1/
+scripts/_ket_sch3_t2/
+scripts/_ket_sch3_t3/
+scripts/_ket_sch3_t4/
+scripts/_ket_std1/
+scripts/_ket_std2/
+scripts/_ket_t2ts/
+scripts/_t1script/
+scripts/_t2script/
+scripts/_t3script/
+scripts/_t4script/
+scripts/_t5script/
+scripts/_t6script/
+scripts/_t6_pages/
+scripts/_trainer1_pages/
+scripts/_trainer1_pages_hi/
+scripts/_trainer2_pages/
+scripts/_ts_pages/
+scripts/_ts_out/
+scripts/_pet8_out/*.png
+scripts/_pet8_out/**/*.png
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

@@ -97,7 +97,37 @@ function Part1Panel({ part }) {
 
 // ========== Part 2 · Long turn（Candidate A / B 两卡） ==========
 
-function Part2Panel({ part }) {
+function SpeakingImage({ imgBase, taskNum, imagesPage, images }) {
+  const [err, setErr] = useState(false)
+  const path = imgBase ? `${imgBase}/task-${taskNum}/page.png` : null
+
+  if (path && !err) {
+    return (
+      <img
+        src={path}
+        alt={`Speaking Part 2 Task ${taskNum}`}
+        onError={() => setErr(true)}
+        className="w-full rounded-xl border border-slate-200 shadow-sm"
+      />
+    )
+  }
+  // 占位
+  return (
+    <div className="grid grid-cols-2 gap-3">
+      {Array.from({ length: (Array.isArray(images) ? images.length : images) || 2 }, (_, i) => (
+        <div key={i} className="flex aspect-[4/3] items-center justify-center rounded-xl border-2 border-dashed border-slate-200 bg-slate-50">
+          <div className="text-center">
+            <div className="text-3xl text-slate-300">🖼️</div>
+            <div className="mt-1 text-xs font-semibold text-slate-400">图片 {i + 1}</div>
+            <div className="text-xs text-slate-400">见书第 {imagesPage || '彩色插页'} 页</div>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function Part2Panel({ part, imgBase }) {
   return (
     <div className="space-y-4">
       <div className="rounded-xl border border-sky-200 bg-sky-50/60 p-3 text-xs text-sky-800">
@@ -110,9 +140,13 @@ function Part2Panel({ part }) {
               Candidate {t.candidate}
             </span>
             <span className="rounded-lg border border-slate-200 px-2.5 py-1 text-xs font-extrabold text-slate-500">Task {t.task}</span>
-            <span className="text-xs text-slate-400">图片：{t.imagesPage || '见书末彩色插页'}（共 {t.images} 张）</span>
+            <span className="text-xs text-slate-400">图片：{t.imagesPage || '见书末彩色插页'}（共 {(Array.isArray(t.images) ? t.images.length : t.images) || 2} 张）</span>
           </div>
           <p className="mt-3 text-lg font-extrabold leading-7 text-slate-900">{t.q}</p>
+          {/* 图片区 */}
+          <div className="mt-3">
+            <SpeakingImage imgBase={imgBase} taskNum={t.task} imagesPage={t.imagesPage} images={t.images} />
+          </div>
           <ul className="mt-3 list-disc space-y-1 pl-5 text-xs leading-5 text-slate-500">
             <li>先花 15 秒看图构思：每张图找一个切入角度</li>
             <li>用比较结构串联两图（Both pictures show… / While the first…, the second…）</li>
@@ -324,17 +358,19 @@ export default function CambridgeSpeakingFCE() {
           </div>
           <div className="space-y-2">
             {FCE_EDITIONS.map(ed => {
-              const chips = ed.books.flatMap(b => {
+              const chips = []
+              ed.books.forEach(b => {
                 if (ed.edition === 'mock') {
                   const t = fceSpeakingTests[b.book - 1]
-                  return t ? [{ key: b.examId, label: `Test ${b.book}`, examId: b.examId }] : []
+                  if (t) chips.push({ key: b.examId, label: String(chips.length + 1), examId: b.examId })
+                } else {
+                  ;[1, 2, 3, 4].forEach(t => {
+                    const examId = `${b.examId}-test${t}`
+                    if (fceExamPapers(examId)?.speaking) {
+                      chips.push({ key: examId, label: String(chips.length + 1), examId })
+                    }
+                  })
                 }
-                return [1, 2, 3, 4].map(t => {
-                  const examId = `${b.examId}-test${t}`
-                  return fceExamPapers(examId)?.speaking
-                    ? { key: examId, label: `${ed.edition === 'standard' ? '标准' : '校园'}${b.book}·T${t}`, examId }
-                    : []
-                })
               })
               if (!chips.length) return null
               return (
@@ -362,7 +398,13 @@ export default function CambridgeSpeakingFCE() {
         {/* 题型面板 */}
         <section className="mt-5">
           {partId === 1 && part && <Part1Panel key={`p1-${stateKey}`} part={part} />}
-          {partId === 2 && part && <Part2Panel key={`p2-${stateKey}`} part={part} />}
+          {partId === 2 && part && <Part2Panel key={`p2-${stateKey}`} part={part} imgBase={(() => {
+            if (parsedExam && examParam) {
+              const m = examParam.match(/fce-(standard|schools)-(\d+)-test(\d+)/)
+              if (m) return `/images/fce/speaking/${m[1]}-${m[2]}/test-${m[3]}`
+            }
+            return `/images/fce/speaking/mock-${testIdx + 1}`
+          })()} />}
           {partId === 3 && part && <Part3Panel key={`p3-${stateKey}`} part={part} />}
           {partId === 4 && part && <Part4Panel key={`p4-${stateKey}`} part={part} />}
           {!part && (

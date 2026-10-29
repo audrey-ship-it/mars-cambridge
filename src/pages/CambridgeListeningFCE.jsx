@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { CambridgeLayout } from './CambridgeApp'
@@ -6,15 +6,17 @@ import { fceListeningTests } from '../data/fceListeningTests'
 import { fceExamPapers, fceExamTitle, FCE_EDITIONS } from '../data/fceTestRegistry'
 import { recordFcePart } from '../data/fceExamProgress'
 import { setFceWrongBatch } from '../data/fceWrongBook'
+import { TranscriptBox, extractQuotes } from '../utils/transcriptHighlight'
 
 // ========== 通用小组件 ==========
 
 function AudioBar({ src }) {
   const ref = useRef(null)
+  useEffect(() => () => { if (ref.current) ref.current.pause() }, [])
   return (
     <div className="flex items-center gap-3 rounded-xl border border-sky-200 bg-sky-50/60 p-3">
       <span className="rounded-lg bg-sky-500 px-2 py-0.5 text-xs font-extrabold text-white">▶ 音频</span>
-      <audio ref={ref} controls src={src} className="flex-1 h-8" preload="none" />
+      <audio ref={ref} controls src={src} className="flex-1 h-8" preload="auto" />
     </div>
   )
 }
@@ -32,8 +34,33 @@ function ExplanationBox({ text }) {
   if (!text) return null
   return (
     <div className="mt-2 rounded-lg border border-sky-100 bg-sky-50 p-3 text-xs leading-5 text-sky-900">
-      <span className="font-extrabold text-sky-700">解析：</span>{text}
+      <span className="font-extrabold text-sky-700">解析：</span>{renderExplanationSegments(text)}
     </div>
+  )
+}
+
+// 把解析文本中用 " 包裹的英文答案句（原文）高亮显示：黄底 + 下划线
+// 中文引号内容（如 "鞍"）不高亮，原样输出
+function renderExplanationSegments(text) {
+  if (!text) return null
+  const segments = []
+  const re = /"([^"]+)"/g
+  let last = 0
+  let m
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > last) segments.push({ text: text.slice(last, m.index), hl: false })
+    const content = m[1]
+    if (/^[A-Za-z]/.test(content)) {
+      segments.push({ text: m[0], hl: true })
+    } else {
+      segments.push({ text: m[0], hl: false })
+    }
+    last = m.index + m[0].length
+  }
+  if (last < text.length) segments.push({ text: text.slice(last), hl: false })
+  return segments.map((seg, i) => seg.hl
+    ? <mark key={i} className="mx-0.5 rounded bg-amber-200 px-1 py-0.5 font-semibold text-amber-900 underline decoration-amber-500 decoration-2 underline-offset-2">{seg.text}</mark>
+    : <span key={i}>{seg.text}</span>
   )
 }
 
@@ -82,14 +109,14 @@ function Part1Panel({ part, onSubmit, examRef }) {
             <div key={i} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <span className="rounded bg-sky-500 px-2 py-0.5 text-xs font-extrabold text-white">Q{i + 1}</span>
-                  <span className="ml-2 text-xs italic text-slate-500">{it.scenario}</span>
+                  <span className="rounded bg-sky-500 px-2 py-0.5 text-sm font-extrabold text-white">Q{i + 1}</span>
+                  <span className="ml-2 text-sm italic text-slate-500">{it.scenario}</span>
                 </div>
                 {checked && <CorrectBadge correct={c} />}
               </div>
               {it.audio && <AudioBar src={it.audio} />}
-              <p className="mt-2 text-sm font-bold text-slate-800">{it.q}</p>
-              <div className="mt-2 space-y-1.5">
+              <p className="mt-2 text-base font-bold leading-6 text-slate-800">{it.q}</p>
+              <div className="mt-2 space-y-2">
                 {it.opts.map((opt, oi) => {
                   const picked = a === oi
                   const isAns = oi === it.answer
@@ -100,8 +127,8 @@ function Part1Panel({ part, onSubmit, examRef }) {
                         : 'border-slate-200 text-slate-500'
                   return (
                     <button key={oi} onClick={() => select(i, oi)}
-                      className={`flex w-full items-center gap-2 rounded-lg border p-2.5 text-left text-sm transition ${cls}`}>
-                      <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-current text-[10px] font-extrabold">
+                      className={`flex w-full items-center gap-2.5 rounded-lg border p-3 text-left text-base transition ${cls}`}>
+                      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-current text-xs font-extrabold">
                         {String.fromCharCode(65 + oi)}
                       </span>
                       {opt}
@@ -116,6 +143,7 @@ function Part1Panel({ part, onSubmit, examRef }) {
                 </button>
               )}
               {rev && <ExplanationBox text={it.explanation} />}
+              {checked && <TranscriptBox transcript={it.transcript} highlights={extractQuotes(it.explanation)} />}
             </div>
           )
         })}
@@ -141,12 +169,14 @@ function Part2Panel({ part, examRef }) {
   const [answers, setAnswers] = useState({})
   const [checked, setChecked] = useState(false)
   const [correct, setCorrect] = useState({})
+  const [revealExplanation, setRevealExplanation] = useState({})
 
   function submit() {
     const res = {}
     part.items.forEach((it, i) => {
       const usr = (answers[i] || '').trim().toLowerCase()
-      res[i] = it.answer.some(acc => acc.toLowerCase() === usr)
+      const acc = Array.isArray(it.answer) ? it.answer : [it.answer].filter(Boolean)
+      res[i] = acc.some(a => String(a).trim().toLowerCase() === usr)
     })
     setCorrect(res)
     setChecked(true)
@@ -162,14 +192,15 @@ function Part2Panel({ part, examRef }) {
         💡 听一段独白，填空（1–3 个词）。先听全文再作答。
       </div>
       <AudioBar src={part.audio} />
-      <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+      <div className="mt-4 space-y-3">
         {part.items.map((it, i) => {
           const usr = answers[i] || ''
           const c = correct[i]
-          const showAns = it.show || it.answer[0]
+          const rev = revealExplanation[i]
+          const showAns = it.show || (Array.isArray(it.answer) ? it.answer[0] : it.answer)
           return (
-            <div key={i} className={`rounded-xl border p-3 ${checked ? (c ? 'border-emerald-300 bg-emerald-50/60' : 'border-rose-300 bg-rose-50/60') : 'border-slate-200 bg-white'}`}>
-              <div className="flex items-center gap-2 text-xs font-extrabold">
+            <div key={i} className={`rounded-xl border p-4 ${checked ? (c ? 'border-emerald-300 bg-emerald-50/60' : 'border-rose-300 bg-rose-50/60') : 'border-slate-200 bg-white'}`}>
+              <div className="flex items-center gap-2 text-sm font-extrabold">
                 <span className="rounded bg-sky-500 px-2 py-0.5 text-white">Q{i + 1}</span>
                 <span className="text-slate-700">{it.q.replace('____', '______')}</span>
               </div>
@@ -179,15 +210,22 @@ function Part2Panel({ part, examRef }) {
                   disabled={checked}
                   onChange={e => setAnswers(a => ({ ...a, [i]: e.target.value }))}
                   placeholder="填入听到的词…"
-                  className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm outline-none focus:border-sky-400 disabled:text-slate-600"
+                  className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-base outline-none focus:border-sky-400 disabled:text-slate-600"
                 />
-                {checked && <span className={`text-xs font-extrabold ${c ? 'text-emerald-600' : 'text-rose-600'}`}>{c ? '✓' : '✗'}</span>}
+                {checked && <span className={`text-sm font-extrabold ${c ? 'text-emerald-600' : 'text-rose-600'}`}>{c ? '✓' : '✗'}</span>}
               </div>
               {checked && !c && (
-                <div className="mt-1 text-xs text-slate-600">
+                <div className="mt-1 text-sm text-slate-600">
                   正确答案：<span className="font-extrabold text-emerald-700">{showAns}</span>
                 </div>
               )}
+              {checked && (
+                <button onClick={() => setRevealExplanation(r => ({ ...r, [i]: !r[i] }))}
+                  className="mt-2 text-xs font-extrabold text-sky-600 hover:underline">
+                  {rev ? '收起解析' : '查看解析'}
+                </button>
+              )}
+              {rev && <ExplanationBox text={it.explanation} />}
             </div>
           )
         })}
@@ -203,6 +241,11 @@ function Part2Panel({ part, examRef }) {
           </div>
         )}
       </div>
+      {checked && part.transcript && (
+        <div className="mt-5">
+          <TranscriptBox transcript={part.transcript} highlights={part.items.flatMap(it => extractQuotes(it.explanation).concat(typeof it.answer === 'string' && it.answer ? [it.answer] : Array.isArray(it.answer) ? it.answer.map(String) : []))} />
+        </div>
+      )}
     </div>
   )
 }
@@ -213,6 +256,7 @@ function Part3Panel({ part, examRef }) {
   const [answers, setAnswers] = useState({})
   const [checked, setChecked] = useState(false)
   const [correct, setCorrect] = useState({})
+  const [revealExplanation, setRevealExplanation] = useState({})
 
   function submit() {
     const res = {}
@@ -233,23 +277,24 @@ function Part3Panel({ part, examRef }) {
         💡 听 5 位说话者独白，从 A–H 中选出最匹配的选项。有 3 个多余选项。
       </div>
       <AudioBar src={part.audio} />
-      <div className="mt-4 rounded-xl border border-sky-200 bg-sky-50/60 p-3">
-        <div className="mb-1 text-xs font-extrabold tracking-wide text-sky-700">选项 A–H</div>
-        <ul className="grid grid-cols-1 gap-1 text-xs text-slate-700 sm:grid-cols-2">
+      <div className="mt-4 rounded-xl border border-sky-200 bg-sky-50/60 p-4">
+        <div className="mb-2 text-sm font-extrabold tracking-wide text-sky-700">选项 A–H</div>
+        <ul className="grid grid-cols-1 gap-2 text-base text-slate-700">
           {part.options.map(o => (
             <li key={o.label}><span className="font-extrabold text-sky-700">{o.label}.</span> {o.text}</li>
           ))}
         </ul>
       </div>
-      <div className="mt-4 space-y-2">
+      <div className="mt-4 space-y-3">
         {part.items.map((it, i) => {
           const picked = answers[i]
           const c = correct[i]
+          const rev = revealExplanation[i]
           return (
-            <div key={i} className={`rounded-xl border p-3 ${checked ? (c ? 'border-emerald-300 bg-emerald-50/60' : 'border-rose-300 bg-rose-50/60') : 'border-slate-200 bg-white'}`}>
+            <div key={i} className={`rounded-xl border p-4 ${checked ? (c ? 'border-emerald-300 bg-emerald-50/60' : 'border-rose-300 bg-rose-50/60') : 'border-slate-200 bg-white'}`}>
               <div className="flex items-center justify-between gap-3">
-                <span className="text-sm font-bold text-slate-800">Speaker {i + 1} — {it.speaker}</span>
-                <div className="flex gap-1">
+                <span className="text-base font-bold text-slate-800">Speaker {i + 1} — {it.speaker}</span>
+                <div className="flex gap-1.5">
                   {part.options.map(o => {
                     const isPicked = picked === o.label
                     const isAns = o.label === it.answer
@@ -261,7 +306,7 @@ function Part3Panel({ part, examRef }) {
                     return (
                       <button key={o.label} disabled={checked}
                         onClick={() => setAnswers(a => ({ ...a, [i]: o.label }))}
-                        className={`h-8 w-8 rounded-lg text-xs font-extrabold transition ${cls}`}>
+                        className={`h-10 w-10 rounded-lg text-sm font-extrabold transition ${cls}`}>
                         {o.label}
                       </button>
                     )
@@ -269,10 +314,18 @@ function Part3Panel({ part, examRef }) {
                 </div>
               </div>
               {checked && !c && (
-                <div className="mt-1 text-xs text-slate-600">
-                  正确答案：<span className="font-extrabold text-emerald-700">{it.answer}</span> — {it.explanation}
+                <div className="mt-1 text-sm text-slate-600">
+                  正确答案：<span className="font-extrabold text-emerald-700">{it.answer}</span>
                 </div>
               )}
+              {checked && (
+                <button onClick={() => setRevealExplanation(r => ({ ...r, [i]: !r[i] }))}
+                  className="mt-2 text-xs font-extrabold text-sky-600 hover:underline">
+                  {rev ? '收起解析' : '查看解析'}
+                </button>
+              )}
+              {rev && <ExplanationBox text={it.explanation} />}
+              {checked && <TranscriptBox transcript={it.transcript} highlights={extractQuotes(it.explanation)} />}
             </div>
           )
         })}
@@ -298,6 +351,7 @@ function Part4Panel({ part, examRef }) {
   const [answers, setAnswers] = useState({})
   const [checked, setChecked] = useState(false)
   const [correct, setCorrect] = useState({})
+  const [revealExplanation, setRevealExplanation] = useState({})
 
   function select(qIdx, optIdx) {
     if (checked) return
@@ -328,14 +382,15 @@ function Part4Panel({ part, examRef }) {
         {part.items.map((it, i) => {
           const a = answers[i]
           const c = correct[i]
+          const rev = revealExplanation[i]
           return (
-            <div key={i} className={`rounded-xl border p-3 ${checked ? (c ? 'border-emerald-300 bg-emerald-50/60' : 'border-rose-300 bg-rose-50/60') : 'border-slate-200 bg-white'}`}>
+            <div key={i} className={`rounded-xl border p-4 ${checked ? (c ? 'border-emerald-300 bg-emerald-50/60' : 'border-rose-300 bg-rose-50/60') : 'border-slate-200 bg-white'}`}>
               <div className="flex items-center gap-2">
-                <span className="rounded bg-sky-500 px-2 py-0.5 text-xs font-extrabold text-white">Q{i + 1}</span>
-                <span className="text-sm font-bold text-slate-800">{it.q}</span>
+                <span className="rounded bg-sky-500 px-2 py-0.5 text-sm font-extrabold text-white">Q{i + 1}</span>
+                <span className="text-base font-bold leading-6 text-slate-800">{it.q}</span>
                 {checked && <CorrectBadge correct={c} />}
               </div>
-              <div className="mt-2 space-y-1">
+              <div className="mt-2 space-y-2">
                 {it.opts.map((opt, oi) => {
                   const picked = a === oi
                   const isAns = oi === it.answer
@@ -346,14 +401,20 @@ function Part4Panel({ part, examRef }) {
                         : 'border-slate-200 text-slate-400'
                   return (
                     <button key={oi} onClick={() => select(i, oi)}
-                      className={`flex w-full items-center gap-2 rounded-lg border px-3 py-1.5 text-left text-xs transition ${cls}`}>
+                      className={`flex w-full items-center gap-2.5 rounded-lg border p-3 text-left text-base transition ${cls}`}>
                       <span className="font-extrabold text-sky-700">{String.fromCharCode(65 + oi)}.</span>
                       {opt}
                     </button>
                   )
                 })}
               </div>
-              {checked && <ExplanationBox text={it.explanation} />}
+              {checked && (
+                <button onClick={() => setRevealExplanation(r => ({ ...r, [i]: !r[i] }))}
+                  className="mt-2 text-xs font-extrabold text-sky-600 hover:underline">
+                  {rev ? '收起解析' : '查看解析'}
+                </button>
+              )}
+              {rev && <ExplanationBox text={it.explanation} />}
             </div>
           )
         })}
@@ -369,6 +430,11 @@ function Part4Panel({ part, examRef }) {
           </div>
         )}
       </div>
+      {checked && part.transcript && (
+        <div className="mt-5">
+          <TranscriptBox transcript={part.transcript} highlights={part.items.flatMap(it => extractQuotes(it.explanation).concat(typeof it.answer === 'string' && it.answer ? [it.answer] : Array.isArray(it.answer) ? it.answer.map(String) : []))} />
+        </div>
+      )}
     </div>
   )
 }
@@ -462,17 +528,19 @@ export default function CambridgeListeningFCE() {
           </div>
           <div className="space-y-2">
             {FCE_EDITIONS.map(ed => {
-              const chips = ed.books.flatMap(b => {
+              const chips = []
+              ed.books.forEach(b => {
                 if (ed.edition === 'mock') {
                   const t = fceListeningTests[b.book - 1]
-                  return t ? [{ key: b.examId, label: `Test ${b.book}`, examId: b.examId }] : []
+                  if (t) chips.push({ key: b.examId, label: String(chips.length + 1), examId: b.examId })
+                } else {
+                  ;[1, 2, 3, 4].forEach(t => {
+                    const examId = `${b.examId}-test${t}`
+                    if (fceExamPapers(examId)?.listening) {
+                      chips.push({ key: examId, label: String(chips.length + 1), examId })
+                    }
+                  })
                 }
-                return [1, 2, 3, 4].map(t => {
-                  const examId = `${b.examId}-test${t}`
-                  return fceExamPapers(examId)?.listening
-                    ? { key: examId, label: `${ed.edition === 'standard' ? '标准' : '校园'}${b.book}·T${t}`, examId }
-                    : []
-                })
               })
               if (!chips.length) return null
               return (
