@@ -1,0 +1,33 @@
+{
+  "setId": 4,
+  "source": { "book": "KET青少版官方真题1（扫描版）", "pages": "PDF 139-141" },
+  "officialAnswers": {
+    "p1": ["C", "B", "B", "A", "A"],
+    "p2": ["Stafford", "bikes", "book", "cloud(s) / cloudy", "0776 3214"],
+    "p3": null,
+    "p4": null,
+    "p5": null
+  },
+  "parts": {
+    "1": "Test Four. There are five parts to the test. You will hear each piece twice. We will now stop for a moment before we start the test. Please ask any questions now because you must NOT speak during the test.\n\nPART 1\nNow look at the instructions for Part One.\nFor each question, choose the correct answer.\n\nQuestion 1\nOne. Who is the boy’s sister?\nGirl: Is that your sister over there?\nBoy: Do you mean the girl with long black hair? No – my sister’s got black hair too, but it’s a lot shorter than that.\nGirl: Oh, right.\nBoy: Look – there’s my sister! She’s standing next to the girl with blonde hair. That’s her best friend, Elsie.\nNow listen again.\n[repeat]\n\nQuestion 2\nTwo. Why didn’t the girl go to the school dance?\nBoy: I didn’t see you at the school dance! Don’t tell me you stayed home to study?\nGirl: I worked really hard, because I wanted to go! Science was especially difficult – my brain was full of facts – it almost hurt.\nBoy: So, then …?\nGirl: Well, my mum was giving me a lift to school when the engine suddenly stopped. And it didn’t start again!\nNow listen again.\n[repeat]\n\nQuestion 3\nThree. Where’s the girl going first?\nGirl: See you later, Dad!\nMan: Oh, bye – are you going out now? The film doesn’t start until six o’clock.\nGirl: I know, but Suzy’s mum’s taking us for a burger in town and then she’s giving us a lift to the cinema. We’re going to get the bus back. I’ll be home about half past eight, is that OK?\nMan: Yes – have fun!\nNow listen again.\n[repeat]\n\nQuestion 4\nFour. Which programme will the two friends watch together?\nBoy: Let’s watch the programme about the wild bears living in the forest.\nGirl: I’ve already seen it – I loved the music to that show – when the bears are happy the music is too!\nBoy: Then how about that new one, where people have to bake cakes and stuff? They’re like amazing artists!\nGirl: Oh, that’s an even better idea than watching the music channel.\nNow listen again.\n[repeat]\n\nQuestion 5\nFive. Where will the girl go tomorrow?\nGirl: Dad, can I go to the cinema tomorrow?\nMan: Actually, you’ve got something more important to do than watch a film. You borrowed some library books for a reason.\nGirl: Yeah, tomorrow’s the last day! I’ll be able to collect the different types of leaves for my biology homework. At least I’ve read about them, and know what to look for.\nMan: Good.\nNow listen again.\n[repeat]\nThat is the end of Part One.",
+    "2": "PART 2\nNow look at Part Two.\nFor each question, write the correct answer in the gap. Write one word or a number or a date or a time. Look at questions 6–10 now. You have ten seconds.\nYou will hear a girl called Sophia leaving a message for her friend.\nGirl: Hi, it’s Sophia. I’m so happy you’re coming on holiday with me and my family!\nDad says come to our house at quarter to two. We don’t need to leave until quarter past, so you don’t have to come at one thirty like we said before.\nYour mum asked about the hotel. It’s called the Stafford – I’ll spell that for you: S-T-A-double F-O-R-D. It’s got a swimming pool which looks great, but there aren’t any bikes to borrow.\nThe journey’s three hours. Remember my mum’s making some snacks for us, and I’ve got some games I can bring. But why don’t you bring a book? We might get bored.\nI know it’s raining at the moment, but I saw on TV that it’s going to be cloudy while we’re there.\nThe battery is very low on my phone, so if you want to call me back now, ring my sister’s phone: it’s 0-double 7-6, 3-2-1-4. See you soon!\nNow listen again.\n[repeat]\nThat is the end of Part Two.",
+    "3": null,
+    "4": null,
+    "5": null
+  },
+  "explanations": {
+    "p1q1": "官方答案为 C。男孩否认了长黑发女孩是妹妹：\"No – my sister’s got black hair too, but it’s a lot shorter than that\"，说明妹妹同样是黑发但头发短得多；随后他指着人群说 \"there’s my sister! She’s standing next to the girl with blonde hair\"，而金发女孩只是妹妹的好友 Elsie。因此应选黑色短发、站在金发女孩旁边的那幅图，即 C；长黑发女孩与金发女孩分别是另外两幅图对应的人物。",
+    "p1q2": "官方答案为 B。女孩没有留在家学习，她解释说妈妈开车送她上学时发动机突然停了：\"my mum was giving me a lift to school when the engine suddenly stopped\"，而且 \"it didn’t start again\"，车半路抛锚再也无法启动，所以没去成学校舞会；对话没有提到生病等其他原因，其余两幅图代表的原因均未出现。",
+    "p1q3": "官方答案为 B。女孩说 \"Suzy’s mum’s taking us for a burger in town and then she’s giving us a lift to the cinema\"，即第一站先去镇上吃汉堡，之后才由 Suzy 妈妈送去电影院；爸爸提到电影 \"doesn’t start until six o’clock\"，说明看电影是之后的安排，不是第一站。",
+    "p1q4": "官方答案为 A。男孩提议看那档新节目 \"where people have to bake cakes and stuff\"，女孩回应 \"that’s an even better idea than watching the music channel\"，两人决定一起看烘焙节目；而讲野熊的节目女孩说 \"I’ve already seen it\"（已看过），音乐频道也被她否定，所以另外两幅图对应的节目都不是答案。",
+    "p1q5": "官方答案为 A。女孩想去看电影被爸爸否决：\"you’ve got something more important to do than watch a film\"，她解释 \"tomorrow’s the last day! I’ll be able to collect the different types of leaves for my biology homework\"，明天要去户外为生物作业收集不同的树叶；借来的图书馆书只是用来看的资料，不是去电影院也不是去图书馆。",
+    "p2q1": "官方答案为 Stafford。Sophia 介绍酒店时说 \"It’s called the Stafford\"，并逐字母拼出 \"S-T-A-double F-O-R-D\"，double F 表示要连写两个 F，故酒店名填 Stafford。",
+    "p2q2": "官方答案为 bikes。酒店有游泳池，\"It’s got a swimming pool which looks great\"，但 Sophia 紧接着说 \"there aren’t any bikes to borrow\"，酒店没有自行车可借，故填 bikes（注意复数）。",
+    "p2q3": "官方答案为 book。Sophia 说路上妈妈会做零食 \"my mum’s making some snacks for us\"，自己带游戏，然后建议对方 \"why don’t you bring a book? We might get bored\"，所以旅程中要带的是书。",
+    "p2q4": "官方答案为 cloudy。虽然 \"it’s raining at the moment\"，但 Sophia 补充 \"I saw on TV that it’s going to be cloudy while we’re there\"，度假期间的天气将是多云，故填 cloudy（官方 Key 同时接受 clouds / cloudy）。",
+    "p2q5": "官方答案为 0776 3214。Sophia 的手机 \"The battery is very low on my phone\"，她让朋友回电时打给妹妹：\"ring my sister’s phone: it’s 0-double 7-6, 3-2-1-4\"，0-double 7-6 即 0776，故号码为 0776 3214。"
+  },
+  "conflicts": [
+    "p1q1: 数据B vs 官方C（站内解析称“长黑发女孩因此选B”，与录音矛盾：男孩明确回应 \"No – my sister’s got black hair too, but it’s a lot shorter than that\"，妹妹应是黑发但更短、站在金发女孩旁边的那幅图，官方 Key 为 C）"
+  ]
+}

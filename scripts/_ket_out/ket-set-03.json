@@ -1,0 +1,33 @@
+{
+  "setId": 3,
+  "source": {
+    "book": "剑桥KET青少版官方真题1（扫描版）",
+    "pages": "PDF 119-124（书页 118-123：Test 3 answer key 书页 121，Part 1-2 transcript 书页 121-123）"
+  },
+  "officialAnswers": {
+    "p1": ["A", "A", "B", "A", "C"],
+    "p2": ["history", "five / 5", "cup", "Hartley", "6.10 / ten past six"],
+    "p3": null,
+    "p4": null,
+    "p5": null
+  },
+  "parts": {
+    "1": "Test Three. There are five parts to the test. You will hear each piece twice. We will now stop for a moment before we start the test. Please ask any questions now because you must NOT speak during the test.\nPART 1\nNow look at the instructions for Part One.\nFor each question, choose the correct answer.\nQuestion 1\nOne. What does the boy's mother need to buy for him?\nWoman: Sanjay, you go back to school next week. Are there any clothes I need to buy you?\nBoy: Err ... I think I've probably got enough trousers, Mum, but my shoes are too small.\nWoman: Why didn't you tell me that before? And is your coat OK?\nBoy: Yeah, it's really comfortable!\nNow listen again.\n[repeat]\nQuestion 2\nTwo. What's the girl trying to make?\nBoy: That's an interesting model, Andrea.\nGirl: It's hard to get it right. I made a great horse last time, but this is more difficult. The neck's too long – it looks more like a camel than a sheep.\nBoy: Why don't you put some white wool on it?\nGirl: Great. That'll make it clearer what kind of animal it is.\nNow listen again.\n[repeat]\nQuestion 3\nThree. What was the weather like at the weekend?\nGirl: Did you go to the beach at the weekend?\nBoy: Yeah – the weather was perfect for sailing.\nGirl: I know! It was really windy! It's a shame the sun didn't come out because I wanted to go swimming.\nBoy: At least it didn't rain like the TV weatherman said, and it was quite warm.\nNow listen again.\n[repeat]\nQuestion 4\nFour. What will the boy have for lunch?\nWoman: What would you like for lunch?\nBoy: Can I have some of those sausages in the fridge?\nWoman: We're having those for dinner, I'm afraid. I could make you an omelette? There're lots of eggs.\nBoy: OK, I'd prefer that to sandwiches. I have those nearly every day.\nNow listen again.\n[repeat]\nQuestion 5\nFive. Which subject won't they study next year?\nGirl: What's your favourite subject?\nBoy: I don't know. Maths probably.\nGirl: Maths is so hard. But I know we have to study it every year till we leave school. It's great we don't have to do geography again next year.\nBoy: Oh, but geography was really interesting! I hope biology is good next year.\nGirl: Biology! I've always wanted to study that!\nNow listen again.\n[repeat]\nThat is the end of Part One.",
+    "2": "PART 2\nNow look at Part Two.\nFor each question, write the correct answer in the gap. Write one word or a number or a date or a time. Look at questions 6–10 now. You have ten seconds.\nYou will hear a student talking to her classmates about a quiz.\nGirl: I'm here to talk about the school quiz next month. We've decided to have it on the 24th of September. Last year the questions were on geography, capital cities and things like that. This year they're on history, so you need to start reading about that!\nWe'd like at least 12 teams, and if you want to take part, you need to decide who you want in your team. Each one must have five members. If you have only four people, I'm sorry, but you won't be able to join the quiz.\nThis year we're very lucky because we have an excellent prize paid for by the local shop Levinson's. I know many of you buy your books there. The winners get a cup, like the one footballers get!\nIf you'd like to enter, please give your names to our new teacher Mr Hartley, that's spelt H-A-R-T-L-E-Y. The quiz will start at six thirty, but you need to get to the school at ten past six, so you'll have enough time to get ready.\nNow listen again.\n[repeat]\nThat is the end of Part Two.",
+    "3": null,
+    "4": null,
+    "5": null
+  },
+  "explanations": {
+    "p1q1": "男孩说 \"I've probably got enough trousers, Mum, but my shoes are too small.\"，裤子够穿；妈妈问 \"And is your coat OK?\"，男孩答 \"Yeah, it's really comfortable!\"，外套也没问题，只有鞋子太小需要买，因此选择 A。",
+    "p1q2": "女孩说 \"The neck's too long – it looks more like a camel than a sheep.\"，模型的脖子太长，看起来更像骆驼而不是绵羊，因此选择 A。男孩建议 \"put some white wool on it\" 只是让动物种类看得更清楚，不是她做的东西。",
+    "p1q3": "女孩说 \"It was really windy!\"，又遗憾 \"the sun didn't come out because I wanted to go swimming\"，男孩补充 \"it didn't rain like the TV weatherman said, and it was quite warm\"——周末天气多风、无雨且暖和，根据录音中的天气描述，正确图片为 B。",
+    "p1q4": "男孩想吃冰箱里的香肠，但妈妈说 \"We're having those for dinner, I'm afraid. I could make you an omelette?\"，男孩回答 \"OK, I'd prefer that to sandwiches.\"，根据录音中的最终安排，正确图片为 A，即煎蛋卷；香肠对应晚餐，三明治是他几乎每天都吃的东西。",
+    "p1q5": "女孩说 \"It's great we don't have to do geography again next year.\"，明年不用再学 geography，根据录音中的课程安排，明年不再学习的科目对应图片 C。maths 是男孩最喜欢的科目、年年都要学，biology 是两人期待下一年学好的科目。",
+    "p2q1": "女孩说今年测验的题目 \"they're on history, so you need to start reading about that!\"，因此填 history；去年考的 \"geography, capital cities\" 是干扰信息。",
+    "p2q2": "女孩说 \"Each one must have five members.\"，每队必须五人，因此填 5；\"at least 12 teams\" 说的是队伍总数，\"only four people\" 则报不了名，都与每队人数无关。",
+    "p2q3": "女孩说 \"The winners get a cup, like the one footballers get!\"，获胜者得到的奖品是奖杯，因此填 cup；奖品由当地商店 Levinson's 出资，商店本身不是奖品。",
+    "p2q4": "女孩说 \"please give your names to our new teacher Mr Hartley, that's spelt H-A-R-T-L-E-Y\"，报名名单要交给新老师 Hartley，因此填 Hartley。",
+    "p2q5": "女孩说 \"The quiz will start at six thirty, but you need to get to the school at ten past six\"，需要到校的时间是 6:10，因此填 6:10；六点半是测验开始时间，不是到场时间。"
+  }
+}
