@@ -256,7 +256,7 @@ export default function CambridgeReadingFCE() {
             </div>
           )}
           {showThis && item.explanation && (
-            <div className="mt-2 rounded-lg bg-sky-50 border border-sky-200 p-3 text-sm text-sky-800 leading-6">
+            <div className="mt-2 rounded-lg bg-sky-50 border border-sky-200 p-3 text-[15px] text-sky-800 leading-7">
               <strong className="font-bold">解析：</strong>{item.explanation}
             </div>
           )}
@@ -392,7 +392,7 @@ export default function CambridgeReadingFCE() {
                     {showThis ? '收起解析' : '查看解析'}
                   </button>
                   {showThis && item.explanation && (
-                    <div className="mt-2 rounded-lg bg-sky-50 border border-sky-200 p-3 text-sm text-sky-800 leading-6">
+                    <div className="mt-2 rounded-lg bg-sky-50 border border-sky-200 p-3 text-[15px] text-sky-800 leading-7">
                       <strong className="font-bold">解析：</strong>{item.explanation}
                     </div>
                   )}
@@ -444,7 +444,7 @@ export default function CambridgeReadingFCE() {
                   }`}>
                     {qKey}. 你选: {userAns || '—'} / 正确: {item.answer}
                     {!isCorrect && (
-                      <p className="text-xs text-slate-500 mt-1 font-normal">{item.explanation}</p>
+                      <p className="text-[15px] text-slate-500 mt-1 font-normal">{item.explanation}</p>
                     )}
                   </div>
                 )
@@ -499,7 +499,7 @@ export default function CambridgeReadingFCE() {
                   ))}
                 </div>
                 {batchChecked && !isCorrect && (
-                  <p className="mt-2 text-xs font-bold text-slate-500">解析：{item.explanation}</p>
+                  <p className="mt-2 text-[15px] font-bold text-slate-500">解析：{item.explanation}</p>
                 )}
               </motion.div>
             )

@@ -6,6 +6,7 @@ import { resolvePetPaper, adaptPetReadingTest } from './PetExam'
 import { mockListeningData } from './CambridgeListening'
 import { getKetReadingTest } from '../data/ketReadingCatalog'
 import { listMockWrong, resolveMockWrong, clearMockWrong } from '../data/mockWrongBook'
+import { buildBatches, getSpecialP5Questions } from './CambridgeReading'
 
 // KET / PET 模考错题本：收录阅读/听力答错的题；重新答对（原地或此处重做）即移出队列。
 // 写作以范文对照为主、口语为练习模式，均不进错题本。
@@ -50,6 +51,10 @@ const letter = i => String.fromCharCode(65 + Number(i))
 function examLabel(level, examRef) {
   const id = String(examRef || '')
   if (level === 'KET') {
+    const [, sp5Mode, sp5Id] = id.match(/^ket-special-p5-(\w+)-(\d+)$/) || []
+    if (sp5Mode) return `专项阅读 Part 5 · ${sp5Mode === 'official' ? '官方' : '练习'} #${sp5Id}`
+    const [, spPart, spBatch] = id.match(/^ket-special-p(\d+)-b(\d+)$/) || []
+    if (spPart) return `专项阅读 · Part ${spPart} · 第 ${spBatch} 组`
     const [, book, test] = id.match(/^ket-standard-(\d+)-test(\d+)$/) || []
     if (book) return `标准版真题 ${book} · Test ${test}`
     const [, b, t] = id.match(/^ket-(\d+)-test(\d+)$/) || []
@@ -57,7 +62,13 @@ function examLabel(level, examRef) {
     return id
   }
   const [, kind, nStr] = id.match(/^pet-(mock|sample|standard|trainer1|trainer2)-(\d+)$/) || []
-  if (!kind) return id
+  if (!kind) {
+    const [, sp5Mode, sp5Id] = id.match(/^pet-special-p5-(\w+)-(\d+)$/) || []
+    if (sp5Mode) return `专项阅读 Part 5 · ${sp5Mode === 'official' ? '官方' : '练习'} #${sp5Id}`
+    const [, spPart, spBatch] = id.match(/^pet-special-p(\d+)-b(\d+)$/) || []
+    if (spPart) return `专项阅读 · Part ${spPart} · 第 ${spBatch} 组`
+    return id
+  }
   const n = Number(nStr)
   if (kind === 'sample') return `官方样题 ${n}`
   if (kind === 'standard') return `标准版真题 ${n > 4 ? 2 : 1} · Test ${n > 4 ? n - 4 : n}`
@@ -196,8 +207,47 @@ function lookupKetListening(e) {
   }
 }
 
+/* ── 专项阅读回查（examRef = ket/pet-special-p{n}-b{批次} 或 ket-special-p5-{mode}-{id}） ── */
+function lookupSpecialReading(e) {
+  const id = String(e.testN || '')
+  if (/^ket-special-p5-/.test(id)) {
+    const [, mode, idStr] = id.match(/^ket-special-p5-(\w+)-(\d+)$/) || []
+    if (!mode) return null
+    const q = getSpecialP5Questions(mode, Number(idStr))[Number(e.key)]
+    if (!q) return null
+    return {
+      qNum: q.id, stem: `Gap (${q.id})`, mode: 'text',
+      accepted: q.answers || [], correctText: (q.answers || [])[0],
+      extraText: (q.answers || []).length > 1 ? `也可以: ${q.answers.slice(1).join(' / ')}` : null, explanation: null,
+    }
+  }
+  const [, level, partStr, batchStr] = id.match(/^(ket|pet)-special-p(\d+)-b(\d+)$/) || []
+  if (!level) return null
+  const batch = buildBatches(level.toUpperCase(), Number(partStr))[Number(batchStr) - 1]
+  const q = batch?.questions?.[Number(e.key)]
+  if (!q) return null
+  // 人物/段落配对题：题干取对应人物；其余取问题/原文片段
+  const person = (batch.people || []).find(p => String(p.label) === String(q.id))
+  const stem = person
+    ? truncate(`${person.name} · ${person.text}`, 80)
+    : (q.question || q.text || truncate(q.content, 60))
+  const opts = q.options || q.opts || Object.fromEntries((batch.options || []).map(o => [o.label, o.name || o.text]))
+  if (opts && typeof opts === 'object' && opts[q.answer] != null) {
+    return {
+      qNum: q.id, stem, mode: 'choice',
+      choices: Object.entries(opts).map(([label, text]) => ({ label, text })),
+      correctLabel: q.answer, correctText: `${q.answer}. ${opts[q.answer]}`, explanation: q.explanation,
+    }
+  }
+  return {
+    qNum: q.id, stem, mode: 'text',
+    accepted: [q.answer], correctText: q.answer, explanation: q.explanation,
+  }
+}
+
 function lookupEntry(level, e) {
   try {
+    if (e.paper === 'reading' && /^.-special-/.test(String(e.testN || ''))) return lookupSpecialReading(e)
     if (level === 'PET') return e.paper === 'reading' ? lookupPetReading(e) : lookupPetListening(e)
     return e.paper === 'reading' ? lookupKetReading(e) : lookupKetListening(e)
   } catch {

@@ -302,6 +302,8 @@ export function PetListeningExam({ testN, kind = 'mock' }) {
       syncPetWrongBook(kind, testN, 'listening', parts, updated, petListeningWrongMap)
       setDone(true)
     } else {
+      // 每 Part 完成即同步错题本（覆盖式：以最近一次作答为准；最后一 Part 交卷时会再次全量覆盖）
+      syncPetWrongBook(kind, testN, 'listening', [parts[partIndex]], [answers || []], petListeningWrongMap)
       setPartIndex(i => i + 1)
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
@@ -1365,6 +1367,10 @@ export function PetReadingExam({ testN, kind = 'mock' }) {
       setDone(true)
       saveProgress({ partIndex, allAnswers: updated, wrongCounts, done: true, finishedAt, pausedAt: null, totalPausedMs: finalPausedMs })
     } else {
+      // 每 Part 完成即同步错题本（覆盖式：以最近一次作答为准；整套交卷时会再次全量覆盖）
+      if (!redoOnly) {
+        syncPetWrongBook(kind, testN, 'reading', [parts[Number(partIndex)]], [answers || []], petReadingWrongMap)
+      }
       setPartIndex(nextPartIndex)
       saveProgress({ partIndex: nextPartIndex, allAnswers: updated, wrongCounts, done: false })
       window.scrollTo({ top: 0, behavior: 'smooth' })

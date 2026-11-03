@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { CambridgeLayout } from './CambridgeApp'
 import { getReadingTestsByLevel } from '../data/ketReadingCatalog'
 import { ketPart5Sets, PART5_GROUPS } from '../data/ketPart5Extras'
+import { setMockWrongBatch, resolveMockWrong } from '../data/mockWrongBook'
 
 // KET has 5 reading parts (1-5); PET has 6 (1-6). Labels/descriptions differ by level.
 const PART_META = {
@@ -120,13 +121,23 @@ function HighlightableText({ text, storageKey, className = '' }) {
 }
 
 // Build one batch per official test and preserve source-scan page metadata.
-function buildBatches(level, partId) {
+// 专项阅读批次构建（导出供错题本页面回查原题）
+// eslint-disable-next-line react-refresh/only-export-components -- 供错题本页面复用的专项题定位函数
+export function buildBatches(level, partId) {
   const tests = getReadingTestsByLevel(level)
   return tests.map((t, ti) => {
     const p = t[`part${partId}`]
     if (!p) return null
     return { ...p, testTitle: t.title, source: t.source, questions: (p.questions || []).map(q => ({ ...q, _key: `${ti}_${q.id}` })) }
   }).filter(Boolean)
+}
+
+// KET 专项阅读 Part 5 题组（导出供错题本页面回查原题）
+// eslint-disable-next-line react-refresh/only-export-components -- 供错题本页面复用的专项题定位函数
+export function getSpecialP5Questions(mode, id) {
+  if (mode !== 'official') return ketPart5Sets.find(s => s.id === id)?.questions || []
+  const verified = getReadingTestsByLevel('KET').filter(test => test.part5 && (test.source?.verified || test.source?.verifiedParts?.includes(5)))
+  return verified.find(test => test.id === id)?.part5?.questions || []
 }
 
 export default function CambridgeReading() {
@@ -216,6 +227,21 @@ export default function CambridgeReading() {
 
   const isPart5 = level === 'KET' && partId === 5
 
+  // ── 专项阅读错题本同步（与模考共用 mockWrongBook，examRef 前缀 special 以示区分） ──
+  const lcLevel = level.toLowerCase()
+  const specialExamRef = isPart5
+    ? `ket-special-p5-${part5Mode}-${part5Id}`
+    : `${lcLevel}-special-p${partId}-b${batchIdx + 1}`
+
+  function syncSpecialBatchWrong() {
+    const wrong = {}
+    batchQs.forEach((q, i) => {
+      if (isCorrect14(q)) return
+      wrong[String(i)] = (answers[q._key] || '').trim() || '—'
+    })
+    setMockWrongBatch(lcLevel, 'reading', specialExamRef, String(partId), wrong)
+  }
+
   // ── Batches for Parts 1-4 (and PET Parts 1-6) ──────────
   const batches      = isPart5 ? [] : buildBatches(level, partId)
   const currentBatch = batches[batchIdx] || null
@@ -282,6 +308,8 @@ export default function CambridgeReading() {
   function handleBatchCheck() {
     setBatchChecked(true)
     setRetrying({})
+    // 专项判分即同步错题本（覆盖式：本次答对的旧错题自动移出）
+    syncSpecialBatchWrong()
   }
 
   function handleNextBatch() {
@@ -298,14 +326,17 @@ export default function CambridgeReading() {
   // Part 5 submit
   function handleP5Submit() {
     if (!p5Part) return
-    let correct = 0, total = 0
-    p5Part.questions.forEach(q => {
-      total++
+    let correct = 0
+    const wrong = {}
+    p5Part.questions.forEach((q, i) => {
       const ua = (answers[q.id] || '').trim().toLowerCase()
       if (q.answers.map(a => a.toLowerCase()).includes(ua)) correct++
+      else wrong[String(i)] = (answers[q.id] || '').trim() || '—'
     })
-    setP5Score({ correct, total })
+    setP5Score({ correct, total: p5Part.questions.length })
     setP5Checked(true)
+    // 专项 Part 5 判分即同步错题本（覆盖式：本次答对的旧错题自动移出；重新练习后再提交会覆盖）
+    setMockWrongBatch('ket', 'reading', specialExamRef, '5', wrong)
   }
 
   function isP5Correct(q) {
@@ -348,6 +379,11 @@ export default function CambridgeReading() {
       if (isRetry) {
         setAnswers(a => ({ ...a, [key]: label }))
         setRetrying(r => { const n = { ...r }; delete n[key]; return n })
+        // 重做答对即移出错题本；答错保留原记录
+        if (label === q.answer) {
+          const idx = batchQs.findIndex(x => x._key === q._key)
+          if (idx >= 0) resolveMockWrong(lcLevel, 'reading', specialExamRef, String(partId), String(idx))
+        }
       } else if (!effChk) {
         setAnswers(a => ({ ...a, [key]: label }))
       }
@@ -393,10 +429,10 @@ export default function CambridgeReading() {
     if (showAns[key]) return (
       <div className="mt-2 px-3 py-2.5 bg-emerald-50 border border-emerald-200 rounded-xl space-y-1">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-bold text-emerald-700">✓ 正确答案：{q.answer}</span>
+          <span className="text-[15px] font-bold text-emerald-700">✓ 正确答案：{q.answer}</span>
         </div>
         {q.explanation && (
-          <p className="text-xs text-gray-600 leading-relaxed">{q.explanation}</p>
+          <p className="text-[15px] text-gray-600 leading-relaxed">{q.explanation}</p>
         )}
       </div>
     )
@@ -915,6 +951,11 @@ export default function CambridgeReading() {
                                           if (retrying[q._key]) {
                                             setAnswers(a => ({ ...a, [q._key]: o.label }))
                                             setRetrying(r => { const n = { ...r }; delete n[q._key]; return n })
+                                            // 重做答对即移出错题本；答错保留原记录
+                                            if (o.label === q.answer) {
+                                              const idx = batchQs.findIndex(x => x._key === q._key)
+                                              if (idx >= 0) resolveMockWrong(lcLevel, 'reading', specialExamRef, String(partId), String(idx))
+                                            }
                                           } else if (!effChk) {
                                             setAnswers(a => ({ ...a, [q._key]: o.label }))
                                           }

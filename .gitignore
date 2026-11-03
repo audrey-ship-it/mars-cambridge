@@ -1,5 +1,8 @@
 # Logs
 logs
+
+# Deploy SSH keys (never commit)
+.deploy/
 *.log
 npm-debug.log*
 yarn-debug.log*

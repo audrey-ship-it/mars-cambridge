@@ -15,6 +15,10 @@
   }
 }
 
+/* 词汇拼写：待输入位置的闪烁竖条光标 */
+@keyframes caret-blink { 0%, 45% { opacity: 1; } 50%, 95% { opacity: 0; } }
+.caret-blink { animation: caret-blink 1s steps(1, end) infinite; }
+
 .saved-word-print-sheet { display: none; }
 
 @media print {

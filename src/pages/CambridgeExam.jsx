@@ -1585,6 +1585,11 @@ function ReadingExam({ exam, section, onSection }) {
       setDone(true)
       saveProgress({ partIndex, allAnswers: updated, wrongCounts, done: true, finishedAt, pausedAt: null, totalPausedMs: finalPausedMs })
     } else {
+      // 每 Part 完成即同步错题本（覆盖式：以最近一次作答为准；整套交卷时会再次全量覆盖）
+      if (!redoOnly && Number(partIndex) < readingParts.length) {
+        const finishedPart = parts[Number(partIndex)]
+        setMockWrongBatch('ket', 'reading', exam.id, String(finishedPart.part), ketReadingWrongMap(finishedPart, answers || []))
+      }
       setPartIndex(nextPartIndex)
       saveProgress({ partIndex: nextPartIndex, allAnswers: updated, wrongCounts, done: false })
       window.scrollTo({ top: 0, behavior: 'smooth' })

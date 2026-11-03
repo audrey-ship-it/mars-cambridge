@@ -4,10 +4,11 @@ import { motion, AnimatePresence } from 'framer-motion'
 import MyLearningDashboard from './MyLearningDashboard'
 import WordSelectionPopover from '../components/WordSelectionPopover'
 import { readSavedWords, SAVED_WORDS_EVENT } from '../utils/savedWords'
+import MembershipGate from '../components/MembershipGate'
 
 /* ── 侧栏模块 ── */
 const SIDEBAR_MODULES = [
-  { id: 'words',    icon: '📖', label: '单词',  path: 'words'   },
+  { id: 'words',    icon: '📖', label: '词汇',  path: 'words'   },
   { id: 'grammar',  icon: '📐', label: '语法',  path: 'grammar' },
   { id: 'listening',icon: '🎧', label: '听力',  path: 'listening'},
   { id: 'reading',  icon: '📄', label: '阅读',  path: 'reading' },
@@ -16,11 +17,16 @@ const SIDEBAR_MODULES = [
   { id: 'exams',    icon: '📝', label: '模考',  path: 'exams'   },
 ]
 
-const LEVELS = [
-  { code: 'A2', abbr: 'KET', color: 'bg-emerald-500', light: 'text-emerald-600 bg-emerald-50' },
+const LEVELS = [  { code: 'A2', abbr: 'KET', color: 'bg-emerald-500', light: 'text-emerald-600 bg-emerald-50' },
   { code: 'B1', abbr: 'PET', color: 'bg-violet-500',  light: 'text-violet-600 bg-violet-50'   },
   { code: 'B2', abbr: 'FCE', color: 'bg-sky-500',     light: 'text-sky-600 bg-sky-50'         },
 ]
+
+// 左侧栏背景随级别变化，与各模块页面的主题色保持一致（KET 深绿 / PET 深紫 / FCE 深蓝）
+// 同路径级别切换的递增序号（配合 ?_lv= 参数强制 React 重挂载模块页）
+let levelSwitchSeq = 0
+
+const SIDEBAR_BG = { KET: 'bg-[#064e3b]', PET: 'bg-[#5b21b6]', FCE: 'bg-[#0c4a6e]' }
 
 /* ── App 外壳（左侧栏 + 顶栏）── */
 export function CambridgeLayout({ children, activeModule, level, setLevel }) {
@@ -46,15 +52,41 @@ export function CambridgeLayout({ children, activeModule, level, setLevel }) {
     setShowLevelMenu(false)
     if (setLevel && location.pathname === '/cambridge/exams') {
       setLevel(abbr)
-    } else {
-      navigate(`/cambridge/${abbr.toLowerCase()}`)
+      return
     }
+    // 同模块切换级别：保持当前正在学的模块，进入新级别的同一模块
+    const path = location.pathname
+    const sameModuleRoute = (() => {
+      if (path.startsWith('/cambridge/listening')) return abbr === 'FCE' ? '/cambridge/listening/fce' : '/cambridge/listening'
+      if (path.startsWith('/cambridge/reading')) return abbr === 'FCE' ? '/cambridge/reading/fce' : '/cambridge/reading'
+      if (path.startsWith('/cambridge/writing')) return abbr === 'FCE' ? '/cambridge/writing/fce' : '/cambridge/writing'
+      if (path.startsWith('/cambridge/speaking')) return abbr === 'FCE' ? '/cambridge/speaking/fce' : '/cambridge/speaking'
+      if (path.startsWith('/cambridge/grammar')) return '/cambridge/grammar'
+      if (path.startsWith('/cambridge/words')) return '/cambridge/words'
+      if (path.startsWith('/cambridge/dictation')) return '/cambridge/dictation'
+      if (path.startsWith('/cambridge/exams')) return '/cambridge/exams'
+      if (path.startsWith('/cambridge/wrong')) return abbr === 'FCE' ? '/cambridge/wrong/fce' : `/cambridge/wrong/${abbr.toLowerCase()}`
+      return null
+    })()
+    // 先写 localStorage 再跳转，保证目标页面挂载时读到新级别
+    try { localStorage.setItem('cambridge_level', abbr) } catch { /* storage may be unavailable */ }
+    setLevel && setLevel(abbr)
+    if (sameModuleRoute) {
+      // 目标路径与当前完全相同（如 /cambridge/words KET→PET）：追加时间戳参数强制重挂载，
+      // 进入新级别的模块中心，而不是停留在旧级别的练习会话里
+      const target = sameModuleRoute === location.pathname
+        ? `${sameModuleRoute}?_lv=${++levelSwitchSeq}`
+        : sameModuleRoute
+      navigate(target)
+      return
+    }
+    navigate(`/cambridge/${abbr.toLowerCase()}`)
   }
 
   return (
     <div className="flex h-screen bg-white overflow-hidden">
-      {/* 左侧图标栏 */}
-      <aside className="w-24 bg-[#064e3b] flex flex-col items-center py-4 gap-1 flex-shrink-0">
+      {/* 左侧图标栏 —— 背景色随级别变化：KET 绿 / PET 紫 / FCE 天蓝（与右侧页面主题一致） */}
+      <aside className={`w-24 ${SIDEBAR_BG[level] || 'bg-[#064e3b]'} flex flex-col items-center py-4 gap-1 flex-shrink-0 transition-colors`}>
         {/* Logo → 回仪表盘 */}
         <Link to="/cambridge" title="Mars Cambridge · 返回我的学习" aria-label="Mars Cambridge，返回我的学习" className="w-12 h-12 rounded-[15px] bg-[#f7cd60] flex items-center justify-center mb-4 flex-shrink-0 shadow-sm hover:bg-[#ffd96f] hover:scale-105 transition-all">
           <span className="text-[23px] font-black leading-none tracking-[-0.06em] text-[#064e3b]">M</span>
@@ -79,9 +111,9 @@ export function CambridgeLayout({ children, activeModule, level, setLevel }) {
 
         {/* 底部 */}
         <div className="mt-auto flex flex-col items-center gap-2">
-          <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-white text-sm font-bold cursor-pointer hover:bg-white/30 transition-colors">
+          <button type="button" onClick={() => navigate('/cambridge')} title="我的学习" aria-label="我的学习" className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-white text-sm font-bold cursor-pointer hover:bg-white/30 transition-colors">
             王
-          </div>
+          </button>
         </div>
       </aside>
 
@@ -106,7 +138,7 @@ export function CambridgeLayout({ children, activeModule, level, setLevel }) {
                 {LEVELS.map(l => (
                   <button key={l.abbr}
                     onClick={() => handlePickLevel(l.abbr)}
-                    className={`w-full flex items-center gap-2.5 px-3 py-2 text-sm hover:bg-gray-50 transition-colors ${level === l.abbr ? 'bg-[#064e3b]/8' : ''}`}
+                    className={`w-full flex items-center gap-2.5 px-3 py-2 text-sm hover:bg-gray-50 transition-colors ${level === l.abbr ? 'bg-gray-100' : ''}`}
                   >
                     <span className={`w-2 h-2 rounded-full ${l.color}`} />
                     <span className="font-semibold text-gray-800">{l.code} {l.abbr}</span>
@@ -127,6 +159,7 @@ export function CambridgeLayout({ children, activeModule, level, setLevel }) {
           )}
 
           <div className="ml-auto flex items-center gap-3">
+            <MembershipGate />
             <div className="hidden sm:flex items-center gap-1.5 text-sm text-gray-500">
               <span>🔥</span>
               <span className="font-semibold text-gray-800">7</span>
@@ -171,6 +204,111 @@ const VOCAB_PHONETIC_OVERRIDES = {
   'as soon as': '/əz ˈsuːn əz/', 'e-mail': '/ˈiːmeɪl/', laptop: '/ˈlæptɒp/',
   mobile: '/ˈməʊbaɪl/', robot: '/ˈrəʊbɒt/', 'at least': '/ət ˈliːst/', awesome: '/ˈɔːsəm/',
   fabulous: '/ˈfæbjələs/', relaxing: '/rɪˈlæksɪŋ/', spotted: '/ˈspɒtɪd/',
+  // ── 必拼词表 & 主词表缺失音标补全（英式 IPA）──
+  customs: '/ˈkʌstəmz/', motorway: '/ˈməʊtəweɪ/', landing: '/ˈlændɪŋ/',
+  'look forward to': '/ˌlʊk ˈfɔːwəd tə/', exam: '/ɪɡˈzæm/', campus: '/ˈkæmpəs/',
+  scholarship: '/ˈskɒləʃɪp/', assignment: '/əˈsaɪnmənt/', 'secondary school': '/ˈsekəndri skuːl/',
+  graduate: '/ˈɡrædʒuət/', qualify: '/ˈkwɒlɪfaɪ/', wage: '/weɪdʒ/', client: '/ˈklaɪənt/',
+  deadline: '/ˈdedlaɪn/', responsible: '/rɪˈspɒnsəbl/', resign: '/rɪˈzaɪn/',
+  symptom: '/ˈsɪmptəm/', treatment: '/ˈtriːtmənt/', cure: '/kjʊə/', infection: '/ɪnˈfekʃn/',
+  'sore throat': '/ˌsɔː ˈθrəʊt/', cough: '/kɒf/', allergy: '/ˈælədʒi/', surgery: '/ˈsɜːdʒəri/',
+  heal: '/hiːl/', wound: '/wuːnd/', mental: '/ˈmentl/', vitamin: '/ˈvɪtəmɪn/',
+  app: '/æp/', database: '/ˈdeɪtəbeɪs/', gadget: '/ˈɡædʒɪt/', 'wi-fi': '/ˈwaɪfaɪ/',
+  pollution: '/pəˈluːʃn/', recycle: '/ˌriːˈsaɪkl/', protect: '/prəˈtekt/',
+  endangered: '/ɪnˈdeɪndʒəd/', drought: '/draʊt/', hurricane: '/ˈhʌrɪkən/',
+  solar: '/ˈsəʊlə/', renewable: '/rɪˈnjuːəbl/', carbon: '/ˈkɑːbən/',
+  reusable: '/ˌriːˈjuːzəbl/', reliable: '/rɪˈlaɪəbl/',
+  ambitious: '/æmˈbɪʃəs/', sensitive: '/ˈsenʃətɪv/', stubborn: '/ˈstʌbən/', sympathy: '/ˈsɪmpəθi/',
+  community: '/kəˈmjuːnəti/', society: '/səˈsaɪəti/', citizen: '/ˈsɪtɪzn/', policy: '/ˈpɒləsi/',
+  election: '/ɪˈlekʃn/', vote: '/vəʊt/', poverty: '/ˈpɒvəti/', homeless: '/ˈhəʊmləs/',
+  volunteer: '/ˌvɒlənˈtɪə/', charity: '/ˈtʃærəti/', wealth: '/welθ/', freedom: '/ˈfriːdəm/',
+  culture: '/ˈkʌltʃə/', tradition: '/trəˈdɪʃn/', resident: '/ˈrezɪdənt/',
+  local: '/ˈləʊkl/', suburb: '/ˈsʌbɜːb/', urban: '/ˈɜːbən/', rural: '/ˈrʊərəl/',
+  editor: '/ˈedɪtə/', broadcast: '/ˈbrɔːdkɑːst/', programme: '/ˈprəʊɡræm/',
+  'social media': '/ˌsəʊʃl ˈmiːdiə/', vlog: '/vlɒɡ/', tabloid: '/ˈtæblɔɪd/',
+  subscribe: '/səbˈskraɪb/', 'current affairs': '/ˌkʌrənt əˈfeəz/',
+  witness: '/ˈwɪtnəs/', criminal: '/ˈkrɪmɪnl/', victim: '/ˈvɪktɪm/', theft: '/θeft/',
+  robber: '/ˈrɒbə/', robbery: '/ˈrɒbəri/', burglary: '/ˈbɜːɡləri/',
+  murder: '/ˈmɜːdə/', murderer: '/ˈmɜːdərə/', court: '/kɔːt/',
+  legal: '/ˈliːɡl/', illegal: '/ɪˈliːɡl/', innocent: '/ˈɪnəsnt/',
+  achievement: '/əˈtʃiːvmənt/', applicant: '/ˈæplɪkənt/', contribution: '/ˌkɒntrɪˈbjuːʃn/',
+  determination: '/dɪˌtɜːmɪˈneɪʃn/', enthusiasm: '/ɪnˈθjuːziæzəm/', freelance: '/ˈfriːlɑːns/',
+  'gap year': '/ˈɡæp jɪə/', internship: '/ˈɪntɜːnʃɪp/', promotion: '/prəˈməʊʃn/',
+  recruit: '/rɪˈkruːt/', redundant: '/rɪˈdʌndənt/', shift: '/ʃɪft/', strike: '/straɪk/',
+  successor: '/səkˈsesə/', unemployment: '/ˌʌnɪmˈplɔɪmənt/', vacancy: '/ˈveɪkənsi/', workload: '/ˈwɜːkləʊd/',
+  acquire: '/əˈkwaɪə/', assessment: '/əˈsesmənt/', compulsory: '/kəmˈpʌlsəri/',
+  discipline: '/ˈdɪsəplɪn/', dissertation: '/ˌdɪsəˈteɪʃn/', enroll: '/ɪnˈrəʊl/',
+  estimate: '/ˈestɪmeɪt/', evaluate: '/ɪˈvæljueɪt/', feedback: '/ˈfiːdbæk/',
+  institution: '/ˌɪnstɪˈtjuːʃn/', intelligence: '/ɪnˈtelɪdʒəns/', literacy: '/ˈlɪtərəsi/',
+  mature: '/məˈtʃʊə/', memorise: '/ˈmeməraɪz/', motivate: '/ˈməʊtɪveɪt/',
+  nursery: '/ˈnɜːsəri/', optional: '/ˈɒpʃənl/', postgraduate: '/ˌpəʊstˈɡrædʒuət/',
+  seminar: '/ˈsemɪnɑː/', supervise: '/ˈsuːpəvaɪz/', syllabus: '/ˈsɪləbəs/',
+  tutor: '/ˈtjuːtə/', undergraduate: '/ˌʌndəˈɡrædʒuət/',
+  agriculture: '/ˈæɡrɪkʌltʃə/', biodiversity: '/ˌbaɪəʊdaɪˈvɜːsəti/', conserve: '/kənˈsɜːv/',
+  contaminate: '/kənˈtæmɪneɪt/', ecosystem: '/ˈiːkəʊsɪstəm/', emission: '/ɪˈmɪʃn/',
+  erosion: '/ɪˈrəʊʒn/', extinction: '/ɪkˈstɪŋkʃn/', 'fossil fuel': '/ˌfɒsl ˈfjuːəl/',
+  habitat: '/ˈhæbɪtæt/', landfill: '/ˈlændfɪl/', mammal: '/ˈmæml/', organic: '/ɔːˈɡænɪk/',
+  preserve: '/prɪˈzɜːv/', radiation: '/ˌreɪdiˈeɪʃn/', species: '/ˈspiːʃiːz/',
+  sustainable: '/səˈsteɪnəbl/', wilderness: '/ˈwɪldənəs/',
+  'all-inclusive': '/ˌɔːl ɪnˈkluːsɪv/', breathtaking: '/ˈbreθteɪkɪŋ/', charter: '/ˈtʃɑːtə/',
+  commute: '/kəˈmjuːt/', excursion: '/ɪkˈskɜːʃn/', exotic: '/ɪɡˈzɒtɪk/',
+  gateway: '/ˈɡeɪtweɪ/', heritage: '/ˈherɪtɪdʒ/', itinerary: '/aɪˈtɪnərəri/',
+  'jet lag': '/ˈdʒet læɡ/', landmark: '/ˈlændmɑːk/', 'package holiday': '/ˈpækɪdʒ ˌhɒlədeɪ/',
+  picturesque: '/ˌpɪktʃəˈresk/', quarantine: '/ˈkwɒrəntiːn/', remote: '/rɪˈməʊt/',
+  terminal: '/ˈtɜːmɪnl/', trek: '/trek/', wander: '/ˈwɒndə/',
+  algorithm: '/ˈælɡərɪðəm/', 'artificial intelligence': '/ˌɑːtɪfɪʃl ɪnˈtelɪdʒəns/',
+  browse: '/braʊz/', console: '/ˈkɒnsəʊl/', headset: '/ˈhedset/',
+  innovation: '/ˌɪnəˈveɪʃn/', launch: '/lɔːntʃ/', media: '/ˈmiːdiə/',
+  notification: '/ˌnəʊtɪfɪˈkeɪʃn/', podcast: '/ˈpɒdkɑːst/', processor: '/ˈprəʊsesə/',
+  rechargeable: '/ˌriːˈtʃɑːdʒəbl/', satellite: '/ˈsætəlaɪt/', screenshot: '/ˈskriːnʃɒt/',
+  'search engine': '/ˈsɜːtʃ ˌendʒɪn/', stream: '/striːm/', username: '/ˈjuːzəneɪm/',
+  virtual: '/ˈvɜːtʃuəl/', 'voice assistant': '/ˌvɔɪs əˈsɪstənt/', wireless: '/ˈwaɪələs/',
+  antibiotic: '/ˌæntibaɪˈɒtɪk/', anxiety: '/æŋˈzaɪəti/', 'balanced diet': '/ˌbælənst ˈdaɪət/',
+  chronic: '/ˈkrɒnɪk/', dose: '/dəʊs/', injury: '/ˈɪndʒəri/', insomnia: '/ɪnˈsɒmniə/',
+  jogging: '/ˈdʒɒɡɪŋ/', 'mental health': '/ˌmentl ˈhelθ/', nutritious: '/njuˈtrɪʃəs/',
+  obese: '/əʊˈbiːs/', painkiller: '/ˈpeɪnkɪlə/', plaster: '/ˈplɑːstə/', protein: '/ˈprəʊtiːn/',
+  recovery: '/rɪˈkʌvəri/', sprain: '/spreɪn/', stamina: '/ˈstæmɪnə/', strain: '/streɪn/',
+  surgeon: '/ˈsɜːdʒən/', therapy: '/ˈθerəpi/', vaccine: '/ˈvæksiːn/', 'well-being': '/ˌwel ˈbiːɪŋ/',
+  ban: '/bæn/', campaign: '/kæmˈpeɪn/', citizenship: '/ˈsɪtɪznʃɪp/', council: '/ˈkaʊnsl/',
+  diversity: '/daɪˈvɜːsəti/', demonstrate: '/ˈdemənstreɪt/', discrimination: '/dɪˌskrɪmɪˈneɪʃn/',
+  donate: '/dəʊˈneɪt/', economy: '/ɪˈkɒnəmi/', equality: '/iˈkwɒləti/', immigrant: '/ˈɪmɪɡrənt/',
+  protest: '/ˈprəʊtest/', refugee: '/ˌrefjuˈdʒiː/', regulation: '/ˌreɡjuˈleɪʃn/',
+  rights: '/raɪts/', welfare: '/ˈwelfeə/',
+  affordable: '/əˈfɔːdəbl/', auction: '/ˈɔːkʃn/', budget: '/ˈbʌdʒɪt/', bargain: '/ˈbɑːɡɪn/',
+  cashless: '/ˈkæʃləs/', checkout: '/ˈtʃekaʊt/', compensate: '/ˈkɒmpenseɪt/',
+  expense: '/ɪkˈspens/', fortune: '/ˈfɔːtʃuːn/', fraud: '/frɔːd/', fund: '/fʌnd/',
+  'impulse purchase': '/ˈɪmpʌls ˌpɜːtʃəs/', income: '/ˈɪnkʌm/', inflation: '/ɪnˈfleɪʃn/',
+  instalment: '/ɪnˈstɔːlmənt/', invoice: '/ˈɪnvɔɪs/', mortgage: '/ˈmɔːɡɪdʒ/',
+  savings: '/ˈseɪvɪŋz/', transaction: '/trænˈzækʃn/', voucher: '/ˈvaʊtʃə/',
+  abstract: '/ˈæbstrækt/', comedy: '/ˈkɒmədi/', craft: '/krɑːft/', critic: '/ˈkrɪtɪk/',
+  episode: '/ˈepɪsəʊd/', genre: '/ˈʒɒnrə/', improvise: '/ˈɪmprəvaɪz/', lyrics: '/ˈlɪrɪks/',
+  masterpiece: '/ˈmɑːstəpiːs/', melody: '/ˈmelədi/', plot: '/plɒt/', portrait: '/ˈpɔːtreɪt/',
+  pottery: '/ˈpɒtəri/', rehearsal: '/rɪˈhɜːsl/', 'street art': '/ˈstriːt ɑːt/',
+  suspense: '/səˈspens/', venue: '/ˈvenjuː/', vintage: '/ˈvɪntɪdʒ/',
+  arrogant: '/ˈærəɡənt/', considerate: '/kənˈsɪdərət/', determined: '/dɪˈtɜːmɪnd/',
+  empathy: '/ˈempəθi/', enthusiastic: '/ɪnˌθjuːziˈæstɪk/', furious: '/ˈfjʊəriəs/',
+  grief: '/ɡriːf/', humble: '/ˈhʌmbl/', insecure: '/ˌɪnsɪˈkjʊə/', loneliness: '/ˈləʊnlinəs/',
+  optimistic: '/ˌɒptɪˈmɪstɪk/', overwhelmed: '/ˌəʊvəˈwelmd/', pessimistic: '/ˌpesɪˈmɪstɪk/',
+  relieved: '/rɪˈliːvd/', 'self-conscious': '/ˌself ˈkɒnʃəs/', temper: '/ˈtempə/',
+  trustworthy: '/ˈtrʌstwɜːði/', witty: '/ˈwɪti/',
+  // ── 主词表（KET/PET/FCE 官方表）缺失音标 ──
+  aeroplane: '/ˈeərəpleɪn/', chatroom: '/ˈtʃætruːm/', chilli: '/ˈtʃɪli/',
+  'examination/exam': '/ɪɡˌzæmɪˈneɪʃn/', footballer: '/ˈfʊtbɔːlə/', 'good-looking': '/ˌɡʊd ˈlʊkɪŋ/',
+  'half-price': '/ˌhɑːf ˈpraɪs/', headteacher: '/ˌhedˈtiːtʃə/', jewellery: '/ˈdʒuːəlri/',
+  litre: '/ˈliːtə/', 'maths/mathematics': '/mæθs/', omelette: '/ˈɒmlət/',
+  penfriend: '/ˈpenfrend/', snowboarding: '/ˈsnəʊbɔːdɪŋ/', 'v/versus': '/ˈvɜːsəs/',
+  'washing-up': '/ˌwɒʃɪŋ ˈʌp/', yoghurt: '/ˈjɒɡət/',
+  advert: '/ˈædvɜːt/', answerphone: '/ˈɑːnsəfəʊn/', 'cafe/cafe': '/ˈkæfeɪ/',
+  'someone/something': '/ˈsʌmwʌn/', 'centre/center': '/ˈsentə/', cashpoint: '/ˈkæʃpɔɪnt/',
+  'check-in': '/ˈtʃek ɪn/', 'disc/disk': '/dɪsk/', 'duty-free': '/ˌdjuːti ˈfriː/',
+  duvet: '/ˈduːveɪ/', earache: '/ˈɪəreɪk/', 'face-to-face': '/ˌfeɪs tə ˈfeɪs/',
+  flavour: '/ˈfleɪvə/', hairdryer: '/ˈheədraɪə/', homepage: '/ˈhəʊmpeɪdʒ/',
+  'middle-aged': '/ˌmɪdl ˈeɪdʒd/', noticeboard: '/ˈnəʊtɪsbɔːd/', notepaper: '/ˈnəʊtpeɪpə/',
+  organise: '/ˈɔːɡənaɪz/', pullover: '/ˈpʊləʊvə/', 'salesman/saleswoman': '/ˈseɪlzmən/',
+  'self-service': '/ˌself ˈsɜːvɪs/', 'so-so': '/ˌsəʊ ˈsəʊ/', takeaway: '/ˈteɪkəweɪ/',
+  toothache: '/ˈtuːθeɪk/', unlikely: '/ʌnˈlaɪkli/', webcam: '/ˈwebkæm/',
+  'well-dressed': '/ˌwel ˈdrest/', windscreen: '/ˈwɪndskriːn/',
+  'well-known': '/ˌwel ˈnəʊn/', 'well-made': '/ˌwel ˈmeɪd/',
 }
 
 const VOCAB_PHONETIC_LOOKUP = new Map((cambridgeWordsByLevel.PET || []).filter(item => item.word && item.phonetic).map(item => [item.word.toLowerCase(), item.phonetic]))
@@ -819,7 +957,7 @@ function WordsTabBar({ active, level, onTab }) {
               ? activeStyle
               : 'border-gray-200 bg-white text-gray-500 hover:border-gray-300'
           }`}>
-          我的单词中心
+          我的词汇中心
         </button>
       </div>
     </nav>
@@ -1022,6 +1160,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
     try { return JSON.parse(localStorage.getItem(level === 'FCE' ? 'mars_vocab_mastery_fce_v1' : level === 'PET' ? 'mars_vocab_mastery_pet_v1' : 'mars_vocab_mastery_v1') || '{}') } catch { return {} }
   })
   const inputRef = useRef(null)
+  const [inputFocused, setInputFocused] = useState(false)
   const startRef = useRef(Date.now())
 
   const words   = allWords.slice(batchStart, batchStart + dailyCount)
@@ -1062,6 +1201,36 @@ function WordsPractice({ level, vocabChoice, onBack }) {
   useEffect(() => {
     if (checked) inputRef.current?.focus()
   }, [checked])
+
+  // 焦点丢失后允许「任意位置直接打字」抓回焦点并接上输入。
+  // 关键：每次按键检查真实 DOM 焦点（document.activeElement），不信任 React 的 inputFocused 状态——
+  // 状态可能停留在 true 但真实焦点已丢失（如焦点元素被重建），那种情况下也能自愈。
+  useEffect(() => {
+    if (checked) return
+    const onKey = (e) => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return
+      if (document.activeElement === inputRef.current) return // 焦点真在输入框 → 走原生 onChange
+      if (e.key.length === 1) {
+        e.preventDefault()
+        inputRef.current?.focus()
+        setAnswer(a => (a + e.key).slice(0, current.word.length))
+      } else if (e.key === 'Backspace') {
+        e.preventDefault()
+        inputRef.current?.focus()
+        setAnswer(a => a.slice(0, -1))
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [checked, current?.word])
+
+  // 窗口切换回来时重新同步「输入框是否真有焦点」，保证闪烁光标不撒谎
+  useEffect(() => {
+    const sync = () => setInputFocused(document.activeElement === inputRef.current)
+    window.addEventListener('focus', sync)
+    window.addEventListener('blur', sync)
+    return () => { window.removeEventListener('focus', sync); window.removeEventListener('blur', sync) }
+  }, [])
 
   function handleCheck() {
     if (!answer.trim()) return
@@ -1318,6 +1487,14 @@ function WordsPractice({ level, vocabChoice, onBack }) {
         </div>
 
         <div className="flex-1 flex items-center justify-center px-8 py-4">
+          {/* 隐藏 input —— 放在动画块外：切换单词时不重建，回车进入下一词后焦点自动保留，无需鼠标点击 */}
+          <input ref={inputRef} type="text" value={answer}
+            onChange={e => !checked && setAnswer(e.target.value.slice(0, current.word.length))}
+            onKeyDown={handleKey}
+            onFocus={() => setInputFocused(true)}
+            onBlur={() => setInputFocused(false)}
+            className="sr-only" autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false"
+          />
           <AnimatePresence mode="wait">
             <motion.div key={index}
               initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }}
@@ -1331,7 +1508,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                 </div>
                 <div className="flex items-center gap-2">
                   <button onClick={() => speak(current.word)}
-                    className="w-10 h-10 rounded-full border border-gray-200 bg-white text-gray-500 hover:text-emerald-700 hover:border-emerald-300 grid place-items-center transition-colors" title="播放发音" aria-label="播放当前单词发音">
+                    className="w-10 h-10 rounded-full border border-gray-200 bg-white text-gray-500 hover:text-emerald-700 hover:border-emerald-300 grid place-items-center transition-colors cursor-pointer" title="播放发音" aria-label="播放当前单词发音">
                     <SpeakerIcon />
                   </button>
                   <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${levelInfo.light}`}>
@@ -1360,7 +1537,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                         <span className="text-violet-600 font-medium">{current.phonetic}</span>
                       ) : (
                         <button onClick={() => toggleHint('phonetic')}
-                          className="text-gray-300 hover:text-violet-500 transition-colors text-xs">
+                          className="text-gray-300 hover:text-violet-500 transition-colors text-xs cursor-pointer">
                           [H] 显示音标
                         </button>
                       )}
@@ -1393,7 +1570,9 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                       return (
                         <div key={i} className="flex flex-col items-center gap-1">
                           <span className={`font-bold text-center leading-none transition-all ${letterColor} ${letterSize}`}>
-                            {typed || (checked && !typed ? letter : ' ')}
+                            {inputFocused && !checked && !typed && nonSpaceIndex === answerLetters.length
+                              ? <span className="caret-blink inline-block h-[1em] w-[3px] translate-y-[0.08em] rounded-full bg-emerald-600" aria-hidden="true" />
+                              : typed || (checked && !typed ? letter : ' ')}
                           </span>
                           <div className={`h-[3px] rounded-full transition-all ${lineColor} ${
                             wordLen <= 6 ? 'w-10' : wordLen <= 9 ? 'w-9' : wordLen <= 12 ? 'w-8' : 'w-7'
@@ -1404,13 +1583,6 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                   </div>
                 </div>
               </div>
-
-              {/* 隐藏 input */}
-              <input ref={inputRef} type="text" value={answer}
-                onChange={e => !checked && setAnswer(e.target.value.slice(0, current.word.length))}
-                onKeyDown={handleKey}
-                className="sr-only" autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false"
-              />
 
               {/* 答对/错反馈 */}
               <AnimatePresence>
@@ -1436,7 +1608,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                         <span>正确答案：<span className="font-extrabold tracking-widest ml-1">{current.word}</span></span>
                         <span className="text-xs">已加入错词本</span>
                         <button onClick={() => speak(current.word)}
-                          className="text-red-400 hover:text-red-600 transition-colors ml-1" aria-label="播放正确答案发音"><SpeakerIcon className="w-4 h-4"/></button>
+                          className="text-red-400 hover:text-red-600 transition-colors ml-1 cursor-pointer" aria-label="播放正确答案发音"><SpeakerIcon className="w-4 h-4"/></button>
                       </>
                     )}
                   </motion.div>
@@ -1446,7 +1618,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
               {wrongAttempts === 1 && !checked && (
                 <div className="mb-4 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-center text-sm font-semibold text-amber-900" role="status">
                   第一次拼写不正确，已加入错词本。下方已显示首字母，可以再试一次。
-                  <button type="button" onClick={() => { setCorrect(false); setChecked(true) }} className="ml-2 font-extrabold underline underline-offset-2">直接查看答案</button>
+                  <button type="button" onClick={() => { setCorrect(false); setChecked(true) }} className="ml-2 font-extrabold underline underline-offset-2 cursor-pointer">直接查看答案</button>
                 </div>
               )}
 
@@ -1454,7 +1626,7 @@ function WordsPractice({ level, vocabChoice, onBack }) {
               {!checked ? (
                 <div className="flex gap-2">
                   <button onClick={handleCheck} disabled={!answer}
-                    className="flex-1 py-4 bg-[#064e3b] text-white font-bold rounded-2xl hover:bg-[#065f46] transition-all disabled:opacity-30 text-base">
+                    className="flex-1 py-4 bg-[#064e3b] text-white font-bold rounded-2xl hover:bg-[#065f46] transition-all disabled:opacity-30 text-base cursor-pointer">
                     确认拼写
                   </button>
                   <button
@@ -1474,14 +1646,14 @@ function WordsPractice({ level, vocabChoice, onBack }) {
                       playWrong()
                     }}
                     title="跳过这个词（计为错误）"
-                    className="px-4 py-4 bg-gray-100 text-gray-500 font-semibold rounded-2xl hover:bg-gray-200 transition-all text-sm"
+                    className="px-4 py-4 bg-gray-100 text-gray-500 font-semibold rounded-2xl hover:bg-gray-200 transition-all text-sm cursor-pointer"
                   >
                     跳过
                   </button>
                 </div>
               ) : (
                 <button onClick={handleNext}
-                  className="w-full py-4 bg-gray-900 text-white font-bold rounded-2xl hover:bg-gray-800 transition-all text-base">
+                  className="w-full py-4 bg-gray-900 text-white font-bold rounded-2xl hover:bg-gray-800 transition-all text-base cursor-pointer">
                   {index + 1 < words.length ? '下一题 →' : '查看结果 →'}
                 </button>
               )}

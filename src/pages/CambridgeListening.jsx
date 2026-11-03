@@ -4576,6 +4576,17 @@ function ListeningMockExam({ level, setLevel, setId, part, examId }) {
     setSubmitted(true);
   }
 
+  // 每 Part 完成即同步错题本（覆盖式：以最近一次作答为准；最后一 Part 交卷时 finishMock 会再次全量覆盖）
+  function goNextPart() {
+    const wrong = {};
+    data.items.forEach((item, itemIndex) => {
+      if (isMockAnswerRight(data, item, answers[itemIndex])) return;
+      wrong[String(itemIndex)] = mockAnswerLabel(data, item, answers[itemIndex]);
+    });
+    setMockWrongBatch('ket', 'listening', examId, String(part), wrong);
+    navigate(`/cambridge/listening?mode=mock&exam=${examId}&part=${nextPart}&set=${setId}`);
+  }
+
   function toggleTimer() {
     const now = Date.now();
     if (startedAt === null) {
@@ -4779,7 +4790,7 @@ function ListeningMockExam({ level, setLevel, setId, part, examId }) {
 
         <section className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-[22px] bg-[#064e3b] p-5 text-white">
           <strong>已完成 {answered} / {visibleIndexes.length}</strong>
-          <button type="button" disabled={!complete} onClick={() => nextPart ? navigate(`/cambridge/listening?mode=mock&exam=${examId}&part=${nextPart}&set=${setId}`) : finishMock()} className="rounded-xl bg-[#f7cd60] px-5 py-3 font-extrabold text-[#4c3a00] disabled:cursor-not-allowed disabled:bg-white/15 disabled:text-white/50">
+          <button type="button" disabled={!complete} onClick={() => nextPart ? goNextPart() : finishMock()} className="rounded-xl bg-[#f7cd60] px-5 py-3 font-extrabold text-[#4c3a00] disabled:cursor-not-allowed disabled:bg-white/15 disabled:text-white/50">
             {nextPart ? `完成并进入 Part ${nextPart} →` : redoTargets ? '提交错题重做并评分' : '提交听力模考并评分'}
           </button>
         </section>
