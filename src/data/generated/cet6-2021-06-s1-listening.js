@@ -1,0 +1,733 @@
+const LISTENING = {
+  "id": "cet6-2021-06-s1",
+  "meta": {
+    "level": "CET6",
+    "year": 2021,
+    "month": 6,
+    "set": 1,
+    "source": "原题：2021年06月CET6题+解+音频\\01、真题PDF版（推荐打印）❤\\2021.06六级真题第1套.pdf；音频：2021年06月CET6题+解+音频\\04、听力音频\\2021年6月六级听力第1套.mp3；解析：2021年06月CET6题+解+音频\\03、答案解析\\2021.06英语六级答案解析第1套.pdf",
+    "answerSource": "解析书答案逐题核对（读图）",
+    "verified": true,
+    "verifiedAt": "2026-11-05"
+  },
+  "audioUrls": {
+    "conv1": "/audio/cet6/cet6-2021-06-s1-conv1.mp3",
+    "conv2": "/audio/cet6/cet6-2021-06-s1-conv2.mp3",
+    "pass1": "/audio/cet6/cet6-2021-06-s1-pass1.mp3",
+    "pass2": "/audio/cet6/cet6-2021-06-s1-pass2.mp3",
+    "rec1": "/audio/cet6/cet6-2021-06-s1-rec1.mp3",
+    "rec2": "/audio/cet6/cet6-2021-06-s1-rec2.mp3",
+    "rec3": "/audio/cet6/cet6-2021-06-s1-rec3.mp3"
+  },
+  "sections": {
+    "a": [
+      {
+        "title": "Conversation One",
+        "audio": "/audio/cet6/cet6-2021-06-s1-conv1.mp3",
+        "transcript": "M: It's my last day at work tomorrow. I start my new job in two weeks. My human resources manager wants to conduct an interview with me before I leave. W: Ah, an exit interview. Are you looking forward to it? M: I'm not sure how I feel about it. I resigned because I've been unhappy at that company for a long time, but I'm not sure if I should tell them how I really feel. W: To my way of thinking, there are two main potential benefits that come from unleashing an agitated stream of truth during an exit interview. The first is release. Unburdening yourself of frustration and perhaps even anger to someone who isn't a friend or close colleague can be wonderfully freeing. M: And let me guess. The second is that the criticism will, theoretically, help the organization I'm leaving to improve, making sure employees of the future are less likely to encounter what I did? W: That's right. But the problem with the company improvement part is that very often it doesn't happen. An exit interview is supposed to be private, but often isn't. In my company, the information gained from these interviews is often not confidential, and the information is used as dirt against another manager, or can be traded among senior managers. M: Now you've got me rethinking what I'll disclose in the interview. There is always the chance that it could affect my reputation and my ability to network in the industry. It is a pretty small industry after all. W: Anything you initially gained from the instant satisfaction of telling it like it is, you might lose down the track by injuring your future career prospects. M: Right. Perhaps it'll be better getting things off my chest by going to one of those rate-your-employer websites. W: You could. And don't do the interview at all. Exit interviews are not mandatory.",
+        "questions": [
+          {
+            "n": 1,
+            "text": "What do we learn about the man from the conversation?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "He is going to leave his present job."
+              },
+              {
+                "letter": "B",
+                "text": "He is going to attend a job interview."
+              },
+              {
+                "letter": "C",
+                "text": "He will meet his new manager in two weeks."
+              },
+              {
+                "letter": "D",
+                "text": "He will tell the management how he really feels."
+              }
+            ],
+            "answer": "B"
+          },
+          {
+            "n": 2,
+            "text": "What does the woman think about the information gained from an exit interview?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It should be carefully analyzed."
+              },
+              {
+                "letter": "C",
+                "text": "It can be quite useful to senior managers."
+              },
+              {
+                "letter": "B",
+                "text": "It should be kept private."
+              },
+              {
+                "letter": "D",
+                "text": "It can improve interviewees' job prospects."
+              }
+            ],
+            "answer": "B"
+          },
+          {
+            "n": 3,
+            "text": "Why does the man want to rethink what he will say in the coming exit interview?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It may do harm to his fellow employees."
+              },
+              {
+                "letter": "B",
+                "text": "It may displease his immediate .superiors."
+              },
+              {
+                "letter": "C",
+                "text": "It may adversely affect his future career prospects."
+              },
+              {
+                "letter": "D",
+                "text": "It may leave a negative impression on the interviewer. /\\� 2021 � 6 A 1"
+              }
+            ],
+            "answer": "C"
+          },
+          {
+            "n": 4,
+            "text": "What does the man think he had better do?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Pour out his frustrations on a rate-your-employer website."
+              },
+              {
+                "letter": "B",
+                "text": "Network with his close friends to find a better employer."
+              },
+              {
+                "letter": "C",
+                "text": "Do some practice for the exit interview."
+              },
+              {
+                "letter": "D",
+                "text": "Prepare a comprehensive exit report. Questions 5 to 8 are based on the conversation you have just heard."
+              }
+            ],
+            "answer": "A"
+          }
+        ]
+      },
+      {
+        "title": "Conversation Two",
+        "audio": "/audio/cet6/cet6-2021-06-s1-conv2.mp3",
+        "transcript": "M: Today, I'm talking to the renowned botanist, Jane Forster. W: Thank you for inviting me to join you on the show, Henry. M: Recently, Jane, you've become quite a celebrity since the release of your latest documentary. Can you tell us a little about it? W: Well, it follows my expedition to study the vegetation indigenous to the rain forest in equatorial areas of southeast Asia. M: You certainly get to travel to some very exotic locations. W: It was far from glamorous, to be honest. The area we visited was accessible only by canoe. And the living conditions in the hut were primitive, to say the least. There was no electricity, and our water supply was a nearby stream. M: How were the weather conditions while you were there? W: The weather was not conducive to our work at all, since the humidity was almost unbearable. At midday, we stayed in the hut and did nothing. It was too humid to either work or sleep. M: How long did your team spend in the jungle? W: Originally, we planned to be there for a month. But in the end, we stayed for only two weeks. M: Why did you cut the expedition short? W: Halfway through the trip, we received news that a hurricane was approaching. And we had to evacuate at very short notice. M: That sounds like a fascinating anecdote. W: It was frightening. The fastest evacuation route was through river rapids. We had to navigate them carrying all of our equipment. M: So overall, was the journey unsuccessful? W: Absolutely not. We gathered a massive amount of data about the local plant life. M: Why do you put up with such adverse conditions? W: Botany is an obsession for me. Many of the destinations I visit have stunning scenery, and I get to meet a variety of people from all over the world. M: So where will your next destination be? W: I haven't decided yet. M: Then we can leave it for another vacation. Thanks.",
+        "questions": [
+          {
+            "n": 5,
+            "text": "What does the man want Jane Forster to talk about?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Her career as a botanist."
+              },
+              {
+                "letter": "C",
+                "text": "Her month-long expedition."
+              },
+              {
+                "letter": "B",
+                "text": "Her latest documentary."
+              },
+              {
+                "letter": "D",
+                "text": "Her unsuccessful journey."
+              }
+            ],
+            "answer": "D"
+          },
+          {
+            "n": 6,
+            "text": "How does the woman describe her experience as far from glamorous?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "She was caught in a hurricane."
+              },
+              {
+                "letter": "C",
+                "text": "She suffered from water shortage."
+              },
+              {
+                "letter": "B",
+                "text": "She had to live like a vegetarian."
+              },
+              {
+                "letter": "D",
+                "text": "She had to endure many hardships."
+              }
+            ],
+            "answer": "B"
+          },
+          {
+            "n": 7,
+            "text": "Why did the woman and those who went with her end their trip halfway?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "They could no longer bear the humidity."
+              },
+              {
+                "letter": "C",
+                "text": "A flood was approaching."
+              },
+              {
+                "letter": "B",
+                "text": "They had no more food in the canoe."
+              },
+              {
+                "letter": "D",
+                "text": "A hurricane was coming."
+              }
+            ],
+            "answer": "D"
+          },
+          {
+            "n": 8,
+            "text": "What does the woman think of the journey?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It was memorable."
+              },
+              {
+                "letter": "C",
+                "text": "It was fruitful."
+              },
+              {
+                "letter": "B",
+                "text": "It was unbearable."
+              },
+              {
+                "letter": "D",
+                "text": "It was uneventful. Section B Directions: In this section, you will hear two passages. At the end of each passage , you will hear three or four questions. Both the passage and the questions will be spoken only once. After you hear a question , you must choose the best answer from the four choices marked A), B), C) and D). Then mark the corresponding letter on Answer Sheet 1 with a single line through the centre. Questions 9 to 11 are based on the passage you have just heard."
+              }
+            ],
+            "answer": "C"
+          }
+        ]
+      }
+    ],
+    "b": [
+      {
+        "title": "Passage One",
+        "audio": "/audio/cet6/cet6-2021-06-s1-pass1.mp3",
+        "transcript": "Scientists often use specialized jargon terms while communicating with laymen. Most of them don't realize the harmful effects of this practice. In a new study, people exposed to jargon when reading about subjects like autonomous vehicles and surgical robots later said they were less interested in science than others who read about the same topics, but without the use of specialized terms. They also felt less informed about science and less qualified to discuss science topics. It's noteworthy that it made no difference if the jargon terms were defined in the text. Even when the terms were defined, readers still felt the same lack of engagement as readers who read jargon that wasn't explained. The problem is that the mere presence of jargon sends a discouraging message to readers. Hillary Shulman, the author of the study, asserts that specialized words are a signal. Jargon tells people that the message isn't for them. There is an even darker side to how people react to jargon. In another study, researchers found that reading scientific articles containing jargon led people to doubt the actual science. They found the opposite when a text is easier to read: then people are more persuaded. Thus, it's important to communicate clearly when talking about complex science subjects. This is especially true with issues related to public health, like the safety of new medications and the benefits of vaccines. Shulman concedes that the use of jargon is appropriate with scientific audiences. But scientists who want to communicate with the general public need to modify their language. They need to eliminate jargon.",
+        "questions": [
+          {
+            "n": 9,
+            "text": "What does the passage say about the use of jargon terms by experts?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It ensures the accuracy of their arguments."
+              },
+              {
+                "letter": "C",
+                "text": "It hurts laymen's dignity and self-esteem."
+              },
+              {
+                "letter": "B",
+                "text": "It diminishes laymen's interest in science."
+              },
+              {
+                "letter": "D",
+                "text": "It makes their expressions more explicit."
+              }
+            ],
+            "answer": "B"
+          },
+          {
+            "n": 10,
+            "text": "What do researchers find about people reading scientific articles containing jargon terms?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "They will see the complexity of science."
+              },
+              {
+                "letter": "C",
+                "text": "They tend to disbelieve the actual science."
+              },
+              {
+                "letter": "B",
+                "text": "They feel great respect towards scientists."
+              },
+              {
+                "letter": "D",
+                "text": "They can learn to communicate with scientists."
+              }
+            ],
+            "answer": "C"
+          },
+          {
+            "n": 11,
+            "text": "What does Shulman suggest scientists do when communicating with the general public?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Explain all the jargon terms."
+              },
+              {
+                "letter": "C",
+                "text": "Find appropriate topics."
+              },
+              {
+                "letter": "B",
+                "text": "Do away with jargon terms."
+              },
+              {
+                "letter": "D",
+                "text": "Stimulate their interest. Questions 12 to 15 are based on the passage you have just heard."
+              }
+            ],
+            "answer": "B"
+          }
+        ]
+      },
+      {
+        "title": "Passage Two",
+        "audio": "/audio/cet6/cet6-2021-06-s1-pass2.mp3",
+        "transcript": "At the beginning of the 20th century, on the Gulf Coast in the US State of Texas, there was a hill where gas leakage was so noticeable that schoolboys would sometimes set the hill on fire. Pattillo Higgins, a disreputable local businessman, became convinced that there was oil below the gassy hill. Oil wells weren't drilled back then; they were essentially dug. The sand under the hill defeated several attempts by Higgins' workers to make a proper hole. Higgins had forecast oil at a thousand feet, a totally made-up figure. Higgins subsequently hired a mining engineer, Captain Anthony Lucas. After encountering several setbacks, Captain Lucas decided to use a drill, and his innovations created the modern oil drilling industry. In January 1901, at 1,020 feet, almost precisely the depth predicted by Higgins' wild guess, the well roared and suddenly ejected mud and six tons of drilling pipe out of the ground, terrifying those present. For the next nine days, until the well was capped, the well poured out more oil than all the wells in America combined. In those days, Texas was almost entirely rural with no large cities and practically no industry; cotton and beef were the foundation of the economy. Higgins' well changed that. The boom made some prospectors millionaires, but the sudden surplus of petroleum was not entirely a blessing for Texas. In the 1930s, prices crashed, to the point that, in some parts of the country, oil was cheaper than water. That would become a familiar pattern of the boom-or-bust Texas economy.",
+        "questions": [
+          {
+            "n": 12,
+            "text": "What did Texas businessman Pattillo Higgins believe?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "There were oil deposits below a local gassy hill."
+              },
+              {
+                "letter": "B",
+                "text": "The erupting gas might endanger local children."
+              },
+              {
+                "letter": "C",
+                "text": "There was oiHeakage-along the Gulf Coast."
+              },
+              {
+                "letter": "D",
+                "text": "The local gassy hill might start a huge fire."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 13,
+            "text": "What prevented Higgins' workers from digging a proper hole to get the oil?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "The massive gas underground."
+              },
+              {
+                "letter": "B",
+                "text": "Their lack of the needed skill."
+              },
+              {
+                "letter": "C",
+                "text": "Their lack of suitable tools."
+              },
+              {
+                "letter": "D",
+                "text": "The sand under the hill."
+              }
+            ],
+            "answer": "D"
+          },
+          {
+            "n": 14,
+            "text": "What does the passage say about Captain Lucas' drilling method?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It was not as effective as he claimed."
+              },
+              {
+                "letter": "B",
+                "text": "It rendered many oil workers jobless."
+              },
+              {
+                "letter": "C",
+                "text": "It gave birth to the oil drilling industry."
+              },
+              {
+                "letter": "D",
+                "text": "It was not popularized until years later."
+              }
+            ],
+            "answer": "C"
+          },
+          {
+            "n": 15,
+            "text": "What do we learn about Texas' oil industry boom?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It ruined the state's cotton and beef industries."
+              },
+              {
+                "letter": "B",
+                "text": "It totally destroyed the state's rural landscape. Section C"
+              },
+              {
+                "letter": "C",
+                "text": "It resulted in an oil surplus all over the world."
+              },
+              {
+                "letter": "D",
+                "text": "It radically transformed the state's economy. Directions: In this section , you will hear three recordings of lectures or talks followed by three or four questions. The recordings will be played only once . After you hear a question , you must choose the best answer from the four choices marked A), B), C) and D). Then mark the corresponding letter on Answer Sheet 1 with a single line through the centre. Questions 16 to 18 are based on the recording you have just heard."
+              }
+            ],
+            "answer": "D"
+          }
+        ]
+      }
+    ],
+    "c": [
+      {
+        "title": "Recording One",
+        "audio": "/audio/cet6/cet6-2021-06-s1-rec1.mp3",
+        "transcript": "Most people dislike their jobs. It's an astonishing (but statistical) fact. A primary cause of employee dissatisfaction, according to fresh research, is that many believe they have terrible managers. Few describe their managers as malicious or manipulative, though, while those types certainly exist, they are minority. The majority of managers seemingly just don't know any better. They're often emulating bad managers they've had in the past. It's likely they've never read a management book or attended a management course. They might not have even reflected on what good management looks like and how it would influence their own management style. The researchers interviewed employees about their managers, beginning with a question about the worst manager they had ever had. From this, the researchers came up with four main causes of why some managers are perceived as being simply awful at their jobs. The first cause was company culture, which was seen by employees as enabling poor management practices. It was specifically stressful work environments, minimal training and a lack of accountability that were found to be the most blameworthy. Often a manager's superiors can effectively encourage a manager's distasteful behavior when they fail to discipline the person's wrongdoings. Such workplaces are sometimes described as toxic. The second cause was attributed to the managers' characteristics. Those deemed to be most destructive were odd people, those without drive, those who allow personal problems into the workplace and those with an unpleasant temperament or personality in general. The third cause of poor management was associated with a deficiency of qualifications. Not so much the formal variety one obtains from a university but the informal variety that comes from credible work experience and professional accomplishments. The fourth cause concerned managers who've been promoted for reasons other than potential. One reason in particular why these people had been promoted was that they had been around the longest. It wasn't their skillset or other merits that got them the job. It was their tenure. A point worth making is that the study was based only on the perspective of employees. The researchers didn't ask senior leaders what they thought of their frontline managers. It's quite possible they're content with how the individuals they promoted are now performing, merely ignorant of the damage they're actually causing, which might explain why, as the researchers conclude, those same middle managers are usually unaware that they are a bad manager.",
+        "questions": [
+          {
+            "n": 16,
+            "text": "What is a primary cause of employee dissatisfaction according to recent research?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Insufficient motivation."
+              },
+              {
+                "letter": "C",
+                "text": "Unsuitable jobs."
+              },
+              {
+                "letter": "B",
+                "text": "Tough regulations."
+              },
+              {
+                "letter": "D",
+                "text": "Bad managers."
+              }
+            ],
+            "answer": "D"
+          },
+          {
+            "n": 17,
+            "text": "What is one of the causes for poor management practices?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Ineffective training."
+              },
+              {
+                "letter": "C",
+                "text": "Overburdening of managers."
+              },
+              {
+                "letter": "B",
+                "text": "Toxic company culture."
+              },
+              {
+                "letter": "D",
+                "text": "Lack of regular evaluation. /'\\� 2021 6 J:J 2 '."
+              }
+            ],
+            "answer": "B"
+          },
+          {
+            "n": 18,
+            "text": "What do we learn about the study on job dissatisfaction?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It was based only on the perspective of employees."
+              },
+              {
+                "letter": "B",
+                "text": "It provided meaningful clues to solving the problem."
+              },
+              {
+                "letter": "C",
+                "text": "It was conducted from frontline managers' point of view."
+              },
+              {
+                "letter": "D",
+                "text": "It collected feedback from both employers and employees. Questions 19 to 21 are based on the recording you have just heard."
+              }
+            ],
+            "answer": "A"
+          }
+        ]
+      },
+      {
+        "title": "Recording Two",
+        "audio": "/audio/cet6/cet6-2021-06-s1-rec2.mp3",
+        "transcript": "With the use of driverless vehicles seemingly inevitable, mining companies in the vast Australian desert state of Western Australia are definitely taking the lead. Iron ore is a key ingredient in steel making. The mining companies here produce almost 300 million tons of iron ore a year. The 240 giant autonomous trucks in use, in the Western Australian mines, can weigh 400 tons fully loaded, and travel at speeds of up to 60 kilometers per hour. They are a technological leap, transporting iron ore along routes which run for hundreds of kilometers from mines to their destinations. Here, when the truck arrives at its destination, staff in the operation center direct it precisely where to unload. Vast quantities of iron ore are then transported by autonomous trains to ocean ports. Advocates argue these automated vehicles will change mining forever. It may only be five years before the use of automation technology leads to a fully robotic mine. A range of factors has pushed Western Australia's desert region to the lead of this automation revolution. These include the huge size of the mines, the scale of equipment, and the repetitive nature of some of the work. Then there's the area's remoteness—at 502,000 square kilometers—it can sometimes make recruiting staff a challenge. Another consideration is the risks when humans interact with large machinery. There are also the financial imperatives. The ongoing push by the mining corporations to be more productive and more efficient is another powerful driver in embracing automation technology. The concept of a fully autonomous mine is a bit of a misleading term however. This is because the more technology is put into the field, the more people are needed to deploy, maintain and improve it. The automation and digitization of the industry is creating a need for different jobs. These include data scientists and engineers in automation and artificial intelligence. The mining companies claim automation and robotics present opportunities to make mining more sustainable and safer. Employees will be offered a career that is even more fulfilling and more rewarding. Workers' unions have accepted the inevitability of the introduction of new technology, but they still have reservations about the rise of automation technology. Their main concern is the potential impact on remote communities. As automation spreads further, the question is how these remote communities will survive when the old jobs are eliminated. And this may well prove to be the most significant impact of robotic technology in many places around the world.",
+        "questions": [
+          {
+            "n": 19,
+            "text": "What does the passage say about the mining industry in Western Australia?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It is expanding at an accelerating speed."
+              },
+              {
+                "letter": "C",
+                "text": "It is yielding an unprecedented profit."
+              },
+              {
+                "letter": "B",
+                "text": "It is bringing prosperity to the region."
+              },
+              {
+                "letter": "D",
+                "text": "It is seeing an automation revolution."
+              }
+            ],
+            "answer": "D"
+          },
+          {
+            "n": 20,
+            "text": "What is the impact of the digitization of the mining industry?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It creates a lot of new jobs."
+              },
+              {
+                "letter": "B",
+                "text": "It exhausts res<;mrces sooner."
+              },
+              {
+                "letter": "C",
+                "text": "It causes conflicts between employers and employees."
+              },
+              {
+                "letter": "D",
+                "text": "It calls for the retraining of unskilled mining workers."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 21,
+            "text": "What is the attitude of workers' unions towards the introduction of new technology?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "They will wait to see its effect."
+              },
+              {
+                "letter": "C",
+                "text": "They accept it with reservations."
+              },
+              {
+                "letter": "B",
+                "text": "They welcome it with open arms."
+              },
+              {
+                "letter": "D",
+                "text": "They are strongly opposed to it. Questions 22 to 25 are based on the recording you have just heard."
+              }
+            ],
+            "answer": "C"
+          }
+        ]
+      },
+      {
+        "title": "Recording Three",
+        "audio": "/audio/cet6/cet6-2021-06-s1-rec3.mp3",
+        "transcript": "According to official statistics, Thailand's annual road-death rate is almost double the global average. Thai people know that their roads are dangerous, but they don't know this could easily be changed. Globally, road accidents kill more people every year than any infectious disease. Researchers at the Institute for Health Metrics and Evaluation in America, put the death toll in 2017 at 1.24 million. According to the institute, the overall number of deaths has been more or less static since the turn of the century. But that disguises a lot of changes in individual countries. In many poor countries, road accidents are killing more people than ever before. Those countries have swelling young populations of fast-growing fleets of cars and motorbikes and a limited supply of surgeons. It is impossible to know for sure, because official statistics are so inadequate. But deaths are thought to have risen by 40% since 1990 in many low income countries. In many rich countries, by contrast, roads are becoming even safer. In Estonia and Ireland, for example, the number of death has fallen by about two thirds since the late 1990s. But the most important and intriguing changes are taking place in middle income countries, which contain most of the world's people and have some of the most dangerous roads. According to researchers, in China and South Africa traffic deaths have been falling since 2000, and in India since 2012, and the Philippines reached its peak four years ago. The question is whether Thailand can soon follow suit. Rob McKinney, head of the International Road Assessment Program, says that all countries tend to go through three phases. They begin with poor, slow roads. In the second phase, as they grow wealthier, they pave the roads, allowing traffic to move faster and pushing up the death rate. Lastly, in the third phase, countries act to make their roads safer. The trick, then, is to reach this third stage sooner by focusing earlier and more closely on fatal accidents. How to do that? The solution lies not just in better infrastructure, but in better social incentives. Safe driving habits are practices which people know they should follow but often don't. Dangerous driving is not a fixed cultural trait as some imagine. People respond to incentives such as traffic laws that are actually enforced.",
+        "questions": [
+          {
+            "n": 22,
+            "text": "What does the speaker say about traffic accidents in Thailand?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "They have experienced a gradual decline since the year of 2017."
+              },
+              {
+                "letter": "B",
+                "text": "Their annual death rate is about twice that of the global average."
+              },
+              {
+                "letter": "C",
+                "text": "They kill more people than any infectious disease."
+              },
+              {
+                "letter": "D",
+                "text": "Their cost to the nation's economy is incalculable."
+              }
+            ],
+            "answer": "B"
+          },
+          {
+            "n": 23,
+            "text": "What do we learn from an American institute's statistics regarding road deaths?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "They are not as reliable as claimed."
+              },
+              {
+                "letter": "B",
+                "text": "They rise and fall from year to year."
+              },
+              {
+                "letter": "C",
+                "text": "They don't reflect the changes in individual countries."
+              },
+              {
+                "letter": "D",
+                "text": "They show a difference between rich and poor nations."
+              }
+            ],
+            "answer": "C"
+          },
+          {
+            "n": 24,
+            "text": "What is said about middle income countries?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Many of them are investing heavily in infrastructure."
+              },
+              {
+                "letter": "B",
+                "text": "Many of them have seen a decline in road-death rates."
+              },
+              {
+                "letter": "C",
+                "text": "Many of them are following the example set by Thailand."
+              },
+              {
+                "letter": "D",
+                "text": "Many of them have increasing numbers of cars on the road."
+              }
+            ],
+            "answer": "B"
+          },
+          {
+            "n": 25,
+            "text": "What else could be done to reduce fatal road accidents in addition to safer roads?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Foster better driving behavior."
+              },
+              {
+                "letter": "C",
+                "text": "Provide better training for drivers."
+              },
+              {
+                "letter": "B",
+                "text": "Abolish all outdated traffic rules."
+              },
+              {
+                "letter": "D",
+                "text": "Impose heavier penalties on speeding. Part JI[ Section A"
+              }
+            ],
+            "answer": "A"
+          }
+        ]
+      }
+    ]
+  },
+  "answerQuotes": {
+    "1": [
+      "M: It's my last day at work tomorrow."
+    ],
+    "2": [
+      "An exit interview is supposed to be private, but often isn't."
+    ],
+    "3": [
+      "M: Now you've got me rethinking what I'll disclose in the interview."
+    ],
+    "4": [
+      "M: Right."
+    ],
+    "5": [
+      "M: Recently, Jane, you've become quite a celebrity since the release of your latest documentary."
+    ],
+    "6": [
+      "The area we visited was accessible only by canoe."
+    ],
+    "7": [
+      "W: Halfway through the trip, we received news that a hurricane was approaching."
+    ],
+    "8": [
+      "W: Absolutely not."
+    ],
+    "9": [
+      "In a new study, people exposed to jargon when reading about subjects like autonomous vehicles and surgical robots later said they were less interested in science than others who read about the same topics, but without the use of specialized terms."
+    ],
+    "10": [
+      "In another study, researchers found that reading scientific articles containing jargon led people to doubt the actual science."
+    ],
+    "11": [
+      "Shulman concedes that the use of jargon is appropriate with scientific audiences."
+    ],
+    "12": [
+      "Pattillo Higgins, a disreputable local businessman, became convinced that there was oil below the gassy hill."
+    ],
+    "13": [
+      "Oil wells weren't drilled back then; they were essentially dug."
+    ],
+    "14": [
+      "After encountering several setbacks, Captain Lucas decided to use a drill, and his innovations created the modern oil drilling industry."
+    ],
+    "15": [
+      "In those days, Texas was almost entirely rural with no large cities and practically no industry; cotton and beef were the foundation of the economy."
+    ],
+    "16": [
+      "A primary cause of employee dissatisfaction, according to fresh research, is that many believe they have terrible managers."
+    ],
+    "17": [
+      "The first cause was company culture, which was seen by employees as enabling poor management practices."
+    ],
+    "18": [
+      "A point worth making is that the study was based only on the perspective of employees."
+    ],
+    "19": [
+      "Advocates argue these automated vehicles will change mining forever."
+    ],
+    "20": [
+      "The automation and digitization of the industry is creating a need for different jobs."
+    ],
+    "21": [
+      "Workers' unions have accepted the inevitability of the introduction of new technology, but they still have reservations about the rise of automation technology."
+    ],
+    "22": [
+      "According to official statistics, Thailand's annual road-death rate is almost double the global average."
+    ],
+    "23": [
+      "According to the institute, the overall number of deaths has been more or less static since the turn of the century."
+    ],
+    "24": [
+      "But the most important and intriguing changes are taking place in middle income countries, which contain most of the world's people and have some of the most dangerous roads."
+    ],
+    "25": [
+      "The solution lies not just in better infrastructure, but in better social incentives."
+    ]
+  }
+}
+
+export default LISTENING

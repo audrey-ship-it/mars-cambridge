@@ -1,0 +1,296 @@
+{
+  "id": "cet4-2020-12-s2",
+  "meta": {
+    "level": "CET4",
+    "year": 2020,
+    "month": 12,
+    "set": 2,
+    "source": "../../mars-cet/tmp-verify/zt2-fixed.txt",
+    "answerSource": "人工读图答案（待复核后置 verified）",
+    "verified": false,
+    "warnings": [
+      "选词选项数=4（应为15）",
+      "仔细篇数=1（应为2）"
+    ]
+  },
+  "reading": {
+    "banked": {
+      "passage": "When my son completes a task, I can't help but praise him. It's only natural to give praise where praise is due, right? But is there such a thing as too much praise? According to psychologist Katherine Phillip, children don't benefit from {{26}} praise as much as we'd like to think. \"Parents' often praise, believing they are building their child's self-confidence. However, over-praising can have a {{27}} effect,\" says Phillip. \"When we use the same praise {{28}} , it may become empty and no longer valued by the child. It can also become an expectation that anything they do must be {{29}} with praise. This may lead to the child avoiding taking risks due to fear of {{30}} their parents.\" Does this mean we should do away with all the praise? Phillip says no. \"The key to healthy praise is to focus on the process rather than the {{31}} . It is the recognition of a child's attempt, or the process in ---- which they achieved something, that is essential,\" she says. \"Parents should encourage their child to take the risks needed to learn and grow. \" So how do we break the {{32}} of praise we're all so accustomed to? Phillip says it's important to {{33}} between \"person praise\" and \"process praise\". \"Person praise is {{34}} saying how great someone is. It's a form of personal approval. Process praise is acknowledgement of the efforts the person Im~ 2020 ~ 12 ~ 26 has just {{35}} . Children who receive person praise are more likely to feel shame after losing,\" says ---- Phillip.",
+      "options": [
+        {
+          "letter": "A",
+          "word": "choose"
+        },
+        {
+          "letter": "C",
+          "word": "disappointing"
+        },
+        {
+          "letter": "D",
+          "word": "distinguish"
+        },
+        {
+          "letter": "E",
+          "word": "exhausting"
+        }
+      ],
+      "answers": [
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    "matching": {
+      "title": "Poverty is a story about us, not them A) Too often still, we think we know what poverty looks like. It's the way we've been taught, the images we've been force-fed for decades. \tThe chronically homeless. The undocumented immigrant. The urban poor, usually personified as a woman of color, the \"welfare queen\" politicians still too often reference.",
+      "paragraphs": [
+        {
+          "label": "B",
+          "text": "But as income inequality rises to record levels in the United States, even in the midst of a record economic expansion, those familiar images are outdated, hurtful, and counterproductive to focusing attention on solutions and building ladders of opportunity."
+        },
+        {
+          "label": "C",
+          "text": "Today's faces of income inequality and lack of opportunity look like all of us. It's Anna Landre, a disabled Georgetown University student fighting to keep health benefits that allow her the freedom to live her life. It's Tiffanie Standard, a counselor for young women of color in Philadelphia who want to be tech entrepreneurs-but who must work multiple jobs to stay afloat. It's Ken Outlaw, a welder in rural North Carolina whose dream of going back to school at a local community college was dashed by Hurricane Florence-just one of the extreme weather events that have tipped the balance for struggling Americans across the nation."
+        },
+        {
+          "label": "D",
+          "text": " If these are the central characters of our story about poverty, what layers of perceptions, myths, and realities must we unearth to find meaningful solutions and support? In pursuit of revealing this complicated reality, Mothering Justice, led by women of color, went last year to the state capital in Lansing, Michigan, to lobby on issues that affect working mothers. One of the Mothering Justice · organizers went to the office of a state representative to talk about the lack of affordable childcare- the vestiges (~it.) of a system that expected mothers to stay home with their children while their husbands worked. A legislative staffer dismissed the activist's concerns, telling her \"my husband took care of that- I stayed home. \""
+        },
+        {
+          "label": "E",
+          "text": "That comment, says Mothering Justice director Danielle Atkinson, \"was meant to shame\" and relied on the familiar notion that a woman of color concerned about income inequality and programs that promote mobility must by definition be a single morn, probably with multiple kids. In this case, the Mothering Justice activist happened to be married. And in most cases in the America of 2019, the images that come to mind when we hear the words poverty or income inequality fail miserably in Im~ 20201f: 12 Y) \t27 reflecting a complicated reality: poverty touches virtually all of us. The face of income inequality, for all but a very few of us, is the one we each see in the mirror."
+        },
+        {
+          "label": "F",
+          "text": "How many of us are poor in the U.S.? It depends on who you ask. According to the Census Bureau, 38 million people in the U.S. are living below the official poverty thresholds. Taking into account economic need beyond that absolute measure, the Institute for Policy Studies found that 140 million people are poor or low-income. That's almost half the U.S. population."
+        },
+        {
+          "label": "G",
+          "text": "Whatever the measure, within that massive group, poverty is extremely diverse. We know that some people are more affected than others, like children, the elderly, people with disabilities, and people of color."
+        },
+        {
+          "label": "H",
+          "text": "But the fact that 4 in 10 Americans can't come up with $ 400 in an emergency is a commonly cited statistic for good reason: economic inst~bility stretches across race, gender, and geography. It even reaches into the middle classes, as real wages have stagnated (~:It*) for all but the very wealthy and temporary spells of financial instability are not uncommon."
+        },
+        {
+          "label": "I",
+          "text": " Negative images remain of who is living in poverty as well as what is needed to move out of it. The big American myth is that you can pull yourself up by your own efforts and change a bad situation into a good one. The reality is that finding opportunity without help from families, friends, schools, and community is virtually impossible. And the playing field is nothing close to level."
+        },
+        {
+          "label": "J",
+          "text": " The FrameWorks Institute, a research group that focuses on public framing of issues, has studied what sustains stereotypes and narratives of poverty in the United Kingdom. \"People view economic success and wellbeing in life as a product of choice, willpower, and drive,\" says Nat Kendall-Taylor, CEO of FrameWorks. \"When we see people who are struggling,\" he says, those assumptions \"lead us to the perception that people in poverty are lazy, \tthey don't care, and they haven't made the right decisions.\""
+        },
+        {
+          "label": "K",
+          "text": " Does this sound familiar? Similar ideas surround poverty in the U. S. And these assumptions give a false picture of reality. \"When people enter into that pattern of thinking,\" says Kendall-Taylor, \"it's cognitively comfortable to make sense of issues of poverty in that way. It creates a kind of cognitive blindness-all of the factors external to a person's drive and choices that they've made become invisible and fade from view. \""
+        },
+        {
+          "label": "L",
+          "text": " Those \texternal \tfactors \tinclude \tthe \tdifficulties \taccompanying \tlow-wage \twork \tor \tstructural discrimination based on race, gender, or ability. Assumptions get worse when people who are poor use government benefits to help them survive. There is a great tension between \"the poor\" and those who are receiving what has become a dirty word: \"welfare.\""
+        },
+        {
+          "label": "M",
+          "text": "According to the General Social S1.UVey, 71 percent of respondents believe the country is spending too little on \"assistance to the poor.\" On the other hand, 22 percent think we are spending too little on \"welfare\": 37 percent believe we are spending too much."
+        },
+        {
+          "label": "N",
+          "text": " \" Poverty has been interchangeable with people of color-specifically black women and black mothers,\" says Atkinson of Mothering Justice. \tIt's true that black mothers are more affected by poverty than many other groups, yet they are disproportionately the face of poverty. For example, Americans routinely overestimate the share of black recipients of public assistance programs."
+        },
+        {
+          "label": "O",
+          "text": "In reality, most people will experience some form of financial hardship at some point in their lives. Indeed, people tend to dip in and out of poverty, perhaps due to unexpected obstacles like losing a job, fill~ 20201¥-12 J3 \t28 or when hours of a low-wage job fluctuate."
+        },
+        {
+          "label": "P",
+          "text": "Something each of us can do is to treat each other with the dignity and sympathy that is deserved and to understand deeply that the issue of poverty touches all of us."
+        }
+      ],
+      "questions": [
+        {
+          "n": 36,
+          "text": "One legislative staffer assumed that a woman of color who advocated affordable childcare must be a single mother."
+        },
+        {
+          "n": 37,
+          "text": "People from different races, genders, and regions all suffer from a lack of financial security."
+        },
+        {
+          "n": 38,
+          "text": "According to a survey, while the majority believe too little assistance is given to the poor, more than a third believe too much is spent on welfare."
+        },
+        {
+          "n": 39,
+          "text": "A research group has found that Americans who are struggling are thought to be lazy and to have made the wrong decisions."
+        },
+        {
+          "n": 40,
+          "text": "Under the old system in America, a mother was supposed to stay home and take care of her children."
+        },
+        {
+          "n": 41,
+          "text": " It was found that nearly 50% of Americans are poor or receive low pay."
+        },
+        {
+          "n": 42,
+          "text": "Americans usually overestimate the number of blacks receiving welfare benefits."
+        },
+        {
+          "n": 43,
+          "text": " It is impossible for Americans to lift themselves out of poverty entirely on their own."
+        },
+        {
+          "n": 44,
+          "text": "Nowadays, it seems none of us can get away from income inequality."
+        },
+        {
+          "n": 45,
+          "text": "Assumptions about poor people become even more negative when they live on welfare."
+        }
+      ],
+      "answers": [
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    "careful": [
+      {
+        "passage": "Forests in countries like Brazil and the Congo get a lot of attention from environmentalists, and it is easy to see why. South America and sub-Saharan Africa are experiencing deforestation on an enormous scale: every year almost 5 million hectares are lost. \tBut forests are also changing in rich Western countries. They are growing larger, both in the sense that they occupy more land and that the trees in them are bigger. What is going on? Forests are spreading in almost all Western countries, \twith the fastest growth in places that historically had rather few trees. In 1990 28% of Spain was forested; now the proportion is 37%. In both Greece and Italy, the growth was from 26% to 32% over the same period. Forests are gradually taking more land in America and Australia. Perhaps most astonishing is the trend in Ireland. Roughly 1 % of that country was forested when it became independent in 1922. Now forests cover 11 % of the land, and the government wants to push the proportion to 18% by the 2040s. Two things are fertilising this growth. The first is the abandonment of farmland, especially in high, dry places where nothing grows terribly well. When farmers give up trying to earn a living from farming or herding, trees simply move in. The second is government policy and subsidy. Throughout history, Im~ 20201P 12 A \t30 governments have protected and promoted forests for diverse reasons, ranging from the need for wooden warships to a desire to promote suburban house-building. Nowadays forests are increasingly welcome because they suck in carbon pollution from the air. The justifications change; the desire for more trees remains constant. The greening of the West does not delight everyone. Farmers complain that land is being taken out of use by generously subsidised tree plantations. Parts of Spain and Portugal suffer from terrible forest fires. Others simply dislike the appearance of forests planted in neat rows. They will have to get used to the trees, however. The growth of Western forests seems almost as unstoppable as deforestation elsewhere.",
+        "questions": [
+          {
+            "n": 51,
+            "text": "What is catching environmentalists' attention nowadays?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Rich countries are stripping poor ones of their resources."
+              },
+              {
+                "letter": "B",
+                "text": "Forests are fast shrinking in many developing countries."
+              },
+              {
+                "letter": "C",
+                "text": "Forests are eating away the fertile farmland worldwide."
+              },
+              {
+                "letter": "D",
+                "text": "Rich countries are doing little to address deforestation."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 52,
+            "text": "Which countries have the fastest forest growth?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Those that have newly achieved independence."
+              },
+              {
+                "letter": "B",
+                "text": "Those that have the greatest demand for timber."
+              },
+              {
+                "letter": "C",
+                "text": "Those that used to have the lowest forest coverage."
+              },
+              {
+                "letter": "D",
+                "text": "Those that provide enormous government subsidies."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 53,
+            "text": "What has encouraged forest growth historically?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "The government's advocacy."
+              },
+              {
+                "letter": "B",
+                "text": "The use of wood for fuel."
+              },
+              {
+                "letter": "C",
+                "text": "The favourable climate."
+              },
+              {
+                "letter": "D",
+                "text": "The green movement."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 54,
+            "text": "What accounts for our increasing desire for forests?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Their unique scenic beauty."
+              },
+              {
+                "letter": "B",
+                "text": "Their use as fruit plantations."
+              },
+              {
+                "letter": "C",
+                "text": "Their capability of improving air quality."
+              },
+              {
+                "letter": "D",
+                "text": "Their stable supply of building materials."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 55,
+            "text": "What does the author conclude about the prospects of forestation?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Deserts in sub-Saharan Africa will diminish gradually."
+              },
+              {
+                "letter": "B",
+                "text": "It will play a more and more important role in people's lives."
+              },
+              {
+                "letter": "C",
+                "text": "Forest destruction in the developing world will quickly slow down."
+              },
+              {
+                "letter": "D",
+                "text": "Developed and developing countries are moving in opposite directions."
+              }
+            ],
+            "answer": "A"
+          }
+        ]
+      }
+    ]
+  },
+  "translation": {
+    "directions": "For this part, you are allowed 30 minutes to translate a passage from Chinese into English.",
+    "chinese": ""
+  }
+}

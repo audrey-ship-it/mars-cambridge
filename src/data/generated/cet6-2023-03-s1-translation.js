@@ -1,0 +1,94 @@
+/* 2023年3月 第1套 CET-6 翻译题。
+ * 来源：2023年03月CET6题+解+音频/03、答案解析/2023.03英语六级详解第1套.pdf
+ * 核对：2023.03英语六级详解第1套.pdf p13（Part IV Translation 参考译文）
+ * 验证状态：verified — 题干括注英文（Zhang Qian）按原文保留；原文两处“西城”为 OCR 误识，末句作“西域”，已按上下文统一为“西域” */
+
+export const translation202303S1 = {
+  "id": "cet6-2023-03-s1",
+  "meta": {
+    "level": "CET6",
+    "year": 2023,
+    "month": 3,
+    "set": 1,
+    "source": "2023年03月CET6题+解+音频/03、答案解析/2023.03英语六级详解第1套.pdf",
+    "answerSource": "2023.03英语六级详解第1套.pdf p13（Part IV Translation 参考译文）",
+    "pages": "解析第13页",
+    "verified": true,
+    "verifiedAt": "2026-11-05",
+    "note": "题干括注英文（Zhang Qian）按原文保留；原文两处“西城”为 OCR 误识，末句作“西域”，已按上下文统一为“西域”"
+  },
+  "title": "2023年3月 第1套",
+  "topic": "丝绸之路",
+  "directions": "For this part, you are allowed 30 minutes to translate a passage from Chinese into English.",
+  "passage": "张骞(Zhang Qian)是中国第一个伟大的探险家。他不畏艰险，克服重重困难，两次出使西域，开通了中国同西亚和欧洲的通商关系，将中国的丝和丝织品运往西亚和欧洲，开拓了历史上著名的“丝绸之路”。同时，他又将西域的风土人情、地理文化以及特有物种等介绍到中原，极大地开阔了人们的视野。正如历史学家所指出的那样，如果没有张骞出使西域，就不可能有丝绸之路的开辟，也就不会有汉朝同西域或欧洲的文化交流。",
+  "reference": "Zhang Qian was China's first great explorer. He fearlessly overcame numerous challenges and embarked on two expeditions to the Western Regions. Zhang Qian established trade relations between China, West Asia and Europe and facilitated the transportation of Chinese silk and silk fabrics to these regions, thus opening up the famous 'Silk Road' in history. At the same time, he also introduced the customs, geographic culture and unique species of the Western Regions to the Central Plains, greatly broadening people's horizons. As historians pointed out, without Zhang Qian's missions to the Western Regions, the opening of the Silk Road and cultural exchanges between the Han Dynasty and the Western Regions or Europe would have been impossible.",
+  "notes": [
+    [
+      "探险家",
+      "explorer"
+    ],
+    [
+      "不畏艰险",
+      "not be deterred by hardships and dangers"
+    ],
+    [
+      "克服重重困难",
+      "overcome numerous challenges"
+    ],
+    [
+      "出使",
+      "go on a mission to; embark on an expedition to"
+    ],
+    [
+      "西域",
+      "the Western Regions"
+    ],
+    [
+      "通商关系",
+      "trade relations"
+    ],
+    [
+      "丝织品",
+      "silk fabrics"
+    ],
+    [
+      "开拓",
+      "open up"
+    ],
+    [
+      "丝绸之路",
+      "the Silk Road"
+    ],
+    [
+      "风土人情",
+      "local customs"
+    ],
+    [
+      "特有物种",
+      "unique species"
+    ],
+    [
+      "中原",
+      "the Central Plains"
+    ],
+    [
+      "开阔视野",
+      "broaden people's horizons"
+    ],
+    [
+      "历史学家",
+      "historian"
+    ],
+    [
+      "文化交流",
+      "cultural exchanges"
+    ]
+  ],
+  "points": [
+    "第一句为一般过去时的判断句，主干 Zhang Qian was China's first great explorer，直接用 first great explorer 对应“第一个伟大的探险家”。",
+    "第二句前半用一般过去时叙事，主干为 He overcame... and embarked on...；fearlessly 置于动词前作方式状语，“不畏艰险、克服重重困难”合并为 fearlessly overcame numerous challenges，“两次出使西域”译为 embarked on two expeditions to the Western Regions。",
+    "第二句后半继续用一般过去时，“开通了中国同西亚和欧洲的通商关系”译为 established trade relations between China, West Asia and Europe；“将……运往……”用 facilitate the transportation of... to...；“开拓了丝绸之路”用 thus + 现在分词 opening up 作结果状语。",
+    "第三句用 At the same time 承接并列信息；主干为 he introduced... to the Central Plains，“风土人情、地理文化以及特有物种”用 customs, geographic culture and unique species 三项并列；“极大地开阔了人们的视野”用现在分词短语 greatly broadening people's horizons 作结果状语。",
+    "第四句用 As historians pointed out 作插入语；“如果没有……就不可能有……也不会有……”是与过去事实相反的虚拟条件，用 without 引导的介词短语代替 if 从句，主句谓语用 would have been impossible，把“开辟”与“文化交流”合并为并列主语。"
+  ]
+};

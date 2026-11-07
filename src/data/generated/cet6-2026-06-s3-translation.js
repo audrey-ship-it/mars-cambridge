@@ -1,0 +1,95 @@
+/* 2026年6月 第3套 CET-6 翻译题。
+ * 来源：2026年6月CET6题+答案+听力/2026年6月英语六级解析第3套.pdf
+ * 核对：2026年6月英语六级解析第3套.pdf p12-p13（Part IV Translation 翻译点拨/原文&译文 高配版）
+ * 验证状态：verified — 高配版参考译文取自第13页，OCR 错字已按上下文修正（如 i叮ecting→injecting、indt附y→industry、gradual1y→gradually、precise ly→precisely、ωering→catering）；题干取自真题卷文字层，“道清”为“高清”之误，按括注 high-definition 还原 */
+
+export const translation202606S3 = {
+  "id": "cet6-2026-06-s3",
+  "meta": {
+    "level": "CET6",
+    "year": 2026,
+    "month": 6,
+    "set": 3,
+    "source": "2026年6月CET6题+答案+听力/2026年6月英语六级解析第3套.pdf",
+    "answerSource": "2026年6月英语六级解析第3套.pdf p12-p13（Part IV Translation 翻译点拨/原文&译文 高配版）",
+    "pages": "解析第12-13页",
+    "verified": true,
+    "verifiedAt": "2026-11-05",
+    "note": "高配版参考译文取自第13页，OCR 错字已按上下文修正（如 i叮ecting→injecting、indt附y→industry、gradual1y→gradually、precise ly→precisely、ωering→catering）；题干取自真题卷文字层，“道清”为“高清”之误，按括注 high-definition 还原"
+  },
+  "title": "2026年6月 第3套",
+  "topic": "无人机产业",
+  "directions": "For this part, you are allowed 30 minutes to translate a passage from Chinese into English.",
+  "passage": "近年来，中国无人机(drone)产业蓬勃发展，出口量跃升为全球第一。中国的无人机以出色的稳定性、高清(high-definition)拍摄能力和便捷的操作，受到全球消费者的喜爱，在民用领域得到广泛应用。无人机已被国家纳入战略性新兴产业，逐步成为能满足多种场景需求的智能助手。在农村，无人机可精准识别农作物病虫害，高效喷洒农药。在城市，无人机可快速运送生鲜食品。在不久的将来，无人机能够在更多领域实现其独特价值，为经济社会发展注入新动能。",
+  "reference": "In recent years, China's drone industry has witnessed vigorous prosperity, with its export volume surging to the top position in the world. Renowned for exceptional stability, high-definition imaging performance and user-friendly operation, Chinese drones enjoy immense popularity among customers worldwide and have been widely applied in civilian sectors. Classified as a national strategic emerging industry, drones are gradually evolving into intelligent assistants capable of catering to diverse on-site requirements. In rural areas, drones can precisely identify crop diseases and pests while spraying pesticides efficiently. In cities, they are used to rapidly deliver fresh products. In the near future, drones will realize their distinctive value in a broader range of sectors, injecting fresh impetus into economic and social development.",
+  "notes": [
+    [
+      "蓬勃发展",
+      "vigorous prosperity"
+    ],
+    [
+      "跃升为全球第一",
+      "surge to the top position in the world"
+    ],
+    [
+      "出色的稳定性",
+      "exceptional stability"
+    ],
+    [
+      "高清拍摄能力",
+      "high-definition imaging performance"
+    ],
+    [
+      "便捷的操作",
+      "user-friendly operation"
+    ],
+    [
+      "受到……喜爱",
+      "enjoy immense popularity among"
+    ],
+    [
+      "战略性新兴产业",
+      "national strategic emerging industry"
+    ],
+    [
+      "逐步成为",
+      "are gradually evolving into"
+    ],
+    [
+      "智能助手",
+      "intelligent assistants"
+    ],
+    [
+      "多种场景需求",
+      "diverse on-site requirements"
+    ],
+    [
+      "精准识别",
+      "precisely identify"
+    ],
+    [
+      "农作物病虫害",
+      "crop diseases and pests"
+    ],
+    [
+      "高效喷洒农药",
+      "spray pesticides efficiently"
+    ],
+    [
+      "独特价值",
+      "distinctive value"
+    ],
+    [
+      "注入新动能",
+      "inject fresh impetus into"
+    ]
+  ],
+  "points": [
+    "第一句：由“近年来”可知无人机产业的发展从过去某一时间开始、一直延续到现在且仍在持续，主句用现在完成时；“出口量跃升为全球第一”处理为with 独立主格结构with its export volume surging to the top position in the world，补充说明产业蓬勃发展的结果；“中国无人机产业”是动作发出者，用主动语态。",
+    "第二句：“出色的稳定性”“高清拍摄能力”“便捷的操作”是原因状语，解释“受到喜爱”的原因，处理为过去分词短语Renowned for... 前置，使句子紧凑且符合英文表达习惯；“在民用领域得到广泛应用”是“受到喜爱”之后产生的结果，用and 连接构成并列谓语。",
+    "第三句：“被国家纳入战略性新兴产业”是政策背景，说明无人机当前所处的战略定位，处理为过去分词短语Classified as... 作状语置于句首，使句子层次分明；“能满足多种场景需求的”为定语，修饰“智能助手”，处理为形容词短语capable of catering to diverse on-site requirements 后置；“逐步成为”表示进行中的变化过程，用现在进行时are gradually evolving into，传达渐进演变的意味。",
+    "第四句：与下一句是并列关系，对比无人机在农村和城市的不同应用场景，用一般现在时即可；本句处理为“地点状语+主语+谓语+宾语”结构；“精准识别”“高效喷洒”用副词precisely、efficiently 修饰动词，并用while 连接两个动作。",
+    "第五句：与上句结构一致，同样处理为“地点状语+主语+谓语+宾语”结构，翻译时保持句式整齐，形成排比效果，增强表达力；被动形式they are used to rapidly deliver fresh products 使前后两句句式略有变化，避免重复。",
+    "第六句：主干为“无人机能够实现其独特价值”；“在不久的将来”为时间状语，提示动作发生在未来，谓语“能够实现”用一般将来时；“为经济社会发展注入新动能”是“实现价值”带来的结果，处理为现在分词短语injecting... 作结果状语，表明伴随产生的积极效果。"
+  ]
+};

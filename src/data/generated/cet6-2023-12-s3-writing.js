@@ -1,0 +1,32 @@
+/* 2023年12月 第3套 CET-6 写作题。
+ * 来源：2023年12月CET6题+解+音频\01、真题PDF版（推荐打印）❤\2023.12六级真题第3套【可复制可检索】.pdf p1（Part I Writing 题干）
+ * 核对：2023年12月CET6题+解+音频\03、答案解析\2023.12英语六级真题第3套解析.pdf p1（审题/参考范文&点评/范文译文）
+ * 验证状态：verified — 题干与范文均与原件逐句核对 */
+
+export const writing202312S3 = {
+  "id": "cet6-2023-12-s3",
+  "meta": {
+    "level": "CET6",
+    "year": 2023,
+    "month": 12,
+    "set": 3,
+    "source": "2023年12月CET6题+解+音频\\01、真题PDF版（推荐打印）❤\\2023.12六级真题第3套【可复制可检索】.pdf p1（Part I Writing 题干）",
+    "answerSource": "2023年12月CET6题+解+音频\\03、答案解析\\2023.12英语六级真题第3套解析.pdf p1（审题/参考范文&点评/范文译文）",
+    "pages": "原题第1页 / 解析第1页",
+    "verified": true,
+    "verifiedAt": "2026-11-05"
+  },
+  "title": "2023年12月 第3套",
+  "topic": "老年人继续为社会做贡献",
+  "directions": "For this part, you are allowed 30 minutes to write an essay that begins with the sentence \"With their valuable skills and experience, elderly people can continue to make significant contributions to society.\" You can make comments, cite examples or use your personal observations to develop your essay. You should write at least 150 words but no more than 200 words (not including the sentence given).",
+  "minWords": 150,
+  "maxWords": 200,
+  "model": "With their valuable skills and experience, elderly people can continue to make significant contributions to society. I fully agree with this view since elderly people outperform young people in skills and experience and with these advantages they can still contribute a lot to society.\n\nFirstly, elderly people, with their expertise and rich experience can do better than young people in many fields. Let's take an example of education. Elderly teachers in school, with years of teaching experience, know better how to inspire students and they are good at teaching students in accordance with their aptitude. Young teachers still need to learn teaching skills under the elderly teachers' expert guidance. Thus, elderly teachers can make great contributions towards education. Furthermore, elderly people can deal with difficult problems. For example, facing cases with complicated symptoms, elderly doctors can make accurate diagnosis thanks to their professional skills and rich experience. And young doctors have a lot to learn from those elderly doctors. Therefore, elderly doctors play an important role in medical care.\n\nTo sum up, elderly people can continue to make great contributions to society with their valuable skills and experience. They can play an active role in various fields of the society.",
+  "modelZh": "老年人凭借其宝贵的技能和经验，可以继续为社会做出重要贡献。我完全同意这一观点，因为老年人在技能和经验方面优于年轻人，有了这些优势，他们仍然可以为社会做出许多贡献。\n\n首先，老年人凭借其专业知识和丰富的经验，在许多领域可以比年轻人做得更好。我们以教育为例。学校里的老教师有多年的教学经验，更懂得如何启发学生，而且他们善于因材施教。青年教师还需要在老教师的专业指导下学习教学技能。因此，老教师可以为教育做出巨大贡献。此外，老年人可以解决困难的问题。例如，面对病症复杂的病人，老医生凭借专业技能和丰富的经验，可以做出准确的诊断。而且，年轻的医生有许多东西要向那些老医生学习。因此，老医生在医疗服务中发挥着重要的作用。\n\n总之，老年人可以用他们宝贵的技能和经验继续为社会做出巨大贡献。他们可以在社会的各个领域发挥积极的作用。",
+  "review": "题目要求考生写一篇以“老年人凭借他们宝贵的技能和经验，能够继续为社会做出重要贡献”开头的作文，考生可以通过发表评论、举例子或给出个人的观察结果来写文章。根据题目提示，作文可以采取以下布局：开头段表明个人立场，即完全同意这一观点；中间段列出具体论据；结尾段总结全文。考生写作时可以使用与“说明重要性”“阐述原因”相关的写作句型。",
+  "points": [
+    "表明个人立场，即完全同意“老年人凭借其宝贵的技能和经验，可以继续为社会做出重要贡献”这一观点。",
+    "分别从老年人在许多领域比年轻人做得更好以及老年人可以解决困难的问题两个方面论证上述观点，由连接词Firstly和Furthermore引出。",
+    "总结全文，重申老年人可以用他们宝贵的技能和经验继续为社会做出巨大贡献。"
+  ]
+};

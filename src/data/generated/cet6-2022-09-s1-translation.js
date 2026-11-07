@@ -1,0 +1,120 @@
+/* 2022年9月 第1套 CET-6 翻译题。
+ * 来源：2022年09月CET6题+解+音频\03、答案解析\2022.09英语六级解析第1套.pdf
+ * 核对：2022.09英语六级解析第1套.pdf p14（Part IV Translation 参考译文）
+ * 验证状态：verified — 该页只有参考译文、未附翻译点拨；题干括注英文按真题原样保留，故 passage 含英文单词（非译文混入）。 */
+
+export const translation202209S1 = {
+  "id": "cet6-2022-09-s1",
+  "meta": {
+    "level": "CET6",
+    "year": 2022,
+    "month": 9,
+    "set": 1,
+    "source": "2022年09月CET6题+解+音频\\03、答案解析\\2022.09英语六级解析第1套.pdf",
+    "answerSource": "2022.09英语六级解析第1套.pdf p14（Part IV Translation 参考译文）",
+    "pages": "解析第14页",
+    "verified": true,
+    "verifiedAt": "2026-11-05",
+    "note": "该页只有参考译文、未附翻译点拨；题干括注英文按真题原样保留，故 passage 含英文单词（非译文混入）。"
+  },
+  "title": "2022年9月 第1套",
+  "topic": "春联",
+  "directions": "For this part, you are allowed 30 minutes to translate a passage from Chinese into English.",
+  "passage": "贴春联(Spring Festival Couplets)是中国人欢度春节的一个重要习俗。春联由一对诗句和四字横批(horizontal scroll)组成，诗句和横批用金色或黑色写在红纸上，红色代表幸运，金色代表财富。春联贴在大门左右两侧和门框上方。春联的诗句体现中国传统诗词的特点，两句诗的字数相同、内容相关。横批凸显春联的主题，更是锦上添花。春联以简洁的文字描绘生动的形象，抒发美好的愿望。当家家户户贴春联时，人们就会意识到春节已经正式拉开序幕。",
+  "reference": "Pasting the Spring Festival couplets is an important custom for Chinese people to celebrate the Spring Festival. The Spring Festival couplets consist of a pair of poems and a four-character horizontal scroll written in gold or black on red paper, with red representing luck and gold representing wealth. The Spring Festival couplets are pasted on the left and right sides of the gate and above the door frame. The lines of the Spring Festival couplets embody the characteristics of traditional Chinese poetry, with two lines having the same number of characters and related content. The horizontal scroll highlighting the theme of the Spring Festival couplets is even the icing on the cake. People depict vivid images in simple words in the Spring Festival couplets, expressing a beautiful vision. When every household puts up the Spring Festival couplets, people will realize that the Spring Festival has officially kicked off.",
+  "notes": [
+    [
+      "贴春联",
+      "paste the Spring Festival couplets"
+    ],
+    [
+      "习俗",
+      "custom"
+    ],
+    [
+      "欢度春节",
+      "celebrate the Spring Festival"
+    ],
+    [
+      "由……组成",
+      "consist of"
+    ],
+    [
+      "一对诗句",
+      "a pair of poems"
+    ],
+    [
+      "四字横批",
+      "a four-character horizontal scroll"
+    ],
+    [
+      "金色或黑色",
+      "in gold or black"
+    ],
+    [
+      "代表幸运",
+      "represent luck"
+    ],
+    [
+      "代表财富",
+      "represent wealth"
+    ],
+    [
+      "大门左右两侧",
+      "the left and right sides of the gate"
+    ],
+    [
+      "门框上方",
+      "above the door frame"
+    ],
+    [
+      "体现",
+      "embody"
+    ],
+    [
+      "字数相同",
+      "have the same number of characters"
+    ],
+    [
+      "内容相关",
+      "related content"
+    ],
+    [
+      "凸显主题",
+      "highlight the theme"
+    ],
+    [
+      "锦上添花",
+      "the icing on the cake"
+    ],
+    [
+      "简洁的文字",
+      "simple words"
+    ],
+    [
+      "描绘生动的形象",
+      "depict vivid images"
+    ],
+    [
+      "抒发美好的愿望",
+      "express a beautiful vision"
+    ],
+    [
+      "家家户户",
+      "every household"
+    ],
+    [
+      "拉开序幕",
+      "kick off"
+    ]
+  ],
+  "points": [
+    "第一句：动名词短语 Pasting the Spring Festival couplets 作主语，谓语用单数 is；“欢度春节”用 to celebrate the Spring Festival 作目的状语。",
+    "第二句：主干 consist of a pair of poems and a four-character horizontal scroll；“写在红纸上”用过去分词 written in gold or black on red paper 作后置定语；“红色代表幸运，金色代表财富”用 with + 名词 + 现在分词独立结构（with red representing luck...）。",
+    "第三句：用被动语态 are pasted；“大门左右两侧和门框上方”用 on the left and right sides of the gate and above the door frame 并列介词短语。",
+    "第四句：“体现……特点”用 embody the characteristics of...；“两句诗的字数相同、内容相关”用 with two lines having the same number of characters and related content 独立结构。",
+    "第五句：“横批凸显主题”用现在分词短语作主语修饰，即 The horizontal scroll highlighting the theme...；“更是锦上添花”用 the icing on the cake 地道表达。",
+    "第六句：People 作主语，“以简洁的文字描绘生动的形象”用 in simple words 方式状语；“抒发美好的愿望”用现在分词 expressing 作伴随状语。",
+    "第七句：When 引导时间状语从句，“家家户户贴春联”用 every household puts up...；主句用 will realize；“正式拉开序幕”用 has officially kicked off，用现在完成时强调动作完成。"
+  ]
+};

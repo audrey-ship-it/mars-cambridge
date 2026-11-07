@@ -1,0 +1,41 @@
+{
+  "id": "cet6-2025-12-s1",
+  "year": 2025,
+  "month": 12,
+  "set": 1,
+  "title": "2025年12月 第1套",
+  "topic": "尊老敬老",
+  "passage": "尊老是中华民族的传统美德，深深植根于中国人的思想和行为中，是人们普遍遵守的行为规范和社会准则。在当今的中国，这种美德得到广泛传承。社会各界积极营造敬老助老的社会氛围。为老年人提供便利服务已成为社会共识，例如社区专门开设长者食堂，公共场所配置优先座位。政府还出台了一系列政策，为老年人的权益提供有力保障。尊老是社会和谐与发展的重要基石，有助于培育良好的社会氛围，推动整个社会文明进步。",
+  "reference": "Respecting the elderly is a traditional virtue of the Chinese nation, deeply rooted in the thoughts and actions of Chinese people, acting as a widely observed behavioral norm and social principle. In contemporary China, this virtue continues to be widely passed down. All sectors of society actively foster a social atmosphere of valuing and supporting the elderly. Providing convenient services for older adults has become a societal consensus—for instance, communities have established dedicated senior canteens, and priority seating is available in public spaces. The government has also implemented a series of policies to provide strong safeguards for the rights and interests of the elderly. Respecting the elderly serves as a crucial cornerstone for social harmony and development, contributing to the cultivation of a positive social atmosphere and promoting social progress and civilization.",
+  "notes": [
+    ["传统美德", "traditional virtue"],
+    ["深深植根于", "be deeply rooted in"],
+    ["行为规范", "behavioral norm"],
+    ["社会准则", "social principle"],
+    ["得到广泛传承", "be widely passed down"],
+    ["社会各界", "all sectors of society"],
+    ["营造社会氛围", "foster a social atmosphere"],
+    ["敬老助老", "valuing and supporting the elderly"],
+    ["社会共识", "societal consensus"],
+    ["长者食堂", "senior canteens"],
+    ["优先座位", "priority seating"],
+    ["出台政策", "implement policies"],
+    ["权益", "rights and interests"],
+    ["有力保障", "strong safeguards"],
+    ["基石", "cornerstone"]
+  ],
+  "points": [
+    "第一句包含三个并列的语义层次：将“尊老”处理为动名词短语Respecting the elderly 作主语，后两个层次“深深植根于……”和“是……规范和准则”翻译为过去分词短语deeply rooted in... 和现在分词短语acting as... 作状语，句子结构紧凑、逻辑关系清晰。",
+    "第二句“在当今的中国”译为时间、地点状语In contemporary China；“得到广泛传承”暗含持续状态，用continues to be passed down 现在时的被动语态翻译，准确传达“传承”这一动态和持续的过程。",
+    "第三句“社会各界”译为All sectors of society；“营造……的社会氛围”中“敬老助老的”是“氛围”的具体内容，译文使用后置定语of valuing and supporting the elderly 修饰，使表达具体、地道。",
+    "第四句主句主语“为老年人提供便利服务”译为动名词短语Providing convenient services for older adults；“已成为社会共识”译为has become a societal consensus；举例部分用破折号引出，两个例子用and 连接，其中“配置优先座位”译为priority seating is available，更符合英文表达习惯。",
+    "第五句“出台了一系列政策”译为has implemented a series of policies；“为……提供有力保障”表目的，译为不定式短语to provide strong safeguards for... 作目的状语；“权益”固定译为rights and interests。",
+    "第六句为总结句，包含主干和两个并列的后续作用；将主干“尊老是……重要基石”处理为Respecting the elderly serves as a crucial cornerstone for...；后半部分“有助于培育……，推动……”是“尊老”带来的积极影响，译为现在分词短语contributing to... and promoting... 作结果状语；“社会文明进步”译为常用搭配social progress and civilization。"
+  ],
+  "source": "2025年12月CET6题+答案+音频/2025.12英语六级解析第1套.pdf",
+  "answerSource": "2025.12英语六级解析第1套.pdf p18（Part IV Translation 参考译文/译点精析）",
+  "pages": "解析第18页",
+  "verified": true,
+  "verifiedAt": "2026-11-05",
+  "note": "解析该套为纯扫描件，参考译文由第18页图片逐句录入；题干取自真题卷文字层"
+}

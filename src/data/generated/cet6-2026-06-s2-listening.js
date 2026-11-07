@@ -1,0 +1,733 @@
+const LISTENING = {
+  "id": "cet6-2026-06-s2",
+  "meta": {
+    "level": "CET6",
+    "year": 2026,
+    "month": 6,
+    "set": 2,
+    "source": "原题：2026年6月CET6题+答案+听力\\2026.06六级真题第2套【可复制可搜索，打印首选】.pdf；音频：2026年6月CET6题+答案+听力\\2026年6月英语六级听力第2套.mp3；解析：2026年6月CET6题+答案+听力\\2026年6月英语六级解析第2套.pdf",
+    "answerSource": "解析书答案逐题核对（读图）",
+    "verified": true,
+    "verifiedAt": "2026-11-05"
+  },
+  "audioUrls": {
+    "conv1": "/audio/cet6/cet6-2026-06-s2-conv1.mp3",
+    "conv2": "/audio/cet6/cet6-2026-06-s2-conv2.mp3",
+    "pass1": "/audio/cet6/cet6-2026-06-s2-pass1.mp3",
+    "pass2": "/audio/cet6/cet6-2026-06-s2-pass2.mp3",
+    "rec1": "/audio/cet6/cet6-2026-06-s2-rec1.mp3",
+    "rec2": "/audio/cet6/cet6-2026-06-s2-rec2.mp3",
+    "rec3": "/audio/cet6/cet6-2026-06-s2-rec3.mp3"
+  },
+  "sections": {
+    "a": [
+      {
+        "title": "Conversation One",
+        "audio": "/audio/cet6/cet6-2026-06-s2-conv1.mp3",
+        "transcript": "W: Hi, Frank. Are you working through your lunch hour again? M: No, not at all. It's my tenth wedding anniversary next week, and I promised Jane that I would book a city break for us as I have annual leave to take. And it would be nice to celebrate somewhere warm. So I'm trying to book something in Barcelona. W: That sounds so romantic. I adore Barcelona. It's such a fabulous cosmopolitan city. There's so much to do there; excellent food and that cathedral that they are still building after about 150 years. Very cool. M: I know, but the anniversary is looming and I'm still scrambling to find accommodation. Everything is either wildly expensive or already fully booked. I'm starting to feel a bit frantic. W: Well, if you are going for a whole week, why don't you do a couple of nights in somewhere really glamorous and then do the rest of the week a bit further up the coast where the accommodation is cheaper? And that will offset the cost of the expensive place. M: That might be a good plan. It's not too expensive to rent a car, so we could still drive into the city. Yes, there are lots of places outside the city that have pools and are all inclusive, so we wouldn't even need to pay for food or drinks. I'll send a query now about the dates we're interested in. W: That sounds perfect. I'm sure that Jane will be absolutely thrilled to bits. I really do recommend visiting that cathedral. You can go all the way up to the top of it, but you need to go up a really steep spiral staircase to get there. M: Considering Jane is terrified of heights, I think if I tried to make her do that, I would come back divorced. M: Thanks for the help though. It was turning into a logistical nightmare.",
+        "questions": [
+          {
+            "n": 1,
+            "text": "What is the man planning to do?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Celebrate his 10th wedding anniversary."
+              },
+              {
+                "letter": "B",
+                "text": "Celebrate his promotion in Barcelona."
+              },
+              {
+                "letter": "C",
+                "text": "Give his wife a pleasant surprise."
+              },
+              {
+                "letter": "D",
+                "text": "Ask for leave to visit Barcelona."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 2,
+            "text": "Why is the man starting to feel a bit frantic?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "He is unable to find some inexpensive accommodation."
+              },
+              {
+                "letter": "B",
+                "text": "There are few warm places to go at this time of the year."
+              },
+              {
+                "letter": "C",
+                "text": "There is so much for him to do before going on vacation."
+              },
+              {
+                "letter": "D",
+                "text": "He is afraid Barcelona may not be so fabulous as expected."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 3,
+            "text": "What does the woman suggest the man do?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Rent a car to drive into the city and scenic spots so as to save the expenses on transportation."
+              },
+              {
+                "letter": "B",
+                "text": "Spend a couple of nights in a glamorous hotel and the rest of the week in inexpensive places."
+              },
+              {
+                "letter": "C",
+                "text": "Find all-inclusive accommodation to eliminate the need to pay for food and drinks."
+              },
+              {
+                "letter": "D",
+                "text": "Stay in a hotel away from the coast where the accommodation is less expensive."
+              }
+            ],
+            "answer": "B"
+          },
+          {
+            "n": 4,
+            "text": "What does the man say about his wife Jane?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "She is sure to like the cathedral."
+              },
+              {
+                "letter": "B",
+                "text": "She is a romantic at heart."
+              },
+              {
+                "letter": "C",
+                "text": "She is no good at logistics."
+              },
+              {
+                "letter": "D",
+                "text": "She is scared of heights."
+              }
+            ],
+            "answer": "D"
+          }
+        ]
+      },
+      {
+        "title": "Conversation Two",
+        "audio": "/audio/cet6/cet6-2026-06-s2-conv2.mp3",
+        "transcript": "W: Hey there, Paul! How's it going? M: Hi, Suzanne. Just keeping busy with the usual stuff, filling prescriptions, talking to patients about their medications, that kind of thing. How about you? W: Same here, although I did have an interesting case come in this morning. A patient came in inquiring about a medication that had a potential interaction with another medication she was already taking. M: Oh, that's always tricky. What did you do? W: I explained the issue to her as best I could and recommended she double-check with her doctor. And you know what? She actually followed my advice and the doctor ended up switching the patient's medication. M: Ah, that's great. You must feel quite accomplished. W: Totally. These moments are the highlights of my routine work, employing my pharmaceutical expertise to the benefit of people's health and well-being. M: I fully agree. Unfortunately, the opposite is true when the patient is too stubborn and they refuse to listen to us. W: So true. In other developments, we've had a lot of people coming in to get their flu shots, which is always good to see. M: Good, good. I've been working on a new medication therapy management program for our patients with chronic conditions. It helps patients manage their medications more effectively. W: That sounds interesting. M: We review all of their medications and make sure that they're taking them as prescribed. We also look for any potential drug interactions or side effects. Patient response has so far been very positive. Some have reported seeing improvements in their health, which is really rewarding to see. W: That's great to hear. Do you use text message reminders? M: Yes, absolutely. W: It's a great idea. Medication non-adherence is a big problem, especially for older patients. M: We're still in the early stages of the program, but I'm hopeful that it will make a real difference for our patients.",
+        "questions": [
+          {
+            "n": 5,
+            "text": "What do we learn about the speakers?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "They often share each other's experiences."
+              },
+              {
+                "letter": "B",
+                "text": "They enjoy interacting with patients."
+              },
+              {
+                "letter": "C",
+                "text": "They always do things tricky."
+              },
+              {
+                "letter": "D",
+                "text": "They are both pharmacists."
+              }
+            ],
+            "answer": "D"
+          },
+          {
+            "n": 6,
+            "text": "What does the woman say about an interesting case she had?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "The doctor ended up admitting his mistake."
+              },
+              {
+                "letter": "B",
+                "text": "The patient consulted another doctor."
+              },
+              {
+                "letter": "C",
+                "text": "The patient actually took her advice."
+              },
+              {
+                "letter": "D",
+                "text": "The doctor double-checked with her."
+              }
+            ],
+            "answer": "C"
+          },
+          {
+            "n": 7,
+            "text": "What does the man say he has been working on?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "A proposal for applying flu shots more effectively."
+              },
+              {
+                "letter": "B",
+                "text": "A new medication therapy management program."
+              },
+              {
+                "letter": "C",
+                "text": "A novel strategy to persuade stubborn patients."
+              },
+              {
+                "letter": "D",
+                "text": "A therapy for patients with similar conditions."
+              }
+            ],
+            "answer": "B"
+          },
+          {
+            "n": 8,
+            "text": "What is a big problem, especially for older patients, according to the woman?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Inability to send text messages."
+              },
+              {
+                "letter": "B",
+                "text": "Distrust in pharmaceutical experts."
+              },
+              {
+                "letter": "C",
+                "text": "Medication non-adherence."
+              },
+              {
+                "letter": "D",
+                "text": "Need for constant reminding."
+              }
+            ],
+            "answer": "C"
+          }
+        ]
+      }
+    ],
+    "b": [
+      {
+        "title": "Passage One",
+        "audio": "/audio/cet6/cet6-2026-06-s2-pass1.mp3",
+        "transcript": "In America, at least, passion is a word that often comes up on job descriptions and in interviews. On the whole, passionate people are thought of in a positive light and considered likely to achieve their goals. But when it comes to predicting achievement, has the importance of passion been overstated? According to a new study from Stanford University, passion may be less important in certain cultures, and the fact that passion is often seen as a key to achievement may reflect a distinctly Western model of motivation. The chief factor explored in the study was how individualistic a society was. In individualistic cultures, the researchers assert, people are more motivated by pursuing paths related to their passions. But those in collectivistic cultures are more likely to see themselves as part of a network. They often place fulfilling obligations to others above focusing on their own interests. The researchers looked at data from nearly 60 countries. They found that in science subjects, passion was positively correlated with academic achievements. Higher levels of enjoyment and interest also bolstered test scores. But the strength of this correlation wasn't the same across cultures. Those in individualistic societies, such as the US, Australia and the UK, showed a stronger link between passion and achievement. The effect of passion on performance was more subtle for those in more collectivistic societies such as Colombia or Thailand. These findings were mirrored in achievement in both mathematics and reading. It's clear from the findings that passion isn't the only thing that motivates people to achieve their goals.",
+        "questions": [
+          {
+            "n": 9,
+            "text": "What are passionate people considered likely to do in America?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Accomplish their goals."
+              },
+              {
+                "letter": "B",
+                "text": "View things positively."
+              },
+              {
+                "letter": "C",
+                "text": "Overstate their importance."
+              },
+              {
+                "letter": "D",
+                "text": "Dominate job interviews."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 10,
+            "text": "What does a new study from Stanford show about the importance of passion in predicting achievement?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It reflects a strong sense of obligation to others."
+              },
+              {
+                "letter": "B",
+                "text": "It signifies a universal model of motivation."
+              },
+              {
+                "letter": "C",
+                "text": "It may differ in various cultures."
+              },
+              {
+                "letter": "D",
+                "text": "It may have been underestimated."
+              }
+            ],
+            "answer": "C"
+          },
+          {
+            "n": 11,
+            "text": "What did the researchers find about the effect of passion on academic achievement for those in more collectivistic societies?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It was under-investigated."
+              },
+              {
+                "letter": "B",
+                "text": "It was more predictable."
+              },
+              {
+                "letter": "C",
+                "text": "It was taken for granted."
+              },
+              {
+                "letter": "D",
+                "text": "It was more subtle."
+              }
+            ],
+            "answer": "D"
+          }
+        ]
+      },
+      {
+        "title": "Passage Two",
+        "audio": "/audio/cet6/cet6-2026-06-s2-pass2.mp3",
+        "transcript": "Why does nature create patterns? The reason patterns often appear in nature is simple: the same basic physical or chemical processes occur in many pattern substances and organisms as they form. Whether in plants and animals or rocks, foams and ice crystals, the intricate patterns that happen in nature come down to what's happening at the level of atoms and molecules. A pattern in nature is any regularly repeated arrangement of shapes or colors. Some of the most striking examples include the six-sided arrays of rocks at Giant's Causeway in the United Kingdom and the colorful stripes and spots on tropical fish. Patterns like these begin to form at a small scale when materials undergo processes like drying, freezing, wrinkling, diffusing, and reacting. Those changes then give rise to complex patterns at a larger scale that people can see. Imagine delicate frozen crystals on a window during winter. What creates that pattern? When water freezes, its molecules begin clustering together. Water molecules have a particular bent shape that causes them to stack into clusters as they freeze. As the cluster grows, many outside factors, including humidity and temperature, begin to affect its overall shape. If the water is freezing on a window, for example, random imperfections on the glass surface affect the stacking and create the larger pattern. But scientists do not always know the purpose of a pattern, or even if there is one. The molecular processes involved are simple enough that they might generate a pattern by coincidence.",
+        "questions": [
+          {
+            "n": 12,
+            "text": "What does the passage say is a pattern in nature?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It is an incidental happening in plants and animals or ice crystals."
+              },
+              {
+                "letter": "B",
+                "text": "It is any basic physical or chemical work in designing substances."
+              },
+              {
+                "letter": "C",
+                "text": "It is any symmetrical and colorful stripes or spots on organisms."
+              },
+              {
+                "letter": "D",
+                "text": "It is any regularly repeated arrangement of shapes or colors."
+              }
+            ],
+            "answer": "D"
+          },
+          {
+            "n": 13,
+            "text": "What gives rise to complex patterns at a larger scale?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Materials undergoing certain processes."
+              },
+              {
+                "letter": "B",
+                "text": "Materials exposed to various natural forces."
+              },
+              {
+                "letter": "C",
+                "text": "Materials impacted by any change of molecules."
+              },
+              {
+                "letter": "D",
+                "text": "Materials going through extremely radical transformations."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 14,
+            "text": "What does the example of frozen crystals on a window show?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "The beauty of molecular clustering."
+              },
+              {
+                "letter": "B",
+                "text": "The way for appreciating patterns."
+              },
+              {
+                "letter": "C",
+                "text": "The creation of patterns."
+              },
+              {
+                "letter": "D",
+                "text": "The factors affecting clusters."
+              }
+            ],
+            "answer": "C"
+          },
+          {
+            "n": 15,
+            "text": "What might molecular processes produce according to the passage?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "A pattern by accident."
+              },
+              {
+                "letter": "B",
+                "text": "Patterns for specific purposes."
+              },
+              {
+                "letter": "C",
+                "text": "Patterns with random imperfections."
+              },
+              {
+                "letter": "D",
+                "text": "A pattern with artificial intervention."
+              }
+            ],
+            "answer": "A"
+          }
+        ]
+      }
+    ],
+    "c": [
+      {
+        "title": "Recording One",
+        "audio": "/audio/cet6/cet6-2026-06-s2-rec1.mp3",
+        "transcript": "Many people, myself included, have multiple areas of life they would like to improve. For example, I would like to reach more people with my writing, to lift heavier weights at the gym, and to start practicing mindfulness more consistently. Those are just a few of the goals I find desirable, and you probably have a long list yourself. The problem is, even if we are committed to working hard on our goals, our natural tendency is to return to our old habits at some point. Making a permanent lifestyle change is really difficult. Recently I've come across a few studies that will make these difficult lifestyle changes a bit easier. As you'll see, however, the approach to mastering many areas of life is somewhat counter-intuitive. Research has shown that you are two to three times more likely to stick with your habits if you make a specific plan for when, where, and how you will perform the behavior. For example, in one study, scientists asked people to fill out a sentence to specify during the next week they would do at least 20 minutes of vigorous exercise on which day, at what time of a day, and at or in what place. Researchers found that people who filled out this sentence were two to three times more likely to actually exercise compared to a control group who did not make plans for their future behavior. Psychologists call these specific plans implementation intentions because they state when, where and how you intend to implement a particular behavior. However, follow-up research has discovered implementation intentions only work when you focus on one thing at a time. In fact, researchers found that people who tried to accomplish multiple goals were less committed and less likely to succeed than those who focused on a single goal. Another science-based reason to focus on one thing at a time is that when you begin practicing a new habit, it requires a lot of conscious effort to remember to do it. After a while, however, the pattern of behavior becomes easier. Eventually, your new habit becomes a normal routine, and the process is more or less mindless and automatic. The most important thing to note is that there is some tipping point at which new habits become more or less automatic. The time it takes to build a habit depends on many factors, including how difficult the habit is, your genetics and more.",
+        "questions": [
+          {
+            "n": 16,
+            "text": "What does the speaker say is really difficult?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Eliminating all the old habits at once."
+              },
+              {
+                "letter": "B",
+                "text": "Making a permanent lifestyle change."
+              },
+              {
+                "letter": "C",
+                "text": "Realizing all the life goals one has set."
+              },
+              {
+                "letter": "D",
+                "text": "Improving multiple areas of one's life."
+              }
+            ],
+            "answer": "B"
+          },
+          {
+            "n": 17,
+            "text": "What did researchers find about people with implementation intentions?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "They were more likely to implement a particular behavior."
+              },
+              {
+                "letter": "B",
+                "text": "They were more likely to make plans for their future."
+              },
+              {
+                "letter": "C",
+                "text": "They tended to be committed to a single goal."
+              },
+              {
+                "letter": "D",
+                "text": "They tended to focus on one thing at a time."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 18,
+            "text": "According to the speaker, what is required of you when you begin practicing a new habit?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "The ability to make the process automatic."
+              },
+              {
+                "letter": "B",
+                "text": "A practical timetable for implementation."
+              },
+              {
+                "letter": "C",
+                "text": "A lot of conscious effort to remember to do it."
+              },
+              {
+                "letter": "D",
+                "text": "Concentration on the benefits it will provide."
+              }
+            ],
+            "answer": "C"
+          }
+        ]
+      },
+      {
+        "title": "Recording Two",
+        "audio": "/audio/cet6/cet6-2026-06-s2-rec2.mp3",
+        "transcript": "It was a lazy, hazy, crazy day on the dwarf planet Pluto when New Horizons, a spacecraft from Earth, flew by at a speed of 3,100 miles per hour two years ago. The spacecraft took a bunch of photos, made some quick measurements of Pluto's atmosphere, and sent them all back here, giving planetary scientists their first up-close look of the distant dwarf planet. One of the more bizarre things they found was that the haze in Pluto's atmosphere was much thicker than previously thought. The planet also had an atmosphere much cooler than earlier estimates, topping out at -333.4 degrees Fahrenheit. Now, a study published in Nature links those two atmospheric observations. A computer model developed by planetary scientist Xi Zhang and colleagues shows the haze of tiny droplets in the upper atmosphere is likely scattering light from the Sun, preventing heat from reaching the planet below. We see hazy skies on Earth, too, from time to time when solid particles get suspended in the air, from water-based fogs to ash from fires, to the toxic droplets that make up a thick smog. But on Earth, the overall temperature of the planet is dominated by the distribution of gases in our atmosphere. On Pluto, the authors suggest, haze might be more influential. Particles can reflect light from the Sun. Here on Earth, it happens after volcanoes erupt, emitting clouds of particles that reflect the Sun's rays into the atmosphere. Some people even propose imitating this phenomenon to alleviate the effects of climate change, but our planet isn't dominated by that process, or at least it hasn't been for a few billion years. If Pluto's atmosphere is very different from ours and from that of other nearby planets, it could help scientists expand their understanding of planetary atmospheres. But right now, this is just a good guess, based on data from New Horizons and a sophisticated computer model, not direct observations of the haze's composition. There are other theories floating around to explain Pluto's cool temperatures, including blaming the cold air on gases in the atmosphere. Luckily, the authors will get a chance to test their notions when the James Webb Space Telescope launches later. That observatory can detect different spectrums of light, which the hazy Plutonian atmosphere would be possibly glowing with as it scatters sunlight. The researchers just have to wait and see if the light from the telescope validates their bright idea.",
+        "questions": [
+          {
+            "n": 19,
+            "text": "What was one of the more bizarre findings about Pluto's atmosphere?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It resembles that of Earth in many inconceivable ways."
+              },
+              {
+                "letter": "B",
+                "text": "It has a haze much thicker than previously believed."
+              },
+              {
+                "letter": "C",
+                "text": "It is 333.4°F cooler than earlier estimates."
+              },
+              {
+                "letter": "D",
+                "text": "It is far beyond any quick measurements."
+              }
+            ],
+            "answer": "B"
+          },
+          {
+            "n": 20,
+            "text": "What is said to determine the overall temperature on Earth?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "The accumulation of solid particles in the air."
+              },
+              {
+                "letter": "B",
+                "text": "The distribution of gases in its atmosphere."
+              },
+              {
+                "letter": "C",
+                "text": "The clouds of particles reflecting sun rays."
+              },
+              {
+                "letter": "D",
+                "text": "The aggravated effects of climate change."
+              }
+            ],
+            "answer": "B"
+          },
+          {
+            "n": 21,
+            "text": "What does the speaker say the researchers have to wait and see?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "If spectrums of light can be better detected by telescope."
+              },
+              {
+                "letter": "B",
+                "text": "If Pluto's hazy atmosphere can be more easily observed."
+              },
+              {
+                "letter": "C",
+                "text": "If Pluto's hazy atmosphere scatters strong sunlight."
+              },
+              {
+                "letter": "D",
+                "text": "If the light from the telescope confirms their idea."
+              }
+            ],
+            "answer": "D"
+          }
+        ]
+      },
+      {
+        "title": "Recording Three",
+        "audio": "/audio/cet6/cet6-2026-06-s2-rec3.mp3",
+        "transcript": "Parents have a small window where they can influence their eight-to-ten-year-old children's music taste, researchers have concluded. The 24-month time frame comes at an age when youngsters are old enough to appreciate poetic lyrics and snappy tunes, but have not yet started to be embarrassed by their mother and father's preferences. Dr. Hawk Egermann, a lecturer in music at the University of York, carried out a literature review into more than a dozen studies looking at parental musical influence. \"Children have an openness to new music and this means parents have an important role to play in developing the musical preferences of their kids,\" he said. However, time is of the essence as parental influence is most likely to be effective during the critical time period before age ten. During adolescence, children tend to gravitate away from their parents' choices and are more influenced by their peers. A separate survey of 2,000 British parents by a music streaming service, TSA, also found that nearly four fifths of parents agreed that their children were far more receptive to their musical suggestions before the age of ten. In contrast, just 10% of parents reported positive reactions from their teenage children when they shared their favourite music. Some 79% of fathers said they had tried to influence their children's music, but just 69% of mothers. However, mothers were more effective, with 38% reporting that their kids loved the tunes they shared, compared to 30% of dads who in some cases said their children cried or even fell asleep. Dr. Egermann claims introducing children to a variety of musical styles is the key to fostering good taste in later life. By playing children a variety of genres before this critical period, research on familiarization suggests they will enjoy lots of different types of music as adults, he added. The benefits of having a wider taste in music include the ability to manage their emotions more effectively, socialize and bond with others more easily, and to have a better understanding of other cultures as well. Dr. Egermann advises parents not to push their favourite music too hard on their children, but instead play it as background music while the child is playing. They can also help create positive memories about artists and bands by going to concerts and live music events together.",
+        "questions": [
+          {
+            "n": 22,
+            "text": "What do we learn from researchers' conclusion at the beginning of the talk?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Parents can play a decisive role in cultivating their children's musical talent."
+              },
+              {
+                "letter": "B",
+                "text": "Children are embarrassed by parents' failure to appreciate their music."
+              },
+              {
+                "letter": "C",
+                "text": "Parents can mould their 8- to 10-year-old children's music taste."
+              },
+              {
+                "letter": "D",
+                "text": "Children aged 8 to 10 are old enough to produce poetic lyrics."
+              }
+            ],
+            "answer": "C"
+          },
+          {
+            "n": 23,
+            "text": "What does Dr. Hawk Egermann say about adolescence?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "They start to show their own musical preference."
+              },
+              {
+                "letter": "B",
+                "text": "They tend to be more influenced by their peers."
+              },
+              {
+                "letter": "C",
+                "text": "They tend to gravitate away from their homes."
+              },
+              {
+                "letter": "D",
+                "text": "They are more open to new genres of music."
+              }
+            ],
+            "answer": "B"
+          },
+          {
+            "n": 24,
+            "text": "What is the key to fostering good taste in later life according to Dr. Hawk Egermann?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Enabling children to be receptive to music experts' suggestions."
+              },
+              {
+                "letter": "B",
+                "text": "Helping children develop the ability to manage their emotions."
+              },
+              {
+                "letter": "C",
+                "text": "Familiarising children with different schools of music."
+              },
+              {
+                "letter": "D",
+                "text": "Introducing children to a variety of musical styles."
+              }
+            ],
+            "answer": "D"
+          },
+          {
+            "n": 25,
+            "text": "How can parents help children create positive memories about artists and bands?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "By enhancing children's appreciation of their music."
+              },
+              {
+                "letter": "B",
+                "text": "By pushing their music hard enough upon children."
+              },
+              {
+                "letter": "C",
+                "text": "By attending their concerts and live music events with children."
+              },
+              {
+                "letter": "D",
+                "text": "By introducing their music to children as early as possible."
+              }
+            ],
+            "answer": "C"
+          }
+        ]
+      }
+    ]
+  },
+  "answerQuotes": {
+    "1": [
+      "It's my tenth wedding anniversary next week, and I promised Jane that I would book a city break for us as I have annual leave to take."
+    ],
+    "2": [
+      "M: I know, but the anniversary is looming and I'm still scrambling to find accommodation."
+    ],
+    "3": [
+      "W: Well, if you are going for a whole week, why don't you do a couple of nights in somewhere really glamorous and then do the rest of the week a bit further up the coast where the accommodation is cheaper?"
+    ],
+    "4": [
+      "M: Considering Jane is terrified of heights, I think if I tried to make her do that, I would come back divorced."
+    ],
+    "5": [
+      "Just keeping busy with the usual stuff, filling prescriptions, talking to patients about their medications, that kind of thing."
+    ],
+    "6": [
+      "She actually followed my advice and the doctor ended up switching the patient's medication."
+    ],
+    "7": [
+      "I've been working on a new medication therapy management program for our patients with chronic conditions."
+    ],
+    "8": [
+      "Medication non-adherence is a big problem, especially for older patients."
+    ],
+    "9": [
+      "On the whole, passionate people are thought of in a positive light and considered likely to achieve their goals."
+    ],
+    "10": [
+      "According to a new study from Stanford University, passion may be less important in certain cultures, and the fact that passion is often seen as a key to achievement may reflect a distinctly Western model of motivation."
+    ],
+    "11": [
+      "The effect of passion on performance was more subtle for those in more collectivistic societies such as Colombia or Thailand."
+    ],
+    "12": [
+      "A pattern in nature is any regularly repeated arrangement of shapes or colors."
+    ],
+    "13": [
+      "Patterns like these begin to form at a small scale when materials undergo processes like drying, freezing, wrinkling, diffusing, and reacting."
+    ],
+    "14": [
+      "Imagine delicate frozen crystals on a window during winter."
+    ],
+    "15": [
+      "The molecular processes involved are simple enough that they might generate a pattern by coincidence."
+    ],
+    "16": [
+      "Making a permanent lifestyle change is really difficult."
+    ],
+    "17": [
+      "Researchers found that people who filled out this sentence were two to three times more likely to actually exercise compared to a control group who did not make plans for their future behavior."
+    ],
+    "18": [
+      "Another science-based reason to focus on one thing at a time is that when you begin practicing a new habit, it requires a lot of conscious effort to remember to do it."
+    ],
+    "19": [
+      "One of the more bizarre things they found was that the haze in Pluto's atmosphere was much thicker than previously thought."
+    ],
+    "20": [
+      "But on Earth, the overall temperature of the planet is dominated by the distribution of gases in our atmosphere."
+    ],
+    "21": [
+      "The researchers just have to wait and see if the light from the telescope validates their bright idea."
+    ],
+    "22": [
+      "Parents have a small window where they can influence their eight-to-ten-year-old children's music taste, researchers have concluded."
+    ],
+    "23": [
+      "During adolescence, children tend to gravitate away from their parents' choices and are more influenced by their peers."
+    ],
+    "24": [
+      "Dr."
+    ],
+    "25": [
+      "They can also help create positive memories about artists and bands by going to concerts and live music events together."
+    ]
+  }
+}
+
+export default LISTENING

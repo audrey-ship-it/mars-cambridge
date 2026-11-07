@@ -1,0 +1,453 @@
+{
+  "id": "cet6-2021-12-s2",
+  "meta": {
+    "level": "CET6",
+    "year": 2021,
+    "month": 12,
+    "set": 2,
+    "source": "2021.12六级真题第2套.pdf（Section A 已按真题页面人工校对）（Section A 已按真题页面人工校对）",
+    "answerSource": "解析书答案逐题核对（文字层/OCR + 读图）",
+    "verified": true,
+    "warnings": []
+  },
+  "reading": {
+    "banked": {
+      "passage": "According to psychologist Sharon Draper, our clothing choices can absolutely affect our well-being. When we wear ill-fitting clothes, or feel over- or under-dressed for an event, it's natural to feel self-conscious or even stressed. Conversely, she says, opting for clothes that fit well and {{26}} with your sense of style can improve your confidence. But can you improve your health through your {{27}} clothing, without having to dash out and buy a whole new {{28}}? \"Absolutely,\" says Draper. If your goal is to improve your thinking, she recommends picking clothes that fit well and are unlikely to encourage restlessness, so, avoid bows, ties and unnecessary {{29}}. It also helps to opt for clothes you {{30}} as tying in with your goals, so, if you want to perform better at work, select pieces you view as professional. Draper says this fits in with the concept of behavioral activation, whereby {{31}} in a behavior (in this case, selecting clothes) can set you on the path to then achieving your goals (working harder). Another way to improve your {{32}} of mind is to mix things up. Draper says we often feel stuck in a rut (常规) if we wear the same clothes — even if they're our favorites—thus opting for an item you don't wear often, or adding something different to an outfit, such as a hat, can {{33}} shift your mood. On days when you're really {{34}} to brave the world, Draper suggests selecting sentimental items of clothing, such as ones you wore on a special day, or given to you by a loved one, as clothes with {{35}} associations can help you tap into constructive emotions.",
+      "options": [
+        {
+          "letter": "A",
+          "word": "accessories"
+        },
+        {
+          "letter": "B",
+          "word": "align"
+        },
+        {
+          "letter": "C",
+          "word": "concurrently"
+        },
+        {
+          "letter": "D",
+          "word": "current"
+        },
+        {
+          "letter": "E",
+          "word": "engaging"
+        },
+        {
+          "letter": "F",
+          "word": "fond"
+        },
+        {
+          "letter": "G",
+          "word": "frame"
+        },
+        {
+          "letter": "H",
+          "word": "locations"
+        },
+        {
+          "letter": "I",
+          "word": "perceive"
+        },
+        {
+          "letter": "J",
+          "word": "positively"
+        },
+        {
+          "letter": "K",
+          "word": "profile"
+        },
+        {
+          "letter": "L",
+          "word": "prospering"
+        },
+        {
+          "letter": "M",
+          "word": "reluctant"
+        },
+        {
+          "letter": "N",
+          "word": "showcase"
+        },
+        {
+          "letter": "O",
+          "word": "wardrobe"
+        }
+      ],
+      "answers": [
+        "B",
+        "D",
+        "O",
+        "A",
+        "I",
+        "E",
+        "G",
+        "J",
+        "M",
+        "F"
+      ]
+    },
+    "matching": {
+      "title": "",
+      "paragraphs": [
+        {
+          "label": "A",
+          "text": "A recent analysis found that most research mischaracterizes the relationship between music and skills enhancement."
+        },
+        {
+          "label": "B",
+          "text": "In 2004, a paper appeared in the journal Psychological Science, titled \"Music Lessons Enhance IQ.\" The author, composer and psychologist Glenn Schellenberg had conducted an experiment with 144 children randomly assigned to four groups: one learned the keyboard for a year, one took singing lessons, one joined an acting class, and a control group had no extracurricular training. The IQ of the children in the two musical groups rose by an average of seven points in the course of a year; those in the other two groups gained an average of 4.3 points"
+        },
+        {
+          "label": "C",
+          "text": "Schellenberg had long been skeptical of the science supporting claims that music education e咄ances children's abstract reasoning, math, or language sk仆ls. If children who play the piano are smarter, he says, it doesn't necessarily mean they are smarter because they play the piano. It could be that the youngsters who play the piano also happen to be more ambitious or better at focusing on a task. Correlation, after all, does not prove causation."
+        },
+        {
+          "label": "D",
+          "text": "The 2004 paper was specifically designed to address those concerns. And as a passionate musician, Schellenberg was delighted when he turned up credible evidence that music has transfer effects on general intelligence. But nearly a decade later, in 2013, the Education Endowment Foundation funded a bigger study with more than 900 students. That study failed to confirm Schellenberg's findings, producing no evidence that music lessons improved math and literacy skills."
+        },
+        {
+          "label": "E",
+          "text": "Schellenberg took that news in stride while continuing to cast a skeptical eye on the research in his field. Recently, he decided to formally investigate just how often his fellow researchers in psychology and neuroscience make what he believes are erroneous 一or at least premature—causal connections between music and intelligence. His results, published in May, suggest that many of his peers do just that"
+        },
+        {
+          "label": "F",
+          "text": "For his recent study, Schellenberg asked two research assistants to look for correlational studies on the effects of music education. They found a total of 114 papers published since 2000. To assess whether the authors claimed any causation, researchers then looked for telltale verbs in each paper's title and abstract, verbs like \"enhance,\" \"promote,\" \"facilitate,\" and \"strengthen.\" The papers were categorized as neuroscience if the study employed a brain imaging method like magnetic resonance, or if the study appeared in a journal that had \"brain,\" \"neuroscience,\" or a related term in its title. Otherwise the papers were categorized as psychology. Schellenberg didn't tell his assistants what exactly he was trying to prove."
+        },
+        {
+          "label": "G",
+          "text": "After computing their assessments, Schellenberg concluded that the majority of the articles erroneously claimed that music training had a causal effect. The overselling, he also found, was more prevalent among neuroscience stud比s, three quarters of which mischaracterized a mere association between music training and skills enhancement as a cause-and-effect relationship. This may come as a surprise to some. Psychologists have been battling charges that they don't do \"real\" science for some time — in large part because many findings from classic experiments have proved unreproducible Neuroscientists, on the other hand, armed with brain scans and EEGs （脑电图）， have not been subject to the same degree of critique."
+        },
+        {
+          "label": "H",
+          "text": "To argue for a cause-and-effect relationship, scientists must attempt to explain why and how a connection could occur. When it comes to transfer effects of music, scientists frequently point to brain plasticity－一the fact that the brain changes according to how we use it. When a child learns to play the violin, for example, several studies have shown that the brain region responsible for the fine motor skills of the left hand's fingers is likely to grow. And many experiments have shown that musical training improves certain hearing capabilities, like filtering voices from background noise or distinguishing the difference between the consonants （辅音） ＇ b' and'g' ."
+        },
+        {
+          "label": "I",
+          "text": "But Schellenberg remains highly critical of how the concept of plasticity has been applied in his field. \"Plasticity has become an industry of its own,\" he wrote in his May paper. Practice does change the brain, he allows, but what is questionable is the assertion that these changes affect other brain regions, such as those responsible for spatial reasoning or math problems"
+        },
+        {
+          "label": "J",
+          "text": "Neuropsychologist Lutz Jancke agrees. \"Most of these studies don't allow for causal inferences,\" he said. For over two decades, Jancke has researched the effects of music lessons, and like Schellenberg, he believes that the only way to truly understand the订 effects is to run longitudinal studies. In such studies, researchers would need to follow groups of children with and without music lessons over a long period of time—even if the assignments are not completely random. Then they could compare outcomes for each group."
+        },
+        {
+          "label": "K",
+          "text": "Some researchers are starting to do just that. The neuroscientist Peter Schneider from Heidelberg University in Germany, for example, has been following a group of children for ten years now. Some of them were handed musical instruments and given lessons through a school-based program in the Ruhr region of Germany called Jedem Kind ein Instrument, or \"an instrument for every child,\" which was carried out with government funding. Among these children, Schneider has found that those who were enthusiastic about music and who practiced voluntarily showed improvements in hearing ability, as well as in more general competencies, such as the ab山ty to concentrate"
+        },
+        {
+          "label": "L",
+          "text": "To establish whether effects such as improved concentration are caused by music participation itself, and not by investing time in an extracurricular activity of any kind, Assal Hab加， a psychology professor at the University of Southern California, is conducting a five-year longitudinal study with children from low-income communities in Los Angeles. The youngsters fall into three groups: those who take after-school music, those who do after-school sports, and those with no structured after-school program at all. After two years, Habibi and her colleagues reported seeing structural changes in the brains of the musically trained children, both locally and in the pathways connecting different parts of the brain."
+        },
+        {
+          "label": "M",
+          "text": "That may seem compelling, but Hab佃s children were not selected randomly. Did the children who were drawn to music perhaps have something in them from the start that made them different but eluded the brain scanners? \"As somebody who started taking piano lessons at the age of five and got up every morning at seven to practice, that experience changed me and made me part of who I am today,\" Schellenberg said \"The question is whether those kinds of experiences do so systematically across individuals and create exactly the same changes. And I think that is that huge leap of faith.\""
+        },
+        {
+          "label": "N",
+          "text": "Did he have a hidden talent that others didn't have? Or more endurance than his peers? Music researchers tend, like Schellenberg, to be musicians themselves, and as he noted in his recent paper, \"the idea of positive cognitive and neural side effects from music training (and other pleasurable activities) is inherently appealing.\" He also admits that if he had children of his own, he would encourage them to take music lessons and go to university. \"I would think that it makes them better people, more critical, just wiser in general,\" he said."
+        },
+        {
+          "label": "O",
+          "text": "But those convictions should be checked at the entrance to the lab, he added. Otherwise, the work becomes religion or faith. \"You have to let go of your faith if you want to be a SClennst."
+        }
+      ],
+      "questions": [
+        {
+          "n": 36,
+          "text": "Glenn Schellenberg's latest research suggests many psychologists and neuroscientists wrongly believe in the causal relationship between music and IQ"
+        },
+        {
+          "n": 37,
+          "text": "The belief in the positive effects of music training appeals to many researchers who are musicians themselves."
+        },
+        {
+          "n": 38,
+          "text": "Glenn Schellenberg was doubtful about the claim that music education helps enhance 啦ldren's intelligence."
+        },
+        {
+          "n": 39,
+          "text": "Glenn Schellenberg came to the conclusion that most of the papers assessed made the wrong claim regarding music's effect on intelligence."
+        },
+        {
+          "n": 40,
+          "text": "You must abandon your unverified beliefs before you become a scientist."
+        },
+        {
+          "n": 41,
+          "text": "Lots of experiments have demonstrated that people with music training can better differentiate certain sounds."
+        },
+        {
+          "n": 42,
+          "text": "Glenn Schellenberg's findings at the beginning of this century were not supported by a larger study carried out some ten years later."
+        },
+        {
+          "n": 43,
+          "text": "One researcher shares Glenn Schellenberg' view that it is necessary to conduct long-term developmental studies to understand the effects of music training."
+        },
+        {
+          "n": 44,
+          "text": "Glenn Schellenberg's research assistants had no idea what he was trying to prove in his new study."
+        },
+        {
+          "n": 45,
+          "text": "Glenn Schellenberg admits that practice can change certain areas of the brain but doubts that the change can affect other areas."
+        }
+      ],
+      "answers": [
+        "E",
+        "N",
+        "C",
+        "G",
+        "O",
+        "H",
+        "D",
+        "J",
+        "F",
+        "I"
+      ]
+    },
+    "careful": [
+      {
+        "passage": "Questions 46 to 50 are based on the following passage. The trend toward rationality and enlightenment was endangered long before the advent of the World Wide Web. As Neil Postman noted in his 1985 book Amusing Ourselves to Death, the rise of television introduced not just a new medium but a new discourse: a gradual shift from a typographic (印刷的）culture to a photographic one, which in tum meant a shift from rationality to emotions, exposition to entertainment. In an image-centered and pleasure-driven world, Postman noted, there is no place for rational thinking, because you simply cannot think with images. It is text that enables us to \"uncover lies, confusions and overgeneralizations, and to detect abuses of logic and common sense. It also means to weigh ideas, to compare and contrast assertions, to connect one generalization to another.\" The dominance of television was not confined to our living rooms. It overturned all of those habits of mind, fundamentally changing our experience of the world, affecting the conduct of politics, religion, business, and culture. It reduced many aspects of modem life to entertainment, sensationalism, and commerce. \"Americans don't talk to each other, we entertain each other,\" Postman wrote. \"They don't exchange ideas, they exchange images. They do not argue with propositions, they argue with good looks, celebrities and commercials.\" At first, the web seemed to push against this trend. When it emerged towards the end of the 1980s as a purely text-based medium, it was seen as a tool to pursue knowledge, not pleasure. Reason and thought were most valued in this garden — all derived from the project of the Enlightenment. Universities around the world were among the first to connect to this new medium, which hosted discussion groups, informative personal or group blogs, electronic magazines, and academic mailing lists and forums. It was an intellectual project, not about commerce or control, created in a scientific research center in Switzerland. And for more than a decade, the web created an alternative space that threatened television's grip on society. Social networks, though, have since colonized the web for television's values. From Facebook to Instagram, the medium refocuses our attention on videos and images, — rewarding emotional appeals —'like' buttons over rational ones. Instead of a quest for knowledge, it engages us in an endless zest （热情） for instant approval from an audience, for which we are constantly but unconsciously performing. (It's telling that, while Google began life as a PhD thesis, Facebook started as a tool to judge classmates, appearances.) It reduces our curiosity by showing us exactly what we already want and think, based on our profiles and preferences. The Enlightenment's motto （座右铭） of'Dare to know' has become'Dare not to care to know.'",
+        "questions": [
+          {
+            "n": 46,
+            "text": "What did Neil Postman say about the rise of television?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It initiated a change from dominance of reason to supremacy of pleasure."
+              },
+              {
+                "letter": "B",
+                "text": "It brought about a gradual shift from cinema going to home entertainment"
+              },
+              {
+                "letter": "C",
+                "text": "It started a revolution in photographic technology"
+              },
+              {
+                "letter": "D",
+                "text": "It marked a new age in the entertainment industry"
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 47,
+            "text": "According to the passage, what is the advantage of text reading?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It gives one access to huge amounts of information."
+              },
+              {
+                "letter": "B",
+                "text": "It allows more information to be processed quickly"
+              },
+              {
+                "letter": "C",
+                "text": "It is capable of enriching one's life."
+              },
+              {
+                "letter": "D",
+                "text": "It is conducive to critical thinking."
+              }
+            ],
+            "answer": "D"
+          },
+          {
+            "n": 48,
+            "text": "How has television impacted Americans?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It has given them a lot more to argue about."
+              },
+              {
+                "letter": "B",
+                "text": "It has brought celebrities closer to their lives."
+              },
+              {
+                "letter": "C",
+                "text": "It has made them care more about what they say."
+              },
+              {
+                "letter": "D",
+                "text": "It has rendered their interactions more superficial."
+              }
+            ],
+            "answer": "D"
+          },
+          {
+            "n": 49,
+            "text": "What does the passage say about the World Wide Web?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It was developed primarily for universities worldwide."
+              },
+              {
+                "letter": "B",
+                "text": "It was created to connect people in different countries."
+              },
+              {
+                "letter": "C",
+                "text": "It was viewed as a means to quest for knowledge"
+              },
+              {
+                "letter": "D",
+                "text": "It was designed as a discussion forum for university students."
+              }
+            ],
+            "answer": "C"
+          },
+          {
+            "n": 50,
+            "text": "What do we learn about users of social media?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "They are bent on looking for an alternative space for escape."
+              },
+              {
+                "letter": "B",
+                "text": "They are constantly seeking approval from their audience."
+              },
+              {
+                "letter": "C",
+                "text": "They are forever engaged in hunting for new information."
+              },
+              {
+                "letter": "D",
+                "text": "They are unable to focus their attention on tasks for long."
+              }
+            ],
+            "answer": "B"
+          }
+        ]
+      },
+      {
+        "passage": "Questions 51 to 55 are based on the following passage. According to a recent study, a small but growing proportion of the workforce is affected to some degree by a sense of entitlement. Work is less about what they can contribute but more about what they can take. It can lead to workplace dysfunction and diminish their own job satisfaction. Fm not referring to employees who are legitimately 小ssatisfied with their employment conditions due to, say, being denied fair pay or flexible work practices. I'm talking about those who consistently believe they deserve special treatment and generous rewards. It's an expectation that exists irrespective of their abilities or levels of performance. As a result of that discrepancy between the privileges they feel they're owed and the订 inflated sense of self-worth, they don't work as hard for their employer. They prefer instead to slack off. It's a tendency which many scholars believe begins in childhood due to parents who overindulge their kids. This thereby leads them to expect the same kind of spoilt treatment throughout their adult lives. And yet despite how these employees feel, it's obviously important for their manager to nonetheless find out how to keep them motivated. And, by virtue of that heightened motivation, to perform well. The research team from several American universities surveyed more than 240 individuals. They sampled managers as well as team members. Employee entitlement was measured by statements such as \"I honestly feel I'm just more deserving than others.\" The respondents had to rate the extent of their agreement. Employee engagement, meanwhile, was assessed with statements like \"I really throw myself into my work.\" The findings revealed ethical leadersh甲 is precisely what alleviates the negative effects of employee entitlement. That's because rather than indulging employees or neglecting them, ethical leaders communicate very direct and clear expectations. They also hold employees accountable for their behaviors and are genuinely committed to doing the right thing. Additionally, these leaders are consistent in their standards. They're also less likely to deviate in how they treat employees. This means, when confronted by an entitled team member, an ethical leader is significantly disinclined to accommodate their demands. He or she will instead point out, constructively and tactfully, exactly how the订inflated sense of deservingness is somewhat 邮torted. They'd then go further to explain the specific, and objective, criteria the employee must meet to receive their desired rewards. This shift away from unrealistic expectations is successful because entitled employees feel more confident that ethical leaders will deliver on their promises. This occurs because they're perceived to be fair and trustworthy. The researchers, however, exercise caution by warning no one single response is the perfect remedy. But there's no denying ethical leadership is at least a critical step in the right direction.",
+        "questions": [
+          {
+            "n": 51,
+            "text": "What does a recent study find about a growing number of workers?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "They attempt to make more contributions."
+              },
+              {
+                "letter": "B",
+                "text": "They feel they deserve more than they get"
+              },
+              {
+                "letter": "C",
+                "text": "They attach importance to job satisfaction."
+              },
+              {
+                "letter": "D",
+                "text": "They try to diminish workplace dysfunction"
+              }
+            ],
+            "answer": "B"
+          },
+          {
+            "n": 52,
+            "text": "Why don't some employees work hard according to many scholars?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "They lack a strong sense of self-worth."
+              },
+              {
+                "letter": "B",
+                "text": "They were spoiled when growing up"
+              },
+              {
+                "letter": "C",
+                "text": "They have received unfair treatment."
+              },
+              {
+                "letter": "D",
+                "text": "They are overindulged by their boss"
+              }
+            ],
+            "answer": "B"
+          },
+          {
+            "n": 53,
+            "text": "What is a manager supposed to do to enable workers to do a better job?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Be aware of their emotions."
+              },
+              {
+                "letter": "B",
+                "text": "Give them timely promotions."
+              },
+              {
+                "letter": "C",
+                "text": "Keep a record of their performance"
+              },
+              {
+                "letter": "D",
+                "text": "Seek ways to sustain their motivation."
+              }
+            ],
+            "answer": "D"
+          },
+          {
+            "n": 54,
+            "text": "What do the research findings reveal about ethical leaders?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "They are held accountable by their employees"
+              },
+              {
+                "letter": "B",
+                "text": "They are always transparent in their likes and dislikes."
+              },
+              {
+                "letter": "C",
+                "text": "They convey their requirements in a straightforward way"
+              },
+              {
+                "letter": "D",
+                "text": "They make it a point to be on good terms with their employees"
+              }
+            ],
+            "answer": "C"
+          },
+          {
+            "n": 55,
+            "text": "What kind of leaders are viewed as ethical by entitled employees?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Those who can be counted on to fulfill commitments."
+              },
+              {
+                "letter": "B",
+                "text": "Those who can do things beyond normal expectations"
+              },
+              {
+                "letter": "C",
+                "text": "Those who exercise caution in making major decisions."
+              },
+              {
+                "letter": "D",
+                "text": "Those who know how to satisfy their employees, needs"
+              }
+            ],
+            "answer": "A"
+          }
+        ]
+      }
+    ]
+  }
+}

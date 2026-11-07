@@ -1,0 +1,40 @@
+{
+  "id": "cet6-2023-12-s1",
+  "year": 2023,
+  "month": 12,
+  "set": 1,
+  "title": "2023年12月 第1套",
+  "topic": "养老模式",
+  "passage": "在中国，随着老龄化社会的到来，养老受到普遍关注。人们谈论最多的是应当采取什么样的养老模式。多数人认为，养老模式需要多元化。可以通过政府引导和社会参与，建立更多更好的养老服务机构，改进社区服务中心，鼓励居家自助养老，还可以推行家庭养老与社会养老相结合的模式。随着政府和社会对养老服务事业投入的持续增加，养老设施将不断升级，服务质量逐步改进，老年人的生活将会更加方便舒适、健康快乐。",
+  "reference": "In China, with the arrival of an aging society, the elderly care has received widespread attention. What people talk about the most is what kind of elderly care model should be adopted. Most people believe that the elderly care model needs to be diversified. Through government guidance and social participation, we can establish more and better elderly care service institutions, improve community service centers, encourage home-based self-help elderly care, and promote a model combining family and social elderly care. With the increasing investment in elderly care services from the government and society, elderly care facilities will continue to be upgraded, service quality will be gradually improved, and the elderly will live a more convenient, more comfortable, healthier and happier life.",
+  "notes": [
+    ["老龄化社会", "an aging society"],
+    ["到来", "the arrival of"],
+    ["养老", "the elderly care"],
+    ["受到普遍关注", "receive widespread attention"],
+    ["养老模式", "elderly care model"],
+    ["多元化", "diversified"],
+    ["政府引导", "government guidance"],
+    ["社会参与", "social participation"],
+    ["养老服务机构", "elderly care service institutions"],
+    ["社区服务中心", "community service centers"],
+    ["居家自助养老", "home-based self-help elderly care"],
+    ["推行", "promote"],
+    ["家庭养老与社会养老相结合", "combine family and social elderly care"],
+    ["养老服务事业", "elderly care services"],
+    ["服务质量", "service quality"]
+  ],
+  "points": [
+    "第一句：“在中国”作地点状语前置；“随着老龄化社会的到来”用 with 介词短语表背景，译为 with the arrival of an aging society；“养老受到普遍关注”用现在完成时被动 has received widespread attention。",
+    "第二句：主语是“人们谈论最多的（事情）”，用 what 引导的主语从句 What people talk about the most；“是应当采取什么样的养老模式”用表语从句，其中“采取”用被动 should be adopted，译为 what kind of elderly care model should be adopted。",
+    "第三句：“多数人认为”译为 Most people believe that；“养老模式需要多元化”是宾语从句，用 needs to be diversified 表示被动需要。",
+    "第四句：无主语句，补出主语 we；“通过政府引导和社会参与”用 Through 介词短语作方式状语；后面四个动作 establish..., improve..., encourage..., and promote... 构成并列谓语；“家庭养老与社会养老相结合的模式”译为 a model combining family and social elderly care，现在分词作定语。",
+    "第五句：“随着……投入的持续增加”用 With + 名词短语作伴随状语，译为 With the increasing investment in elderly care services from the government and society；主句由三个并列分句构成，用将来时 will continue to be upgraded, will be gradually improved, will live...，最后“更加方便舒适、健康快乐”用比较级并列 a more convenient, more comfortable, healthier and happier life。"
+  ],
+  "source": "2023年12月CET6题+解+音频\\03、答案解析\\2023.12英语六级真题第1套解析.pdf",
+  "answerSource": "2023.12英语六级真题第1套解析.pdf p19（参考译文与难词译注）",
+  "pages": "解析第19-20页",
+  "verified": true,
+  "verifiedAt": "2026-11-05",
+  "note": "参考译文与难词译注见 p19，译点精析见 p20；扫描件个别连写词按句意补空格"
+  }

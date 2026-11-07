@@ -1,0 +1,50 @@
+/* 2026年6月 CET-4 第3套 翻译题。
+ * 来源：2026年6月英语四级解析第3套.pdf p12-p14（Part IV Translation 题干/翻译点拨/参考译文，人工读图逐字核对）。
+ * 验证状态：verified — 题干与参考译文均与原件逐句核对。 */
+
+export const translation202606S3 = {
+  id: 'cet4-2026-06-s3',
+  meta: {
+    level: 'CET4',
+    year: 2026,
+    month: 6,
+    set: 3,
+    source: '2026年6月CET4题+答案+听力/2026年6月英语四级解析第3套.pdf',
+    answerSource: '2026年6月英语四级解析第3套.pdf p12-p14（Part IV Translation 翻译点拨/参考译文）',
+    pages: '解析第12-14页',
+    verified: true,
+    verifiedAt: '2026-11-04',
+  },
+  title: '2026年6月 第3套',
+  topic: '礼尚往来',
+  directions: 'For this part, you are allowed 30 minutes to translate a passage from Chinese into English.',
+  passage: '在中国传统文化中，亲朋好友之间互赠礼物是人际交往的一种重要礼仪( etiquette ) 。赠送礼物不仅是物质的馈赠，更是情感的表达，是维系人际关系的重要纽带。一份精心挑选、符合接受者喜好的礼物，往往能加深彼此的感情。中国人遵循 “礼尚往来” ( mutually exchanging courtesies ) 的传统，接受礼物时会表达谢意，并适时回赠礼物，以增进彼此的融洽关系。',
+  reference: 'In traditional Chinese culture, exchanging gifts among friends and relatives is an important etiquette in interpersonal communication. Giving gifts is not merely a material offering but also an expression of emotion, serving as an important bond that maintains interpersonal relationships. Therefore, a carefully selected gift that caters to the recipient\'s preferences can often deepen mutual affection. The Chinese follow the tradition of "mutually exchanging courtesies"; when receiving a gift, they express gratitude and return a gift at an appropriate time, so as to enhance the harmonious relationship with one another.',
+  notes: [
+    ['中国传统文化', 'traditional Chinese culture'],
+    ['亲朋好友', 'friends and relatives'],
+    ['互赠礼物', 'exchange gifts; give gifts to each other'],
+    ['人际交往', 'interpersonal communication'],
+    ['赠送礼物', 'giving gifts'],
+    ['物质的馈赠', 'a material offering'],
+    ['情感的表达', 'an expression of emotion'],
+    ['维系人际关系', 'maintain/sustain interpersonal relationships'],
+    ['纽带', 'bond'],
+    ['精心挑选', 'carefully selected/chosen'],
+    ['符合……喜好', 'cater to someone\'s preferences; suit someone\'s preferences'],
+    ['接受者', 'recipient'],
+    ['加深彼此的感情', 'deepen mutual affection'],
+    ['遵循……的传统', 'follow the tradition of...'],
+    ['礼尚往来', 'mutually exchanging courtesies'],
+    ['接受礼物', 'receive a gift'],
+    ['表达谢意', 'express gratitude'],
+    ['回赠礼物', 'return a gift; give a gift in return'],
+    ['增进彼此的融洽关系', 'enhance/strengthen the harmonious relationship with one another'],
+    ['适时', 'at an appropriate time; at a proper time'],
+  ],
+  points: [
+    '第一句描述的是客观事实，不是过去、现在或未来的具体事件，因此译文使用一般现在时；"是"表明该句使用系表结构，为主动语态。本句为"地点状语+主系表"结构："在中国传统文化中"处理为介词短语作地点状语，限定互赠礼物的文化背景；"亲朋好友之间互赠礼物"为主语，其中核心表达为"互赠礼物"，处理为动名词，"亲朋好友之间"处理为介词短语作后置定语，修饰"互赠礼物"；"是"为系动词；"人际交往的一种重要礼节"为表语，其中"一种重要礼节"为核心表达，"人际交往的"可以理解为"在人际交往方面"，处理为介词短语作后置定语，修饰"礼节"。',
+    '第二句描述的是"赠送礼物"这一行为的本质属性和社会功能，因此译文使用一般现在时；三个"是"表明该句使用系表结构，为主动语态。本句由三个分句组成，分句一和分句二描述的是赠送礼物的本质属性，属于一个意群；分句三是对赠送礼物的社会功能的描述，属于一个独立的意群。因此可以将分句一、二作为主句，其中"不仅……，更……"用 not only... but also... 结构；分句三处理成现在分词短语作伴随状语，对主句进行补充说明，其主干为"是重要纽带"，"维系人际关系"可处理为定语从句，修饰"纽带"。',
+    '第三句描述的是礼物对人的情感产生的普遍作用，属于客观事实，因此译文使用一般现在时；主语"礼物"发出"加深"这个动作，因此译文使用主动语态。本句为"主谓宾"结构，主语较长，可以将"一份精心挑选的礼物"作为主语核心词，将"符合接受者喜好"处理为定语从句，修饰"一份精心挑选的礼物"。本句与第2句含因果关系，第2句为"因"，本句为"果"，因此可在本句译文的首句添加表示因果关系的逻辑关系词，如 Therefore、Thus 或 As a result。第四句描述的是中国人的常规文化习惯和普遍行为模式，译文使用一般现在时即可；主语"中国人"是动作"遵循、接受、表达、回赠"的执行者，因此使用主动语态。本句为复合句，句子主干为"中国人遵循“礼尚往来”的传统"，"接受……，并适时……"是对句子主干中的"礼尚往来"这一行为的具体解释，可用冒号引出，该部分无主语，翻译时需要添加主语，由前面的"中国人"可知，其主语也是"中国人"，为避免主语重复出现，可以使用人称代词 they；"以增进彼此的融洽关系"是"礼尚往来"这一行为的目的，处理为目的状语。',
+  ],
+};

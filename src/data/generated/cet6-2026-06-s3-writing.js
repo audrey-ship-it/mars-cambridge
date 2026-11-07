@@ -1,0 +1,35 @@
+/* 2026年6月 第3套 CET-6 写作题。
+ * 来源：2026年6月CET6题+答案+听力\2026.06六级真题第3套【可复制可搜索，打印首选】.pdf p1（Part I Writing 题干）
+ * 核对：2026年6月CET6题+答案+听力\2026年6月英语六级解析第1套.pdf p1-p2（审题思路 / 范文&译文 / 话题词汇 / 写作模板）
+ * 验证状态：verified — 解析书（共3套合订本）写作栏目套号与真题卷套号错位：本套真题题干（传统文化/文化自信）对应的写作解析实际收录于《解析第1套》，已按开头句逐字核对确认一致后按实际内容录入；解析书其余栏目（听力、阅读）与真题卷套号一致。 */
+
+export const writing202606S3 = {
+  "id": "cet6-2026-06-s3",
+  "meta": {
+    "level": "CET6",
+    "year": 2026,
+    "month": 6,
+    "set": 3,
+    "source": "2026年6月CET6题+答案+听力\\2026.06六级真题第3套【可复制可搜索，打印首选】.pdf p1（Part I Writing 题干）",
+    "answerSource": "2026年6月CET6题+答案+听力\\2026年6月英语六级解析第1套.pdf p1-p2（审题思路 / 范文&译文 / 话题词汇 / 写作模板）",
+    "pages": "原题第1页 / 解析第1-2页",
+    "verified": true,
+    "verifiedAt": "2026-11-05",
+    "note": "解析书（共3套合订本）写作栏目套号与真题卷套号错位：本套真题题干（传统文化/文化自信）对应的写作解析实际收录于《解析第1套》，已按开头句逐字核对确认一致后按实际内容录入；解析书其余栏目（听力、阅读）与真题卷套号一致。"
+  },
+  "title": "2026年6月 第3套",
+  "topic": "理解传统文化培养文化自信",
+  "directions": "For this part, you are allowed 30 minutes to write an essay that begins with the sentence “Faced with growing globalization, students realize that a deep understanding of traditional Chinese culture helps cultivate cultural confidence.” You can make comments, cite examples or use your personal experiences to develop your essay. You should write at least 150 words but no more than 200 words. You should copy the sentence given in quotes at the beginning of your essay.",
+  "minWords": 150,
+  "maxWords": 200,
+  "model": "Faced with growing globalization, students realize that a deep understanding of traditional Chinese culture helps cultivate cultural confidence. It is my belief that understanding traditional culture is the very soil from which confidence grows.\n\nThe reasons for this are not far to seek. For individuals, understanding traditional culture helps young people discover their cultural identity. If they learn about classic poetry or time-honored festivals, they could see the wisdom behind them and no longer feel that foreign cultures are naturally superior. For society, shared traditions, like the Spring Festival, bring people together and create a deep sense of belonging. It is this shared identity that gives confidence its lasting power. For the nation, deep understanding of traditional Chinese culture enables young people to share China's story with the world. Only when they truly grasp the spirit of their own culture can they engage in equal dialogue, with neither pride nor shame.\n\nIn conclusion, understanding our culture builds personal confidence, unites the whole society, and strengthens the power of our nation. Therefore, let's explore traditions around us from a folk song, a festival, or an old story.",
+  "modelZh": "面对日益加深的全球化，学生们意识到，对中华传统文化的深刻理解有助于培养文化自信。我坚信，理解传统文化正是滋养自信的沃土。\n\n原因显而易见。对个人而言，了解传统文化有助于年轻人发现自身的文化认同。如果他们学习经典诗歌或了解历史悠久的节日时，就能领悟其中的智慧，不再觉得外国文化天生优越。对社会而言，像春节这样的共同传统将人们聚在一起，营造出强烈的归属感。正是这种共同的身份认同，赋予了自信持久的力量。对国家而言，对中华传统文化的深刻理解，使年轻人能够向世界讲述中国故事。只有真正领会到自身文化的精髓，他们才能与世界平等对话，既不自傲也不自惭。\n\n总之，理解我们的文化能塑造个人自信、凝聚整个社会、增强国家实力。因此，让我们从一首民歌、一个节日或一个古老的故事中，去探索身边的传统吧。",
+  "review": "作文要求以“面对日益加深的全球化，学生们意识到，对中华传统文化的深刻理解有助于培养文化自信”为开头展开论述。首段应按照题目要求摘抄题目所给句，并表明个人观点。主体段进行具体论证，阐释理解中华传统文化对培养文化自信的重要性：一是个人层面，通过理解中华传统文化，年轻人可以发现自身的文化认同；二是社会层面，通过共同的身份认同，让文化自信更持久；三是国家层面，年轻人可以向世界讲述中国故事。最后一段可以先总结全文，阐述理解中华传统文化对增强文化自信的重要性，然后以年轻人的身份发出号召，呼吁大家探索身边的传统文化，升华主旨。",
+  "points": [
+    "首段按要求摘抄给定句，并以“It is my belief that understanding traditional culture is the very soil from which confidence grows.”表明个人观点，比喻形象。",
+    "个人层面：理解传统文化有助于年轻人发现自身的文化认同（“For individuals, ...”），举经典诗歌与传统节日为例。",
+    "社会层面：共同传统带来归属感，强调句“It is this shared identity that gives confidence its lasting power.”指出共同身份认同让文化自信更持久。",
+    "国家层面：年轻人向世界讲述中国故事；倒装句“Only when they truly grasp the spirit of their own culture can they engage in equal dialogue, with neither pride nor shame.”增强语势。",
+    "结尾段总结全文，阐述理解传统文化对个人、社会、国家的重要性，并以年轻人身份发出号召，呼吁探索身边的传统文化，升华主旨。"
+  ]
+};

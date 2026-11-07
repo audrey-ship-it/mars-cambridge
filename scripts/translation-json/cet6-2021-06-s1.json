@@ -1,0 +1,41 @@
+{
+  "id": "cet6-2021-06-s1",
+  "year": 2021,
+  "month": 6,
+  "set": 1,
+  "title": "2021年6月 第1套",
+  "topic": "海南风光",
+  "passage": "海南是仅次于台湾的中国第二大岛，是位于中国最南端的省份。海南岛风景秀丽，气候宜人，阳光充足，生物多样，温泉密布，海水清澈，大部分海滩几乎全年都是游泳和日光浴的理想场所，因而被誉为中国的四季花园和度假胜地，每年都吸引了大批中外游客。海南1988年建省以来，旅游业、服务业、高新技术产业飞速发展，是中国唯一的省级经济特区。在中央政府和全国人民的大力支持下，海南将建成中国最大的自由贸易试验区。",
+  "reference": "As the southernmost province in China, Hainan is the second largest island next only to Taiwan. With its splendid scenery, pleasant climate, abundant sunshine, diverse species, dense hot springs and clear seawater, most of the beaches on Hainan Island are ideal places for swimming and sunbathing almost all the year round. As a result, it's honored as China's four-season garden and holiday paradise, attracting a large number of tourists at home and abroad every year. Since the founding of Hainan Province in 1988, Hainan has been booming in tourism, service and high-tech industries, making it the only provincial special economic zone in China. Under the strong support of the central government and people throughout the country, Hainan will become China's largest pilot free trade zone.",
+  "notes": [
+    ["仅次于", "next only to; second only to"],
+    ["风景秀丽", "splendid scenery"],
+    ["气候宜人", "pleasant climate"],
+    ["阳光充足", "abundant sunshine"],
+    ["生物多样", "diverse species"],
+    ["温泉密布", "dense hot springs"],
+    ["海水清澈", "clear seawater"],
+    ["日光浴", "sunbathing; sunbathe"],
+    ["理想场所", "ideal places for"],
+    ["被誉为", "be honored as; be known as"],
+    ["四季花园", "four-season garden"],
+    ["度假胜地", "holiday paradise; holiday resort"],
+    ["大批中外游客", "a large number of tourists at home and abroad"],
+    ["建省", "the founding of the province"],
+    ["经济特区", "special economic zone"],
+    ["自由贸易试验区", "pilot free trade zone"]
+  ],
+  "points": [
+    "第一句：两个分句都以海南为陈述对象；前一分句把“仅次于台湾的中国第二大岛”处理为同位语，后一分句把“位于中国最南端的省份”用 as 引导的介词短语前置作状语，主干为 Hainan is the second largest island next only to Taiwan。",
+    "第二句前半：六个并列景物用 with 引导的名词短语作伴随状语，注意“温泉密布”译作 dense hot springs、“海水清澈”译作 clear seawater，均以形容词+名词的紧凑结构呈现。",
+    "第二句后半：主句是“大部分海滩……理想场所”；“因而”用 as a result 另起一句承接结果；“被誉为”用 be honored as；“每年吸引大批中外游客”用现在分词 attracting 作结果状语。",
+    "第三句：“1988年建省以来”用 since 引导时间状语，主句用现在完成进行时 has been booming，发展领域由 in tourism, service and high-tech industries 引出；“是中国唯一的省级经济特区”用现在分词 making it... 表结果。",
+    "第四句：“在……大力支持下”用 under the strong support of 介词短语作状语；“将建成”用一般将来时 will become；“自由贸易试验区”译作 pilot free trade zone。"
+  ],
+  "source": "2021年06月CET6题+解+音频\\03、答案解析\\2021.06英语六级答案解析第1套.pdf",
+  "answerSource": "2021.06英语六级答案解析第1套.pdf p15（Part IV Translation 参考译文与难点注释）",
+  "pages": "解析第15页",
+  "verified": true,
+  "verifiedAt": "2026-11-05",
+  "note": "题干中文取自同批次真题 docx（该解析 PDF 中文层为乱码），参考译文据解析书 p15 逐句核对；OCR 的 service arid 已按上下文修正为 service and。"
+}

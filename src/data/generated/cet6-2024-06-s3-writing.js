@@ -1,0 +1,33 @@
+/* 2024年6月 第3套 CET-6 写作题。
+ * 来源：2024年06月CET6题+解+音频\2024年6月六级真题-原题\2024年6月六级第三套原题.pdf p1（Part I Writing 题干）
+ * 核对：2024年06月CET6题+解+音频\2024年6月六级真题-答案解析\2024.6六级第三套解析.pdf p1-p2（审题 / 参考范文&点评 / 范文译文 / 亮点词汇 / 写作句型）
+ * 验证状态：verified — 题干与范文均与原件逐句核对 */
+
+export const writing202406S3 = {
+  "id": "cet6-2024-06-s3",
+  "meta": {
+    "level": "CET6",
+    "year": 2024,
+    "month": 6,
+    "set": 3,
+    "source": "2024年06月CET6题+解+音频\\2024年6月六级真题-原题\\2024年6月六级第三套原题.pdf p1（Part I Writing 题干）",
+    "answerSource": "2024年06月CET6题+解+音频\\2024年6月六级真题-答案解析\\2024.6六级第三套解析.pdf p1-p2（审题 / 参考范文&点评 / 范文译文 / 亮点词汇 / 写作句型）",
+    "pages": "原题第1页 / 解析第1-2页",
+    "verified": true,
+    "verifiedAt": "2026-11-05"
+  },
+  "title": "2024年6月 第3套",
+  "topic": "培养自主学习能力",
+  "directions": "For this part, you are allowed 30 minutes to write an essay that begins with the sentence “Nowadays cultivating independent learning ability is becoming increasingly crucial for personal development.” You can make comments, cite examples or use your personal experiences to develop your essay. You should write at least 150 words but no more than 200 words. You should copy the sentence given in quotes at the beginning of your essay.",
+  "minWords": 150,
+  "maxWords": 200,
+  "model": "Nowadays, cultivating independent learning ability is becoming increasingly crucial for personal development. In today's rapidly changing world, only when we are active in learning independently can we keep pace with the times.\n\nOn the one hand, independent learning allows us to explore our interests and passions at our own pace. This enhances our motivation to learn. It also encourages self-discipline and time management skills, both of which are essential to our personal development. On the other hand, independent learning is the key to developing adaptability. In this ever-changing society, we often face unforeseen challenges. Independent learning enables us to find proper solutions in time, which plays a key role on our road to success. Furthermore, independent learning is crucial for fostering critical thinking. Independent learners can question, evaluate, and assimilate information effectively. This not only enhances our understanding of novel things but also promotes our creativity and innovation ability.\n\nTo sum up, there is no doubt that independent learning ability plays a crucial role in our personal development. It equips us with the strong ability to adapt to the complex modern life.",
+  "modelZh": "如今，培养自主学习能力对个人发展越来越重要。在当今瞬息万变的世界里，我们只有积极主动地自主学习才能跟上时代的步伐。\n\n一方面，自主学习使我们按照自己的节奏探索自己的兴趣和爱好。这增强了我们学习的积极性。它还鼓励自律和时间管理技能，这两者对我们的个人发展都是必不可少的。另一方面，自主学习是发展适应能力的关键。在这个不断变化的社会中，我们经常面临着始料不及的挑战。自主学习使我们能够及时找到解决方案，这在我们通往成功的道路上起着关键作用。此外，自主学习对于培养批判性思维至关重要。独立学习者能够有效地质疑、评估和吸收信息。这不仅提高了我们对新颖事物的理解力，也促进了我们的创造力和创新能力。\n\n总之，毫无疑问，自主学习能力在我们的个人发展中起着至关重要的作用。它使我们具备了强大的能力来适应复杂的现代生活。",
+  "review": "题目要求考生写一篇以“如今，培养自主学习能力对个人发展越来越重要”开头的作文，考生可以通过发表评论、举例子或描述个人经历展开论述。根据题目提示，作文可以采取以下布局：开头段表明个人立场，即完全同意这一观点；中间段列出具体论据；结尾段总结全文。考生写作时可以使用与“说明重要性”“阐述原因”相关的写作句型。",
+  "points": [
+    "发表个人观点，指出只有积极主动地自主学习才能跟上时代的步伐。",
+    "分别从“自主学习使我们按照自己的节奏探索自己的兴趣和爱好”“自主学习是发展适应能力的关键”和“自主学习对于培养批判性思维至关重要”三个方面论证自主学习的重要性，由连接词On the one hand、On the other hand和Furthermore引出。",
+    "总结全文，强调自主学习能力的重要性。",
+    "使用“...only when...can...”倒装句型强调自主学习的重要性，起到警示作用；结尾用“...there is no doubt that...”句型表示肯定，亮点表达keep pace with、self-discipline、adaptability、unforeseen、assimilate、novel等丰富语言表现。"
+  ]
+};

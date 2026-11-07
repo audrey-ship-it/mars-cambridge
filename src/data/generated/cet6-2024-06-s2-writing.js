@@ -1,0 +1,33 @@
+/* 2024年6月 第2套 CET-6 写作题。
+ * 来源：2024年06月CET6题+解+音频\2024年6月六级真题-原题\2024年6月六级第二套原题.pdf p1（Part I Writing 题干）
+ * 核对：2024年06月CET6题+解+音频\2024年6月六级真题-答案解析\2024.6六级第二套解析.pdf p1-p2（审题 / 参考范文&点评 / 范文译文 / 亮点词汇 / 写作句型）
+ * 验证状态：verified — 题干与范文均与原件逐句核对 */
+
+export const writing202406S2 = {
+  "id": "cet6-2024-06-s2",
+  "meta": {
+    "level": "CET6",
+    "year": 2024,
+    "month": 6,
+    "set": 2,
+    "source": "2024年06月CET6题+解+音频\\2024年6月六级真题-原题\\2024年6月六级第二套原题.pdf p1（Part I Writing 题干）",
+    "answerSource": "2024年06月CET6题+解+音频\\2024年6月六级真题-答案解析\\2024.6六级第二套解析.pdf p1-p2（审题 / 参考范文&点评 / 范文译文 / 亮点词汇 / 写作句型）",
+    "pages": "原题第1页 / 解析第1-2页",
+    "verified": true,
+    "verifiedAt": "2026-11-05"
+  },
+  "title": "2024年6月 第2套",
+  "topic": "社会实践与学业学习同等重要",
+  "directions": "For this part, you are allowed 30 minutes to write an essay that begins with the sentence “Nowadays more and more college students have come to realize social practice and academic learning are equally important.” You can make comments, cite examples or use your personal experiences to develop your essay. You should write at least 150 words but no more than 200 words. You should copy the sentence given in quotes at the beginning of your essay.",
+  "minWords": 150,
+  "maxWords": 200,
+  "model": "Nowadays more and more college students have come to realize social practice and academic learning are equally important. Some people hold the view that social practice plays an indispensable role in education, while others believe that it is not necessary for everyone to be involved in social activities. For me, I agree with the former.\n\nFirstly, social practice can help complement academic learning. Through social practice, students can not only apply what they have learned in real-life situations, enhancing their understanding, but also get inspiration, which is useful for their academic learning. Secondly, social practice is beneficial to fostering teamwork, which is of great importance for the future job. Social practice exposes students to cooperation with different people. It is conceivable that only when students cooperate can they finish the task. Lastly, social practice makes students face different challenges. It encourages them to think critically and creatively to find solutions. This not only enriches their learning experience but also prepares them for their future roles in society.\n\nAll in all, knowledge and action should go hand in hand. Social practice and academic learning are of equal importance, which is the key to producing well-rounded individuals.",
+  "modelZh": "如今，越来越多的大学生认识到社会实践与学业学习同等重要。有些人认为社会实践在教育中扮演着不可或缺的角色，而其他人认为并非人人都有必要参与社会活动。就我来说，我赞同前一种观点。\n\n首先，社会实践可以对学业学习进行补充。通过社会实践，学生不仅可以学以致用，加深理解，还能从中得到启发，这对他们的学业学习大有裨益。其次，社会实践有利于培养团队合作，这对今后的工作具有重要意义。社会实践让学生体验与不同的人合作。可想而知，学生们只有合作才能完成任务。最后，社会实践使学生面临不同的挑战。它鼓励学生进行批判性和创造性地思考，从而找到解决方案。这不仅丰富了他们的学习经验，也让他们为自己未来在社会中的角色做好了准备。\n\n总之，知与行应该齐头并进。社会实践和学业学习同等重要，这也是培养全面发展的人才的关键所在。",
+  "review": "题目要求考生写一篇以“如今，越来越多的大学生认识到社会实践与学业学习同等重要”开头的作文，考生可以通过发表评论、举例子或描述个人经历展开论述。根据题目提示，作文可以采取以下布局：开头段发表个人观点；中间段列出具体论据；结尾段总结全文。考生写作时可以使用与“说明重要性”“阐述原因”相关的写作句型。",
+  "points": [
+    "发表个人观点，指出社会实践在教育中扮演着不可或缺的角色。",
+    "分别从“社会实践对学业学习进行补充”“社会实践有利于培养团队合作”和“社会实践使学生面临不同的挑战”三方面指出社会实践的重要性，由连接词Firstly、Secondly和Lastly引出。",
+    "总结全文，强调社会实践与学业学习同等重要。",
+    "首段使用“Some people hold the view that..., while others believe that...”句型引出不同观点，为发表个人观点做铺垫；主体段使用“It is conceivable that...”句型加强论证，亮点表达indispensable、complement、foster、expose sb. to sth.、well-rounded等提升语言档次。"
+  ]
+};

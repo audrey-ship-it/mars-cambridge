@@ -1,0 +1,34 @@
+/* 2024年12月 第3套 CET-6 写作题。
+ * 来源：2024年12月CET6题+解+音频\2024.12六级真题第3套.pdf p1（Part I Writing 题干）
+ * 核对：2024年12月CET6题+解+音频\2024.12英语六级解析第3套.pdf p1（结构框图 / 范文点评 / 话题词汇）
+ * 验证状态：verified — 解析册无范文译文，译文为人工翻译 */
+
+export const writing202412S3 = {
+  "id": "cet6-2024-12-s3",
+  "meta": {
+    "level": "CET6",
+    "year": 2024,
+    "month": 12,
+    "set": 3,
+    "source": "2024年12月CET6题+解+音频\\2024.12六级真题第3套.pdf p1（Part I Writing 题干）",
+    "answerSource": "2024年12月CET6题+解+音频\\2024.12英语六级解析第3套.pdf p1（结构框图 / 范文点评 / 话题词汇）",
+    "pages": "原题第1页 / 解析第1页",
+    "verified": true,
+    "verifiedAt": "2026-11-05",
+    "note": "解析册无范文译文，译文为人工翻译"
+  },
+  "title": "2024年12月 第3套",
+  "topic": "大学提供探索机会",
+  "directions": "For this part, you are allowed 30 minutes to write an essay that begins with the sentence “College provides a great opportunity for students to explore various possibilities and find the right path for themselves.” You can make comments, cite examples or use your personal experiences to develop your essay. You should write at least 150 words but no more than 200 words. You should copy the sentence given in quotes at the beginning of your essay.",
+  "minWords": 150,
+  "maxWords": 200,
+  "model": "The Journey of Exploration in College\n\nCollege provides a great opportunity for students to explore various possibilities and find the right path for themselves. This period of exploration plays a crucial role in shaping their future.\n\nOne of the most compelling aspects of college is the opportunity it provides for academic exploration. In college, students have the freedom to choose their courses and create a personalized academic path. This flexibility offers students access to different subjects, which is crucial in helping them identify what they are truly passionate about. Beyond the academic aspect, college also offers students the chance to explore their personal interests through extracurricular activities. Diversified clubs and societies provide countless ways for students to enjoy campus life and develop new interests. Moreover, college also provides opportunities for students to connect with others from diverse backgrounds. These interactions broaden students' perspectives and encourage them to think critically about who they are.\n\nTo conclude, college is a place not only for academic learning but also for personal exploration. It offers students the freedom to try and make mistakes, and ultimately gives them an opportunity to find who they are and what they really want.",
+  "modelZh": "大学探索之旅\n\n大学为学生提供了很好的机会，让他们去探索各种可能性并找到适合自己的正确道路。这段探索时期对塑造他们的未来起着至关重要的作用。\n\n大学最引人注目的方面之一是它为学术探索提供的机会。在大学里，学生有选择课程的自由，可以打造个性化的学业道路。这种灵活性使学生能够接触不同的学科，这对于帮助他们找到自己真正热爱的事物至关重要。除了学术方面，大学还为学生提供通过课外活动探索个人兴趣的机会。丰富多彩的社团为学生享受校园生活、培养新兴趣提供了无数途径。此外，大学还为学生提供与来自不同背景的人交往的机会。这些互动拓宽了学生的视野，并促使他们批判性地思考自己是谁。\n\n总之，大学不仅是学术学习的地方，也是个人探索的地方。它为学生提供了尝试和犯错的自由，并最终让他们有机会发现自己是谁以及真正想要的是什么。",
+  "review": "题目要求考生写一篇以“大学为学生提供了很好的机会，让他们去探索各种可能性并找到正确的道路”开头的作文，考生可以通过发表评论、举例子或描述个人经历展开论述。根据题目提示，作文可以采取以下布局：第一段引出话题，指出大学为学生提供了探索各种可能性并找到正确道路的机会；第二段逐条阐述大学为学生在学术、个人兴趣和自我方面的探索提供了机会；第三段总结全文，重申观点。",
+  "points": [
+    "引出话题：大学为学生提供了很好的机会，让他们去探索各种可能性并找到正确的道路。",
+    "进一步指出这段探索时期对塑造他们的未来起着至关重要的作用。",
+    "分别使用“One of the most compelling aspects of college is...”“Beyond the academic aspect, ...”和“Moreover, ...”逐条阐述大学为学生在学术、个人兴趣和自我方面的探索提供了机会。",
+    "用“To conclude, ...”总结全文，重申大学不仅是学术学习的地方，也是个人探索的地方。它为学生提供了尝试和犯错的自由，并让他们最终有机会发现自己是谁以及真正想要的是什么。"
+  ]
+};

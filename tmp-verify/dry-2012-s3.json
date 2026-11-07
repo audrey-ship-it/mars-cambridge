@@ -1,0 +1,461 @@
+{
+  "id": "cet4-2020-12-s3",
+  "meta": {
+    "level": "CET4",
+    "year": 2020,
+    "month": 12,
+    "set": 3,
+    "source": "../../mars-cet/tmp-verify/zt3-fixed.txt",
+    "answerSource": "人工读图答案（待复核后置 verified）",
+    "verified": false,
+    "warnings": []
+  },
+  "reading": {
+    "banked": {
+      "passage": "The things people make, and the way they make them, determine how cities grow and decline, and influence how empires rise and fall. So, any disruption to the world's factories {{26}} . And that disruption is surely coming. Factories are being digitised, filled with new sensors and new computers to make them quicker, more {{27}} , and more efficient. Robots are breaking free from the cages that surround them, learning new skills and new ways of working. And 3D printers have long {{28}} a world where you can make anything, anywhere, from a computerised design. That vision is {{29}} closer to reality. These forces will lead to cleaner factories, producing better goods at lower prices, personalised to our individual needs and desires. Humans will be {{30}} many of the dirty, repetitive, and dangerous jobs that have long been a {{31}} of factory life. Greater efficiency {{32}} means fewer people can do the same work. Yet factory bosses in many developed countries are worried about a lack of skilled human workers-and see {{33}} and robots as a solution. But economist Helena Leurent says this period of rapid change in manufacturing is a {{34}} opportunity to make the world a better place. \"Manufacturing is the one system where you have got the biggest source of innovation, the biggest source of economic growth, and the biggest source of great jobs in the past. You can see it changing. That's an opportunity to {{35}} that system differently, and if we can, it will hdve tremendous significance.\"",
+      "options": [
+        {
+          "letter": "A",
+          "word": "automation"
+        },
+        {
+          "letter": "B",
+          "word": "concerns"
+        },
+        {
+          "letter": "C",
+          "word": "enormously"
+        },
+        {
+          "letter": "D",
+          "word": "fantastic"
+        },
+        {
+          "letter": "E",
+          "word": "fascinated"
+        },
+        {
+          "letter": "F",
+          "word": "feature"
+        },
+        {
+          "letter": "G",
+          "word": "flexible"
+        },
+        {
+          "letter": "H",
+          "word": "inevitably"
+        },
+        {
+          "letter": "I",
+          "word": "interaction"
+        },
+        {
+          "letter": "J",
+          "word": "leaning"
+        },
+        {
+          "letter": "K",
+          "word": "matters"
+        },
+        {
+          "letter": "L",
+          "word": "moving"
+        },
+        {
+          "letter": "M",
+          "word": "promised"
+        },
+        {
+          "letter": "N",
+          "word": "shape"
+        },
+        {
+          "letter": "O",
+          "word": "spared"
+        }
+      ],
+      "answers": [
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    "matching": {
+      "title": "The History of the Lunch Box",
+      "paragraphs": [
+        {
+          "label": "A",
+          "text": "It was made of shiny, bright pink plastic with a Little Mermaid sticker on the front, and I carried it with me nearly every single day. \tMy lunch box was one of my first prized possessions, \ta proud statement to everyone in my kindergarten: \"I love Mermaid-Ariel on my lunch box.\""
+        },
+        {
+          "label": "B",
+          "text": "That bulky container served me well through my first and second grades, until the live-action version of 101 Dalmatians hit theaters, and I needed the newest red plastic box with characters like Pongo and Perdita on the front. I know I'm not alone here-I bet you loved your first lunch box, too."
+        },
+        {
+          "label": "C",
+          "text": "Lunch boxes have been connecting kids to cartoons and TV shows and super-heroes for decades. But it wasn't always that way. Once upon a time, they weren't even boxes. As schools have changed in the past century, the midday meal container has evolved right along with them."
+        },
+        {
+          "label": "D",
+          "text": "Let's start back at the beginning of the 20th century-the beginning of the lunch box story, really. While there were neighborhood schools in cities and suburbs, one-room schoolhouses were common in rural areas. As grandparents have been saying for generations, kids would travel miles to school in the countryside (often on foot)."
+        },
+        {
+          "label": "E",
+          "text": "\"You had kids in rural areas who couldn't go home from school for lunch, so bringing your lunch wrapped in a cloth, in oiled paper, in a little wooden box or something like that was a very long- standing rural tradition,\" says Paula Johnson, head of food history section at the Smithsonian National Museum of American History in Washington, D. C."
+        },
+        {
+          "label": "F",
+          "text": "City kids, on the other hand, went home for lunch and came back. Since they rarely carried a meal, the few metal lunch buckets on the market were mainly for tradesmen and factory workers."
+        },
+        {
+          "label": "G",
+          "text": "After World War II, a bunch of changes reshaped schools-and lunches. \tMore women joined the workforce. Small schools consolidated into larger ones, meaning more students were farther away from home. And the National School Lunch Act in 1946 made cafeterias much more common. Still, there wasn't much of a market for lunch containers-yet. Students who carried their lunch often did so in a re-purposed bucket or tin of some kind."
+        },
+        {
+          "label": "H",
+          "text": "And then everything changed in the year of 1950. You might as well call it the Year of the Lunch Box, thanks in large part to a genius move by a Nashville-based manufacturer, Aladdin Industries. \tThe company already made square metal meal containers, the kind workers carried, and some had started to show up in the hands of school kids."
+        },
+        {
+          "label": "I",
+          "text": "But these containers were really durable, lasting years on end. That was great for the consumer, not so much for the manufacturer. So executives at Aladdin hit on an idea that would harness the newfound popularity of television. They covered lunch boxes with striking red paint and added a picture of TV and radio cowboy Hopalong Cassidy on the front."
+        },
+        {
+          "label": "J",
+          "text": "The company sold 600,000 units the first year. It was a major \"Ah-ha!\" moment, and a wave of other manufacturers jumped on board to capitalize on new TV shows and movies. \"The Partridge Family, ll11~ 2020 $12 J] \t48 the Addams Family, the Six Million Dollar Man, the Bionic Woman-everything that was on television ended up on a lunch box,\" says Allen Woodall. \tHe's the founder of the Lunch Box Museum in Columbus, Georgia. \"It was a great marketing tool because kids were taking that TV show to school with them, and then when they got home they had them captured back on TV,\" he says."
+        },
+        {
+          "label": "K",
+          "text": "And yes, you read that right: There is a lunch box museum, right near the Chattahoochee River. Woodall has more than 2,000 items on display. His favorite? The Green Hornet lunch box, because he used to listen to the radio show back in the 1940s."
+        },
+        {
+          "label": "L",
+          "text": "The new trend was also a great example of planned obsolescence, that is, to design a product so that it will soon become unfashionable or impossible to use and will need replacing. Kids would beg for a new lunch box every year to keep up with the newest characters, even if their old lunch box was perfectly. usable."
+        },
+        {
+          "label": "M",
+          "text": "The metal lunch box craze lasted until the mid-1980s, when plastic took over. Two theories exist as to why. The first-and most likely-is that· plastic had simply become cheaper. \tThe second theory- possibly an urban myth-is that concerned parents in several states proposed bans on metal lunch boxes, claiming kids were using them as \"weapons\" to hit one another. There's a lot on the internet about a state-wide ban in Florida, but a few days worth of digging by a historian at the Florida State Historical Society found no such legislation. Either way, the metal lunch box was out."
+        },
+        {
+          "label": "N",
+          "text": "The last few decades have brought a new lunch box revolution, of sorts. Plastic boxes changed to lined cloth sacks, and eventually, globalism brought tiffin containers from India and bento boxes from Japan. Even the old metal lunch boxes have regained popularity. \"I don't think the heyday (Jt'Tals,t.J!ij) · has passed,\" says D. J. J ayasekara, owner and founder of lunchbox. corn, a retailer in Pasadena, California. \"I think it has evolved. The days of the ready-made, 'you stick it in a lunch box and carry it to school' are kind of done.\""
+        },
+        {
+          "label": "O",
+          "text": "The introduction of backpacks changed the lunch box scene a bit, he adds. Once kids started carrying book bags, that bulky traditional lunch box was hard to fit inside. \"But you can't just throw a sandwich in a backpack,\" Jayasekara says. \"It still has to go into a container.\" That is, in part, why smaller and softer containers have taken off-they fit into backpacks."
+        },
+        {
+          "label": "P",
+          "text": "And don't worry-whether it's a plastic bento box or a cloth bag, lunch containers can still easily be covered with popular culture. \t\"We keep pace with the movie industries so we can predict which characters are going to be popular for the coming months,\" Jayasekara says. \"You know, kids are kids.\""
+        }
+      ],
+      "questions": [
+        {
+          "n": 36,
+          "text": "Lunch containers were not necessary for school kids in cities."
+        },
+        {
+          "n": 37,
+          "text": "Putting TV characters on lunch boxes proved an effective marketing strategy."
+        },
+        {
+          "n": 38,
+          "text": "Smaller lunch boxes are preferred because they fit easily into backpacks."
+        },
+        {
+          "n": 39,
+          "text": "Lunch boxes have evolved along with the transformation of schools."
+        },
+        {
+          "n": 40,
+          "text": "Around the beginning of the nineteen fifties, some school kids started to use metal meal containers."
+        },
+        {
+          "n": 41,
+          "text": "School kids are eager to get a new lunch box every year to stay in fashion."
+        },
+        {
+          "n": 42,
+          "text": "Rural kids used to walk a long way to school in the old days."
+        },
+        {
+          "n": 43,
+          "text": "The author was proud of using a lunch box in her childhood."
+        },
+        {
+          "n": 44,
+          "text": "The most probable reason for the popularity of plastic lunch boxes is that they are less expensive."
+        },
+        {
+          "n": 45,
+          "text": "The durability of metal meal containers benefited consumers. IZ!I ~ 2020 ~ 12 Jj \t49"
+        }
+      ],
+      "answers": [
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    "careful": [
+      {
+        "passage": "Questions 46 to SO are based on the foil owing passage. A growing number of U.S. bike riders are attracted to electric bikes for convenience, health benefits and their fun factor. \tAlthough ebikes first appeared in the 90s, \tcheaper options and longer-lasting batteries are breathing new life into the concept. Established bike companies and startups are embracing ebikes to meet demand. \tAbout 34 million ebikes were sold worldwide last year, according to data from eCycleElectric Consultants. Most were sold in Europe and China, where the bikes already have exploded in popularity. Recently, the U.S. market has grown to 263 , 000 bikes, a 25 % gain from the prior year. The industry is benefiting from improved batteries as suppliers over the years developed technology for laptops, smartphones and electric cars. \tIn 2004, the price of batteries used on ebikes fell, spurring European sales. But lower cost options are emerging, too. This month, three U.S. bikeshare companies, Motivate, LimeBike and Spin, announced electric bicycles will be added to their fleets. New York-based Jump Bikes is already operating an electric bikeshare in Washington, \tD. C., \tand is launching in San Francisco Thursday. Rides cost $ 2 for 30 minutes. The system works like existing dockless bikeshare systems, \twhere riders unlock bikes through a smartphone app. \"This is the beginning of a long-term shift away from regular pedal (It~.) to electric bikes,\" said Jump Bikes CEO Ryan Rzepecki. \"When people first jump on an ebike, their face lights up. It's exciting and joyful in a way that you don't get from a regular bike.\" Two years ago, CEO Chris Cocalis of Pivot Cycles, which sells high-end mountain bikes, found that U.S. bike shops weren't interested in stocking ebikes. Some retailers warned Cocalis that they'd drop the brand if it came out with an electric bike. Now that sales are taking off, the vast majority of bike dealers are asking Cocalis when he'll make an ebike available. \"There's tremendous opportunity to get a generation of people for whom suffering isn't their thing,\" Cocalis said. \"Ebike riders get the enjoyable part of cycling without the massive suffering of climbing huge hills. \"",
+        "questions": [
+          {
+            "n": 46,
+            "text": "What do we learn from the passage about ebikes?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Their health benefits and fun values outweigh their cost."
+              },
+              {
+                "letter": "B",
+                "text": "They did not catch public attention in the United States until the 1990s."
+              },
+              {
+                "letter": "C",
+                "text": "They did not become popular until the emergence of improved batteries."
+              },
+              {
+                "letter": "D",
+                "text": "Their widespread use is attributable to people's environmental awareness."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 47,
+            "text": "What brought about the boost in ebike sales in Europe at the beginning of the century?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Updated technology of bike manufacture."
+              },
+              {
+                "letter": "B",
+                "text": "The falling prices of ebike batteries."
+              },
+              {
+                "letter": "C",
+                "text": "Changed fashion in short-distance travel."
+              },
+              {
+                "letter": "D",
+                "text": "The rising costs for making electric cars. gg~ 2020 1¥- 12 J1 \t50"
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 48,
+            "text": "What is the prospect of the bike industry according to Ryan Rzepecki?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "More will be invested in bike battery research."
+              },
+              {
+                "letter": "B",
+                "text": "The sales of ebikes will increase."
+              },
+              {
+                "letter": "C",
+                "text": "It will profit from ebike sharing."
+              },
+              {
+                "letter": "D",
+                "text": "It will make a difference in people's daily lives."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 49,
+            "text": "What prevented Chris Cocalis from developing ebikes sooner?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Retailers' refusal to deal in ebikes."
+              },
+              {
+                "letter": "B",
+                "text": "High profits from conventional bikes."
+              },
+              {
+                "letter": "C",
+                "text": "Users' concern about risks of ebike riding."
+              },
+              {
+                "letter": "D",
+                "text": "His focus on selling costly mountain bikes."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 50,
+            "text": "What makes Chris Cocalis believe there is a greater opportunity for ebike sales?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "The further lowering of ebike prices."
+              },
+              {
+                "letter": "B",
+                "text": "The public's concern for their health."
+              },
+              {
+                "letter": "C",
+                "text": "The increasing interest in mountain climbing."
+              },
+              {
+                "letter": "D",
+                "text": "The younger generation's pursuit of comfortable riding."
+              }
+            ],
+            "answer": "A"
+          }
+        ]
+      },
+      {
+        "passage": "The terms \"global warming'' and \"climate change\" are used by many, seemingly interchangeably. But do they really mean the same thing? Scientists shaped the history of the terms while attempting to accurately describe how humans continue to alter the planet. Later, political strategists adopted the terms to influence public opinion. In 1975, geochemist Wallace Broecker introduced the term \"climate change\" in an article published by Science. In 1979, a National Academy of Sciences report used the term \"global warming\" to define increases in the Earth's average surface temperature, while \"climate change\" more broadly referred to the numerous effects of this increase, such as sea-level rise and ocean acidification (M.1-t.). During the following decades, some industrialists and politicians launched a campaign to sow doubt in the minds of the American public about the ability of fossil-fuel use, \tdeforestation and other human activities to influence the planet's climate. Word use played a critical role in developing that doubt. For example, the language and polls expert Frank Luntz wrote a memo encouraging the use of \"climate· change\" because the phrase sounded less scary than \"global warming,\" reported the Guardian . However, Luntz's recommendation wasn't necessary. A Google Ngram Viewer chart shows that by 1993 climate change was already more commonly used in books than global warming. By the end of the next decade both words were used more frequently, and climate change was used nearly twice as of ten as global warming. NASA used the term \"climate change\" because it more accurately reflects the wide range of changes to the planet caused by increasing amounts of greenhouse gases in the atmosphere. The debate isn't new. A century ago, chemist Svante Arrhenius started one of the first debates over the potential for humans to influence the planet's climate. Arrhenius calculated the capability of carbon dioxide to trap heat in the Earth's atmosphere, but other chemists disagreed. Some argued that humans weren't producing enough greenhouse gases, while others claimed the effects would be tiny. \tNow, of Im~ 2020 ~ 12 Jj \t51 course, we \tknow \tthat whatever \tyou call \tit, \thuman behavior is warming the \tplanet, \twith \tgrave consequences ahead.",
+        "questions": [
+          {
+            "n": 51,
+            "text": "Why did politic~ans use the two terms \"global warming'' and \"climate change\"?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "To sway public opinion of the impact of human activities on Earth."
+              },
+              {
+                "letter": "B",
+                "text": "To more accurately describe the consequences of human activities."
+              },
+              {
+                "letter": "C",
+                "text": "To win more popular votes in their campaign activities."
+              },
+              {
+                "letter": "D",
+                "text": "To assure the public of the safety of existing industries."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 52,
+            "text": "As used in a National Academy of Sciences report, the term \"climate change\" differs from \"global warming'' in that ___ _",
+            "options": [
+              {
+                "letter": "A",
+                "text": "it sounds less vague"
+              },
+              {
+                "letter": "B",
+                "text": "it looks more scientific"
+              },
+              {
+                "letter": "C",
+                "text": "it covers more phenomena"
+              },
+              {
+                "letter": "D",
+                "text": "it is much closer to reality"
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 53,
+            "text": "What did industrialists of the late 20th century resort to in order to mislead Americans?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Made-up survey results."
+              },
+              {
+                "letter": "B",
+                "text": "Hired climate experts."
+              },
+              {
+                "letter": "C",
+                "text": "False research findings."
+              },
+              {
+                "letter": "D",
+                "text": "Deliberate choice of words."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 54,
+            "text": "Why did NASA choose the term \"climate change\"?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "To obtain more funds."
+              },
+              {
+                "letter": "B",
+                "text": "For greater precision."
+              },
+              {
+                "letter": "C",
+                "text": "For political needs."
+              },
+              {
+                "letter": "D",
+                "text": "To avoid debate."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 55,
+            "text": "What is the author's final conclusion?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Global warming is the more accurate term."
+              },
+              {
+                "letter": "B",
+                "text": "Accuracy of terminology matters in science."
+              },
+              {
+                "letter": "C",
+                "text": "Human activities have serious effects on Earth."
+              },
+              {
+                "letter": "D",
+                "text": "Politics interferes with serious scientific debate."
+              }
+            ],
+            "answer": "A"
+          }
+        ]
+      }
+    ]
+  },
+  "translation": {
+    "directions": "For this part, you are allowed 30 minutes to translate a passage from Chinese into English.",
+    "chinese": ""
+  }
+}

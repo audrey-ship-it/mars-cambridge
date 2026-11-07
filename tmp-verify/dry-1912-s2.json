@@ -1,0 +1,443 @@
+{
+  "id": "cet4-2019-12-s2",
+  "meta": {
+    "level": "CET4",
+    "year": 2019,
+    "month": 12,
+    "set": 2,
+    "source": "../../mars-cet/tmp-verify/zt2-fixed.txt",
+    "answerSource": "人工读图答案（待复核后置 verified）",
+    "verified": false,
+    "warnings": [
+      "选词空位数=0（应为10）"
+    ]
+  },
+  "reading": {
+    "banked": {
+      "passage": "Finally, some good news about airplane travel. If you are on a plane with a sick passenger, you are unlikely to get sick. That is the� of a;new study that looked at how respiratory ( Jll¥�ii) viruses _%!__ on airplanes. Researchers found that only people who were ·seated in the same row as a passenger with the flu, for example-or one row in front of or behind that individual-had a high risk of catching the illness. All other passengers had only a very � chance of getting sick, according to the findings. Media reports have not necessarily presented � information about the risk of getting infected on an airplane in the past. Therefore, these new findings should help airplane passengers to feel less� to catching respiratory infections while traveling by air. Prior to the new study, little was known about the risks of getting � infected by common respiratory viruses, such as the flu or common cold, on an airplane, the researchers said. So, to � the risks of infection, the study team flew on 10 different� in the U.S. during the flu season. The researchers found that passerigers sitting within two seats on � side of a person infected with the flu, as well as those sitting one row in front of or behind this individual, had about an 80 percent chance of getting sick. But other passengers were � safe from infection. They had a 2019.121 3 cm 2 �u less than 3 percent chance of catching the flu.",
+      "options": [
+        {
+          "letter": "A",
+          "word": "accurate"
+        },
+        {
+          "letter": "I",
+          "word": "nearby"
+        },
+        {
+          "letter": "B",
+          "word": "conclusion"
+        },
+        {
+          "letter": "J",
+          "word": "respond"
+        },
+        {
+          "letter": "C",
+          "word": "directly"
+        },
+        {
+          "letter": "K",
+          "word": "slim"
+        },
+        {
+          "letter": "D",
+          "word": "either"
+        },
+        {
+          "letter": "L",
+          "word": "spread"
+        },
+        {
+          "letter": "E",
+          "word": "evaluate"
+        },
+        {
+          "letter": "M",
+          "word": "summit"
+        },
+        {
+          "letter": "F",
+          "word": "explorations"
+        },
+        {
+          "letter": "N",
+          "word": "vividly"
+        },
+        {
+          "letter": "G",
+          "word": "flights"
+        },
+        {
+          "letter": "O",
+          "word": "vulnerable"
+        },
+        {
+          "letter": "H",
+          "word": "largely"
+        }
+      ],
+      "answers": [
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    "matching": {
+      "title": "stat,ement contains information given in one of the paragraphs. Identify the paragraph from which the ir,/ormation is derived. You may choose a paragraph more than once. Each paragraph is marked with a \"letter. \tAnswer the questions \tby marking the corresponding \"letter on Answer Sheet 2. Is Breakfast Really the Most Important Meal of the Day?",
+      "paragraphs": [
+        {
+          "label": "A",
+          "text": "Along with old classics like \" carrots give you night vision\" and \" Santa doesn't bring toys to misbehaving children\" , one of the most well-worn phrases of tired parents everywhere is that breakfast is the most important meal of the day. \tMany of us grow up believing that skipping breakfast is a serious mistake, even if only two thirds of adults in the UK eat breakfast regularly, according to the British Dietetic Association, and around three-quarters of Americans."
+        },
+        {
+          "label": "B",
+          "text": "\"The body uses a lot of energy stores for growth and repair through the night,\" explains diet specialist Sarah Elder. \"Eating a balanced breakfast helps to up our energy, as well as make up for protein and calcium used throughout the night. \" But there's widespread disagreement over whether breakfast should keep its top spot in the hierarchy ( � �) of meals. There have been concerns around the sugar content of cereal and the food industry's involvement in pro-breakfast research and even one claim from an academic that breakfast is \"dangerous\"."
+        },
+        {
+          "label": "C",
+          "text": "What's the reality? Is b�eakfast a necessary start to the day or a marketing tactic by cereal companies? The most researched aspect of breakfast ( and breakfast-skipping) has been its links to obesity. Scientists have different theories as to why there's a relationship between the two. In one US study that analysed th� · health data of 50 , 000 people over seven years, researchers found that those who made breakfast the largest meal of the day were more likely to have a lower body iμass index ( BMI) than those who ate a large lunch or dinner. The researchers argued that breakfast helps reduce daily calorie intake and improve the quality of our diet-since breakfast foods are often higher in fibre and nuttients."
+        },
+        {
+          "label": "D",
+          "text": "But as with any study of this kind , it was unclear if that was the cause-or if breakfast-skippers were jus t more likely to be overweight to begin with. To find out, researchers designed a study in which 52 obese women took part in a 12-week weight loss programme. All had the same number of calories over the day, but half had breakfast, while the other half did not. What they found was that it wasn't breakfast itself that caused the participants to lose weight: it was changing their normal routine. 2019. 12 / 4 (ffi 2 ¥>"
+        },
+        {
+          "label": "E",
+          "text": "If breakfast alone isn't a guarantee of weight loss, why is there a link between obesity and breakfast skipping? Alexandra Johnstone, professor of appetite research at the University of Aberdeen, argues that it may simply be because breakfast-skippers have been found to be less knowledgeable about nutrition and health. \"There are a lot of studies on the relationship between breakfast eating and possible health outcomes, but this may be because those who eat breakfast choose to habitually have health-enhancing behaviours such as regular exercise and not smoking,\" she says."
+        },
+        {
+          "label": "F",
+          "text": "A 2016 review of 10 studies looking into the relationship between breakfast and weight management concluded there is \"limited evidence\" supporting or refuting ( J.j_ �) the argument that breakfast influences weight or food intake, and more evidence is required before breakfast recommendations can be used to help prevent obesity."
+        },
+        {
+          "label": "G",
+          "text": "Researches from the University of SU1Tey and University of Aberdeen are halfway through research looking into the mechanisms behind how the time we eat influences body weight. Early findings suggest that a bigger breakfast is beneficial to weight control. Breakfast has been found to affect more than just weight. Skipping breakfast has been associated with a 27% increased risk of heart disease, a 21% higher risk of type 2 diabetes in men, and a 20% higher risk of type 2 diabetes in women. One reason may be breakfast's nutritional value-partly because cereal is fortified ( �1JU fi �ffl-ffi) with vitamins. In one study on the breakfast habits of 1,600 young people in the UK, researchers found that the fibre and rnicronutrient intake was better in those who had breakfast regularly. There have been similar findings -in Australia, Brazil, Canada and the US."
+        },
+        {
+          "label": "H",
+          "text": "Breakfast is also associated with improved brain function, including concentration and language use. A review of 54 studies found that eating breakfast can improve memory, though the effects on other brain functions were inconclusive. However, one of the review's researchers, Mary Beth Spitznagel, says there is \"reasonable\" evidence breakfast does improve concentration-there just needs to be more research. \t\" Looking at studies that tested concentration, the number of studies showing a benefit was exactly the same as the number that found no benefit,\" she says. \"And no studies found that eating breakfast was bad for concentration. \""
+        },
+        {
+          "label": "I",
+          "text": "What's most important, some argue, is what we eat for breakfast. High-protein breakfasts have been found particularly effective in reducing the longing for food and consumption later in the day, according \tto \tresearch by \tthe Australian \tCommonwealth \tScientific \tand \tIndustrial \tResearch Organisation. While cereal remains a firm favourite among breakfas�. consumers in the UK and US, a recent investigation into the sugar content of 'adult ' breakfast , c:=ereals found that some cereals contain more than three-quarters of the recommended daily amount of _free sugaIS in each portion, and sugar was the second or third highest ingredient in cereals."
+        },
+        {
+          "label": "J",
+          "text": "But some research suggests if we're going to eat sugary foods, it's best to do it early. One study recruited 200 obese adults to take part in a 16-week-long diet, where half added dessert to their breakfast, and half didn't. Those who added dessert lost an average of 40 pounds more-however, the study was unable to show the long-term effects. A review of 54 studies fonnd that there is no consensus yet on what type of breakfast is healthier, and concluded that the type of breakfast doesn't matter as much as simply eating something."
+        },
+        {
+          "label": "K",
+          "text": "While there's no conclusive evidence on exactly what we should be eating and when, the consensus is that we should listen to our own bodies and eat when we're hnngry. \"Breakfast is most important for people who are hungry when they wake up,\" Johnstone says. \t\" Each body starts the day differently-and those individual differences need to be researched more closely,\" Spitznagel says. 201s. 12 I s Cffi 2 lU \"A balanced breakfast is really helpful, but getting �egular meals throughout the day is more important to leave blood sugar. stable through the day, which helps control weight and hunger levels,\" says Elder. \"Breakfast isn't the only meal we should be getting right.\""
+        }
+      ],
+      "questions": [
+        {
+          "n": 36,
+          "text": "According to one professor, obesity is related to a lack of basic awareness of nutrition and health."
+        },
+        {
+          "n": 37,
+          "text": "Some scientists claim that people should consume the right kind of food at breakfast."
+        },
+        {
+          "n": 38,
+          "text": "Opinions differ as to whether breakfast is the most important meal of the day."
+        },
+        {
+          "n": 39,
+          "text": "It has been found that not eating breakfast is related to the incidence of certain diseases in some countries."
+        },
+        {
+          "n": 40,
+          "text": "Researchers found it was a change in eating habits ratti.er than breakfast itself that induced weight loss."
+        },
+        {
+          "n": 41,
+          "text": "To keep oneself healthy, eating breakfast is more important than choosing what to eat."
+        },
+        {
+          "n": 42,
+          "text": "It is widely considered wrong not to eat breakfast."
+        },
+        {
+          "n": 43,
+          "text": "More research is needed to prove that breakfast is related to weight loss or food intake."
+        },
+        {
+          "n": 44,
+          "text": "People who prioritise breakfasts tend to have lower calorie but higher nutritional intake."
+        },
+        {
+          "n": 45,
+          "text": "Many studies reveal that eating breakfast helps people i;nemorise and concentrate."
+        }
+      ],
+      "answers": [
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    "careful": [
+      {
+        "passage": "Textbooks represent an 11 billion dollar industry,· up from $8 billion in 2014. Textbook publisher Pearson is the largest publisher-of any kind-in the world. It costs about $1 million to create a new textbook. · A freshman textbook will have dozens of contributors, from subject-matter experts through graphic and layout artists to expert reviewers and classroom testers. Textbook publishers connect professors, instructors and students in ways that alternatives, such as open e-textbooks and open educational resources, simply do not. This connection happens not only by means of collaborative development, review and testing, but also at conferences where faculty regularly decide on their textbooks and curricula for the coming year. It is true that textbook publishers have recently reported losses, largely due to students renting or buying used print textbooks. But this can be chalked up to the excessively high cost of their books which has increased over 1, 000 percent since 1977. A re�cturing of the textbook industry may well be in order. But this does not mean the end of the textbook itself. While they may not be as dynamic as an iPad, textbooks are not passive or lifeless. For example, over the centuries, they have simulated ( ffl ffi ) dialogue$ in a number of ways. From 1800 to the present day, textbooks have done this by posing questions for students to answer inductively ( Ja� tt �) . That means students are asked to use their individ� experience to come up with answers to general questions. Today's psychology texts, for example, ask:\"How much of your personality do you think you inherited?\" while ones in physics say: \"How � you predict where the ball you tossed will land?\" Experts obseive that \"textbooks come in layers, something like an onion. \" For an active learner, 2019. 12 I 6 <ffl 2 iU engaging with a textbook can be an interactive experience. Readers proceed at their own pace. They \"customize\" their books by engaging with different layers and linkages. Highlighting, Post-It notes, dog-ears and other techniques allow for further customization· that students value in print books over digital forms of books.",
+        "questions": [
+          {
+            "n": 46,
+            "text": "What does the passage say about open educational resources?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "They contribute to teaching as much as to learning."
+              },
+              {
+                "letter": "B",
+                "text": "They don't profit as much as traditional textbooks do."
+              },
+              {
+                "letter": "C",
+                "text": "They can't connect professors and students as textbooks do."
+              },
+              {
+                "letter": "D",
+                "text": "They compete fiercely for customers with textbook producers."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 47,
+            "text": "What is the main cause of the publishers' losses?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Failure to meet student need."
+              },
+              {
+                "letter": "B",
+                "text": "Industry restructuring."
+              },
+              {
+                "letter": "C",
+                "text": "Emergence of e-books."
+              },
+              {
+                "letter": "D",
+                "text": "Falling sales."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 48,
+            "text": "What does the textbook industry need to do?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Reform its structures."
+              },
+              {
+                "letter": "B",
+                "text": "Cut its retail prices."
+              },
+              {
+                "letter": "C",
+                "text": "Find replacements for printed textbooks."
+              },
+              {
+                "letter": "D",
+                "text": "Change its business strategy periodically."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 49,
+            "text": "What are students expected to do in the learning process?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Think carefully before answering each question."
+              },
+              {
+                "letter": "B",
+                "text": "Ask questions based on their own understanding."
+              },
+              {
+                "letter": "C",
+                "text": "Answer questions using their personal experience."
+              },
+              {
+                "letter": "D",
+                "text": "Give answers showing their respective personality."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 50,
+            "text": "What do experts say about students using textbooks?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "They can digitalize the prints easily."
+              },
+              {
+                "letter": "B",
+                "text": "They can learn in an interactive way."
+              },
+              {
+                "letter": "C",
+                "text": "They can purchase customized versions."
+              },
+              {
+                "letter": "D",
+                "text": "They can adapt the material themselves."
+              }
+            ],
+            "answer": "A"
+          }
+        ]
+      },
+      {
+        "passage": "When we think of animals and plants, we have a pretty good way of dividing them into two distinct groups: one converts sunlight into energy and the other has to eat food to make its energy. Well, those dividing lines come crashing down with the discovery of a sea slug ( rli �ilru) that's truly half animal and half plant. It's pretty incredible how it has managed to hijack the genes of the aJ,gae ( -�) on which it feeds. The slugs can manufacture chlorophyll, the green pigment ( {g � ) in plants that captures energy from sunlight, and hold these genes within their body. The term kleptoplasty is used to describe the practice of using hijacked genes to create nutrients from sunlight. And so far, this green sea slug is the only known animal that can be truly considered solar-powered, although some animals do exhibit some plant-like behaviors. Many scientists have studied the green sea slugs to confirm that they are actually able to create energy from sunlight. In fact, the slugs use the genetic material so well that they pass it on to their future generations. Their babies retain the ability to produce their own chlorophyll, though they can't generate energy from sunlight until they've eaten enough algae to steal the necessary genes, which they can't yet produce on their own. \"There's no way on earth that genes from an alga should work inside an animal cell,\" says Sidney Pierce from the University of South Florida. \"And yet here, they do. They allow the animal to rely on sunshine for its nutrition. So if something happens to their food source, they have a way of not starving 2019. 12 / 7 (ffi 2 4i:) to death until they find more algae to eat. \" 11\\e sea slugs are so good at gathering energy from the sun that they can live up to nine months without having to eat any food. They get all their nutritional needs met by the genes that they've hijacked from the algae.",
+        "questions": [
+          {
+            "n": 51,
+            "text": "What is the distinctive feature of a sea slug?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It looks like both a plant and an animal."
+              },
+              {
+                "letter": "B",
+                "text": "It converts some sea animals into plants."
+              },
+              {
+                "letter": "C",
+                "text": "It lives half on animals and half on plants."
+              },
+              {
+                "letter": "D",
+                "text": "It gets energy from both food and sunlight."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 52,
+            "text": "What enables the sea slug to live like a plant?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "The genes it captures from the sea plant algae."
+              },
+              {
+                "letter": "B",
+                "text": "The mechanism by which it conserves energy."
+              },
+              {
+                "letter": "C",
+                "text": "The nutrients it hijacks from other species."
+              },
+              {
+                "letter": "D",
+                "text": "The green pigment it inherits from its ancestors."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 53,
+            "text": "What does the author say about baby sea slugs?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "They can live without sunlight for a long time."
+              },
+              {
+                "letter": "B",
+                "text": "They can absorb sunlight right after their birth."
+              },
+              {
+                "letter": "C",
+                "text": "They can survive without algae for quite some time."
+              },
+              {
+                "letter": "D",
+                "text": "They can produce chlorophyll on their own."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 54,
+            "text": "What does Sidney Pierce say about genes from an alga?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "They are stolen from animals like the sea slug."
+              },
+              {
+                "letter": "B",
+                "text": "They can't function unless exposed to sunlight."
+              },
+              {
+                "letter": "C",
+                "text": "They don't usually function inside animal cells."
+              },
+              {
+                "letter": "D",
+                "text": "They can readily be converted to sea slug genes."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 55,
+            "text": "What do we learn about sea slugs from the passage?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "They behave the way most plant species do."
+              },
+              {
+                "letter": "B",
+                "text": "They can survive for months without eating."
+              },
+              {
+                "letter": "C",
+                "text": "They will tum into plants when they mature."
+              },
+              {
+                "letter": "D",
+                "text": "They will starve to death without sunlight."
+              }
+            ],
+            "answer": "A"
+          }
+        ]
+      }
+    ]
+  },
+  "translation": {
+    "directions": "For this part, you are allowed 30 minutes to translate a passage from Chinese into English.",
+    "chinese": ""
+  }
+}

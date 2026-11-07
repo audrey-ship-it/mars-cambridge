@@ -1,0 +1,94 @@
+/* 2025年6月 第3套 CET-6 翻译题。
+ * 来源：2025年06月CET6题+解+音频/3.2025年06月六级真题（新更）/2025.06英语六级解析第3套.pdf
+ * 核对：2025.06英语六级解析第3套.pdf p51-p52（Part IV Translation 参考译文/译点精析）
+ * 验证状态：verified — 解析该套为纯扫描件，参考译文由第52页图片逐句录入；题干取自真题卷文字层 */
+
+export const translation202506S3 = {
+  "id": "cet6-2025-06-s3",
+  "meta": {
+    "level": "CET6",
+    "year": 2025,
+    "month": 6,
+    "set": 3,
+    "source": "2025年06月CET6题+解+音频/3.2025年06月六级真题（新更）/2025.06英语六级解析第3套.pdf",
+    "answerSource": "2025.06英语六级解析第3套.pdf p51-p52（Part IV Translation 参考译文/译点精析）",
+    "pages": "解析第51-52页",
+    "verified": true,
+    "verifiedAt": "2026-11-05",
+    "note": "解析该套为纯扫描件，参考译文由第52页图片逐句录入；题干取自真题卷文字层"
+  },
+  "title": "2025年6月 第3套",
+  "topic": "水利工程",
+  "directions": "For this part, you are allowed 30 minutes to translate a passage from Chinese into English.",
+  "passage": "自古以来，中国的水资源北缺南丰，分布极不均衡。为了有效解决北方严重缺水问题，中国政府实施了南水北调工程(the South-to-North Water Diversion Project)。这是一项跨区域配置水资源的宏大水利工程。历经数十年的规划与筹备，工程于2002年开工建设，分为东、中、西三条线路，总长4350公里，惠及人口将超过4亿。自2014年通水以来，工程向北方调水累计已超500亿立方米，为北方地区的人民提供了可靠的水资源，同时也极大地改善了这一地区的生态环境，促进了经济的可持续健康发展。",
+  "reference": "Since ancient times, China has faced an uneven distribution of water resources, with the north being water-scarce and the south water-abundant. To effectively address the critical water shortage in the northern regions, the Chinese government implemented the South-to-North Water Diversion Project. This is a grand water conservancy project for allocating water resources across regions. After decades of planning and preparation, construction on the project began in 2002 and is divided into three routes: East, Central, and West, with a total length of 4,350 kilometers, benefiting a population of over 400 million. Since its operational launch in 2014, the project has transferred more than 50 billion cubic meters of water to the north, providing a reliable water supply for the people in northern regions while significantly improving the local ecological environment and promoting sustainable and healthy economic development.",
+  "notes": [
+    [
+      "自古以来",
+      "since ancient times"
+    ],
+    [
+      "分布极不均衡",
+      "an uneven distribution"
+    ],
+    [
+      "北缺南丰",
+      "water-scarce in the north and water-abundant in the south"
+    ],
+    [
+      "有效解决",
+      "effectively address"
+    ],
+    [
+      "严重缺水",
+      "critical water shortage"
+    ],
+    [
+      "实施",
+      "implement"
+    ],
+    [
+      "跨区域",
+      "across regions"
+    ],
+    [
+      "配置水资源",
+      "allocate water resources"
+    ],
+    [
+      "水利工程",
+      "water conservancy project"
+    ],
+    [
+      "规划与筹备",
+      "planning and preparation"
+    ],
+    [
+      "惠及",
+      "benefit"
+    ],
+    [
+      "通水",
+      "operational launch"
+    ],
+    [
+      "调水",
+      "transfer water"
+    ],
+    [
+      "生态环境",
+      "ecological environment"
+    ],
+    [
+      "可持续健康发展",
+      "sustainable and healthy economic development"
+    ]
+  ],
+  "points": [
+    "第一句可把“分布极不均衡”作主干，译为China has faced an uneven distribution of water resources，用现在完成时；“北缺南丰”作补充说明，用with 独立主格结构with the north being water-scarce and the south water-abundant；句首“自古以来”用Since ancient times。",
+    "第二句“为了有效解决北方严重缺水问题”表目的，用不定式短语To effectively address the critical water shortage 置句首；主干为“中国政府实施了南水北调工程”，用一般过去时implemented；“缺水问题”由water shortage 本身即已表达，不必再加problem。",
+    "第三句为主系表结构，说明工程性质；“跨区域配置水资源的”作后置定语，用介词短语for allocating water resources across regions。",
+    "第四句句子较长，宜拆分：主句为“工程于2002年开工建设，分为东、中、西三条线路”，译为construction on the project began in 2002 and is divided into three routes: East, Central, and West；“总长4350公里”“惠及人口将超过4亿”作补充，用with 介词短语和现在分词短语，即with a total length of 4,350 kilometers, benefiting a population of over 400 million；句首“历经数十年的规划与筹备”为状语，译成介词短语After decades of planning and preparation。",
+    "第五句先找主干：“工程向北方调水累计已超500亿立方米”，译为the project has transferred more than 50 billion cubic meters of water to the north，其中transfer 意为“转移、调动”；“为北方地区的人民提供了可靠的水资源”和“也极大地改善了这一地区的生态环境，促进了经济的可持续健康发展”为补充说明内容，与主干构成并列，前句用现在分词providing 作伴随状语，后两句用while 连接；“促进了经济的可持续健康发展”与“改善了生态环境”并列，用and 连接；句首“自2014年通水以来”为时间状语，译为Since its operational launch in 2014。"
+  ]
+};

@@ -1,0 +1,35 @@
+[
+  {
+    "year": 2023,
+    "month": 6,
+    "set": 1,
+    "zt": "D:/workspace_sunny/题库/cet/真题/2023年06月CET4题+解+音频/01、真题PDF版（推荐打印）❤/2023.06英语四级真题第1套.pdf",
+    "jxBanked": "D:/workspace_sunny/题库/cet/专项/四级选词填空/四级选词填空解析/2023.06英语四级选词填空解析第1套.pdf",
+    "jxMatching": "D:/workspace_sunny/题库/cet/专项/四级长篇阅读/四级长篇阅读解析/2023.06英语四级长篇阅读解析第1套.pdf",
+    "jxCareful": "D:/workspace_sunny/题库/cet/专项/四级仔细阅读/四级仔细阅读解析/2023年06月四级仔细阅读解析第1套.pdf",
+    "out": "src/data/generated/cet4-2023-06-s1.json",
+    "verified": true
+  },
+  {
+    "year": 2023,
+    "month": 6,
+    "set": 2,
+    "zt": "D:/workspace_sunny/题库/cet/真题/2023年06月CET4题+解+音频/01、真题PDF版（推荐打印）❤/2023.06英语四级真题第2套.pdf",
+    "jxBanked": "D:/workspace_sunny/题库/cet/专项/四级选词填空/四级选词填空解析/2023.06英语四级选词填空解析第2套.pdf",
+    "jxMatching": "D:/workspace_sunny/题库/cet/专项/四级长篇阅读/四级长篇阅读解析/2023.06英语四级长篇阅读解析第2套.pdf",
+    "jxCareful": "D:/workspace_sunny/题库/cet/专项/四级仔细阅读/四级仔细阅读解析/2023年06月四级仔细阅读解析第2套.pdf",
+    "out": "src/data/generated/cet4-2023-06-s2.json",
+    "verified": true
+  },
+  {
+    "year": 2023,
+    "month": 6,
+    "set": 3,
+    "zt": "D:/workspace_sunny/题库/cet/真题/2023年06月CET4题+解+音频/01、真题PDF版（推荐打印）❤/2023.06英语四级真题第3套.pdf",
+    "jxBanked": "D:/workspace_sunny/题库/cet/专项/四级选词填空/四级选词填空解析/2023.06英语四级选词填空解析第3套.pdf",
+    "jxMatching": "D:/workspace_sunny/题库/cet/专项/四级长篇阅读/四级长篇阅读解析/2023.06英语四级长篇阅读解析第3套.pdf",
+    "jxCareful": "D:/workspace_sunny/题库/cet/专项/四级仔细阅读/四级仔细阅读解析/2023年06月四级仔细阅读解析第3套.pdf",
+    "out": "src/data/generated/cet4-2023-06-s3.json",
+    "verified": true
+  }
+]

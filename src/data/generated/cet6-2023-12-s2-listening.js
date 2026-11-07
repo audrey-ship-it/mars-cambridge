@@ -1,0 +1,733 @@
+const LISTENING = {
+  "id": "cet6-2023-12-s2",
+  "meta": {
+    "level": "CET6",
+    "year": 2023,
+    "month": 12,
+    "set": 2,
+    "source": "原题：2023年12月CET6题+解+音频\\01、真题PDF版（推荐打印）❤\\2023.12六级真题第2套【可复制可检索】.pdf；音频：2023年12月CET6题+解+音频\\04、听力音频\\2023年12月六级听力音频第2套.mp3；解析：2023年12月CET6题+解+音频\\03、答案解析\\2023.12英语六级真题第2套解析.pdf",
+    "answerSource": "解析书答案逐题核对（读图）",
+    "verified": true,
+    "verifiedAt": "2026-11-05"
+  },
+  "audioUrls": {
+    "conv1": "/audio/cet6/cet6-2023-12-s2-conv1.mp3",
+    "conv2": "/audio/cet6/cet6-2023-12-s2-conv2.mp3",
+    "pass1": "/audio/cet6/cet6-2023-12-s2-pass1.mp3",
+    "pass2": "/audio/cet6/cet6-2023-12-s2-pass2.mp3",
+    "rec1": "/audio/cet6/cet6-2023-12-s2-rec1.mp3",
+    "rec2": "/audio/cet6/cet6-2023-12-s2-rec2.mp3",
+    "rec3": "/audio/cet6/cet6-2023-12-s2-rec3.mp3"
+  },
+  "sections": {
+    "a": [
+      {
+        "title": "Conversation One",
+        "audio": "/audio/cet6/cet6-2023-12-s2-conv1.mp3",
+        "transcript": "W: So, I've been thinking, this summer, instead of our usual holiday rental, I'd like to try renting a camper van and exploring a bit more. M: A camper van? You mean to spend the summer living out of a car? W: Yes, a camper van. And no, it's nothing like living out of a car. These are proper vans with full-size beds to sleep in. Some even have kitchens. This way, we wouldn't have to be locked into one place during our holiday. We'd be able to visit so many more places and travel at our own pace. The rates of most hotels and holiday homes really soar in the summer anyway. We'd probably save a lot of money as well. M: I think my grandfather had a van like that. It doesn't sound that appealing to me. W: Today's camper vans are completely different. These days, they're equipped with all the modern comforts. I've seen quite a few with solar panels that provide electricity for when you're stopped. This way, you can still use your computer or charge your phone. And most even have Wi-Fi, so if the weather's not great, you could stream videos. M: I'm warming up to the idea. Keep talking. W: Loads of people are committing to this trend full time. Check it out online. Lots of people stream videos of their alternative lifestyles and actually earn a salary. Imagine having that kind of freedom to go anywhere you want and work from anywhere in the world. M: Okay, we can consider it. As long as the basic needs like toilet and showers are covered, I'm definitely in. Do you think there will be enough room for my mountain bike? What about food delivery? Will we be able to order to the van? Will there be enough space for the dog? We wouldn't want to leave him behind. W: Slow down. Glad you're excited about it. Let's start by looking at what's available first.",
+        "questions": [
+          {
+            "n": 1,
+            "text": "What has the woman been thinking of doing for this summer?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Renting a car instead of driving their own."
+              },
+              {
+                "letter": "B",
+                "text": "Surfing online to check out the best deals."
+              },
+              {
+                "letter": "C",
+                "text": "Exploring more summer holiday resorts."
+              },
+              {
+                "letter": "D",
+                "text": "Spending their holidays in a novel way."
+              }
+            ],
+            "answer": "D"
+          },
+          {
+            "n": 2,
+            "text": "What do we learn about the man's grandfather from the conversation?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "He once owned a van."
+              },
+              {
+                "letter": "B",
+                "text": "He was well travelled."
+              },
+              {
+                "letter": "C",
+                "text": "He did not find holiday homes appealing."
+              },
+              {
+                "letter": "D",
+                "text": "He did not like to be locked into one place."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 3,
+            "text": "What can many camper vans do nowadays according to the woman?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Ensure the safety of passengers."
+              },
+              {
+                "letter": "B",
+                "text": "Drive under any weather condition."
+              },
+              {
+                "letter": "C",
+                "text": "Receive instructions via computers."
+              },
+              {
+                "letter": "D",
+                "text": "Generate their own electricity."
+              }
+            ],
+            "answer": "D"
+          },
+          {
+            "n": 4,
+            "text": "What idea does the woman find attractive?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Having one's basic needs covered while away from home."
+              },
+              {
+                "letter": "B",
+                "text": "Enjoying the freedom to choose where to go and work."
+              },
+              {
+                "letter": "C",
+                "text": "Slowing down in one's increasingly hectic life."
+              },
+              {
+                "letter": "D",
+                "text": "Riding one's mountain bike on vacation."
+              }
+            ],
+            "answer": "B"
+          }
+        ]
+      },
+      {
+        "title": "Conversation Two",
+        "audio": "/audio/cet6/cet6-2023-12-s2-conv2.mp3",
+        "transcript": "W: You wanted to see me? M: Yes, I'll get straight to the point. Over the past month or so, it has become apparent that your performance has dipped. You've been late to work several times these past few weeks, which is very uncharacteristic of you. But what really concerns me is your curtailed output. Lately, you seem to be constantly one step behind. What's going on? W: I'm sorry. I'm going through some unfortunate family issues at the moment. It's a personal matter, so if you don't mind, I much prefer we don't get into it. Nevertheless, I expect it to have all blown over in another month or so. M: Do you need some time off? W: Actually, yes. Would it be possible to take the next two Mondays off? I was deliberating whether I should ask for this, but now that we're here... M: Sure thing. But if you needed some leave, why didn't you ask for it earlier? W: I'm not sure why. I guess I kind of felt bad asking for it. M: You shouldn't feel bad asking for leave, especially if you need it. W: I know. You're right. I'm sorry. M: Look, you've been with us almost five years and I personally really value your proficiency at your job. It makes my job far easier. In addition, I can assure you that management as a whole also holds you in high regard. W: Thank you. M: What I need is for you to be back at your 100%. Are you sure taking two Mondays off will suffice? W: It'll be enough. I'm sure of it. M: Okay, good. So this is what we're going to do. You will take those days off, and I expect that you will gradually come back to your usual self. Then in two months' time, we will catch up again to see how you are faring. W: Sounds good. Thank you for your understanding.",
+        "questions": [
+          {
+            "n": 5,
+            "text": "What do we learn about the woman from the man's description?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "She has missed several important appointments lately."
+              },
+              {
+                "letter": "B",
+                "text": "Her job performance has worsened over the past month."
+              },
+              {
+                "letter": "C",
+                "text": "She has lagged behind most of her co-workers in output."
+              },
+              {
+                "letter": "D",
+                "text": "Her physical health has deteriorated these past few weeks."
+              }
+            ],
+            "answer": "B"
+          },
+          {
+            "n": 6,
+            "text": "What does the woman say she's experiencing at the moment?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Serious health issues."
+              },
+              {
+                "letter": "B",
+                "text": "Disturbance of her mind."
+              },
+              {
+                "letter": "C",
+                "text": "Some problems at home."
+              },
+              {
+                "letter": "D",
+                "text": "Penalty for curtailed output."
+              }
+            ],
+            "answer": "C"
+          },
+          {
+            "n": 7,
+            "text": "What does the man say makes his job far easier?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "The woman's work proficiency."
+              },
+              {
+                "letter": "B",
+                "text": "The woman's whole-hearted support."
+              },
+              {
+                "letter": "C",
+                "text": "His engaging personality."
+              },
+              {
+                "letter": "D",
+                "text": "His management capability."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 8,
+            "text": "What agreement have the speakers reached by the end of the conversation?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "The woman will resume her work in two weeks."
+              },
+              {
+                "letter": "B",
+                "text": "The man will be back at his 100% in a couple of weeks."
+              },
+              {
+                "letter": "C",
+                "text": "The woman will be off work on the next two Mondays."
+              },
+              {
+                "letter": "D",
+                "text": "The man will help the woman get back to her usual self."
+              }
+            ],
+            "answer": "C"
+          }
+        ]
+      }
+    ],
+    "b": [
+      {
+        "title": "Passage One",
+        "audio": "/audio/cet6/cet6-2023-12-s2-pass1.mp3",
+        "transcript": "There are many factors that impact our health. These include our finances, our emotions and the way we work. Education is one such factor. Research suggests that higher levels of education can lead to better health and even greater longevity. But what about the education of your partner? New research seeks to answer this question. Researchers use data from a longitudinal study. The data came from surveys first administered to high school seniors in 1957. The surveys ended in 2011. The team found that a person whose spouse had a higher level of education tended to report better health. This remained the case when adjusting for other factors, such as participants' own education, social background and health status before and after marriage. The authors suggest that high levels of education provide shared social, intellectual, emotional and financial resources. These include things like higher levels of emotional intelligence, particular skills or knowledge, or more money. The researchers concede that an individual's own level of education is clearly important for their health, but they assert that individuals also can reap the benefits of their partner's education. It is noteworthy that the effects vary by gender. For women, health was more closely correlated to their spouse's education than for men. The team suggests this may be related to the time period of the study. Women in this sample had lower levels of education and lower occupational achievements than the men. The researchers' hypothesis is that this made the husband's resources more likely to have a shared impact.",
+        "questions": [
+          {
+            "n": 9,
+            "text": "What does research suggest about a higher level of education?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It can have an impact on our moods and emotions."
+              },
+              {
+                "letter": "B",
+                "text": "It can enable us to live a healthier and longer life."
+              },
+              {
+                "letter": "C",
+                "text": "It can improve our financial status significantly."
+              },
+              {
+                "letter": "D",
+                "text": "It can help us achieve better work performance."
+              }
+            ],
+            "answer": "B"
+          },
+          {
+            "n": 10,
+            "text": "What do we learn from the finding of the new research?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "One's health tends to differ before and after marriage."
+              },
+              {
+                "letter": "B",
+                "text": "One's health status is related to one's social background."
+              },
+              {
+                "letter": "C",
+                "text": "The wealthier one's spouse is, the healthier one becomes."
+              },
+              {
+                "letter": "D",
+                "text": "The spouse's level of education can impact one's health."
+              }
+            ],
+            "answer": "D"
+          },
+          {
+            "n": 11,
+            "text": "What does the passage say about the men in the sample of the new research?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "They benefited a lot from their career achievements."
+              },
+              {
+                "letter": "B",
+                "text": "They showed interest in their spouse's occupations."
+              },
+              {
+                "letter": "C",
+                "text": "They had much in common with their spouses."
+              },
+              {
+                "letter": "D",
+                "text": "They had more education than their spouses."
+              }
+            ],
+            "answer": "D"
+          }
+        ]
+      },
+      {
+        "title": "Passage Two",
+        "audio": "/audio/cet6/cet6-2023-12-s2-pass2.mp3",
+        "transcript": "Climate scientists predict that many parts of the world will be increasingly prone to floods. This is a serious risk to human lives and property. So understanding and accurately forecasting flood risks is a key challenge for vulnerable cities around the globe. In 2017, Derek Loftis of the Virginia Institute of Marine Science started a project called Catch the King. It uses a smartphone app to collect the data of ordinary citizens during high tides. He'll use those data to validate and improve his mathematical flooding model, called TideWatch. Loftis's mission is to know where the water goes before it goes there. But collecting necessary data and then processing that information quickly enough to make usable forecasts is anything but easy. Accurate flood forecasts require an understanding of the situation on the ground. By the early 2000s, supercomputing had advanced enough that scientists could integrate weather forecasting models with such measurements. But they still didn't have the critically important ability to forecast fast-moving floods in real time. So, in 2017, Loftis and colleagues set up a group of 28 Internet-connected water-level sensors throughout the flood risk community of Norfolk, Virginia. The new sensors relayed rough measurements about water height and movement to a computer at the Virginia Institute. Along with those sensors, hundreds of local citizens take photos of rising tides and transmit them in real time to the institute. Scientists hope that the data collected by these citizens can help sharpen the ability to forecast exactly when and where damaging floods will occur.",
+        "questions": [
+          {
+            "n": 12,
+            "text": "What is said to be a key challenge for cities prone to floods?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Eliminating their root cause."
+              },
+              {
+                "letter": "B",
+                "text": "Forecasting flood risks accurately."
+              },
+              {
+                "letter": "C",
+                "text": "Identifying the cities' geological features."
+              },
+              {
+                "letter": "D",
+                "text": "Finding out the changing climate patterns."
+              }
+            ],
+            "answer": "B"
+          },
+          {
+            "n": 13,
+            "text": "For what purpose does Derek Loftis collect the data of ordinary citizens during high tides?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "To validate his hypothesis about the gravity of floods."
+              },
+              {
+                "letter": "B",
+                "text": "To determine the frequency of high tides causing floods."
+              },
+              {
+                "letter": "C",
+                "text": "To improve his mathematical flooding model."
+              },
+              {
+                "letter": "D",
+                "text": "To see the feasibility of his project on flooding."
+              }
+            ],
+            "answer": "C"
+          },
+          {
+            "n": 14,
+            "text": "What does the passage say is Derek Loftis's mission?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "To study the consequences of high tides on flooded areas."
+              },
+              {
+                "letter": "B",
+                "text": "To teach local citizens how to collect data of incoming floods."
+              },
+              {
+                "letter": "C",
+                "text": "To forecast rapid floods in real time."
+              },
+              {
+                "letter": "D",
+                "text": "To classify the flooding data processed."
+              }
+            ],
+            "answer": "C"
+          },
+          {
+            "n": 15,
+            "text": "What did Loftis and his colleagues do to obtain data about water height and movement?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "They set up Internet-connected water-level sensors."
+              },
+              {
+                "letter": "B",
+                "text": "They tracked the rising tides with video-cameras."
+              },
+              {
+                "letter": "C",
+                "text": "They used newly-developed supercomputing facilities."
+              },
+              {
+                "letter": "D",
+                "text": "They observed the direction of water flow on the spot."
+              }
+            ],
+            "answer": "A"
+          }
+        ]
+      }
+    ],
+    "c": [
+      {
+        "title": "Recording One",
+        "audio": "/audio/cet6/cet6-2023-12-s2-rec1.mp3",
+        "transcript": "Now, it's become something of a ritual to debate the value of a college degree, but as Current Population Survey data show, there has been a sharp decline in employment among men without college degrees compared with those who have them. This decline began in the 1960s and has become more serious over time. What has actually caused this decline? Well, economists have been working to ascertain the roots of the decline for decades and have come up with several theories. One popular theory is that it's a case of too low wages for jobs that don't require a degree. An alternate theory is that there were more jobs not requiring a college degree in the past than now. A recent working paper from the National Bureau of Economic Research reviewed those theories and put forward additional hypotheses about the causes of the problem. Let's look at that paper now. First, the researchers considered the issue of wages. As the wage gap has grown between those with college degrees and those without, economists have suggested that men aren't as interested in taking some of the less lucrative jobs. While the authors of the paper found truth in this explanation, they assert that low wages can't be the only factor, as wages for men without college degrees, adjusting for inflation, haven't changed much since the 1960s, making it hard to see why fewer men seem willing to accept those wages. This leads to the second theory, that more jobs require a college degree today than in the past. Indeed, that theory seems valid, because in America today, 2/3 of jobs are filled by workers with at least some college education. However, the authors of the paper argue that there are other factors amplifying the problem. They identified two new potential explanations: the first being the tremendous decline in marriage among men without college degrees since the 1960s; and the second, being the increase in women participating in the workforce that was concurrent with the decline in marriage. These two changes mean that men might not have families to support, or if they do, their wives might be doing more of the providing, both of which might remove the financial incentive to work. The authors of the paper concede that research on the subject isn't complete, but they argue that their work supports the value of a college education.",
+        "questions": [
+          {
+            "n": 16,
+            "text": "What does the speaker say has become something of a ritual?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "To argue about the value of a college degree."
+              },
+              {
+                "letter": "B",
+                "text": "To debate the validity of current survey data."
+              },
+              {
+                "letter": "C",
+                "text": "To account for the drastic decline in employment among men."
+              },
+              {
+                "letter": "D",
+                "text": "To compare men without college degrees with those who have."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 17,
+            "text": "What did the researchers of a recent working paper consider first?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "The increase in women taking up jobs."
+              },
+              {
+                "letter": "B",
+                "text": "The issue of changing job requirements."
+              },
+              {
+                "letter": "C",
+                "text": "The factor of wages."
+              },
+              {
+                "letter": "D",
+                "text": "The impact of inflation."
+              }
+            ],
+            "answer": "C"
+          },
+          {
+            "n": 18,
+            "text": "What did the recent paper identify as a new potential explanation of the problem concerning men's employment?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Men's unwillingness to accept low wages in times of growing inflation."
+              },
+              {
+                "letter": "B",
+                "text": "The wage gap between those with college degrees and those without."
+              },
+              {
+                "letter": "C",
+                "text": "More jobs requiring their holders to have a college degree nowadays."
+              },
+              {
+                "letter": "D",
+                "text": "The sharp decline in marriage among men with no college degrees."
+              }
+            ],
+            "answer": "D"
+          }
+        ]
+      },
+      {
+        "title": "Recording Two",
+        "audio": "/audio/cet6/cet6-2023-12-s2-rec2.mp3",
+        "transcript": "While an increasing number of people are trying to eat less meat, a market research team has found in its latest fashion and sustainability report that the trend is now spreading from kitchen to closet. It found animal welfare came top of a list of issues that people considered before buying clothes, with 42% saying it was important to them. The researchers of the team predicted that the next year would see a boom in animal-free shoe collections, since they heard shoppers of all ages say they would buy footwear designated as \"vegan\", meaning the goods were produced without using any animal or animal part. As well as being on trend, and with a much better ring to it than synthetic leather, the vegan label does convey an important extra distinction. If you label something as vegan, then the whole product needs to be animal free. That means checking things like the glue that holds the shoe together, for example, and the chemicals used for finishing them. At the top end, some of the world-renowned fashion designers have avoided leather and fur for some time. In fact, some of the companies are now exploring a leather substitute and a silk replacement made from mushrooms. The Animal Free Product Society says they've seen a boom in products registered with the vegan trademark. In 2018, there were 119. So far this year, it says an unprecedented 1,956 have been registered. New products are being added daily. There are fur coats that are vegan, plastic vegan belts and shoes made from tree bark or natural rubber labelled vegan. These new products aren't coming at an extra cost to consumers though. Vegan boots cost the same as the leather originals. New Look, one of the first reputable store chains to use the vegan trademark, prices ballet shoes at £7.99 and a vegan laptop handbag at £29.99, comparable with its other products. This signifies a change. In the past, ethical products, whether they were fair trade or organic, came at a premium. However, it is unclear whether these new products can be considered ethical. The debate over durability, crop-growing impacts, pollution and recyclability is a complicated one, not to mention the ethics around the working conditions for people making the products, whatever the component materials. Environmental campaigners advise that the best approach is to buy less, never mind what the item is made of.",
+        "questions": [
+          {
+            "n": 19,
+            "text": "What has a market research team found in its latest fashion and sustainability report?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "More and more people attach importance to protecting endangered animals."
+              },
+              {
+                "letter": "B",
+                "text": "More and more people prioritize animal welfare when buying things to wear."
+              },
+              {
+                "letter": "C",
+                "text": "An increasing number of people demand to free animals being kept in cages."
+              },
+              {
+                "letter": "D",
+                "text": "An increasing number of people follow the latest trend of becoming vegetarians."
+              }
+            ],
+            "answer": "B"
+          },
+          {
+            "n": 20,
+            "text": "What have some world-renowned fashion designers done for some time?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Avoided the use of leather and fur."
+              },
+              {
+                "letter": "B",
+                "text": "Labelled all their products as vegan."
+              },
+              {
+                "letter": "C",
+                "text": "Refrained from using chemicals in their products."
+              },
+              {
+                "letter": "D",
+                "text": "Utilized a silk substitute made from mushrooms."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 21,
+            "text": "What does the speaker say is unclear concerning vegan products?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Whether they actually signify a substantial change."
+              },
+              {
+                "letter": "B",
+                "text": "Whether they effectively protect animals at large."
+              },
+              {
+                "letter": "C",
+                "text": "Whether they can be considered sustainable."
+              },
+              {
+                "letter": "D",
+                "text": "Whether they can be regarded as ethical."
+              }
+            ],
+            "answer": "D"
+          }
+        ]
+      },
+      {
+        "title": "Recording Three",
+        "audio": "/audio/cet6/cet6-2023-12-s2-rec3.mp3",
+        "transcript": "By the end of 2016, anyone who had been paying even passing attention to the news headlines was highly likely to conclude that everything was terrible, and that the world was going to hell. It was easy to feel depressed by the wars in different parts of the world, the spread of deadly viruses or terror attacks. Yet, 2016 was the best year in the history of humanity. Child mortality was roughly half what it was as recently as 1990. And 300,000 more people gained access to electricity each day. Every single measure of material and environmental welfare in America, Europe, Asia, Africa and the world as a whole has improved rather than deteriorated. We are living in history's most peaceful era, with violence of all kinds in steep decline. Those are the facts. So why aren't we all optimists? In a 2015 survey for YouGov, 65% of British people and 81% of the French said they thought the world was getting worse. However, according to numerous sensible statistics, these people are simply wrong. Nobody in their right mind should wish to have lived in a previous century. Yet people do. Why? Our prevailing mood of despair is irrational. It says more about us than it does about how things really are. It is best explained as the result of various psychological biases that served a purpose for our evolutionary ancestors—but now, in a media-saturated era, constantly mislead us. Once upon a time, it was of great survival value to be worried about everything that could go wrong. This is what makes bad news especially compelling. In our evolutionary past, it was a very good thing that our attention could be easily seized by negative information, since it might well indicate a dangerous risk to our own survival. The caveman who always assumed there was a lion behind the next rock would usually be wrong, but he'd be much more likely to survive and reproduce than one who always assumed the opposite. But that was all before newspapers, television and the internet. In today's hyper-connected times, our addiction to bad news just leads us to vacuum up depressing or enraging stories from across the globe. Whether these news stories threaten us or not, we conclude that things are much worse than they actually are. Really good news, on the other hand, can be a lot harder to spot in a newspaper because predictable daily events by definition aren't news.",
+        "questions": [
+          {
+            "n": 22,
+            "text": "What is one of the facts stated by the speaker?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "The era we live in is the most peaceful in history."
+              },
+              {
+                "letter": "B",
+                "text": "The world has seen more violence in recent years."
+              },
+              {
+                "letter": "C",
+                "text": "The environmental welfare has worsened in the world."
+              },
+              {
+                "letter": "D",
+                "text": "The belief is less prevalent that the world is going to hell."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 23,
+            "text": "What do we learn about most British and French people in a 2015 survey for YouGov?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "They were actually not in their right mind."
+              },
+              {
+                "letter": "B",
+                "text": "They believed the world was deteriorating."
+              },
+              {
+                "letter": "C",
+                "text": "They did not wish to live in the previous century."
+              },
+              {
+                "letter": "D",
+                "text": "They were convinced by the statistics presented to them."
+              }
+            ],
+            "answer": "B"
+          },
+          {
+            "n": 24,
+            "text": "What does our prevailing mood of despair indicate?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "The subjectivity of mass media."
+              },
+              {
+                "letter": "B",
+                "text": "The current state of affairs."
+              },
+              {
+                "letter": "C",
+                "text": "Our psychological biases."
+              },
+              {
+                "letter": "D",
+                "text": "Our ancestors' influence."
+              }
+            ],
+            "answer": "C"
+          },
+          {
+            "n": 25,
+            "text": "What was a very good thing in our evolutionary past?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Spreading exciting news around us far and wide."
+              },
+              {
+                "letter": "B",
+                "text": "Vacuuming up depressing or enraging stories."
+              },
+              {
+                "letter": "C",
+                "text": "Calculating dangerous risks to our survival."
+              },
+              {
+                "letter": "D",
+                "text": "Paying attention to negative information. Part III"
+              }
+            ],
+            "answer": "D"
+          }
+        ]
+      }
+    ]
+  },
+  "answerQuotes": {
+    "1": [
+      "W: So, I've been thinking, this summer, instead of our usual holiday rental, I'd like to try renting a camper van and exploring a bit more."
+    ],
+    "2": [
+      "M: I think my grandfather had a van like that."
+    ],
+    "3": [
+      "I've seen quite a few with solar panels that provide electricity for when you're stopped."
+    ],
+    "4": [
+      "Imagine having that kind of freedom to go anywhere you want and work from anywhere in the world."
+    ],
+    "5": [
+      "Over the past month or so, it has become apparent that your performance has dipped."
+    ],
+    "6": [
+      "I'm going through some unfortunate family issues at the moment."
+    ],
+    "7": [
+      "M: Look, you've been with us almost five years and I personally really value your proficiency at your job."
+    ],
+    "8": [
+      "M: What I need is for you to be back at your 100%."
+    ],
+    "9": [
+      "Research suggests that higher levels of education can lead to better health and even greater longevity."
+    ],
+    "10": [
+      "The team found that a person whose spouse had a higher level of education tended to report better health."
+    ],
+    "11": [
+      "Women in this sample had lower levels of education and lower occupational achievements than the men."
+    ],
+    "12": [
+      "So understanding and accurately forecasting flood risks is a key challenge for vulnerable cities around the globe."
+    ],
+    "13": [
+      "He'll use those data to validate and improve his mathematical flooding model, called TideWatch."
+    ],
+    "14": [
+      "Loftis's mission is to know where the water goes before it goes there."
+    ],
+    "15": [
+      "So, in 2017, Loftis and colleagues set up a group of 28 Internet-connected water-level sensors throughout the flood risk community of Norfolk, Virginia."
+    ],
+    "16": [
+      "Now, it's become something of a ritual to debate the value of a college degree, but as Current Population Survey data show, there has been a sharp decline in employment among men without college degrees compared with those who have them."
+    ],
+    "17": [
+      "First, the researchers considered the issue of wages."
+    ],
+    "18": [
+      "They identified two new potential explanations: the first being the tremendous decline in marriage among men without college degrees since the 1960s; and the second, being the increase in women participating in the workforce that was concurrent with the decline in marriage."
+    ],
+    "19": [
+      "It found animal welfare came top of a list of issues that people considered before buying clothes, with 42% saying it was important to them."
+    ],
+    "20": [
+      "At the top end, some of the world-renowned fashion designers have avoided leather and fur for some time."
+    ],
+    "21": [
+      "However, it is unclear whether these new products can be considered ethical."
+    ],
+    "22": [
+      "We are living in history's most peaceful era, with violence of all kinds in steep decline."
+    ],
+    "23": [
+      "In a 2015 survey for YouGov, 65% of British people and 81% of the French said they thought the world was getting worse."
+    ],
+    "24": [
+      "Our prevailing mood of despair is irrational."
+    ],
+    "25": [
+      "In our evolutionary past, it was a very good thing that our attention could be easily seized by negative information, since it might well indicate a dangerous risk to our own survival."
+    ]
+  }
+}
+
+export default LISTENING

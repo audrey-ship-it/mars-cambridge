@@ -1,0 +1,52 @@
+/* 2020年9月 CET-4 第2套 翻译题。
+ * 来源：答案解析 PDF 第11页（原书第64页）Part IV Translation。
+ * 验证状态：verified — 中文原文按给定文本录入，参考译文与解析 PDF 左侧英文逐句读图核对。 */
+
+export const translation202009S2 = {
+  id: 'cet4-2020-09-s2',
+  meta: {
+    level: 'CET4',
+    year: 2020,
+    month: 9,
+    set: 2,
+    source: '2020年9月CET4真题（第2套）',
+    answerSource: '2020.09英语四级解析第2套.pdf p11（Part IV Translation 参考译文与难点注释）',
+    pages: '解析第11页（原书第64页）',
+    verified: true,
+    verifiedAt: '2026-11-04',
+  },
+  title: '2020年9月 第2套',
+  topic: '茶',
+  directions: 'For this part, you are allowed 30 minutes to translate a passage from Chinese into English.',
+  passage: '茶拥有5,000年的历史。传说，神农氏(Shen Nong)喝开水时，几片野树叶子落进壶里，开水顿时散发出宜人的香味。他喝了几口，觉得很提神。茶就这样发现了。自此，茶在中国开始流行。茶园遍布全国，茶商变得富有。昂贵、雅致的茶具成了地位的象征。今天，茶不仅是一种健康的饮品，而且是中国文化的一个组成部分。越来越多的国际游客一边品茶，一边了解中国文化。',
+  reference: 'Tea has been in existence for 5,000 years. Legend has it that when Shen Nong was drinking hot water, a few leaves of wild trees fell into his pot and the hot water immediately gave off a pleasant fragrance. He took a few sips, feeling quite refreshed. Thus tea was discovered. Since then, tea has become popular in China. Tea plantations spread all over the country and tea merchants became rich. Expensive and elegant tea sets became a status symbol. Today, tea is not only a healthy drink, but also an integral part of Chinese culture. More and more international tourists learn about Chinese culture while tasting tea.',
+  notes: [
+    ['拥有……的历史', 'has been in existence for...; dates back... years'],
+    ['传说', 'legend has it that...; according to legend'],
+    ['神农氏', 'Shen Nong'],
+    ['野树叶子', 'leaves of wild trees'],
+    ['壶', 'pot'],
+    ['散发', 'give off'],
+    ['宜人的香味', 'a pleasant fragrance/smell'],
+    ['喝了几口', 'take a few sips'],
+    ['提神', '(feel) quite refreshed'],
+    ['自此', 'since then; from then on'],
+    ['在中国开始流行', 'become popular in China'],
+    ['茶园', 'tea plantation; tea garden'],
+    ['遍布全国', 'spread all over the country'],
+    ['茶商', 'tea merchant; tea dealer'],
+    ['变得富有', 'become rich/wealthy'],
+    ['昂贵、雅致的', 'expensive and elegant'],
+    ['茶具', 'tea set'],
+    ['地位的象征', 'a status symbol'],
+    ['健康的饮品', 'a healthy drink'],
+    ['组成部分', '(an integral) part/component/element'],
+    ['国际游客', 'international tourist'],
+    ['品茶', 'taste tea; enjoy a cup of tea'],
+  ],
+  points: [
+    '第一句描述茶的历史久远，可用"完成时 + for + 时间段"表达，译为 Tea has been in existence for 5,000 years.，也可用 date/go back + 时间段，译为 Tea dates/goes back 5,000 years.。第二句原文结构较松散，翻译时抓住"几片野树叶子落进壶里"和"开水散发出香味"两个关键信息作主干，把"神农氏喝开水时"处理为时间状语从句；"传说"可译为 according to legend 或 legend has it that，"顿时"可译为 immediately 或 at once，"散发"可译为 give off，"宜人的香味"可译为 a pleasant fragrance 或 smell。',
+    '第三句"喝了几口"中的 sip 作名词表示"一小口（饮料）"，译为 take a few sips；"觉得很提神"将茶的效果译作 feel quite refreshed 作状语，由于逻辑主语是"他"，应用过去分词 feeling quite refreshed。第四句"就这样"用 thus 或 so in this way 表达。',
+    '第五至七句"自此"可译为 since then 或 from then on；"茶园"译为 tea plantations 或 tea gardens；"遍布全国"译为 spread all over the country；"茶商"译为 tea merchants 或 tea dealers；"变得富有"译为 become rich 或 wealthy；"昂贵"译为 expensive 或 valuable；"雅致"译为 elegant 或 tasteful；"茶具"译为 tea sets，set 作名词指物品的一套、一副、一组；"地位的象征"译为 become 或 was seen as a status symbol。第八、九句"茶不仅是……而且是……"用 not only... but also... 结构，"组成部分"译为 (integral) part/component/element；"一边品茶，一边了解中国文化"以"了解中国文化"为主干，译为 learn about Chinese culture，将"一边品茶"处理为状语，译作 while tasting tea 或 enjoying a cup of tea。',
+  ],
+};

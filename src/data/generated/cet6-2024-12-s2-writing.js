@@ -1,0 +1,34 @@
+/* 2024年12月 第2套 CET-6 写作题。
+ * 来源：2024年12月CET6题+解+音频\2024.12六级真题第2套.pdf p1（Part I Writing 题干）
+ * 核对：2024年12月CET6题+解+音频\2024.12英语六级解析第2套.pdf p1（结构框图 / 范文点评 / 话题词汇）
+ * 验证状态：verified — 解析册无范文译文，译文为人工翻译 */
+
+export const writing202412S2 = {
+  "id": "cet6-2024-12-s2",
+  "meta": {
+    "level": "CET6",
+    "year": 2024,
+    "month": 12,
+    "set": 2,
+    "source": "2024年12月CET6题+解+音频\\2024.12六级真题第2套.pdf p1（Part I Writing 题干）",
+    "answerSource": "2024年12月CET6题+解+音频\\2024.12英语六级解析第2套.pdf p1（结构框图 / 范文点评 / 话题词汇）",
+    "pages": "原题第1页 / 解析第1页",
+    "verified": true,
+    "verifiedAt": "2026-11-05",
+    "note": "解析册无范文译文，译文为人工翻译"
+  },
+  "title": "2024年12月 第2套",
+  "topic": "自律在个人成长中的重要性",
+  "directions": "For this part, you are allowed 30 minutes to write an essay that begins with the sentence “Nowadays, more and more students have realized the importance of self-discipline in their personal growth.” You can make comments, cite examples or use your personal experiences to develop your essay. You should write at least 150 words but no more than 200 words. You should copy the sentence given in quotes at the beginning of your essay.",
+  "minWords": 150,
+  "maxWords": 200,
+  "model": "The Importance of Self-discipline in Personal Growth\n\nNowadays, more and more students have realized the importance of self-discipline in their personal growth. As for me, in a world full of distractions, cultivating self-discipline has become increasingly important for achieving academic success, shaping personal characters and addressing challenges.\n\nFirst and foremost, self-discipline is essential for achieving academic success. For instance, a student who practices self-discipline will prioritize studying over unnecessary distractions and avoid cramming at the last minute. In addition to academic benefits, self-discipline also plays a significant role in shaping a student's character and personality. It helps to cultivate valuable life skills such as time management, goal setting, and decision-making, all of which are essential for personal growth. Moreover, students who possess self-discipline are better equipped to handle challenges. In the face of setbacks or failures, self-discipline enables students to keep going, learn from their mistakes, and try again. This will help them build resilience, which will give them lifelong benefits.\n\nIn conclusion, self-discipline is a vital trait that empowers students to reach their full potential in their personal growth.",
+  "modelZh": "自律在个人成长中的重要性\n\n如今，越来越多的学生已经意识到自律在个人成长中的重要性。在我看来，在一个充满干扰的世界里，培养自律对于取得学业成功、塑造个人性格以及应对挑战变得日益重要。\n\n首先，自律对于取得学业成功至关重要。例如，一个自律的学生会优先安排学习，远离不必要的干扰，避免在最后一刻临时抱佛脚。除了学业上的益处，自律还在塑造学生的性格和个性方面发挥着重要作用。它有助于培养宝贵的生活技能，如时间管理、目标设定和决策能力，所有这些对个人成长都至关重要。此外，自律的学生更能从容应对挑战。面对挫折或失败时，自律使学生能够坚持下去、从错误中吸取教训并再次尝试。这将帮助他们培养韧性，从而终身受益。\n\n总之，自律是一种宝贵的品质，它能使学生在个人成长中充分发挥自己的潜力。",
+  "review": "题目要求考生写一篇以“如今，越来越多的学生已经意识到自律在个人成长中的重要性”开头的作文，考生可以通过发表评论、举例子或描述个人经历展开论述。根据题目提示，作文可以采取以下布局：第一段引出话题，指出如今越来越多的学生已经意识到自律在个人发展中的重要性；第二段逐条阐述自律对于取得学业成功、塑造性格及应对挑战的重要性；第三段总结全文，重申观点。",
+  "points": [
+    "引出话题：如今，越来越多的学生已经意识到自律在个人发展中的重要性。",
+    "使用“As for me, ...”提出个人观点，即“培养自律对于取得学业成功、塑造个人性格及应对挑战的重要性与日俱增”。",
+    "分别使用“First and foremost, ...”“In addition to...”和“Moreover, ...”逐条阐述自律对于取得学业成功、塑造性格及应对挑战的重要性。",
+    "用“In conclusion, ...”总结全文，再次强调自律是一种帮助学生在个人发展中充分发挥潜力的重要品质。"
+  ]
+};

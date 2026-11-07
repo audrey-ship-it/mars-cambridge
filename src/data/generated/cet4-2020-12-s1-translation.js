@@ -1,0 +1,51 @@
+/* 2020年12月 CET-4 第1套 翻译题。
+ * 来源：原题 PDF p8（中文原文，人工读图逐字核对）+ 答案解析 PDF p20（参考译文/分句解析，人工读图逐字核对）。
+ * 验证状态：verified — 题干与参考译文均与原件逐句核对。 */
+
+export const translation202012S1 = {
+  id: 'cet4-2020-12-s1',
+  meta: {
+    level: 'CET4',
+    year: 2020,
+    month: 12,
+    set: 1,
+    source: '真题/2020年12月CET4题+解+音频/01、真题PDF版（推荐打印）❤/2020.12月四级真题第1套【可复制可划线查词】.pdf p8（Part IV Translation 中文原文）',
+    answerSource: '真题/2020年12月CET4题+解+音频/03、答案解析/2020.12英语四级解析第1套.pdf p20（Part IV Translation 参考译文/分句解析）',
+    pages: '原题第8页 / 解析第20页',
+    verified: true,
+    verifiedAt: '2026-11-04',
+  },
+  title: '2020年12月 第1套',
+  topic: '饮食差异',
+  directions: 'For this part, you are allowed 30 minutes to translate a passage from Chinese into English.',
+  passage: '生活在中国不同地区的人们饮食多种多样。北方人主要吃面食，南方人大多吃米饭。在沿海地区，海鲜和淡水水产品在人们饮食中占有相当大的比例，而在其他地区人们的饮食中，肉类和奶制品更为常见。四川、湖南等省份的居民普遍爱吃辛辣食物，而江苏和浙江人更喜欢甜食。然而，因为烹饪方式各异，同类食物的味道可能会有所不同。',
+  reference: 'People living in different parts of China have a variety of diets. People in the north mainly eat food made from flour, while those in the south mostly eat rice. In coastal areas, seafood and freshwater products account for a large proportion of people\'s diet, while in other areas, meat and dairy products are more common. Residents in provinces such as Sichuan and Hunan are generally fond of spicy food, while people in Jiangsu and Zhejiang prefer sweet food. However, similar food may have different tastes due to different cooking methods.',
+  notes: [
+    ['多种多样', 'a variety of'],
+    ['饮食', 'diet'],
+    ['面食', 'food made from flour; (cooked) wheaten food'],
+    ['主要', 'mainly'],
+    ['大多', 'mostly'],
+    ['沿海地区', 'coastal areas'],
+    ['海鲜', 'seafood'],
+    ['淡水水产品', 'freshwater products'],
+    ['占有相当大的比例', 'account for a large proportion/part of'],
+    ['肉类', 'meat'],
+    ['奶制品', 'dairy products'],
+    ['更为常见', 'more common; commoner'],
+    ['省份', 'province'],
+    ['居民', 'resident'],
+    ['普遍爱吃', 'be generally fond of'],
+    ['辛辣食物', 'spicy food'],
+    ['更喜欢', 'prefer'],
+    ['甜食', 'sweet food/dishes'],
+    ['烹饪方式', 'cooking method'],
+    ['口味', 'taste; flavor'],
+    ['同类食物', 'similar food'],
+  ],
+  points: [
+    '第一句主语"人们"的定语"生活在中国不同地区的"较长，翻译时将其处理为现在分词后置定语，即 People living in different parts/places of China；"多种多样"可译为 have a variety of diets。',
+    '第二、三句均把南北或沿海与其他地区进行对比，可用 while 连接。"面食"可译为 food made from flour 或 (cooked) wheaten food；"主要"和"大多"意思相近，参考译文分别译为 mainly 和 mostly；"在人们饮食中占有相当大的比例"可译为 account for a large proportion/part of people\'s diet；后半句中"人们的饮食中"可承前省略不译，"更为常见"用 common 的比较级 commoner 或 more common。',
+    '第四句"四川、湖南等省份"可用"可数名词复数 + such as"表达，"爱吃"可译为 like/enjoy/be fond of，"更喜欢甜食"可译为 prefer sweet food/dishes，也可译为 have a sweet tooth。第五句包含因果关系，可将"因为烹饪方式各异"处理为原因状语 due to/because of different cooking methods 或原因状语从句，也可将两个分句合并为（even the same kind of food might）vary in flavor with different cooking methods。',
+  ],
+};

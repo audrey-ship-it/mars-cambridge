@@ -1,0 +1,29 @@
+[
+  {
+    "year": 2023,
+    "month": 12,
+    "set": 1,
+    "zt": "D:/workspace_sunny/题库/cet/真题/2023年12月CET4题+解+音频/01、真题PDF版（推荐打印）❤/2023.12四级真题第1套【可复制可检索】.pdf",
+    "out": "src/data/generated/cet4-2023-12-s1.json",
+    "verified": true,
+    "answersManual": { "banked": "FDHIOMLJAG", "matching": "DIBGAFLJHK", "careful": "ABDCBADCCA" }
+  },
+  {
+    "year": 2023,
+    "month": 12,
+    "set": 2,
+    "zt": "D:/workspace_sunny/题库/cet/真题/2023年12月CET4题+解+音频/01、真题PDF版（推荐打印）❤/2023.12四级真题第2套【可复制可检索】.pdf",
+    "out": "src/data/generated/cet4-2023-12-s2.json",
+    "verified": true,
+    "answersManual": { "banked": "ONIBCDFHAL", "matching": "DJPBFICLEH", "careful": "DBAADACBDC" }
+  },
+  {
+    "year": 2023,
+    "month": 12,
+    "set": 3,
+    "zt": "D:/workspace_sunny/题库/cet/真题/2023年12月CET4题+解+音频/01、真题PDF版（推荐打印）❤/2023.12四级真题第3套【可复制可检索】.pdf",
+    "out": "src/data/generated/cet4-2023-12-s3.json",
+    "verified": true,
+    "answersManual": { "banked": "DFEKNMHOLC", "matching": "CLHAMEIBJG", "careful": "BADADDBCCA" }
+  }
+]

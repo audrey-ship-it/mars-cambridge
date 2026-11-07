@@ -1,0 +1,51 @@
+/* 2022年6月 CET-4 第3套 翻译题。
+ * 来源：解析 PDF《2022.06英语四级解析第3套》p2（Part IV Translation 参考译文/难点注释/话题词汇，人工读图逐字核对）。
+ * 验证状态：verified — 题干（中文原文已清洗）与参考译文均与原件逐句核对。 */
+
+export const translation202206S3 = {
+  id: 'cet4-2022-06-s3',
+  meta: {
+    level: 'CET4',
+    year: 2022,
+    month: 6,
+    set: 3,
+    source: '2022年06月CET4题+解+音频/03、答案解析/2022.06英语四级解析第3套.pdf',
+    answerSource: '2022.06英语四级解析第3套.pdf p2（Part IV Translation 参考译文/难点注释/话题词汇）',
+    pages: '解析第2页',
+    verified: true,
+    verifiedAt: '2026-11-04',
+  },
+  title: '2022年6月 第3套',
+  topic: '守株待兔',
+  directions: 'For this part, you are allowed 30 minutes to translate a passage from Chinese into English.',
+  passage: '从前，有个农夫正在地里耕作，突然看见一只兔子飞奔而过，撞在一棵大树上死了。农夫毫不费力就吃到了兔肉，心里非常高兴。他想，“如果总是这样该多好啊！”于是，他不再耕作，每天守候在那棵树旁，等待着能再捡到撞死在树上的兔子。他等呀等，等了一天又一天，田地也荒芜了，却再也没有等到第二只兔子。人们因而都嘲笑他把偶然当成了必然。',
+  reference: 'There was once a peasant who was ploughing in the field. Suddenly he saw that a hare darting past bumped against a large tree and died. He enjoyed a meal of hare meat without any effort and was so pleased that he thought, “How wonderful it would be to have this all the time!” So he stopped plowing and waited by that tree every day for picking up another hare that bumped into the tree. He waited and waited day after day, only to have the field waste rather than a second hare. Therefore, people all laughed at him for taking the accidental for the inevitable.',
+  notes: [
+    ['农夫', 'peasant'],
+    ['耕作', 'plough; plow'],
+    ['野兔', 'hare'],
+    ['飞奔而过', 'dart past'],
+    ['撞在……上', 'bump against; knock oneself dead against'],
+    ['毫不费力', 'without any effort; take no trouble'],
+    ['守候', 'wait for; wait by'],
+    ['日复一日', 'day after day'],
+    ['只落得', 'only to do'],
+    ['荒芜', 'waste; lie waste'],
+    ['偶然', 'the accidental'],
+    ['必然', 'the inevitable'],
+    ['树桩', 'stump'],
+    ['脖子折断', 'broken neck'],
+    ['整天', 'all day long'],
+    ['意想不到的', 'unexpected'],
+    ['想当然', 'take the chance for granted'],
+    ['愚蠢', 'foolishness'],
+    ['灵活变通', 'flexible'],
+    ['不劳而获', 'reap without sowing; gains without pains'],
+    ['懒惰', 'laziness; idleness'],
+  ],
+  points: [
+    '第一句较长，可以拆分为两句话翻译。先用 There was once... 结构翻译第一分句，注意这里要用 who 或 that 引导定语从句，不能省略关系代词。后两个分句译为一句，增加主语 he，谓语动词 saw 后接宾语从句。此处将“飞奔”处理为现在分词作后置定语，“撞”与“死”处理为并列的动词。',
+    '第二句中，“毫不费力”除了用介词短语翻译之外，还可以用 have no difficulty 或 take no trouble 来翻译，即 He had no difficulty/took no trouble eating the hare meat。“心里非常高兴”中的“心里”可省略不译，以免显得啰唆。另外，参考译文所示，可以用 so...that 结构把本句和下一句合并翻译。',
+    '第五句中，“等呀等”可以翻译为 waited and waited；“田地也荒芜了，却再也没有等到第二只兔子”是最后的结果，可以用 only to do... 结构来翻译，即 only to have the field waste rather than a second hare。第六句中，“把偶然当成了必然”可以翻译为 taking the accidental for the inevitable 或者 taking the chance for granted。',
+  ],
+};

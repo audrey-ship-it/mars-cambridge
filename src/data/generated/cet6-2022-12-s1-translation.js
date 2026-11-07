@@ -1,0 +1,96 @@
+/* 2022年12月 第1套 CET-6 翻译题。
+ * 来源：2022年12月CET6题+解+音频/03、答案解析/2022.12六级真题第1套答案及详解.pdf
+ * 核对：2022.12六级真题第1套答案及详解.pdf p15（Part IV Translation 参考译文与难点注释）
+ * 验证状态：verified — 题干括注英文（the Qinghai-Tibet Plateau）按原文保留；“4 000 米”OCR 空格已去掉并写作 4,000 米 */
+
+export const translation202212S1 = {
+  "id": "cet6-2022-12-s1",
+  "meta": {
+    "level": "CET6",
+    "year": 2022,
+    "month": 12,
+    "set": 1,
+    "source": "2022年12月CET6题+解+音频/03、答案解析/2022.12六级真题第1套答案及详解.pdf",
+    "answerSource": "2022.12六级真题第1套答案及详解.pdf p15（Part IV Translation 参考译文与难点注释）",
+    "pages": "解析第15页",
+    "verified": true,
+    "verifiedAt": "2026-11-05",
+    "note": "题干括注英文（the Qinghai-Tibet Plateau）按原文保留；“4 000 米”OCR 空格已去掉并写作 4,000 米"
+  },
+  "title": "2022年12月 第1套",
+  "topic": "青藏高原",
+  "directions": "For this part, you are allowed 30 minutes to translate a passage from Chinese into English.",
+  "passage": "青藏高原(the Qinghai-Tibet Plateau)位于中国西南部，面积约230万平方公里，平均海拔4,000米以上，被称为“世界屋脊”。青藏高原自然资源丰富，风景秀丽，拥有多种珍稀野生动物。青藏高原气温很低，形成了大面积高山冰川。这里是亚洲许多著名河流的源头，是中国和东南亚的主要淡水供应源。青藏高原对全球生态系统至关重要。由于气候变化的影响，青藏高原的冰川正在加速融化。中国一直在努力保护青藏高原的生态系统，草地覆盖率不断增加，许多濒危物种得到更为有效的保护。",
+  "reference": "The Qinghai-Tibet Plateau is situated in the southwest of China, covering an area of about 2.3 million square kilometers, with an average altitude of over 4,000 meters. It is known as the 'Roof of the World'. The Qinghai-Tibet Plateau is abundant in natural resources, boasts beautiful scenery and has a variety of rare wild animals. The low temperature of the plateau has created a large area of alpine glaciers. It is the source of many famous rivers in Asia and is the main source of fresh water supply in China and Southeast Asia. The Qinghai-Tibet Plateau is vital to the global ecosystem. Glaciers on the Qinghai-Tibet Plateau are melting at an accelerated rate due to climate change. China has been committed to protecting the ecosystem of the Qinghai-Tibet Plateau, with increasing grassland coverage and more effective protection of many endangered species.",
+  "notes": [
+    [
+      "青藏高原",
+      "the Qinghai-Tibet Plateau"
+    ],
+    [
+      "位于",
+      "be situated in; be located in"
+    ],
+    [
+      "平均海拔",
+      "average altitude; average elevation"
+    ],
+    [
+      "世界屋脊",
+      "the Roof of the World"
+    ],
+    [
+      "自然资源丰富",
+      "be abundant in natural resources"
+    ],
+    [
+      "风景秀丽",
+      "boast beautiful scenery"
+    ],
+    [
+      "珍稀野生动物",
+      "rare wild animals"
+    ],
+    [
+      "高山冰川",
+      "alpine glaciers"
+    ],
+    [
+      "源头",
+      "the source (of a river)"
+    ],
+    [
+      "淡水供应源",
+      "the main source of fresh water supply"
+    ],
+    [
+      "全球生态系统",
+      "the global ecosystem"
+    ],
+    [
+      "至关重要",
+      "be vital to"
+    ],
+    [
+      "加速融化",
+      "melt at an accelerated rate"
+    ],
+    [
+      "草地覆盖率",
+      "grassland coverage"
+    ],
+    [
+      "濒危物种",
+      "endangered species"
+    ]
+  ],
+  "points": [
+    "第一句用 be situated in 表示地理位置；“面积约230万平方公里”“平均海拔4,000米以上”不宜并列成句，处理为 covering an area of... 现在分词短语和 with an average altitude of... 介词短语作伴随状语；“被称为‘世界屋脊’”另起一句用 It is known as... 的被动结构。",
+    "第二句主干为“青藏高原自然资源丰富”，用 be abundant in 搭配；“风景秀丽、拥有多种珍稀野生动物”用 boasts 与 has 两个并列谓语，boast 在此表示“拥有（值得骄傲的事物）”，比 own/have 更有表现力。",
+    "第三句以“气温很低”为主语化处理为 The low temperature of the plateau，用现在完成时 has created 强调已形成的冰川规模；“形成了大面积高山冰川”用 create 表达因果。",
+    "第四句两个分句均为判断，用 and 连接并列谓语 is the source of... 与 is the main source of...；“亚洲许多著名河流的源头”译为 the source of many famous rivers in Asia，注意 source 用单数形式也成立。",
+    "第五句结构简短，直接以“青藏高原”为主语，用 be vital to 表达“对……至关重要”。",
+    "第六句“由于气候变化的影响”用 due to climate change 作原因状语置于句末，更符合英语表达习惯；主句用现在进行时 are melting 表示正在发生的变化；“加速”译为 at an accelerated rate。",
+    "第七句用现在完成时 has been committed to 表示从过去持续到现在的努力；后两个分句“草地覆盖率不断增加，许多濒危物种得到更为有效的保护”处理为 with 引导的独立结构，分别用 increasing grassland coverage 与 more effective protection of... 表达。"
+  ]
+};

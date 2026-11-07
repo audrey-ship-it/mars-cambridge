@@ -1,0 +1,96 @@
+/* 2019年12月 第3套 CET-6 翻译题。
+ * 来源：2019年12月CET6题+解+音频/03、答案解析/2019.12英语六级考试解析第3套.pdf
+ * 核对：2019.12英语六级考试解析第3套.pdf p8（Part IV Translation 参考译文/句子解析，版心页码40）
+ * 验证状态：verified — 题干括注（lotus flower）已按原卷保留于 passage；文字层英文空格已按句法还原。 */
+
+export const translation201912S3 = {
+  "id": "cet6-2019-12-s3",
+  "meta": {
+    "level": "CET6",
+    "year": 2019,
+    "month": 12,
+    "set": 3,
+    "source": "2019年12月CET6题+解+音频/03、答案解析/2019.12英语六级考试解析第3套.pdf",
+    "answerSource": "2019.12英语六级考试解析第3套.pdf p8（Part IV Translation 参考译文/句子解析，版心页码40）",
+    "pages": "解析第8页",
+    "verified": true,
+    "verifiedAt": "2026-11-05",
+    "note": "题干括注（lotus flower）已按原卷保留于 passage；文字层英文空格已按句法还原。"
+  },
+  "title": "2019年12月 第3套",
+  "topic": "荷花",
+  "directions": "For this part, you are allowed 30 minutes to translate a passage from Chinese into English.",
+  "passage": "荷花（lotus flower）是中国的名花之一，深受人们喜爱。中国许多地方的湖泊和池塘都适宜荷花生长。荷花色彩鲜艳，夏日清晨绽放，夜晚闭合。花期长达两三个月，吸引来自各地的游客前往观赏。荷花具有多种功能，既能绿化水面，又能美化庭园，还可净化水质、减少污染、改善环境。荷花迎骄阳而不惧，出污泥而不染，象征纯洁、高雅，常常用来比喻人的高尚品德，历来是诗人画家创作的重要题材。荷花盛开的地方也是许多摄影爱好者经常光顾之地。",
+  "reference": "The lotus flower, one of China's famous flowers, has been deeply loved by Chinese people. Lakes and ponds in many parts of China are suitable for the growth of lotus plants. The lotus flower, which is bright in color, blooms in the early morning and closes at night in summer, with the flowering lasting up to two or three months, attracting visitors from all over the country. The lotus has multiple uses, including purifying water, reducing pollution and improving the environment, as well as greening water surfaces and beautifying gardens. The flower is characterized by its abilities to tolerate intense sun exposure and emerge pure and clean from the murky water, thus symbolizing purity and elegance. So it is often used as a metaphor for a person's noble character and has been a main subject for poets and painters throughout history. Places with lotus flowers in full bloom are also frequented by many photography enthusiasts.",
+  "notes": [
+    [
+      "荷花",
+      "lotus flower"
+    ],
+    [
+      "深受……喜爱",
+      "be deeply loved by"
+    ],
+    [
+      "湖泊和池塘",
+      "lakes and ponds"
+    ],
+    [
+      "适宜……生长",
+      "be suitable for the growth of"
+    ],
+    [
+      "色彩鲜艳",
+      "bright in color"
+    ],
+    [
+      "绽放、闭合",
+      "bloom and close"
+    ],
+    [
+      "花期",
+      "the flowering period"
+    ],
+    [
+      "绿化水面",
+      "green water surfaces"
+    ],
+    [
+      "美化庭园",
+      "beautify gardens"
+    ],
+    [
+      "净化水质",
+      "purify water"
+    ],
+    [
+      "出污泥而不染",
+      "emerge pure and clean from the murky water"
+    ],
+    [
+      "纯洁、高雅",
+      "purity and elegance"
+    ],
+    [
+      "比喻",
+      "be used as a metaphor for"
+    ],
+    [
+      "高尚品德",
+      "noble character"
+    ],
+    [
+      "经常光顾",
+      "be frequented by"
+    ]
+  ],
+  "points": [
+    "第一句：第二小句为语义重心，译为主干 has been deeply loved by Chinese people，用现在完成时；第一小句处理为主语的同位语 one of China's famous flowers。",
+    "第二句：主语 Lakes and ponds in many parts of China；“适宜荷花生长”用 be suitable for the growth of lotus plants，避免生硬直译。",
+    "第三句：五小句分三个层次；“色彩鲜艳”信息量小，用非限制性定语从句 which is bright in color；“清晨绽放、夜晚闭合”作并列谓语；小句4用 with 复合结构 with the flowering lasting up to two or three months；“吸引游客”用现在分词短语 attracting... 作结果状语。",
+    "第四句：“具有多种功能”用 has multiple uses 作主干；功能列举用 including... as well as... 结构，既……又……还用 including A, B and C, as well as D and E 表达。",
+    "第五句：“以……为特点”用 be characterized by；“迎骄阳而不惧、出污泥而不染”用名词 abilities to tolerate... and emerge...；“象征纯洁、高雅”与前文暗含因果，用 thus symbolizing 作结果状语。",
+    "第六句：So 引出顺承结果；两个动作用并列谓语 is often used as a metaphor for... and has been a main subject...；throughout history 作时间状语。",
+    "第七句：主语 Places with lotus flowers in full bloom；“是……经常光顾之地”意即“经常被……光顾”，用被动 be frequented by many photography enthusiasts。"
+  ]
+};

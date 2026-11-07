@@ -1,0 +1,52 @@
+/* 2021年12月 CET-4 第1套 翻译题。
+ * 来源：原题 PDF 第10页（题干）+ 答案解析 PDF 第15页（刊页37，参考译文/译点精析/话题词汇，人工读图逐字核对）。
+ * 验证状态：verified — 题干与参考译文均与原件逐句核对。 */
+
+export const translation202112S1 = {
+  id: 'cet4-2021-12-s1',
+  meta: {
+    level: 'CET4',
+    year: 2021,
+    month: 12,
+    set: 1,
+    source: '2021年12月CET4题+解+音频/01、真题PDF版（推荐打印）❤/2021.12四级真题第1套【可复制可搜索，打印首选】.pdf',
+    answerSource: '2021年12月CET4题+解+音频/03、答案解析/2021.12英语四级解析第1套.pdf p15（Part IV Translation 参考译文与难点注释/话题词汇）',
+    pages: '原题第10页 / 解析第15页（刊页37）',
+    verified: true,
+    verifiedAt: '2026-11-04',
+  },
+  title: '2021年12月 第1套',
+  topic: '大运河',
+  directions: 'For this part, you are allowed 30 minutes to translate a passage from Chinese into English.',
+  passage: '大运河(Grand Canal)是世界上最长的人工河，北起北京，南至杭州。它是中国历史上最宏伟的工程之一。大运河始建于公元前4世纪，公元13世纪末建成。修建之初是为了运输粮食，后来也用于运输其他商品。大运河沿线区域逐渐发展成为中国的工商业中心。长久以来，大运河对中国的经济发展发挥了重要作用，有力地促进了南北地区之间的人员往来和文化交流。',
+  reference: 'The Grand Canal, the longest man-made river the world has ever seen, stretches from Beijing in the north to Hangzhou in the south. It is hailed as one of the most magnificent projects throughout the history of China. Launched in the 4th century BC, it was completed at the end of the 13th century AD with the original purpose of grain transportation. Later, its scope of shipment included other commodities. Gradually, the areas along the Grand Canal developed into the industrial and commercial hubs of China. Through the ages, it has been playing a prominent part in promoting the economic development of China, greatly enhancing the personnel exchanges and cultural interaction between the northern and southern regions.',
+  notes: [
+    ['人工河', 'man-made river'],
+    ['最宏伟的工程之一', 'one of the most magnificent projects'],
+    ['被誉为', 'be hailed as'],
+    ['始建于', 'be launched in'],
+    ['建成', 'be completed'],
+    ['运输粮食', 'grain transportation'],
+    ['商品', 'commodities'],
+    ['沿线地区', 'the areas along...'],
+    ['工商业中心', 'industrial and commercial hubs'],
+    ['促进', 'promote'],
+    ['人员往来', 'personnel exchanges'],
+    ['文化交流', 'cultural interaction'],
+    ['地形，地势', 'terrain'],
+    ['修建，建设', 'construct'],
+    ['文化遗产', 'cultural heritage'],
+    ['超越', 'surpass'],
+    ['开凿', 'excavate'],
+    ['枢纽工程', 'pivotal project'],
+    ['重建', 'rebuild'],
+    ['智慧的结晶', 'wisdom crystallization'],
+    ['血汗', 'sweat and toil'],
+    ['令人惊叹的', 'wondrous'],
+  ],
+  points: [
+    '第一句以"北起北京，南至杭州"作谓语，可译为 stretches from... in the north to... in the south；"世界上最长的人工河"处理成同位语，对运河起解释说明作用，"世界上最长的"用定语从句 the world has ever seen 译出，比 the longest in the world 更生动；"人工河"选用 river 而非 canal 更贴近原意。第二句"被誉为"用 be hailed as，可译出赞誉的感情色彩，贴合语境。',
+    '第三、四句较短，为使句式多变可合并并变换结构：把"始建于公元前4世纪"译作过去分词短语 Launched in the 4th century BC 作状语，"公元13世纪末建成"作主句主干，即 was completed at the end of the 13th century AD；"修建之初是为了运输粮食"作目的状语，即 with the original purpose of grain transportation；"后来也用于……"独立成句，换用"运输范围"作主语，即 its scope of shipment included...。',
+    '第五句"大运河沿线"可译为介词短语 along the Grand Canal，作"区域"的后置定语，即 the areas along the Grand Canal... developed into the industrial and commercial hubs of China；第六句宜用现在完成进行时或现在完成时，以突出大运河古往今来的重要作用，可在第二个逗号处断开译为两个并列句，也可将后一个分句中的"促进"处理成现在分词短语，作伴随状语。',
+  ],
+};

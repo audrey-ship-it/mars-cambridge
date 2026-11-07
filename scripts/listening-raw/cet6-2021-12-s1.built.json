@@ -1,0 +1,731 @@
+{
+  "id": "cet6-2021-12-s1",
+  "meta": {
+    "level": "CET6",
+    "year": 2021,
+    "month": 12,
+    "set": 1,
+    "source": "原题：2021年12月CET6题+解+音频\\01、真题PDF版（推荐打印）❤\\2021.12六级真题第1套.pdf；音频：2021年12月CET6题+解+音频\\04、听力音频\\2021.12六级听力第1套.mp3；解析：2021年12月CET6题+解+音频\\03、答案解析\\2021.12英语六级解析第1套.pdf",
+    "answerSource": "解析书答案逐题核对（读图）",
+    "verified": true,
+    "verifiedAt": "2026-11-05"
+  },
+  "audioUrls": {
+    "conv1": "/audio/cet6/cet6-2021-12-s1-conv1.mp3",
+    "conv2": "/audio/cet6/cet6-2021-12-s1-conv2.mp3",
+    "pass1": "/audio/cet6/cet6-2021-12-s1-pass1.mp3",
+    "pass2": "/audio/cet6/cet6-2021-12-s1-pass2.mp3",
+    "rec1": "/audio/cet6/cet6-2021-12-s1-rec1.mp3",
+    "rec2": "/audio/cet6/cet6-2021-12-s1-rec2.mp3",
+    "rec3": "/audio/cet6/cet6-2021-12-s1-rec3.mp3"
+  },
+  "sections": {
+    "a": [
+      {
+        "title": "Conversation One",
+        "audio": "/audio/cet6/cet6-2021-12-s1-conv1.mp3",
+        "transcript": "W: Hi, David. I haven't seen you in class for almost two weeks. We thought you had disappeared on holiday early or something. M: Hi, Sarah. Well, it's a bit of a long story I'm afraid. I got a throat infection last week and had to go to the hospital to get some antibiotics as I really wasn't getting any better. W: Oh yeah. There have been so many viruses going around this winter. The weather has been so awful for the last few weeks. M: And, on the way back from the hospital, I slipped on some ice and fell and then had to go to the hospital to get an X-ray because I basically thought I broke my wrist, although, thankfully, it's not broken. But I need to be careful with it for the next few weeks. W: Oh, that's too bad! How unfortunate! M: To make things worse, I managed to fall right in front of four girls from the ninth grade. So I was utterly humiliated. Plus, the laptop in my bag was broken too. W: No, what a complete catastrophe! Is the laptop still under warranty? If it is, then you can easily send it back to the manufacturer, and they'll send you a brand-new one for free surely. M: The warranty ran out three days before I broke it. And all my essays are in there, and I need to hand them in before we break for the Christmas holidays. W: Listen, I have the number of a really good, affordable computer repair shop at home. My dad has used this guy before and he can work miracles. Let's go back to my house and we can call the repair shop, and you can have some tea and cookies too. M: Wow, thanks, Sara! That would be great! Let me just call my mom and let her know I'll be home a little bit later.",
+        "questions": [
+          {
+            "n": 1,
+            "text": "What does Sara think David was doing for the last two weeks?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "He was enjoying his holiday."
+              },
+              {
+                "letter": "B",
+                "text": "He was recovering in hospital."
+              },
+              {
+                "letter": "C",
+                "text": "He was busy writing his essays."
+              },
+              {
+                "letter": "D",
+                "text": "He was fighting a throat infection."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 2,
+            "text": "What happened to David on his way back from the hospital?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "He broke his wrist."
+              },
+              {
+                "letter": "B",
+                "text": "He lost his antibiotics."
+              },
+              {
+                "letter": "C",
+                "text": "He slipped on ice and fell."
+              },
+              {
+                "letter": "D",
+                "text": "He was laughed at by some girls."
+              }
+            ],
+            "answer": "C"
+          },
+          {
+            "n": 3,
+            "text": "What does Sara say they should do with the damaged computer?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Tum to her father for help."
+              },
+              {
+                "letter": "B",
+                "text": "Call the repair shop to fix it."
+              },
+              {
+                "letter": "C",
+                "text": "Ask the manufacturer for repairs."
+              },
+              {
+                "letter": "D",
+                "text": "Replace it with a brand-new one."
+              }
+            ],
+            "answer": "B"
+          },
+          {
+            "n": 4,
+            "text": "What does Sara say she is going to do?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Help David retrieve his essays."
+              },
+              {
+                "letter": "B",
+                "text": "Introduce David to her parents."
+              },
+              {
+                "letter": "C",
+                "text": "Offer David some refreshments."
+              },
+              {
+                "letter": "D",
+                "text": "Accompany David to his home."
+              }
+            ],
+            "answer": "C"
+          }
+        ]
+      },
+      {
+        "title": "Conversation Two",
+        "audio": "/audio/cet6/cet6-2021-12-s1-conv2.mp3",
+        "transcript": "M: Welcome to this week's episode of Book Talk. With me today is Heidi Brown, a historian who has written five critically acclaimed books about military history. W: Thanks for having me, John. I'm so excited to talk about my latest book, which was published last month. M: So this book is a novel, your first attempt at that genre. I thought it was a bit of a departure for you. W: I'd say it's a major departure as it's not just a work of fiction. It's set 200 years in the future. M: Right. So how did that happen? You spent three decades writing about the past and focusing on the 18th and 19th centuries. And now you're speculating about the future. W: Well, after years of researching soldiers and chronicling their lives during battle, I just started wondering about other facets of their lives, especially their personal lives. M: I can see that. Your novel is about soldiers and it focuses on their relationships, especially the bond between sons and mothers and men and their wives. W: Yes. That focus came about when I still intended to write another book of history. I started by researching soldiers' actual personal lives, studying their letters home. M: So how did that history book become a novel? W: Well, I realized that the historical record was incomplete. So I'd either have to leave a lot of gaps or make a lot more assumptions than a historian should. M: But why write a novel set in the future when your credentials are perfect for a historical novel? As a historian, any historical novel you write would have a lot of credibility. W: I felt too constrained working with the past, like what I wrote needed to be fact as opposed to fiction, but writing about the future gave me more freedom to imagine, to invent. M: Well, having read your book, I'm glad you made that choice to move into fiction.",
+        "questions": [
+          {
+            "n": 5,
+            "text": "What does the man say about the woman?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "She is a critic of works on military affairs."
+              },
+              {
+                "letter": "B",
+                "text": "She is an acclaimed hostess of Book Talk."
+              },
+              {
+                "letter": "C",
+                "text": "She is a researcher of literary genres."
+              },
+              {
+                "letter": "D",
+                "text": "She is a historian of military history."
+              }
+            ],
+            "answer": "D"
+          },
+          {
+            "n": 6,
+            "text": "What does the woman say about her newly published book?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It is about the military history of Europe."
+              },
+              {
+                "letter": "B",
+                "text": "It is set in the 18th and 19th centuries."
+              },
+              {
+                "letter": "C",
+                "text": "It is her fifth book of military history."
+              },
+              {
+                "letter": "D",
+                "text": "It is a war novel set in the future."
+              }
+            ],
+            "answer": "D"
+          },
+          {
+            "n": 7,
+            "text": "What did the woman do before writing her new book?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "She visited soldiers' wives and mothers."
+              },
+              {
+                "letter": "B",
+                "text": "She conducted surveys of many soldiers."
+              },
+              {
+                "letter": "C",
+                "text": "She met a large number of soldiers in person."
+              },
+              {
+                "letter": "D",
+                "text": "She looked into the personal lives of soldiers."
+              }
+            ],
+            "answer": "D"
+          },
+          {
+            "n": 8,
+            "text": "What does the woman say about her writing history books?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "She doesn't have much freedom for imagination."
+              },
+              {
+                "letter": "B",
+                "text": "It is not easy to make her readers believe in her."
+              },
+              {
+                "letter": "C",
+                "text": "It is difficult to attract young readers."
+              },
+              {
+                "letter": "D",
+                "text": "She has to combine fact with fiction."
+              }
+            ],
+            "answer": "A"
+          }
+        ]
+      }
+    ],
+    "b": [
+      {
+        "title": "Passage One",
+        "audio": "/audio/cet6/cet6-2021-12-s1-pass1.mp3",
+        "transcript": "Whether it's in the hands of animated polar bears or Santa Claus, there's one thing you'll find in nearly all ads for Coca-Cola: the characteristic glass bottle. Most Americans don't drink soda out of the glass bottles seen in Coke's ads anymore. But this week, the company is celebrating a century of the bottle that's been sold in more than 200 countries. Flash back to 1915, when a bottle of Coca-Cola cost just a nickel. As the soft drink gained in popularity, it faced a growing number of competitors—counterfeits even trying to copy Coke's logo. So, according to Coca-Cola historian Ted Ryan, the company decided to come up with packaging that couldn't be duplicated. A product request was sent to eight different glass makers. Workers at the Root Glass Company got the request and began flipping through the encyclopedia at the local library, landing on cocoa seed. Though cocoa seed is not an ingredient of the soda, they designed their bottle based on the seed's shape and large middle. It won over Coke executives in Atlanta and would go on to receive its own trademark, spur collections and earn Coca-Cola an iconic image that made it part of American culture for a century. It was 100 years ago this week that the bottle earned a patent. By World War Ⅱ, Coke bottle sales had ballooned into billions. Americans mostly consume Coke out of aluminum or plastic today, but the glass bottle remains a symbol of America that's really recognized around the world.",
+        "questions": [
+          {
+            "n": 9,
+            "text": "What does the passage say appears in almost all ads for Coca-Cola?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Santa Claus."
+              },
+              {
+                "letter": "B",
+                "text": "A polar bear."
+              },
+              {
+                "letter": "C",
+                "text": "Cocoa seeds."
+              },
+              {
+                "letter": "D",
+                "text": "A glass bottle."
+              }
+            ],
+            "answer": "D"
+          },
+          {
+            "n": 10,
+            "text": "Why did the Coca-Cola Company decide to have special packaging designed?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "To attract customer attention."
+              },
+              {
+                "letter": "B",
+                "text": "To keep up with the times."
+              },
+              {
+                "letter": "C",
+                "text": "To combat counterfeits."
+              },
+              {
+                "letter": "D",
+                "text": "To promote its sales."
+              }
+            ],
+            "answer": "C"
+          },
+          {
+            "n": 11,
+            "text": "What do we learn about the Coca-Cola bottle designed by the Root Glass Company?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It resembles a picture in the encyclopedia."
+              },
+              {
+                "letter": "B",
+                "text": "It appears in the shape of a cocoa seed."
+              },
+              {
+                "letter": "C",
+                "text": "It has the drink's logo in the middle."
+              },
+              {
+                "letter": "D",
+                "text": "It displays the image of Santa Claus."
+              }
+            ],
+            "answer": "B"
+          }
+        ]
+      },
+      {
+        "title": "Passage Two",
+        "audio": "/audio/cet6/cet6-2021-12-s1-pass2.mp3",
+        "transcript": "Research shows that a few moments of conversation with a stranger creates a measurable improvement in mood. But most of us are reluctant to start these conversations because we presume the opposite. In an experiment, commuters who talked to nearby strangers found their commute more enjoyable than those who didn't. They were asked to predict whether they'd enjoy the commute more if they conversed with other people. Intriguingly, most expected the more solitary experience to be more pleasurable. Why is this? Social anxiety appears to be the problem. People's reluctance to start conversations with nearby strangers comes partly from \"underestimating others' interest in connecting\". The sad thing is that people presume that a nearby stranger doesn't want to converse and don't start a conversation. Only those who forced themselves to chat because it was required by the experiment found out what a pleasant experience it could be. Human beings are social animals. Those who misunderstand the impact of social interactions may not, in some contexts, be social enough for their own well-being. You should be chatting with the strangers you encounter. You may occasionally have a negative encounter that might stick in your memory. This is because the human brain is biased to dwell on negative events. But starting conversations with strangers is still well worth the risk of rejection. It may surprise you that conversing with strangers will make them happier too. The pleasure of connection seems contagious. People who are talked to have equally positive experiences as those who initiate a conversation.",
+        "questions": [
+          {
+            "n": 12,
+            "text": "What does research show about a conversation between strangers?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It often occurs among commuters."
+              },
+              {
+                "letter": "B",
+                "text": "It promotes mutual understanding."
+              },
+              {
+                "letter": "C",
+                "text": "It improves their mood considerably."
+              },
+              {
+                "letter": "D",
+                "text": "It takes a great deal of effort to sustain."
+              }
+            ],
+            "answer": "C"
+          },
+          {
+            "n": 13,
+            "text": "What prevents people from starting a conversation with strangers?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Social anxiety."
+              },
+              {
+                "letter": "B",
+                "text": "Excessive caution."
+              },
+              {
+                "letter": "C",
+                "text": "Lack of social skills."
+              },
+              {
+                "letter": "D",
+                "text": "Preference for solitude."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 14,
+            "text": "Why does a negative encounter with strangers stick in one's memory?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "People usually regard it as an unforgettable lesson."
+              },
+              {
+                "letter": "B",
+                "text": "Human brains tend to dwell on negative events."
+              },
+              {
+                "letter": "C",
+                "text": "Negative events often hurt people deeply."
+              },
+              {
+                "letter": "D",
+                "text": "People generally resent being rejected."
+              }
+            ],
+            "answer": "B"
+          },
+          {
+            "n": 15,
+            "text": "What does the passage say the pleasure of connection seems to be?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Contagious. Section C"
+              },
+              {
+                "letter": "B",
+                "text": "Temporary."
+              },
+              {
+                "letter": "C",
+                "text": "Unpredictable."
+              },
+              {
+                "letter": "D",
+                "text": "Measurable."
+              }
+            ],
+            "answer": "A"
+          }
+        ]
+      }
+    ],
+    "c": [
+      {
+        "title": "Recording One",
+        "audio": "/audio/cet6/cet6-2021-12-s1-rec1.mp3",
+        "transcript": "The Caribbean islands are divided into two worlds, a rich one and a poor one. This tropical region's economy is based mainly on farming. Farmers are of two types. One is the plantation owner who may have hundreds of thousands of acres. In contrast, the small cultivator is working only a few acres of land. Most visitors to the Caribbean are rich, like the plantation owner. They do not realize or do not want to realize that many farm families barely managed to get by on what they grow. The Caribbean produces many things. Sugar is the main product. Other export crops are tobacco, coffee, bananas, spices and citrus fruits, such as orange, lemon or grapefruit. From the West Indies also come oil, mineral pitch and many forest products. Jamaica's aluminum ore supplies are the world's largest. Oil comes from Trinidad, Aruba and Curacao. But for many of the smaller islands, sugar is the only export. Rum, a strong alcoholic drink, which is distilled from sugar cane, is also an export. The world's best rum comes from this area. Local kinds vary from the light rums of Puerto Rico to the heavier darker rums of Barbados and Jamaica. American tourists enjoy stocking up on inexpensive high quality Caribbean rum while they're on vacation. In Curacao, the well-known liquor of that name is made from the thick outer skin of a native orange. Ever since America's colonial days, the Caribbean islands have been favorite places to visit. Since World War Ⅱ, tourism has increased rapidly. Because great numbers of people go there, the islanders have built elaborate resorts, developed harbors and airfields, improved the beaches and have expanded sea and air routes. Everything is at the resort—hotel, beach, shopping and recreation. The vacationer never has any reason to explore the island. As in most places, those who have money live well indeed. Those who don't have money live at various levels of poverty. But here the poor greatly outnumber the wealthy. A visitor will find rich people living in apartments or Spanish houses at the seaside or in the countryside. Their servants might include a cook, a maid, and a nurse for their children. Most of the people live well below the poverty level. In towns, they lived crowded together in tiny houses. Islanders make the best they can of what they have. Their homes are quite shabby. Sadly, most tourists never see the side of the Caribbean.",
+        "questions": [
+          {
+            "n": 16,
+            "text": "What does the speaker say about the economy of the Caribbean islands?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It depends heavily on tourism."
+              },
+              {
+                "letter": "B",
+                "text": "It is flourishing in foreign trade."
+              },
+              {
+                "letter": "C",
+                "text": "It is mainly based on agriculture."
+              },
+              {
+                "letter": "D",
+                "text": "It relies chiefly on mineral export."
+              }
+            ],
+            "answer": "C"
+          },
+          {
+            "n": 17,
+            "text": "What is the main product of the Caribbean islands?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Tobacco."
+              },
+              {
+                "letter": "B",
+                "text": "Bananas."
+              },
+              {
+                "letter": "C",
+                "text": "Coffee."
+              },
+              {
+                "letter": "D",
+                "text": "Sugar."
+              }
+            ],
+            "answer": "D"
+          },
+          {
+            "n": 18,
+            "text": "What do we learn about the majority of people in the Caribbean islands?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "They toil on farms."
+              },
+              {
+                "letter": "B",
+                "text": "They live a poor life."
+              },
+              {
+                "letter": "C",
+                "text": "They live in Spanish-style houses."
+              },
+              {
+                "letter": "D",
+                "text": "They hire people to do housework."
+              }
+            ],
+            "answer": "B"
+          }
+        ]
+      },
+      {
+        "title": "Recording Two",
+        "audio": "/audio/cet6/cet6-2021-12-s1-rec2.mp3",
+        "transcript": "Talk to anyone who's a generation not too older and they would most likely comment that children are more spoiled these days. No one wants to have or be around demanding, selfish and spoiled children, those who get bad-tempered or silently-brute when they are not given everything they want immediately. Paradoxically, the parents of such children encourage this demanding behavior in the mistaken belief that by giving their children everything they can their children will be happy. In the short term, perhaps they are right. But in the longer term, such children end up lonely, dependent, chronically dissatisfied and resentful of the parents who tried so hard to please them. Undoubtedly parents want to raise happy children who are confident, capable and likable rather than spoiled and miserable. One factor hindering this is that parents can't or don't spend enough quality time with their kids, and substitute this deficit with toys, games, gadgets and the like. Rather than getting material things, children need parents' devoted attention. The quantity of time spent together is less important than the content of that time. Instead of instantly satisfying their wishes, parents should help them work out a plan to earn things they'd like to have. This teaches them to value the effort as well as what it achieves. Allow them to enjoy anticipation. Numerous psychological studies have demonstrated that children who learn to wait for things they desire are more likely to succeed in a number of ways later in life. One famous experiment in the 1960s involved 3- to 6-year-old children. They were given a choice between receiving a small reward, such as a cookie, immediately, or if they waited 15 minutes, they could have two. Follow up studies have found that those who chose to delay satisfaction are now more academically successful, have greater self-worth, and even tend to be healthier. If they fail, children should be encouraged to keep trying rather than to give up if they really want the desired result. This teaches them how to handle and recover from disappointment, which is associated with greater success and satisfaction academically, financially and in personal relationships. And lastly, parents should encourage their children to look at life from other points of view, as well as their own. This teaches them to be understanding of and sympathetic towards others—qualities sure to take them a long way in life.",
+        "questions": [
+          {
+            "n": 19,
+            "text": "What will happen to children if they always get immediate satisfaction?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "They will be more demanding of their next generation."
+              },
+              {
+                "letter": "B",
+                "text": "They will end up lonely, dependent and dissatisfied."
+              },
+              {
+                "letter": "C",
+                "text": "They will experience more setbacks than successes."
+              },
+              {
+                "letter": "D",
+                "text": "They will find it difficult to get along with others."
+              }
+            ],
+            "answer": "B"
+          },
+          {
+            "n": 20,
+            "text": "What may prevent parents from raising confident and capable children?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Failure to pay due attention to their behavior."
+              },
+              {
+                "letter": "B",
+                "text": "Unwillingness to allow them to play with toys."
+              },
+              {
+                "letter": "C",
+                "text": "Unwillingness to satisfy their wishes immediately."
+              },
+              {
+                "letter": "D",
+                "text": "Failure to spend sufficient quality time with them."
+              }
+            ],
+            "answer": "D"
+          },
+          {
+            "n": 21,
+            "text": "Why should children be encouraged to keep trying when they fail?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It will enable them to learn from mistakes."
+              },
+              {
+                "letter": "B",
+                "text": "It will help them to handle disappointment."
+              },
+              {
+                "letter": "C",
+                "text": "It will do much good to their mental health."
+              },
+              {
+                "letter": "D",
+                "text": "It will build their ability to endure hardships"
+              }
+            ],
+            "answer": "B"
+          }
+        ]
+      },
+      {
+        "title": "Recording Three",
+        "audio": "/audio/cet6/cet6-2021-12-s1-rec3.mp3",
+        "transcript": "It is not hard to mess up an interview. Most people feel nervous sitting across from a hiring manager, answering questions that effectively open themselves up for judgment. And your chances of being more carefully considered for the job can quickly go downhill just by saying the wrong thing at the wrong time. The most obvious thing not to do is complain. Employers want to hire positive people. Talking about a previous job negatively raises concerns that you might be difficult to manage, or you might be someone that blames management for your own poor performance. Don't say that you've moved around in jobs because you haven't found the right fit or feel that you weren't challenged enough. Statements like this will make you sound aimless and lost. An interviewer may well think, why would this role be any different for you? You will probably leave here in six months. It also begs the question of what type of relationship you had with your manager. It doesn't sound like you had open communication with him or her. Managers usually love people who can self-sustain and enable growth through taking initiative, who are strong at following through their work, and who bring ideas and solutions to the table. If you were in a management or leadership position, when discussing your current role, never take all the credit for accomplishments or achievements. Emphasize your team and how through their talents, your vision was realized. Most successful leaders know that they are only as good as their team. And acknowledging this in an interview will go a long way towards suggesting that you might be the right person for the position you are applying for. Lastly, have a good idea of what your role will be and try and convey the idea that you're flexible. Asking what your role will be suggests you will limit yourself purely to what is expected of you. In reality, your role is whatever you make of it. This is especially true in small companies, where the ability to adapt and take on new responsibilities is highly valued. And this is equally important if you're just starting out. Entry level interviewees would do well to demonstrate a broad set of skills in most interviews. It's important to have a wide skill set as many startups and small companies are moving really fast. Employers are looking for candidates that are intelligent and can quickly adapt and excel in a growing company.",
+        "questions": [
+          {
+            "n": 22,
+            "text": "What does the speaker say can easily prevent an interviewee from getting a job?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Failing to make sufficient preparations."
+              },
+              {
+                "letter": "B",
+                "text": "Looking away from the hiring manager."
+              },
+              {
+                "letter": "C",
+                "text": "Saying the wrong thing at the wrong time."
+              },
+              {
+                "letter": "D",
+                "text": "Making a wrong judgment of the interview."
+              }
+            ],
+            "answer": "C"
+          },
+          {
+            "n": 23,
+            "text": "What should the interviewee avoid doing in an interview?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Complaining about their previous job."
+              },
+              {
+                "letter": "B",
+                "text": "Inquiring about their salary to be paid."
+              },
+              {
+                "letter": "C",
+                "text": "Exaggerating their academic background."
+              },
+              {
+                "letter": "D",
+                "text": "Understating their previous achievements."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 24,
+            "text": "What kind of employees do companies like to recruit?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Those who have both skill and experience."
+              },
+              {
+                "letter": "B",
+                "text": "Those who get along well with colleagues."
+              },
+              {
+                "letter": "C",
+                "text": "Those who take initiative in their work."
+              },
+              {
+                "letter": "D",
+                "text": "Those who are loyal to their managers."
+              }
+            ],
+            "answer": "C"
+          },
+          {
+            "n": 25,
+            "text": "What is especially important for those working in a small company?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Ability to shoulder new responsibilities."
+              },
+              {
+                "letter": "B",
+                "text": "Experience of performing multiple roles."
+              },
+              {
+                "letter": "C",
+                "text": "Readiness to work to flexible schedules."
+              },
+              {
+                "letter": "D",
+                "text": "Skills to communicate with colleagues. Part III Section A"
+              }
+            ],
+            "answer": "A"
+          }
+        ]
+      }
+    ]
+  },
+  "answerQuotes": {
+    "1": [
+      "I haven't seen you in class for almost two weeks."
+    ],
+    "2": [
+      "M: And, on the way back from the hospital, I slipped on some ice and fell and then had to go to the hospital to get an X-ray because I basically thought I broke my wrist, although, thankfully, it's not broken."
+    ],
+    "3": [
+      "W: Listen, I have the number of a really good, affordable computer repair shop at home."
+    ],
+    "4": [
+      "Let's go back to my house and we can call the repair shop, and you can have some tea and cookies too."
+    ],
+    "5": [
+      "With me today is Heidi Brown, a historian who has written five critically acclaimed books about military history."
+    ],
+    "6": [
+      "W: I'd say it's a major departure as it's not just a work of fiction."
+    ],
+    "7": [
+      "I started by researching soldiers' actual personal lives, studying their letters home."
+    ],
+    "8": [
+      "W: I felt too constrained working with the past, like what I wrote needed to be fact as opposed to fiction, but writing about the future gave me more freedom to imagine, to invent."
+    ],
+    "9": [
+      "Whether it's in the hands of animated polar bears or Santa Claus, there's one thing you'll find in nearly all ads for Coca-Cola: the characteristic glass bottle."
+    ],
+    "10": [
+      "As the soft drink gained in popularity, it faced a growing number of competitors—counterfeits even trying to copy Coke's logo."
+    ],
+    "11": [
+      "Workers at the Root Glass Company got the request and began flipping through the encyclopedia at the local library, landing on cocoa seed."
+    ],
+    "12": [
+      "Research shows that a few moments of conversation with a stranger creates a measurable improvement in mood."
+    ],
+    "13": [
+      "Social anxiety appears to be the problem."
+    ],
+    "14": [
+      "You may occasionally have a negative encounter that might stick in your memory."
+    ],
+    "15": [
+      "The pleasure of connection seems contagious."
+    ],
+    "16": [
+      "This tropical region's economy is based mainly on farming."
+    ],
+    "17": [
+      "The Caribbean produces many things."
+    ],
+    "18": [
+      "Most of the people live well below the poverty level."
+    ],
+    "19": [
+      "But in the longer term, such children end up lonely, dependent, chronically dissatisfied and resentful of the parents who tried so hard to please them."
+    ],
+    "20": [
+      "One factor hindering this is that parents can't or don't spend enough quality time with their kids, and substitute this deficit with toys, games, gadgets and the like."
+    ],
+    "21": [
+      "If they fail, children should be encouraged to keep trying rather than to give up if they really want the desired result."
+    ],
+    "22": [
+      "And your chances of being more carefully considered for the job can quickly go downhill just by saying the wrong thing at the wrong time."
+    ],
+    "23": [
+      "The most obvious thing not to do is complain."
+    ],
+    "24": [
+      "Managers usually love people who can self-sustain and enable growth through taking initiative, who are strong at following through their work, and who bring ideas and solutions to the table."
+    ],
+    "25": [
+      "Lastly, have a good idea of what your role will be and try and convey the idea that you're flexible."
+    ]
+  }
+}

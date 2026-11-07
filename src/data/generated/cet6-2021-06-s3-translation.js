@@ -1,0 +1,111 @@
+/* 2021年6月 第3套 CET-6 翻译题。
+ * 来源：2021年06月CET6题+解+音频\03、答案解析\2021.06英语六级答案解析第3套.pdf
+ * 核对：2021.06英语六级答案解析第3套.pdf p10（Part IV Translation 参考译文与难点注释）
+ * 验证状态：verified — 题干中文取自同批次真题 docx（该解析 PDF 中文层为乱码），参考译文据解析书 p10 逐句核对。 */
+
+export const translation202106S3 = {
+  "id": "cet6-2021-06-s3",
+  "meta": {
+    "level": "CET6",
+    "year": 2021,
+    "month": 6,
+    "set": 3,
+    "source": "2021年06月CET6题+解+音频\\03、答案解析\\2021.06英语六级答案解析第3套.pdf",
+    "answerSource": "2021.06英语六级答案解析第3套.pdf p10（Part IV Translation 参考译文与难点注释）",
+    "pages": "解析第10页",
+    "verified": true,
+    "verifiedAt": "2026-11-05",
+    "note": "题干中文取自同批次真题 docx（该解析 PDF 中文层为乱码），参考译文据解析书 p10 逐句核对。"
+  },
+  "title": "2021年6月 第3套",
+  "topic": "云南",
+  "directions": "For this part, you are allowed 30 minutes to translate a passage from Chinese into English.",
+  "passage": "云南是位于中国西南的一个省份，平均海拔1500米。云南历史悠久，风景秀丽，气候宜人。云南生态环境优越，生物多种多样，被誉为野生动植物的天堂。云南还有多种矿藏和充足的水资源，为全省经济的可持续发展提供了有利条件。云南居住着25个少数民族，他们大多有自己的语言、习俗和宗教。云南独特的自然景色和丰富的民族文化使其成为中国最受欢迎的旅游目的地之一，每年都吸引着大批国内外游客前往观光旅游。",
+  "reference": "Yunnan is a province located in the southwest of China with an average altitude of 1,500 meters. Yunnan has a long history, beautiful scenery and pleasant climate. Endowed with a superior ecological environment and a wide variety of living creatures, Yunnan is known as a paradise for wild animals and plants. Yunnan also has a variety of mineral resources and adequate water resources, which provide favorable conditions for the sustainable development of the whole province's economy. Yunnan is inhabited by 25 ethnic minorities, most of whom have their own languages, customs and religions. With unique natural scenery and rich ethnic culture, Yunnan has been made into one of the most popular tourist destinations in China, attracting large numbers of domestic and foreign tourists each year.",
+  "notes": [
+    [
+      "位于",
+      "be located in"
+    ],
+    [
+      "历史悠久",
+      "have a long history"
+    ],
+    [
+      "风景秀丽",
+      "beautiful scenery"
+    ],
+    [
+      "气候宜人",
+      "pleasant climate"
+    ],
+    [
+      "生态环境优越",
+      "a superior ecological environment"
+    ],
+    [
+      "生物多种多样",
+      "a wide variety of living creatures"
+    ],
+    [
+      "被誉为",
+      "be known as"
+    ],
+    [
+      "野生动植物",
+      "wild animals and plants"
+    ],
+    [
+      "矿藏",
+      "mineral resources"
+    ],
+    [
+      "充足的水资源",
+      "adequate water resources"
+    ],
+    [
+      "为……提供有利条件",
+      "provide favorable conditions for"
+    ],
+    [
+      "可持续发展",
+      "sustainable development"
+    ],
+    [
+      "居住着",
+      "be inhabited by"
+    ],
+    [
+      "少数民族",
+      "ethnic minorities"
+    ],
+    [
+      "习俗和宗教",
+      "customs and religions"
+    ],
+    [
+      "独特的自然景色",
+      "unique natural scenery"
+    ],
+    [
+      "丰富的民族文化",
+      "rich ethnic culture"
+    ],
+    [
+      "旅游目的地",
+      "tourist destination"
+    ],
+    [
+      "国内外游客",
+      "domestic and foreign tourists"
+    ]
+  ],
+  "points": [
+    "第一句：“位于中国西南”可用过去分词短语 located in the southwest of China 作后置定语，也可用定语从句；“平均海拔1500米”用 with 引导的介词短语。",
+    "第二句：“历史悠久，风景秀丽，气候宜人”三个并列判断用 has a long history, beautiful scenery and pleasant climate 顺译即可；“悠久”译作 long。",
+    "第三句：过去分词短语 Endowed with... 作原因状语；“生态环境优越，生物多种多样”用 with 并列名词短语；“被誉为……天堂”用 be known as a paradise for...。",
+    "第四句：“云南还有……”可用 Yunnan also has... 或 There be 句型；“为……提供了有利条件”用 which 引导的定语从句或现在分词 providing 作结果状语。",
+    "第五句：“居住着25个少数民族”用 be inhabited by；“他们大多……”用 most of whom 引导的非限制性定语从句。",
+    "第六句：“独特的自然景色和丰富的民族文化”作主语，“使其成为”用 make it...；“每年吸引大批国内外游客”用现在分词 attracting 作结果状语。"
+  ]
+};

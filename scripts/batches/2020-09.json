@@ -1,0 +1,14 @@
+[
+  { "year": 2020, "month": 9, "set": 1,
+    "zt": "D:/workspace_sunny/题库/cet/真题/2020年09月CET4题+解+音频/01、真题PDF版（推荐打印）❤/2020.09月四级真题第1套【可复制可划线查词】.pdf",
+    "ztTextFile": "scripts/batches/zt-text/2020-09-s1.txt",
+    "out": "src/data/generated/cet4-2020-09-s1.json",
+    "verified": true,
+    "answersManual": { "banked": "IEDJBKNCFG", "matching": "HELGDICKFB", "careful": "DBCBADACBD" } },
+  { "year": 2020, "month": 9, "set": 2,
+    "zt": "D:/workspace_sunny/题库/cet/真题/2020年09月CET4题+解+音频/01、真题PDF版（推荐打印）❤/2020.09月四级真题第2套【可复制可划线查词】.pdf",
+    "ztTextFile": "scripts/batches/zt-text/2020-09-s2.txt",
+    "out": "src/data/generated/cet4-2020-09-s2.json",
+    "verified": true,
+    "answersManual": { "banked": "HBALINKJMO", "matching": "EBJFHDKGCI", "careful": "DCBADCABAD" } }
+]

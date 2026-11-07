@@ -1,0 +1,95 @@
+/* 2019年6月 第3套 CET-6 翻译题。
+ * 来源：2019年06月CET6题+解+音频/03、答案解析/2019年06月真题解析第3套.pdf
+ * 核对：2019年06月真题解析第3套.pdf p30（Part IV Translation 一、参考译文）、p31（二、精析精译）
+ * 验证状态：verified — 题干原括注（character）已按原卷保留于 passage；Word 版“汉子”系“汉字”之误，已按上下文改正。 */
+
+export const translation201906S3 = {
+  "id": "cet6-2019-06-s3",
+  "meta": {
+    "level": "CET6",
+    "year": 2019,
+    "month": 6,
+    "set": 3,
+    "source": "2019年06月CET6题+解+音频/03、答案解析/2019年06月真题解析第3套.pdf",
+    "answerSource": "2019年06月真题解析第3套.pdf p30（Part IV Translation 一、参考译文）、p31（二、精析精译）",
+    "pages": "解析第30-31页",
+    "verified": true,
+    "verifiedAt": "2026-11-05",
+    "note": "题干原括注（character）已按原卷保留于 passage；Word 版“汉子”系“汉字”之误，已按上下文改正。"
+  },
+  "title": "2019年6月 第3套",
+  "topic": "汉语",
+  "directions": "For this part, you are allowed 30 minutes to translate a passage from Chinese into English.",
+  "passage": "汉语现在是世界上用作本族语人数最多的语言。汉语与西方语言的一个重要区别在于它是以方块字（character）而不是以字母构成的。目前仍在使用的书写系统中，汉语是最古老的。在中国，来自不同地区的人可能听不懂对方的方言，但由于汉字有统一的书写形式，他们交流起来几乎没有任何困难。汉语历史上对团结中华民族发挥了重要作用。今天，随着中国经济的快速增长和全球影响力的增强，越来越多其他国家的人也开始学习汉语。",
+  "reference": "Chinese is now the language with the largest number of native speakers in the world. One important way in which Chinese differs from western languages is that, instead of letters, it uses characters. Chinese is the oldest script still in use. In China, people from different regions may find it difficult to understand each other's dialects, but they have little difficulty in communicating through written Chinese, because Chinese characters share a common written form. Chinese has played an important role in uniting the Chinese nation in history. Today, with the rapid growth of China's economy and the increase in its global influence, a rising number of people from other countries also start learning Chinese.",
+  "notes": [
+    [
+      "本族语",
+      "native language"
+    ],
+    [
+      "本族语使用者",
+      "native speaker"
+    ],
+    [
+      "与……不同",
+      "differ from"
+    ],
+    [
+      "方块字",
+      "character"
+    ],
+    [
+      "字母",
+      "letter"
+    ],
+    [
+      "书写系统",
+      "script; writing system"
+    ],
+    [
+      "仍在使用",
+      "still in use"
+    ],
+    [
+      "统一的",
+      "common; unified"
+    ],
+    [
+      "几乎没有困难",
+      "have little difficulty in doing sth"
+    ],
+    [
+      "发挥作用",
+      "play a role in"
+    ],
+    [
+      "团结中华民族",
+      "unite the Chinese nation"
+    ],
+    [
+      "快速增长",
+      "rapid growth"
+    ],
+    [
+      "全球影响力",
+      "global influence"
+    ],
+    [
+      "越来越多",
+      "a growing number of"
+    ],
+    [
+      "开始学习",
+      "start learning"
+    ]
+  ],
+  "points": [
+    "第一句：主干 Chinese is the language...，后置定语 with the largest number of native speakers in the world；“用作本族语的人”处理为 native speakers。",
+    "第二句：用 One important way in which A differs from B is that... 句型；表语从句中 instead of letters 作状语，it uses characters 为主干。",
+    "第三句：“目前仍在使用的书写系统”译为 the oldest script still in use，still in use 作后置定语；一般现在时表客观事实。",
+    "第四句：“可能听不懂”用 may find it difficult to do；“但由于……”用 but 连接转折；原因状语从句 because Chinese characters share a common written form；“交流起来几乎没有困难”用 have little difficulty in communicating through written Chinese。",
+    "第五句：用 play an important role in uniting the Chinese nation；in history 作时间状语，全句用现在完成时 has played。",
+    "第六句：with 引导伴随状语，内嵌 the rapid growth of... 与 the increase in... 两个名词结构；主句用 a rising number of people from other countries start learning Chinese，注意主谓一致。"
+  ]
+};

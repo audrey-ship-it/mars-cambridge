@@ -1,0 +1,33 @@
+/* 2025年12月 第2套 CET-6 写作题。
+ * 来源：2025年12月CET6题+答案+音频\2025.12六级真题第2套.pdf p1（Part I Writing 题干）
+ * 核对：2025年12月CET6题+答案+音频\2025.12英语六级解析第2套.pdf p1（审题 / 参考范文&点评 / 范文译文）
+ * 验证状态：verified — 题干与范文均与原件逐句核对 */
+
+export const writing202512S2 = {
+  "id": "cet6-2025-12-s2",
+  "meta": {
+    "level": "CET6",
+    "year": 2025,
+    "month": 12,
+    "set": 2,
+    "source": "2025年12月CET6题+答案+音频\\2025.12六级真题第2套.pdf p1（Part I Writing 题干）",
+    "answerSource": "2025年12月CET6题+答案+音频\\2025.12英语六级解析第2套.pdf p1（审题 / 参考范文&点评 / 范文译文）",
+    "pages": "原题第1页 / 解析第1页",
+    "verified": true,
+    "verifiedAt": "2026-11-05"
+  },
+  "title": "2025年12月 第2套",
+  "topic": "中国梦中年轻人实现自我价值",
+  "directions": "For this part, you are allowed 30 minutes to write an essay that begins with the sentence “While striving for the Chinese Dream, young people enjoy more opportunities to realize their self-worth.” You can make comments, cite examples or use your personal experiences to develop your essay. You should write at least 150 words but no more than 200 words. You should copy the sentence given in quotes at the beginning of your essay.",
+  "minWords": 150,
+  "maxWords": 200,
+  "model": "While striving for the Chinese Dream, young people enjoy more opportunities to realize their self-worth. This national aspiration not only maps out the country's development path but also provides diverse platforms for young people to apply their talents, bridging the gap between personal ambition and national progress.\n\nThe opportunities are evident in several key areas. First, in technological innovation, the state's support for the renewable energy sector has enabled many young people to engage in the research and development of new energy vehicles. This not only helps China take the lead globally in this field, but also allows these young people to gain industry recognition and a strong sense of accomplishment. Second, on the cultural front, there is more encouragement for diverse talents in arts, new media, and digital content creation. Young content creators use short videos to introduce traditional Chinese crafts like paper-cutting and porcelain-making to global audiences, helping spread Chinese culture while establishing their own influence as cultural ambassadors.\n\nIn short, the Chinese Dream provides young people with a stage to turn aspirations into reality. Through opportunities in national key sectors, the realization of personal self-worth goes hand in hand with driving the country's progress.",
+  "modelZh": "在为实现中国梦而奋斗的过程中，年轻人有了更多实现自我价值的机遇。这一民族愿景不仅规划了国家的发展路径，而且为年轻人提供了施展才华的多种平台，搭建起个人抱负与国家进步之间的桥梁。\n\n这些机遇在几个关键领域显而易见。首先，在科技创新领域，国家对新能源产业的支持让许多年轻人得以投身于新能源汽车的研发工作。这不仅有助于中国在这个领域引领全球，也让这些年轻人获得了行业认可和强烈的成就感。其次，在文化层面，对艺术、新媒体和数字内容创作等领域的多元化人才给予了更多鼓励。年轻的内容创作者通过短视频向全球观众介绍剪纸、瓷器制作等中国传统工艺，在助力中华文化传播的同时，建立自身作为文化大使的影响力。\n\n总之，中国梦为年轻人提供了将理想变为现实的舞台。借助国家重点领域的发展机遇，个人自我价值的实现与推动国家发展进步相辅相成。",
+  "review": "题目要求考生写一篇以“在为实现中国梦而奋斗的过程中，年轻人有了更多实现自我价值的机遇”为开头的作文，考生可以通过发表评论、举例子或描述个人经历展开论述。根据题目提示，作文可以采取以下布局：开头段以给定句子引出话题，简要阐释两者的内在联系；中间段具体举例说明，展示年轻人如何把握机遇以实现自我价值；结尾段总结全文，升华主题。",
+  "points": [
+    "以给定句子引出话题，描述“中国梦”和“年轻人的机遇”之间的内在联系，为下文论述做铺垫。",
+    "针对机遇的具体体现，给出了不同方面的具体例子，分别用First、Second引出。",
+    "总结全文，升华主题。",
+    "布局借鉴：开头段以给定句子引出话题，简要阐释两者的内在联系；中间段具体举例说明，展示年轻人如何把握机遇以实现自我价值；结尾段总结全文，升华主题。"
+  ]
+};

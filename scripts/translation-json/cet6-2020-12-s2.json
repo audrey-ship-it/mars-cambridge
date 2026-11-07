@@ -1,0 +1,42 @@
+{
+  "id": "cet6-2020-12-s2",
+  "year": 2020,
+  "month": 12,
+  "set": 2,
+  "title": "2020年12月 第2套",
+  "topic": "港珠澳大桥",
+  "passage": "港珠澳大桥（Hong Kong-Zhuhai-Macau Bridge）全长55公里，是我国一项不同寻常的工程壮举。大桥将三个城市连接起来，是世界上最长的跨海桥梁和隧道系统。大桥将三个城市之间的旅行时间从3小时缩短到30分钟。这座跨度巨大的钢筋混凝土大桥充分证明中国有能力建造创纪录的巨型建筑。它将助推区域一体化，促进经济增长。大桥是中国发展自己的大湾区总体规划的关键。中国希望将大湾区建成在技术创新和经济繁荣上能与旧金山、纽约和东京的湾区相媲美的地区。",
+  "reference": "The Hong Kong-Zhuhai-Macau Bridge, which spans 55 kilometers, is an extraordinary feat of engineering in China. It is the world's longest sea-crossing bridge and tunnel system, which connects Hong Kong with Zhuhai and Macau, cutting the travel time between the three cities from three hours to 30 minutes. This massive span of steel and concrete is ample proof of China's ability to build record-setting megastructures. The bridge will help spur regional integration and drive economic growth. It is a key component of China's master plan to develop its own Greater Bay Area, a region that China hopes will develop to rival the bay areas of San Francisco, New York and Tokyo in terms of technological innovation and economic success.",
+  "notes": [
+    ["港珠澳大桥", "the Hong Kong-Zhuhai-Macau Bridge"],
+    ["工程壮举", "a feat of engineering"],
+    ["跨海桥梁和隧道系统", "sea-crossing bridge and tunnel system"],
+    ["缩短", "cut; shorten"],
+    ["跨度巨大", "a massive span of"],
+    ["钢筋混凝土", "steel and concrete"],
+    ["充分证明", "be ample proof of"],
+    ["创纪录的巨型建筑", "record-setting megastructures"],
+    ["助推", "spur"],
+    ["区域一体化", "regional integration"],
+    ["促进经济增长", "drive economic growth"],
+    ["总体规划", "master plan"],
+    ["大湾区", "the Greater Bay Area"],
+    ["相媲美", "rival"],
+    ["技术创新", "technological innovation"]
+  ],
+  "points": [
+    "第一句：第一小句为次要信息，用非限制性定语从句 which spans 55 kilometers 处理；第二小句为语义重心，译为主干 is an extraordinary feat of engineering in China。",
+    "第二句：主干 It is the world's longest sea-crossing bridge and tunnel system；“将三个城市连接起来”用非限制性定语从句 which connects Hong Kong with Zhuhai and Macau。",
+    "第二句末：第三句“旅行时间缩短”是上句“连接三城”的结果，用现在分词短语 cutting the travel time... from... to... 作结果状语，两句合并翻译。",
+    "第三句：主语 This massive span of steel and concrete；“充分证明中国有能力……”用名词化结构 is ample proof of China's ability to build record-setting megastructures，比宾语从句更简洁。",
+    "第四句：两个作用为并列关系，用 will help spur regional integration and drive economic growth 的并列谓语；“助推”用 spur / help promote。",
+    "第五句：主干 It is a key component of China's master plan；“发展自己的大湾区”用不定式 to develop its own Greater Bay Area 作后置定语。",
+    "第六句：“中国希望将大湾区建成……”处理为上句 Greater Bay Area 的同位语 a region that China hopes will develop...；“在……上相媲美”用 rival... in terms of technological innovation and economic success。"
+  ],
+  "source": "2020年12月CET6题+解+音频/03、答案解析/2020.12英语六级考试第2套解析.pdf",
+  "answerSource": "2020.12英语六级考试第2套解析.pdf p16（Part IV Translation 参考译文/句子解析）",
+  "pages": "解析第16页",
+  "verified": true,
+  "verifiedAt": "2026-11-05",
+  "note": "题干括注（Hong Kong-Zhuhai-Macau Bridge）已按原卷保留于 passage；文字层英文空格已按句法还原。"
+}

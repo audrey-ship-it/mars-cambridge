@@ -1,0 +1,443 @@
+{
+  "id": "cet4-2021-06-s2",
+  "meta": {
+    "level": "CET4",
+    "year": 2021,
+    "month": 6,
+    "set": 2,
+    "source": "../../mars-cet/tmp-verify/zt2-fixed.txt",
+    "answerSource": "人工读图答案（待复核后置 verified）",
+    "verified": false,
+    "warnings": [
+      "选词空位数=0（应为10）"
+    ]
+  },
+  "reading": {
+    "banked": {
+      "passage": "Social isolation poses more health risks than obesity or smoking 15 cigarettes a day, according to research published by Brigham Young University. The� is that loneliness is a huge, if silent, risk factor. Loneliness affects physical health in two ways. First, it produces stress hormones that can lead to many health problems. Second, people who live alone are less likely to go to the doctor _E_, to [9� 20211¥- 6 fa.I 26 exercise or to eat a healthy diet. Public health experts in many countries are � how to address widespread loneliness in our society. Last year Britain even appointed a minister for loneliness. \"Loneliness � almost every one of us at some point,\" its minister for loneliness Baroness Barran said. \"It can lead to very serious health 30 for individuals who become isolated and disconnected. \" Barran started a \"Let's Talk Loneliness\" campaign that ___l!_ difficult conversations across Britain. He is now supporting \"_;g_ benches,\" which are public seating areas where people are encouraged to go and chat with one another. The minister is also _lL to stop public transportation from being cut in ways that leave people isolated. More than one-fifth of adults in both the United States and Britain said in a 2018 ____M_ that they often or always feel lonely. More than half of American adults are unmarried, and researchers have found that even among those who are married, 30% of relationships are � strained. A quarter of Americans now live alone, and as the song says, one is the loneliest number.",
+      "options": [
+        {
+          "letter": "A",
+          "word": "abruptly"
+        },
+        {
+          "letter": "F",
+          "word": "friendly"
+        },
+        {
+          "letter": "K",
+          "word": "severely"
+        },
+        {
+          "letter": "B",
+          "word": "appointments"
+        },
+        {
+          "letter": "G",
+          "word": "hindered"
+        },
+        {
+          "letter": "L",
+          "word": "sparked"
+        },
+        {
+          "letter": "C",
+          "word": "consequences"
+        },
+        {
+          "letter": "H",
+          "word": "idiom"
+        },
+        {
+          "letter": "M",
+          "word": "splitting"
+        },
+        {
+          "letter": "D",
+          "word": "debating"
+        },
+        {
+          "letter": "I",
+          "word": "implication"
+        },
+        {
+          "letter": "N",
+          "word": "survey"
+        },
+        {
+          "letter": "E",
+          "word": "dimensions"
+        },
+        {
+          "letter": "J",
+          "word": "pushing"
+        },
+        {
+          "letter": "O",
+          "word": "touches"
+        }
+      ],
+      "answers": [
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    "matching": {
+      "title": "What happens when a language bas no words for numbers?",
+      "paragraphs": [
+        {
+          "label": "A",
+          "text": "Numbers do not exist in all cultures. There are numberless hunter-gatherers in Amazonia, living along branches of the world's largest river tree. Instead of using words for precise quantities, these people rely exclusively on terms similar to \"a few\" or \"some. \" In contrast, our own lives are governed by numbers. As you read this, you are likely aware of what time it is, how old you are, your checking account balance, your weight and so on. The exact numbers we think with impact everything in our lives."
+        },
+        {
+          "label": "B",
+          "text": "But, in a historical sense, number-conscious people like us are the unusual ones. For the bulk of our species' approximately 200, OOO-year lifespan, we had no means of precisely representing quantities. What's more, the 7 ,OOO or so languages that exist today vary dramatically in how they utilize numbers."
+        },
+        {
+          "label": "C",
+          "text": "Speakers of anumeric, or numberless, languages offer a window into how the invention of numbers reshaped the human experience. Otltures without nwnbers, or with only one or two precise numbers, include the Munduruku and Piraha in Amazonia. Researchers have also studied some adults in Nicaragua who were never taught number words. Without numbers, healthy human adults struggle to precisely distinguish and recall quantities as low as four. In an experiment, a researcher will place nuts into a can one at a time and then remove them one by one. The person watching is asked to signal when all the nuts have been removed. Responses suggest that anumeric people have some trouble keeping track of how many nuts remain in the can, even if there are only four or five in total."
+        },
+        {
+          "label": "D",
+          "text": "This and many otherexiteriments hav-e led to�a simple�conclusion�J\\lhe�peopl�dQD.QtJ1av-e�umber words, they struggle to make quantitative distinctions that probably seem natural to someone like you or me. While only a small portion of the world's languages are anumeric or nearly anumeric, they Im� 2021 � 6 JI 27 demonstrate that number words are not a human universal."
+        },
+        {
+          "label": "E",
+          "text": "It is worth stressing that these anumeric people are cognitively (,1£ R� -jj\" i:1) normal, well-adapted to the surroundings they have dominated for centuries. As a child, I spent some time living with anumeric people, the Piraha who live along the banks of the black Maici River. Like other outsiders, I was continually impressed by their superior understanding of the ecology we shared. Yet numberless people struggle with tasks that require precise discrimination between quantities. Perhaps this should be unsurprising. After all, without counting, how can someone tell whether there are, say, seven or eight coconuts ( � -1-) in a tree? Such seemingly straightforward distinctions become blurry through numberless eyes."
+        },
+        {
+          "label": "F",
+          "text": "This conclusion is echoed by work with anumeric children in industrialized societies. Prior to being spoon-fed number words, children can only approximately discriminate quantities beyond three. We must be handed the cognitive tools of numbers before we can consistently and easily recognize higher quantities. In fact, acquiring the exact meaning of number words is a painstaking process that takes children years. Initially, kids learn numbers much like they learn letters. They recognize that numbers are organized sequentially, but have little awareness of what each individual number means. With time, they start to understand that a given number represents a quantity greater by one than the number coming before it. This\"successor principle\" is part of the foundation of our numerical (�� e{j) cognition, but requires extensive practice to understand."
+        },
+        {
+          "label": "G",
+          "text": "None of us, then, is really a\"numbers person.\" We are not born to handle quantitative distinctions skillfully. In the absence of the cultural traditions that fill our lives with numbers from infancy, we would all struggle with even basic quantitative distinctions. Number words and their written forms transform our quantitative reasoning as they are introduced into our cognitive experience by our parents, peers and school teachers. The process seems so normal that we sometimes think of it as a natural part of growing up, but it is· not. Human brains come equipped with certain quantitative instincts that are refined with age, but these instincts are very limited."
+        },
+        {
+          "label": "H",
+          "text": "Compared with other mammals, our numerical instincts are not as remarkable as many assume. We even share some basic instinctual quantitative reasoning with distant non-mammalian relatives like birds. Indeed, work with some other species suggests they too can refine their quantitative thought if- - - ----- they are introduced to the cognitive power tools we call numbers."
+        },
+        {
+          "label": "I",
+          "text": "So, how did we ever invent\"unnatural\" numbers in the first place? The answer is, literally, at your fingertips. The bulk of the world's languages use base-10, base-20 or base-5 number systems. That is, these smaller numbers are the basis of larger numbers. English is a base-10 or decimal ( -r :ttr. -$1] e{j ) language, as evidenced by words like 14 (\"four\"+\"10\") and 31 (\"three\" X \"10\"+\"one\"). We speak a decimal language because an ancestral tongue, proto-Indo-European, was decimally based. Proto-Indo European was decimally oriented because, as in so many cultures, our ancestors' hands served as the gateway to the realization that\"five fingers on one hand is the same as five fingers on the other. \" Such momentary thoughts were represented in words and passed down across generations. This is why the word\"five\" in many languages is derived from the word for\"hand.\" Most number systems, then, are the by-product of two key factors: the human capacity for language and our inclination for focusing on our hands and fingers. This manual fixation-an indirect by-product of walking upright on two legs has helped yield numbers in most cultures, but not all."
+        },
+        {
+          "label": "J",
+          "text": "Cultures without numbers also offer insight into the cognitive influence of particular numeric traditions. Consider what time it is. Your day is ruled by minutes and seconds, but these concepts are not real in any physical sense and are nonexistent to numberless people. Minutes and seconds are the verbal and written representations of an uncommon base-60 number system used in ancient ll!I� 2021 &f 6 Jj 28 Mesopotamia. They reside in our minds, numerical artifacts (A..I.!� �) that not all humans inherit conceptually."
+        },
+        {
+          "label": "K",
+          "text": "Research on the language of numbers shows, more and more, that one of our species' key characteristics is tremendous linguistic ( ii i. €r?) and cognitive diversity. If we are to truly understand how much our cognitive lives differ cross-culturally, we must continually explore the depths of our species' linguistic diversity."
+        }
+      ],
+      "questions": [
+        {
+          "n": 36,
+          "text": "It is difficult for anumeric people to keep track of the change in numbers even when the total is very small."
+        },
+        {
+          "n": 37,
+          "text": "Human numerical instincts are not so superior to those of other mammals as is generally believed."
+        },
+        {
+          "n": 38,
+          "text": "The author emphasizes being anumeric does not affect one's cognitive ability."
+        },
+        {
+          "n": 39,
+          "text": "In the long history of mankind, humans who use numbers are a very small minority."
+        },
+        {
+          "n": 40,
+          "text": "An in-depth study of differences between human languages contributes to a true understanding of cognitive differences between cultures."
+        },
+        {
+          "n": 41,
+          "text": "A conclusion has been drawn from many experiments that anumeric people have a hard time distinguishing quantities."
+        },
+        {
+          "n": 42,
+          "text": "Making quantitative distinctions is not an inborn skill."
+        },
+        {
+          "n": 43,
+          "text": "Every aspect of our lives is affected by numbers."
+        },
+        {
+          "n": 44,
+          "text": "Larger numbers are said to be built upon smaller numbers."
+        },
+        {
+          "n": 45,
+          "text": "It takes great efforts for children to grasp the concept of number words."
+        }
+      ],
+      "answers": [
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    "careful": [
+      {
+        "passage": "Sugar shocked. That describes the reaction of many Americans this week following revelations that, 50 years ago, the sugar industry paid Harvard scientists for research that shifted the focus away from sugar's role in heart disease-and put the spotlight 0.i 1;€r? 4' 1\\>') squarely on dietary fat. What might surprise consumers is just how many present-day nutrition studies are still funded by the food industry. Nutrition scholar Marion Nestle of New York University spent a year informally tracking industry-funded studies on food. \"Roughly 90% of nearly 170 studies favored the sponsor's interest,\" Nestle tells us. Other systematic reviews support her conclusions. For instance, studies funded by Welch Foods-the brand behind Welch's 100% Grape Juice-found that drinking Concord grape juice daily may boost brain function. Another, funded by Quaker Oats, concluded, as a Daily Mail story put it, that \"hot oatmeal ( � !: �) breakfast keeps you full for longer.\" Last year, The New York Times revealed how Coca-Cola was funding well-known scientists and organizations promoting a message that, in the battle against weight gain, people should pay more attention to exercise and less to what they eat and drink. Coca-Cola also released data detailing its funding of several medical institutions and associations between 2010 and 2015. \"It's certainly a problem that so much research in nutrition and health is funded by industry,\" says Bonnie Liebman, director of nutrition at the Center for Science in the Public Interest. \"When the food industry pays for research, it often gets what it pays for.\" And what it pays for is often a pro-industry finding. _Giveathis�env ironment,_consumeruhould-beskepticaL(�/$-�AfJ-}-when-reading-the-latest-findingin nutrition science and ignore the latest study that pops up on your news feed. \"Rely on health experts who've reviewed all the evidence,\" Liebman says, pointing to the official government Dietary Guidelines, fill� 2021 6 Jj 29 which are based on reviews of hundreds of studies. \"And that expert advice remains pretty simple,\" says Nestle. \"We know what healthy diets are--lots of vegetables, not too much junk food, balanced calories. Everything else is really difficult to do experimentally. \"",
+        "questions": [
+          {
+            "n": 46,
+            "text": "What did Harvard scientists do 50 years ago?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "They raised public awareness of the possible causes of heart disease."
+              },
+              {
+                "letter": "B",
+                "text": "They turned public attention away from the health risks of sugar to fat."
+              },
+              {
+                "letter": "C",
+                "text": "They placed the sugar industry in the spotlight with their new findings."
+              },
+              {
+                "letter": "D",
+                "text": "They conducted large-scale research on the role of sugar in people's health."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 47,
+            "text": "What does Marion Nestle say about present-day nutrition studies?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "They took her a full year to track and analyze."
+              },
+              {
+                "letter": "B",
+                "text": "Most of them are based on systematic reviews."
+              },
+              {
+                "letter": "C",
+                "text": "They depend on funding from the food industries."
+              },
+              {
+                "letter": "D",
+                "text": "Nearly all of them serve the purpose of the funders."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 48,
+            "text": "What did Coca-Cola-funded studies claim?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Exercise is more important to good health than diet."
+              },
+              {
+                "letter": "B",
+                "text": "Choosing what to eat and drink is key to weight control."
+              },
+              {
+                "letter": "C",
+                "text": "Drinking Coca-Cola does not contribute to weight gain."
+              },
+              {
+                "letter": "D",
+                "text": "The food industry plays a major role in fighting obesity."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 49,
+            "text": "What does Liebman say about industry-funded research?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It simply focuses on nutrition and health."
+              },
+              {
+                "letter": "B",
+                "text": "It causes confusion among consumers."
+              },
+              {
+                "letter": "C",
+                "text": "It rarely results in objective findings."
+              },
+              {
+                "letter": "D",
+                "text": "It runs counter to the public interest."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 50,
+            "text": "What is the author's advice to consumers?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Follow their intuition in deciding what to eat."
+              },
+              {
+                "letter": "B",
+                "text": "Be doubtful of diet experts' recommendations."
+              },
+              {
+                "letter": "C",
+                "text": "Ignore irrelevant information on their news feed.- -- - - - -"
+              },
+              {
+                "letter": "D",
+                "text": "Think twice about new nutrition research findings."
+              }
+            ],
+            "answer": "A"
+          }
+        ]
+      },
+      {
+        "passage": "Questions 51 to SS are based on the following passage. Success was once defined as being able to stay at a company for a long time and move up the corporate ladder. The goal was to reach the top, accumulate wealth and retire to a life of ease. My father is a successful senior executive. In 35 years, he worked for only three companies. When I started my career, things were already different. If you weren't changing companies every three or four years, you simply weren't getting ahead in your career. But back then, if you were a consultant or freelancer ( ro lb JfR 3k *) , people would wonder what was wrong with you. They would assume you had problems getting a job. Today, consulting or freelancing for five businesses at the same time is a badge of honor. It ·shows how valuable an individual is. Many companies now look to these \"ultimate professionals\" to solve problems their full-time teams can't. Or they save money by hiring \"top-tier c-m � �) experts\" only for particular projects. Working at home or in cafes, starting businesses of their own, and even launching business ventures that eventually may fail, all indicate \"initiative,\" \"creativity,\" and \"adaptability,\" which are desirable qualities in today's workplace. Most important, there is a growing recognition that people who balance lm#i 2021 !if:: 6 A 30 work and play, and who work at what they are passionate about, are more focused and productive, delivering greater value to their clients. Who are these people? They are artists, writers, programmers, providers of office services and career advice. What's needed now is a marketplace platform specifically designed to bring freelancers and clients together. Such platforms then become a place to feature the most experienced, professional, and creative talent. This is where they conduct business, where a sense of community reinforces the culture and values of the gig economy (-* .:c. � *\"), and where success is rewarded with good reviews that encourage more business. Slowly but surely, these platforms create a bridge between traditional enterprises and this emerging economy. Perhaps more important, as the global economy continues to be disrupted by technology and other massive change, the gig economy will itself become an engine of economic and social transformation.",
+        "questions": [
+          {
+            "n": 51,
+            "text": "What does the author use the example of his father· to illustrate?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "How long people took to reach the top of their career."
+              },
+              {
+                "letter": "B",
+                "text": "How people accumulated wealth in his father's time."
+              },
+              {
+                "letter": "C",
+                "text": "How people viewed success in his father's time."
+              },
+              {
+                "letter": "D",
+                "text": "How long people usually stayed in a company."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 52,
+            "text": "Why did people often change jobs when the author started his career?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It was considered a fashion at that time."
+              },
+              {
+                "letter": "B",
+                "text": "It was a way to advance in their career."
+              },
+              {
+                "letter": "C",
+                "text": "It was a response to the changing job market."
+              },
+              {
+                "letter": "D",
+                "text": "It was difficult to keep a job for long."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 53,
+            "text": "What does the author say about people now working for several businesses at the same time?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "They are often regarded as most treasured talents."
+              },
+              {
+                "letter": "B",
+                "text": "They are able to bring their potential into fuller play."
+              },
+              {
+                "letter": "C",
+                "text": "They have control over their life and work schedules."
+              },
+              {
+                "letter": "D",
+                "text": "They feel proud of being outstanding problem solver."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 54,
+            "text": "What have businesses come to recognize now?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Who is capable of solving problems with ease."
+              },
+              {
+                "letter": "B",
+                "text": "How people can be more focused and productive."
+              },
+              {
+                "letter": "C",
+                "text": "What kind of people can contribute more to them."
+              },
+              {
+                "letter": "D",
+                "text": "Why some people are more passionate about work."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 55,
+            "text": "What does the author say about the gig economy?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It may force companies to reform their business practice."
+              },
+              {
+                "letter": "B",
+                "text": "It may soon replace the traditional economic model."
+              },
+              {
+                "letter": "C",
+                "text": "It will drive technological progress on a global scale."
+              },
+              {
+                "letter": "D",
+                "text": "It will bring about radical economic and social changes."
+              }
+            ],
+            "answer": "A"
+          }
+        ]
+      }
+    ]
+  },
+  "translation": {
+    "directions": "For this part, you are allowed 30 minutes to translate a passage from Chinese into English.",
+    "chinese": ""
+  }
+}

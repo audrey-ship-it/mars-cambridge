@@ -1,0 +1,35 @@
+/* 2022年12月 第3套 CET-6 写作题。
+ * 来源：2022年12月CET6题+解+音频\01、真题PDF版（推荐打印）❤\2022.12六级真题第3套【可复制可搜索，打印首选】.pdf p1（Part I Writing 题干）
+ * 核对：2022年12月CET6题+解+音频\03、答案解析\2022.12六级真题第3套答案及详解.pdf p1（结构框图/范文点评）
+ * 验证状态：verified — 解析无范文译文栏目，modelZh 为人工翻译；范文中【1】—【6】句号标注已略去；范文引语"many hands make light job"按原书照抄。 */
+
+export const writing202212S3 = {
+  "id": "cet6-2022-12-s3",
+  "meta": {
+    "level": "CET6",
+    "year": 2022,
+    "month": 12,
+    "set": 3,
+    "source": "2022年12月CET6题+解+音频\\01、真题PDF版（推荐打印）❤\\2022.12六级真题第3套【可复制可搜索，打印首选】.pdf p1（Part I Writing 题干）",
+    "answerSource": "2022年12月CET6题+解+音频\\03、答案解析\\2022.12六级真题第3套答案及详解.pdf p1（结构框图/范文点评）",
+    "pages": "原题第1页 / 解析第1页",
+    "verified": true,
+    "verifiedAt": "2026-11-05",
+    "note": "解析无范文译文栏目，modelZh 为人工翻译；范文中【1】—【6】句号标注已略去；范文引语\"many hands make light job\"按原书照抄。"
+  },
+  "title": "2022年12月 第3套",
+  "topic": "培养大学生团队精神",
+  "directions": "For this part, you are allowed 30 minutes to write an essay that begins with the sentence \"Today increasing importance is being attached to cultivating college students' team spirit.\" You can make statements, give reasons, or cite examples to develop your essay. You should write at least 150 words but no more than 200 words.",
+  "minWords": 150,
+  "maxWords": 200,
+  "model": "The Importance of Building Team Spirit\n\nToday increasing importance is being attached to cultivating college students' team spirit. Just as the saying goes, \"many hands make light job\". In modern society, team spirit is undoubtedly a key component of success, which is why college students are increasingly encouraged to cultivate it.\n\nThe necessity of strengthening teamwork can be attributed to a number of factors. To begin with, by sharing information, every individual member of a team can flourish. We can learn new concepts from others with different experiences, as well as from their mistakes, which can help us avoid repeating them. Furthermore, feedback can help us learn more about ourselves. Feedback from team members can reveal hidden strengths and blind spots about our behaviors, enabling us to become better team members and individuals.\n\nIn a nutshell, increasing globalization and technological advances have resulted in a complex world where it is impossible for one person to possess all the knowledge required to resolve all the issues. In collaboration, we use our own unique skills to accomplish complex tasks at greater speeds, reach new benchmarks and expand our knowledge and skills.",
+  "modelZh": "培养团队精神的重要性\n\n如今，培养大学生的团队精神越来越受到重视。俗话说：\"众人拾柴火焰高。\"在现代社会，团队精神无疑是成功的关键要素，这也正是为什么越来越鼓励大学生培养团队精神。\n\n加强团队合作的必要性可归因于诸多因素。首先，通过分享信息，团队中的每个成员都能茁壮成长。我们可以从有着不同经历的人那里学到新概念，也可以从他们的错误中学习，从而避免重蹈覆辙。此外，反馈能帮助我们更好地认识自己。来自团队成员的反馈可以揭示我们行为中隐藏的优点和盲点，使我们成为更好的团队成员和更优秀的个人。\n\n总而言之，日益深入的全球化和技术进步造就了一个复杂的世界，一个人不可能掌握解决所有问题所需的全部知识。在协作中，我们发挥各自的独特技能，以更快的速度完成复杂的任务，达到新的标杆，并拓展自己的知识与技能。",
+  "review": "题干要求以\"Today increasing importance is being attached to cultivating college students' team spirit.\"为开头句，论述培养大学生团队精神的重要性，可陈述、可说理、可举例。范文采用三段式：首段以给定句引出话题，引用谚语\"many hands make light job\"说明众人拾柴火焰高，并点明团队精神是现代社会成功的关键要素；第二段以\"The necessity of strengthening teamwork can be attributed to a number of factors.\"总起，用\"To begin with...\"\"Furthermore...\"阐述团队合作对个人的意义——分享信息让每个成员茁壮成长，能从他人的经验与错误中学习；队员的反馈能帮助我们认识自己，揭示隐藏的优点和行为盲点；第三段用\"In a nutshell...\"总结全文，指出在全球化和技术进步造就的复杂世界里，个人不可能掌握解决所有问题的全部知识，协作能让我们各展所长、更快完成复杂任务、达到新标杆。",
+  "points": [
+    "【1】引出话题：培养大学生团队精神的重要性。",
+    "【2】利用谚语，说明多人多谋。",
+    "【3】说明在现代社会要培养大学生团队精神。",
+    "【4】【5】分别使用\"To begin with, ...\" \"Furthermore, ...\"具体阐述团队合作精神对于个人的重要性。",
+    "【6】用\"In a nutshell...\"总结全文，再次强调在全球化和技术进步带来的复杂的世界，培养大学生团队精神的重要性。"
+  ]
+};

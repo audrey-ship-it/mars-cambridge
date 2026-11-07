@@ -1,0 +1,8 @@
+[
+  { "year": 2022, "month": 9, "set": 1,
+    "zt": "tmp-verify/zt1.pdf",
+    "ztTextFile": "scripts/batches/zt-text/2022-09-s1.txt",
+    "out": "src/data/generated/cet4-2022-09-s1.json",
+    "verified": true,
+    "answersManual": { "banked": "EMDIHKFLBA", "matching": "EKIBFDLHCJ", "careful": "CBDADACDCB" } }
+]

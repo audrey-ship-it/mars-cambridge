@@ -1,0 +1,731 @@
+{
+  "id": "cet6-2024-12-s2",
+  "meta": {
+    "level": "CET6",
+    "year": 2024,
+    "month": 12,
+    "set": 2,
+    "source": "原题：2024年12月CET6题+解+音频\\2024.12六级真题第2套.pdf；音频：2024年12月CET6题+解+音频\\2024年12月英语六级听力音频（第2套）.mp3；解析：2024年12月CET6题+解+音频\\2024.12英语六级解析第2套.pdf",
+    "answerSource": "解析书答案逐题核对（读图）",
+    "verified": true,
+    "verifiedAt": "2026-11-05"
+  },
+  "audioUrls": {
+    "conv1": "/audio/cet6/cet6-2024-12-s2-conv1.mp3",
+    "conv2": "/audio/cet6/cet6-2024-12-s2-conv2.mp3",
+    "pass1": "/audio/cet6/cet6-2024-12-s2-pass1.mp3",
+    "pass2": "/audio/cet6/cet6-2024-12-s2-pass2.mp3",
+    "rec1": "/audio/cet6/cet6-2024-12-s2-rec1.mp3",
+    "rec2": "/audio/cet6/cet6-2024-12-s2-rec2.mp3",
+    "rec3": "/audio/cet6/cet6-2024-12-s2-rec3.mp3"
+  },
+  "sections": {
+    "a": [
+      {
+        "title": "Conversation One",
+        "audio": "/audio/cet6/cet6-2024-12-s2-conv1.mp3",
+        "transcript": "W: Hi, Alan. Sorry for not calling you back sooner. You said on the phone you had something you needed to discuss with me? M: Well, to get right down to it, I'm having second thoughts about my major. With my family situation getting more complicated and the end of my university education nearing, persisting with Art History just doesn't seem the right choice. W: Alan, in the last 3 years, I have heard nothing but how passionate you are about the Art History programme. You often told fellow classmates how fabulous the instructors were and that you finally felt accepted. What would cause you to abandon it? M: My father's current financial situation has helped me realize that a more financially viable employment opportunity is not necessarily a bad thing. Art History nourishes my soul. But does nothing to put food on my plate. W: What about all the work opportunities I discussed with you last month? Have you gone to those places of business to investigate whether any legitimate positions might be available for someone with your background? M: Ah, well... W: Look, Alan, if your heart is set on working in the art industry, you need to be more assertive and start talking with people. Networking is key if you want to become a celebrity in the world of museums and galleries. M: Time is a very precious commodity right now. My social life does not exist. I can barely keep up with my studies, and my thesis is due by the end of this year. When can I find time to research jobs when I have so much to do as it is? W: What you do now will determine your future options. Now is the optimum time to put forth your best effort. M: I will take what you said into consideration. The advice is much appreciated.",
+        "questions": [
+          {
+            "n": 1,
+            "text": "What did the man want to discuss with the woman?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Changing his major."
+              },
+              {
+                "letter": "B",
+                "text": "His family situation."
+              },
+              {
+                "letter": "C",
+                "text": "Revising his graduation thesis."
+              },
+              {
+                "letter": "D",
+                "text": "His passion for Art History."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 2,
+            "text": "Why does the man want to give up Art History?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "He doesn't think it legitimate to depend on his father."
+              },
+              {
+                "letter": "B",
+                "text": "He thinks his financial situation has now changed."
+              },
+              {
+                "letter": "C",
+                "text": "He doesn't think it will provide him with a living."
+              },
+              {
+                "letter": "D",
+                "text": "He thinks it nourishes the financially secure only."
+              }
+            ],
+            "answer": "C"
+          },
+          {
+            "n": 3,
+            "text": "What does the woman advise the man to do?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Try his best to socialize and build a network in the art industry."
+              },
+              {
+                "letter": "B",
+                "text": "Seek financially viable employment opportunities after graduation."
+              },
+              {
+                "letter": "C",
+                "text": "Investigate all possible ways to become a celebrity in the art world."
+              },
+              {
+                "letter": "D",
+                "text": "Strike a balance between intellectual pursuits and financial security."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 4,
+            "text": "What does the man say he really lacks right now?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Money."
+              },
+              {
+                "letter": "B",
+                "text": "Time."
+              },
+              {
+                "letter": "C",
+                "text": "Determination."
+              },
+              {
+                "letter": "D",
+                "text": "Optimism."
+              }
+            ],
+            "answer": "B"
+          }
+        ]
+      },
+      {
+        "title": "Conversation Two",
+        "audio": "/audio/cet6/cet6-2024-12-s2-conv2.mp3",
+        "transcript": "M: Have you decided yet what your end-of-semester business project will be on? W: Yes. How about you? M: Yes. Go on. You go first. W: I am going to do it about beef. M: Beef? W: Yeah, beef. I'm going to design a business case study for a cow farm that supplies beef for the domestic market. M: Well, that sounds very interesting and original. Wherever did you get that idea? W: I don't know. It just came to me, I guess. But think about it. Beef consumption has been rising strongly over the past 20 years. As the economy continues to grow, consumer demand is expected to continue to increase for the foreseeable future. And currently, most of the beef is imported, which brings with it added fees. So why not raise cattle here? M: Of course. Makes perfect sense. There's plenty of land out west. So, if done right, it should be very profitable to raise our own cattle. W: Exactly. M: Seriously, that sounds like a great idea. You should genuinely look into it once we get our degrees. W: Thanks. So, your turn now. What are you doing your case study on? M: I was thinking about a car wash, but it now seems like such a boring notion after hearing your brilliant idea. W: That's cool. I could see that working. After all, there's plenty of cars about and those aren't going away any time soon. While many people don't care how their car looks, many other people do. You got yourself a vast and continual market. M: Right. So the idea is a large self-cleaning car wash, but I mean really big and well-outfitted like they have in America. I was thinking of having it cater to high-end consumers in large cities. It could charge a profitable markup by offering just a bit more technical equipment and professional service than competitors.",
+        "questions": [
+          {
+            "n": 5,
+            "text": "What are the speakers mainly talking about in the conversation?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Their decision on investigating beef consumption."
+              },
+              {
+                "letter": "B",
+                "text": "Their original ideas about the domestic market."
+              },
+              {
+                "letter": "C",
+                "text": "Their different approaches to a case study."
+              },
+              {
+                "letter": "D",
+                "text": "Their end-of-semester business projects."
+              }
+            ],
+            "answer": "D"
+          },
+          {
+            "n": 6,
+            "text": "What does the man say makes perfect sense?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Expanding farmland out west."
+              },
+              {
+                "letter": "B",
+                "text": "Importing most of the beef."
+              },
+              {
+                "letter": "C",
+                "text": "Consumers craving for professional service."
+              },
+              {
+                "letter": "D",
+                "text": "Well-off dealers seeking a profitable markup."
+              }
+            ],
+            "answer": "C"
+          },
+          {
+            "n": 7,
+            "text": "What business does the woman say has a vast and continual market?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Technical equipment."
+              },
+              {
+                "letter": "B",
+                "text": "Business consultancy."
+              },
+              {
+                "letter": "C",
+                "text": "Raising cattle domestically."
+              },
+              {
+                "letter": "D",
+                "text": "Continuing to boost economic growth."
+              }
+            ],
+            "answer": "D"
+          },
+          {
+            "n": 8,
+            "text": "Who would the man's imagined business cater to?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Car owners of all walks of life."
+              },
+              {
+                "letter": "B",
+                "text": "High-end customers in big cities."
+              },
+              {
+                "letter": "C",
+                "text": "Beef."
+              },
+              {
+                "letter": "D",
+                "text": "Car washing. 试题册-2024年12月六级真题（二）9"
+              }
+            ],
+            "answer": "B"
+          }
+        ]
+      }
+    ],
+    "b": [
+      {
+        "title": "Passage One",
+        "audio": "/audio/cet6/cet6-2024-12-s2-pass1.mp3",
+        "transcript": "Increased television time for young children has long been linked with poorer progress in some areas of development. One possible way to counter those negative effects is talking while watching the screen. As a new study suggests, the more parents engaged in conversation with preschoolers during TV time, the more likely those children were to have higher curiosity levels when they reached kindergarten. This was particularly true for children with socioeconomic disadvantages. \"Our findings reinforce the importance of parent conversation to promote early childhood development and curiosity,\" said lead author Prachi Shah at University of Michigan Health C.S. Mott Children's Hospital. Researchers assessed hours of daily television exposure and frequency of parent screen-time conversation among 1,500 preschoolers, and then measured early childhood curiosity in kindergarten. The study specifically focused on curiosity levels, which are associated with enhanced learning and higher academic achievement in reading and math at kindergarten, and behavioral-developmental benefits, especially for children from families with lower socioeconomic status. While many young children are now growing up with digital media exposure through mobile devices like tablets and phones, television remains a dominant screen activity, accounting for 72% of all screen time. TVs are in 98% of all homes, keeping television exposure a relevant developmental context in young children. Excessive media exposure, including television, can displace exploratory activities such as play and parent-child interactions, which are believed to be key to cultivating curiosity in kids. \"Our findings suggest the importance of parents finding opportunities to foster conversational exchanges in daily routines with their young children - including while watching television,\" Shah said.",
+        "questions": [
+          {
+            "n": 9,
+            "text": "What do we learn from a new study about young children?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Parents' talking with them during TV time raises their curiosity levels."
+              },
+              {
+                "letter": "B",
+                "text": "Their daily television exposure cuts parent-child conversation time."
+              },
+              {
+                "letter": "C",
+                "text": "The more TV they watch the poorer their progress in development."
+              },
+              {
+                "letter": "D",
+                "text": "Their socioeconomic levels impact their academic achievement."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 10,
+            "text": "What did Prachi Shah's study specifically focus on?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Kids, enhanced learning."
+              },
+              {
+                "letter": "B",
+                "text": "Kids' curiosity levels."
+              },
+              {
+                "letter": "C",
+                "text": "Kids' reading and math."
+              },
+              {
+                "letter": "D",
+                "text": "Kids' behavioral development."
+              }
+            ],
+            "answer": "B"
+          },
+          {
+            "n": 11,
+            "text": "What does the passage say about excessive media exposure?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It can hinder kids from getting on with their peers."
+              },
+              {
+                "letter": "B",
+                "text": "It can cut into kids' time on exploratory activities."
+              },
+              {
+                "letter": "C",
+                "text": "It can arouse kidsJ interest in how people interact in real life."
+              },
+              {
+                "letter": "D",
+                "text": "It can widen the gap between kids from different economic statuses."
+              }
+            ],
+            "answer": "B"
+          }
+        ]
+      },
+      {
+        "title": "Passage Two",
+        "audio": "/audio/cet6/cet6-2024-12-s2-pass2.mp3",
+        "transcript": "Humans are aspirational goal-seeking beings. Each of us, according to research, has an inborn drive to acquire. The \"dark side\" of this drive to acquire is being mindlessly driven to possess more and more \"things\" and to socially compare our \"stuff\" with all the stuff other people have in their lives. So the question is, how do we ensure we tap into our drive to acquire in positive ways that will benefit our well-being? One way is to become more intentionally aspirational. To be intentionally aspirational includes consciously aspiring to be the person you need to be to succeed in your professional and personal life. It also includes consciously aspiring to acquire things in your life that will positively impact your sense of well-being. If you're not consciously, mindfully and intentionally harnessing this inborn drive to acquire, you might be mindlessly pursuing all the wrong things. While your intentional aspirational goals will include pursuit of acquiring things that will increase your sense of well-being, they ought to also include goals to help other people in your various life roles. Your intentional aspirational goals will also include striving to be your personal best - a person of \"good\" character, integrity, and trustworthiness. Think about this from a practical, rather than theoretical viewpoint. If you're not pursuing intentional aspirational goals, you have nothing to strive for. If you have nothing to strive for, you're putting yourself in the dangerous position of simply drifting through life, and you will not be able to experience, live and enjoy all that life has to offer.",
+        "questions": [
+          {
+            "n": 12,
+            "text": "What is the dark side of our inborn drive to acquire?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Exerting ourselves too hard in order to attain our life's goals."
+              },
+              {
+                "letter": "B",
+                "text": "Being possessed with a single thought of professional success."
+              },
+              {
+                "letter": "C",
+                "text": "Trying every means to beat others in terms of personal aspirations."
+              },
+              {
+                "letter": "D",
+                "text": "Being mindlessly driven to possess more and more material things."
+              }
+            ],
+            "answer": "D"
+          },
+          {
+            "n": 13,
+            "text": "What might happen if we do not harness our inborn drive to acquire?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "We might isolate ourselves from our fellow beings."
+              },
+              {
+                "letter": "B",
+                "text": "We might acquire an incorrect sense of well-being."
+              },
+              {
+                "letter": "C",
+                "text": "We might end up pursuing all the wrong things."
+              },
+              {
+                "letter": "D",
+                "text": "We might make a mess of our personal lives."
+              }
+            ],
+            "answer": "C"
+          },
+          {
+            "n": 14,
+            "text": "What does the passage say about our intentional aspirational goals?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "They should be based on solid theoretical concepts."
+              },
+              {
+                "letter": "B",
+                "text": "They should take personal interests into account."
+              },
+              {
+                "letter": "C",
+                "text": "They should include goals to help other people."
+              },
+              {
+                "letter": "D",
+                "text": "They should increase our sense of worthiness."
+              }
+            ],
+            "answer": "C"
+          },
+          {
+            "n": 15,
+            "text": "What will you end up doing without pursuing intentional aspirational goals?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Drifting through life aimlessly."
+              },
+              {
+                "letter": "B",
+                "text": "Giving up the chance to fulfill yourself."
+              },
+              {
+                "letter": "C",
+                "text": "Abandoning all that life has to offer."
+              },
+              {
+                "letter": "D",
+                "text": "Spoiling your character and integrity."
+              }
+            ],
+            "answer": "A"
+          }
+        ]
+      }
+    ],
+    "c": [
+      {
+        "title": "Recording One",
+        "audio": "/audio/cet6/cet6-2024-12-s2-rec1.mp3",
+        "transcript": "It's revision time for exams and dissertations. The pressure is on, so you want all the help you can get to aid your memory and raise your grades. As a nutrition expert, I want to say that eating well can make a real difference to your revision regime - so what brain-boosting food and drink would I recommend? Coffee can have numerous benefits. However, while coffee may make you more alert, individuals can build up a tolerance, meaning this is short-lived. Coffee can also increase blood sugar and eventually cause lack of focus and energy. It's also worth noting that people react differently to coffee. Some people can drink it at midnight and go straight to sleep, whereas others get feelings of anxiety after a small amount. Also remember that coffee from a coffee shop may be stronger than coffee made at home. So stop drinking coffee by 2 pm and have a maximum of 2 cups of coffee a day, but be aware of your own reaction to it. Whole grains will ward off hunger. Examples include porridge and whole wheat bread. Combining whole grain foods with protein will help keep your blood sugar levels balanced, which is essential for mood and concentration. Berries and nuts are a convenient and nutritious snack. Blueberries, like many dark colored fruits and vegetables, can slow down brain damage and age-related decline. Frozen berries are also a good choice. They are usually cheap, last longer and don't lose their nutrients when frozen. But flavored and coated nuts are less healthy as they contain added oil, salt, and sugar. Doctors often recommend taking vitamin supplements to top up on the nutrients you need. But I would say food should always come before supplements and the key to getting as many nutrients as possible is to eat a varied diet with lots of different colors such as frozen berries and dark green vegetables. It's better to get everything you need from food and drink. For example, oranges contain not only vitamin C which boosts the immune system, but also fiber and other components that you can't get packaged together in a tablet. Don't forget to drink a proper amount of water, which can boost attention by almost 25 percent and can elevate your mood as well. Finally, don't skip meals. Eating regularly will help keep blood sugar balanced and feed the brain with the fuel it needs.",
+        "questions": [
+          {
+            "n": 16,
+            "text": "What does the speaker recommend in this talk?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Grade-raising ways and means."
+              },
+              {
+                "letter": "B",
+                "text": "Pressure-alleviating exercise."
+              },
+              {
+                "letter": "C",
+                "text": "Revision-conducting approaches."
+              },
+              {
+                "letter": "D",
+                "text": "Brain-boosting food and drink."
+              }
+            ],
+            "answer": "D"
+          },
+          {
+            "n": 17,
+            "text": "What does the speaker warn about coffee?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Buying it from coffee shops."
+              },
+              {
+                "letter": "B",
+                "text": "Building up a tolerance of it."
+              },
+              {
+                "letter": "C",
+                "text": "Drinking it after 2 pm."
+              },
+              {
+                "letter": "D",
+                "text": "Consuming it with sugar."
+              }
+            ],
+            "answer": "C"
+          },
+          {
+            "n": 18,
+            "text": "How can we get sufficient nutrients according to the speaker?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "By taking varied vitamin supplements."
+              },
+              {
+                "letter": "B",
+                "text": "By consuming a rich variety of foods."
+              },
+              {
+                "letter": "C",
+                "text": "By eating both oranges and frozen berries."
+              },
+              {
+                "letter": "D",
+                "text": "By getting components packaged in tablets"
+              }
+            ],
+            "answer": "B"
+          }
+        ]
+      },
+      {
+        "title": "Recording Two",
+        "audio": "/audio/cet6/cet6-2024-12-s2-rec2.mp3",
+        "transcript": "The late Swedish academic Hans Rosling has identified a worrying trend: not only do many people across advanced economies have no idea that the world is becoming a much better place, but they actually even think the opposite. This is no wonder, when the news focuses on reporting catastrophes, terrorist attacks, wars, and famines. Who wants to hear about the fact that every day some 200,000 people around the world are lifted above the $2-a-day poverty line? Or that more than 300,000 people get access to electricity and clean water for the first time every day? These stories of people in low-income countries simply don't make for exciting news coverage. But, as Rosling pointed out in his book Factfulness, it's important to put all the bad news in perspective. While it is true that globalization has put some downward pressure on middle-class wages in advanced economies in recent decades, it has also helped lift hundreds of millions of people above the global poverty line. If we really care about global welfare, globalization is the only way forward to ensure that economic prosperity is shared among all countries and not only a select few advanced economies. While some people glorify the past, one of the big facts of economic history is that until quite recently a significant part of the world population has lived under quite miserable conditions - and this has been true throughout most of human history. While there were many long-lasting ups and downs, like the Great Depression or the recent Great Recession, the constancy of the long-run growth rate is actually quite miraculous. Low-income countries, including China and India, have been growing at a significantly faster pace in recent decades and are quickly catching up to the West. A 10% growth rate over a prolonged period means that income levels double roughly every seven years. It is obviously good news if prosperity is more shared across the globe. While inequality within countries has gone up as a result of globalization, global inequality has been on a steady downward trend for several decades. This is mostly a result of the improvement of hundreds of millions of people's living standards. In fact, for the first time ever since the Industrial Revolution, about half of the global population can be considered middle class.",
+        "questions": [
+          {
+            "n": 19,
+            "text": "What is the worrying trend the late Swedish academic has identified?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Many people across advanced economies think the world is going from bad to worse."
+              },
+              {
+                "letter": "B",
+                "text": "The news focuses on reporting catastrophes that occur across the world. 试题册・2024年12月六级真题（二）10"
+              },
+              {
+                "letter": "C",
+                "text": "A significant part of the world is experiencing another great recession."
+              },
+              {
+                "letter": "D",
+                "text": "Many people have no idea of those living under miserable conditions."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 20,
+            "text": "What does the speaker say about globalization?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It has experienced ups and downs like any other historical trend."
+              },
+              {
+                "letter": "B",
+                "text": "It is hailed as a miracle by both economists and ordinary people."
+              },
+              {
+                "letter": "C",
+                "text": "It is the only way for all countries to share economic prosperity."
+              },
+              {
+                "letter": "D",
+                "text": "It has given more and more countries a rare chance to thrive."
+              }
+            ],
+            "answer": "C"
+          },
+          {
+            "n": 21,
+            "text": "What do we learn about half of the global population?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Their fortunes may take a downturn."
+              },
+              {
+                "letter": "B",
+                "text": "They can be classified as middle class."
+              },
+              {
+                "letter": "C",
+                "text": "Their living standards have been deteriorating."
+              },
+              {
+                "letter": "D",
+                "text": "They are experiencing a radical transformation."
+              }
+            ],
+            "answer": "B"
+          }
+        ]
+      },
+      {
+        "title": "Recording Three",
+        "audio": "/audio/cet6/cet6-2024-12-s2-rec3.mp3",
+        "transcript": "We all know that the sense of smell is powerful. The delicious scent of bread, for example, can act like a time machine. One sniff can bring back a memory from many years ago. Indeed, scent particles, in general, can revive memories that have been long forgotten. But why do smells sometimes trigger powerful memories, especially emotional ones? The short answer is that the brain regions that handle smells, memories and emotions are linked. A scent is a chemical particle that floats in through the nose and into the region of the brain responsible for smell, where the sensation is first processed into a form that the brain can read. Brain cells then carry that information to the area of the brain where emotions are processed, and then to an adjacent area of the brain where learning and memory formation take place. Scents are the only sensations that travel such a direct path to the emotional and memory centers of the brain. That results in an intimate connection between emotions, memories and scents, which is why memories triggered by scents are experienced as more emotional than those triggered by sight or sound. Let's take a closer look at how those memories are activated. Usually, when a person smells something that's connected to a meaningful event in their past, they'll first have an emotional response to the sensation and then a memory might follow. But sometimes, the memory doesn't come to the surface. The person might feel the emotion of something that happened in the past but won't remember what they experienced. What causes this baffling phenomenon? The explanation is context. Imagine this scenario - a person is walking down the street smelling a scent that they first encountered decades ago, which activates an emotional response. If the person had first come across that smell in a very different context, it will be much more difficult to recover the associated memory, because the brain uses the context to give meaning to the information and find that memory. The special nature of memories brought back by scents notwithstanding, they have the same drawbacks as other memories. They aren't always accurate, and they can change over time. In fact, each time we remember something, that memory can become distorted. But, because of the strong emotional associations those memories evoke, people who remember something due to a scent are often convinced that the memories are accurate, even when they aren't.",
+        "questions": [
+          {
+            "n": 22,
+            "text": "What question does the speaker try to answer in this talk?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Why smells can activate emotional memories."
+              },
+              {
+                "letter": "B",
+                "text": "How powerful the sense of smell can become."
+              },
+              {
+                "letter": "C",
+                "text": "How scent particles revive memories forgotten."
+              },
+              {
+                "letter": "D",
+                "text": "Why the scent of bread has a strong mental impact."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 23,
+            "text": "What is said to result in an intimate connection between emotions, memories and scents?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "The brain cells, processing of memories experienced as strongly emotional."
+              },
+              {
+                "letter": "B",
+                "text": "The activation of the brain's emotion processing area by chemical particles."
+              },
+              {
+                "letter": "C",
+                "text": "The interaction between chemical particles and the brain cells responsible for smell."
+              },
+              {
+                "letter": "D",
+                "text": "The sensations of scents going directly to the brain's emotional and memory centers."
+              }
+            ],
+            "answer": "D"
+          },
+          {
+            "n": 24,
+            "text": "What does the brain use to give meaning to information and find a memory?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Imagination."
+              },
+              {
+                "letter": "B",
+                "text": "Association."
+              },
+              {
+                "letter": "C",
+                "text": "Experience."
+              },
+              {
+                "letter": "D",
+                "text": "Context."
+              }
+            ],
+            "answer": "D"
+          },
+          {
+            "n": 25,
+            "text": "What drawback do memories of scents share with other memories?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Inaccuracy and alterability."
+              },
+              {
+                "letter": "B",
+                "text": "Susceptibility to polar interpretations."
+              },
+              {
+                "letter": "C",
+                "text": "Being personal and individualistic."
+              },
+              {
+                "letter": "D",
+                "text": "Being dependent on relevant scenarios. Part H"
+              }
+            ],
+            "answer": "A"
+          }
+        ]
+      }
+    ]
+  },
+  "answerQuotes": {
+    "1": [
+      "M: Well, to get right down to it, I'm having second thoughts about my major."
+    ],
+    "2": [
+      "M: My father's current financial situation has helped me realize that a more financially viable employment opportunity is not necessarily a bad thing."
+    ],
+    "3": [
+      "W: Look, Alan, if your heart is set on working in the art industry, you need to be more assertive and start talking with people."
+    ],
+    "4": [
+      "M: Time is a very precious commodity right now."
+    ],
+    "5": [
+      "M: Have you decided yet what your end-of-semester business project will be on?"
+    ],
+    "6": [
+      "And currently, most of the beef is imported, which brings with it added fees."
+    ],
+    "7": [
+      "M: I was thinking about a car wash, but it now seems like such a boring notion after hearing your brilliant idea."
+    ],
+    "8": [
+      "I was thinking of having it cater to high-end consumers in large cities."
+    ],
+    "9": [
+      "As a new study suggests, the more parents engaged in conversation with preschoolers during TV time, the more likely those children were to have higher curiosity levels when they reached kindergarten."
+    ],
+    "10": [
+      "The study specifically focused on curiosity levels, which are associated with enhanced learning and higher academic achievement in reading and math at kindergarten, and behavioral-developmental benefits, especially for children from families with lower socioeconomic status."
+    ],
+    "11": [
+      "Excessive media exposure, including television, can displace exploratory activities such as play and parent-child interactions, which are believed to be key to cultivating curiosity in kids."
+    ],
+    "12": [
+      "Each of us, according to research, has an inborn drive to acquire."
+    ],
+    "13": [
+      "If you're not consciously, mindfully and intentionally harnessing this inborn drive to acquire, you might be mindlessly pursuing all the wrong things."
+    ],
+    "14": [
+      "While your intentional aspirational goals will include pursuit of acquiring things that will increase your sense of well-being, they ought to also include goals to help other people in your various life roles."
+    ],
+    "15": [
+      "If you're not pursuing intentional aspirational goals, you have nothing to strive for."
+    ],
+    "16": [
+      "As a nutrition expert, I want to say that eating well can make a real difference to your revision regime - so what brain-boosting food and drink would I recommend?"
+    ],
+    "17": [
+      "So stop drinking coffee by 2 pm and have a maximum of 2 cups of coffee a day, but be aware of your own reaction to it."
+    ],
+    "18": [
+      "But I would say food should always come before supplements and the key to getting as many nutrients as possible is to eat a varied diet with lots of different colors such as frozen berries and dark green vegetables."
+    ],
+    "19": [
+      "The late Swedish academic Hans Rosling has identified a worrying trend: not only do many people across advanced economies have no idea that the world is becoming a much better place, but they actually even think the opposite."
+    ],
+    "20": [
+      "If we really care about global welfare, globalization is the only way forward to ensure that economic prosperity is shared among all countries and not only a select few advanced economies."
+    ],
+    "21": [
+      "In fact, for the first time ever since the Industrial Revolution, about half of the global population can be considered middle class."
+    ],
+    "22": [
+      "But why do smells sometimes trigger powerful memories, especially emotional ones?"
+    ],
+    "23": [
+      "Scents are the only sensations that travel such a direct path to the emotional and memory centers of the brain."
+    ],
+    "24": [
+      "If the person had first come across that smell in a very different context, it will be much more difficult to recover the associated memory, because the brain uses the context to give meaning to the information and find that memory."
+    ],
+    "25": [
+      "The special nature of memories brought back by scents notwithstanding, they have the same drawbacks as other memories."
+    ]
+  }
+}

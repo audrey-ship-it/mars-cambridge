@@ -1,0 +1,20 @@
+[
+  { "year": 2025, "month": 6, "set": 1,
+    "zt": "D:/workspace_sunny/题库/cet/真题/2025年06月CET4题+解+音频/3.2025年06月四级真题（新更）/2025.06四级真题第1套.pdf",
+    "ztTextFile": "scripts/batches/zt-text/2025-06-s1.txt",
+    "out": "src/data/generated/cet4-2025-06-s1.json",
+    "verified": true,
+    "answersManual": { "banked": "DGAECONBLM", "matching": "HCLAMGKDJB", "careful": "DACBCACBDB" } },
+  { "year": 2025, "month": 6, "set": 2,
+    "zt": "D:/workspace_sunny/题库/cet/真题/2025年06月CET4题+解+音频/3.2025年06月四级真题（新更）/2025.06四级真题第2套.pdf",
+    "ztTextFile": "scripts/batches/zt-text/2025-06-s2.txt",
+    "out": "src/data/generated/cet4-2025-06-s2.json",
+    "verified": true,
+    "answersManual": { "banked": "JBCILHAEKO", "matching": "CIEAHDFJBG", "careful": "ADBDCADCBA" } },
+  { "year": 2025, "month": 6, "set": 3,
+    "zt": "D:/workspace_sunny/题库/cet/真题/2025年06月CET4题+解+音频/3.2025年06月四级真题（新更）/2025.06四级真题第3套.pdf",
+    "ztTextFile": "scripts/batches/zt-text/2025-06-s3.txt",
+    "out": "src/data/generated/cet4-2025-06-s3.json",
+    "verified": true,
+    "answersManual": { "banked": "GFHCEAIKOJ", "matching": "CHENFBMGDL", "careful": "BCDACCABDA" } }
+]

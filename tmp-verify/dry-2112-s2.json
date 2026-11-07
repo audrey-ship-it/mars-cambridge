@@ -1,0 +1,447 @@
+{
+  "id": "cet4-2021-12-s2",
+  "meta": {
+    "level": "CET4",
+    "year": 2021,
+    "month": 12,
+    "set": 2,
+    "source": "../../mars-cet/tmp-verify/zt2-fixed.txt",
+    "answerSource": "人工读图答案（待复核后置 verified）",
+    "verified": false,
+    "warnings": [
+      "长篇题数=9（应为10）"
+    ]
+  },
+  "reading": {
+    "banked": {
+      "passage": "Questions {{26}} to 35 are based on the following passage. It is commonly believed that the great English dramatist and poet William Shakespeare was born in Stratford-on-Avon on April 23, 1564. But it is impossible to know the 26 day on which he was born. Church records show he was baptized ( ~ i7t ;;t-L ) on April 26, and three days was a customary amount of time to wait before baptizing a newly born baby. Shakespeare's date of death is {{27}} known, however: it was April 23, 1616. He was 52 and had retired to Stratford three years before. Although few plays have been performed or analyzed as extensively as the 38 plays Shakespeare wrote, there are few surviving details about his life. This {{28}} of biographical information is due primarily to his social {{29}} ; he was not a noble, but the son of a leather trader. Shakespeare {{30}} attended the grammar school in Stratford, where he would have studied Latin and read {{31}} literature. He did not go to university and at age 18 married Anne Hathaway, who was eight years his {{32}} . They had four children, including the twins, Hamnet and Judith. Nothing is known of the period between the birth of the twins and Shakespeare's {{33}} as a dramatist in London in the early 1590s. In a mi ll ion words written over 20 years, he {{34}} the full range of human emotions and conflicts with a {{35}} that remains sharp today. As his great contemporary the poet and dramatist Ben Jonson said, \" He was not of an age, but for all time.",
+      "options": [
+        {
+          "letter": "A",
+          "word": "captured"
+        },
+        {
+          "letter": "I",
+          "word": "precision"
+        },
+        {
+          "letter": "B",
+          "word": "classical"
+        },
+        {
+          "letter": "J",
+          "word": "probably"
+        },
+        {
+          "letter": "C",
+          "word": "conclusive"
+        },
+        {
+          "letter": "K",
+          "word": "quality"
+        },
+        {
+          "letter": "D",
+          "word": "emergence"
+        },
+        {
+          "letter": "L",
+          "word": "scarcity"
+        },
+        {
+          "letter": "E",
+          "word": "exact"
+        },
+        {
+          "letter": "M",
+          "word": "senior"
+        },
+        {
+          "letter": "F",
+          "word": "generated"
+        },
+        {
+          "letter": "N",
+          "word": "separated"
+        },
+        {
+          "letter": "G",
+          "word": "particular"
+        },
+        {
+          "letter": "O",
+          "word": "systematically"
+        },
+        {
+          "letter": "H",
+          "word": "position"
+        }
+      ],
+      "answers": [
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    "matching": {
+      "title": "Answer Sheet 2. How to not be boring",
+      "paragraphs": [
+        {
+          "label": "A",
+          "text": "Humans are creatures of habit. We love to establish a routine and stick with it. Then we often put ourselves on auto-pilot. Routines can be incredibly useful in helping you get things done. However, too much of a routine can also make you incredibly boring. Nevertheless, many people live lives that are boringly predictable, or live a life where everything is outlined or planned."
+        },
+        {
+          "label": "B",
+          "text": "To tell the truth, interesting people are more popular among their friends . If you don 't arouse someone's curiosity or brighten someone's day, you probably come across as being a little bit dull. But that doesn 't mean your life has ended and you can't do anything to change it. If you find yourself searching for something to say beyond small talk, try these tactics to find more interesting approaches to conversation."
+        },
+        {
+          "label": "C",
+          "text": "Recently, I was at a gathering of colleagues when someone turned to me and asked, \"So, what's new with you?\" Ordinarily, I think I'm a good conversationalist. After all, it's literally my job to talk to people and tell their stories or share their advice. And that's not exactly an unexpected question. Still, the only \"new-to-me\" topics that came to mind were my daughter 's basketball tournament ( 4* -H~-f.- ) and my fee li ngs about that morning's political headlines- neither amusing nor appropriate topics at that moment."
+        },
+        {
+          "label": "D",
+          "text": "Oh, no, I thought. Have I become boring? But sharing our experiences in an authentic way to connect with other people is what makes us interesting, says associate professor Michael Pirson. The hesitation I felt in not sharing the ordinary things that were happening in my life, and the wild mental search for something more interesting, may have backfired and made me seem less interesting."
+        },
+        {
+          "label": "E",
+          "text": "\"If someone is making up some conv ersation that might be interesting, it's probably not going to land we ll ,\" says Pirson, whose \texpertise includes trust and well-being, mindfulness, \tand \thumanistic \tmanagement. \t\"It's \tgoing \tto \tfeel \tli ke \ta \tmade-up conversation that people don't necessarily want to tune in to .\""
+        },
+        {
+          "label": "F",
+          "text": "The most interesting people aren't those who 've gone on some Eat, Pray, Love journ ey to find themselves. Instead, Pirson says, they 're those who examine the ordinary. \"Often, the 'boring things' may not be boring at a ll . Maybe th ey are actually li ttle miracles,\" he says. Share your observations about the world around you - \tinteresting stories you heard or things you noticed - \tand you may be surprised by the universal connection they inspire."
+        },
+        {
+          "label": "G",
+          "text": "This is essentially how Jessica Hagy starts her day. The author of How to Be Interesting: An Instruction Manual, Hagy spends a lot of time thinking about what's interesting to her. People who are interesting are persistently curious, she says."
+        },
+        {
+          "label": "H",
+          "text": "Think about the everyday things around you and ask questions about them. What is that roadside monument I see on my way to work every day? Who built that interesting building in my city? What nearby attractions haven't I visited? Why do people do things that way? Use what you find to ask more questions and learn more about the world around you. \"Having that sort of curiosity is almost like a protective gear from getting into boredom,\" she says. And when you find things that are truly interesting to you, share them."
+        },
+        {
+          "label": "I",
+          "text": "Television veteran Audrey Morrissey, executive producer of NBC's The Voice, is always looking for what will make a person or story interesting to viewers: It's usually a matter of individuality. \t\"Having \ta \tstrong \tpoint \tof view, \tsignature \tstyle, \tor \tbeing \ta super-enthusiast in a particular field makes someone interesting ,\" she says. That means embracing what is truly interesting or unique about yourself. \"Many people are 'not boring' in the way that they can carry a conversation or can be good at a social gathering, etc. To be interesting means that you have lived life, taken risks, traveled, sought out experience to learn for yourself and share with others,\" she says."
+        },
+        {
+          "label": "J",
+          "text": "Of course, it's possible to be a fountain of knowledge and a boring person, says public relations consultant Andrea Pass. Paying attention to the listener is an important part of having a conversation that's interesting to both parties. Talking on and on about what's interesting to you isn't going to make you an interesting person, she says."
+        },
+        {
+          "label": "K",
+          "text": "\"If the listener is not paying attention, it's your sign to shorten the story or change direction. Make sure to bring the audience into the conversation so that it is not one-sided,\" Pass says. Be a better listener yourse lf, and give others opportunities to participate in the conversation by inviting them with questions or requests to share their own experiences or thoughts. ( e. g. , \"Now, tell me about your favorite book,\" or \"Have you ever been to that attraction?\") Questions are a powerful tool, especially when they encourage others to di sclose information about themselves. A 2012 study from the University of California, Santa Barbara, found that roughly 40% of the time we are talking, we're di sclosing subjective information about our experience. And when we're doing so, our brains are more engaged. So one strategy to leave others with the impression that you 're a sparkling conversation partner is to get others to talk about themselves."
+        },
+        {
+          "label": "L",
+          "text": "Being \trelatable \tis \talso \tessential, \tMorriss ey \tsays. \t\"The \tbest \tentertainment \tand storytelling comes from people who are relatable- those who don 't shy away from opening up but freely share who they are and what they care about. These are the people viewers most relate to and find interesting. Being authentic, honest, and vulnerable is always interesting.\" 202 1 if 12 J=j ~ i~ l2] ~J~}l!EI~ 2 ~ \t~ 6 JJr ~ 10 JJr by : 7tj! :,lf!i)f"
+        },
+        {
+          "label": "M",
+          "text": "I have now come to realize that being boring, in actuality, is not only about who you are as a person, but also how you present yourself. No matter what, make sure you are having fun in life. Because when you are enjoying, people around you will begin to enjoy as well. Show some interest in them and they will definitely show some in you. If you are a very reserved person, this could be a little difficult at first. But with a little effort, you can definitely improve."
+        }
+      ],
+      "questions": [
+        {
+          "n": 36,
+          "text": "Pirson \tclaims \tthat \tsome \tordinary \tthings \tmay \toften \tprove \tto \tbe \tmiraculously interesting."
+        },
+        {
+          "n": 37,
+          "text": "To make a conversation interesting, it is important that you listen to the other party attentively."
+        },
+        {
+          "n": 38,
+          "text": "A person who is unable to stimulate others' curiosity or make their life enjoyable may appear somewhat boring."
+        },
+        {
+          "n": 39,
+          "text": "Interesting people usually possess certain unique qualities, according to a TV program producer."
+        },
+        {
+          "n": 40,
+          "text": "Be interested in others and they are sure to be interested in you."
+        },
+        {
+          "n": 41,
+          "text": "The author considers himself usually good at conducting conversations."
+        },
+        {
+          "n": 42,
+          "text": "Interesting people are always full of curiosity. 43 . Falling into a routine can tum a person into an utter bore."
+        },
+        {
+          "n": 44,
+          "text": "One strategy to be a good conversationalist is to motivate your partner to tell their own stories."
+        },
+        {
+          "n": 45,
+          "text": "Interesting as it might appear, a made-up conversation will probably tum out to be dull."
+        }
+      ],
+      "answers": [
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    "careful": [
+      {
+        "passage": "With obesity now affecting 29% of the population in England, and expected to rise to 35% by 2030, should we now recognise it as a disease? Obesity, in which excess body fat has accumulated to such an extent that health may be adversely \taffected, meets the dictionary definition of disease, argues Professor John Wilding. He points out that more than 200 genes influence weight. \"Thus body weight is strong ly influenced by biology- it is not an individual's fault if they develop ob es ity.\" Yet the widespread view is that obe si ty is self-induced and that it is entirely the individual 's responsibility to do something about it. Recognising obesity as a chronic di sease with severe compli cations rather than a li fe sty le choice \"should help reduce the stig ma ( Jf.tl: Qt. ) and discrimination experienced by many people with obesity,\" he adds. Professor Wilding disagrees that labelling a high proportion of the population as having a disease removes personal responsibility \tor may overwhelm health \tservices, pointing out that other common diseases, such as high blood pressure and diabetes, require people to take action to manage their condition. He suggests that most people with obesity will eventually develop complications. \"But unless we accept that obesity is a disease, we are not going to be able to tackle it,\" he concludes. But Dr. Richard Pile, a physician with a special interest m diabetes, argues that adopting this approach \"could actually result in worse outcomes for individuals and society.\" He believes that the dictionary definition of disease \"is so vague that we can classify almost anything as a disease\" and says the question is not whether we can, but whether we should, and to what end. If labelling obesity as a disease was harmless then it wouldn't really matter, he writes. But labelling obesity as a disease \"risks reducing autonomy, disempowering and robbing people of the intrinsic ( 01 ,(f. a{;) motivation that is such an important enabler of change.\" What's more, making obesity a disease \"may not benefit patients, but it will benefit healthcare providers and the pharmaceutical ( -#\\1 ] P-5 a{;) industry when health insurance and clinical guidelines promote treatment with drugs and surgery,\" he warns.",
+        "questions": [
+          {
+            "n": 46,
+            "text": "What does Professor John Wilding argue about obesity?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Its impact on society is expected to rise."
+              },
+              {
+                "letter": "B",
+                "text": "It is now too widespread to be neglected."
+              },
+              {
+                "letter": "C",
+                "text": "It should be regarded as a genetic disease."
+              },
+              {
+                "letter": "D",
+                "text": "Its dictionary definition should be updated."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 47,
+            "text": "What is the popular view of obesity?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It is difficult to define."
+              },
+              {
+                "letter": "B",
+                "text": "It is a modem disease."
+              },
+              {
+                "letter": "C",
+                "text": "It ha s much to do with one 's genes."
+              },
+              {
+                "letter": "D",
+                "text": "It results from a lack of self-control."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 48,
+            "text": "Why are some people opposed to labelling obesity as a disease?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Obese people would not feel responsible to take any action."
+              },
+              {
+                "letter": "B",
+                "text": "Obese people would not be able to afford the medical costs."
+              },
+              {
+                "letter": "C",
+                "text": "Obese people would be overwhelmed with anxiet y."
+              },
+              {
+                "letter": "D",
+                "text": "Obese people would be di scriminated against."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 49,
+            "text": "What does D r. Richard Pile think of the dictionary definition of disease?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It is of no use in understanding obesi ty ."
+              },
+              {
+                "letter": "B",
+                "text": "It is too inclusive and thus lacks clarity."
+              },
+              {
+                "letter": "C",
+                "text": "It helps li ttle to solve patients' problems."
+              },
+              {
+                "letter": "D",
+                "text": "It matters little to the debate over obesity."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 50,
+            "text": "What is Dr. Richard Pile's concern about clas sifying obesity as a disease?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It may affect obese people's qua li ty of li fe. 2021 if 12 J=j ~ i~ l2] ~,&~/l!EI~ 2 ~ \t~ 8 JJr ~ 10 JJr by : 1cJ! :olf!i)f"
+              },
+              {
+                "letter": "B",
+                "text": "It may accelerate the spread of obesity."
+              },
+              {
+                "letter": "C",
+                "text": "It may cause a shortage of doctors."
+              },
+              {
+                "letter": "D",
+                "text": "It may do little good to patients."
+              }
+            ],
+            "answer": "A"
+          }
+        ]
+      },
+      {
+        "passage": "Nationwide, only about three percent of early childhood teachers are male in the U. S. Experts say this can have an impact on young children whose understanding of gender roles and identity are rapidly forming. Research has found that having access to diverse teachers is beneficial for children. For the youngest learners, it means they are more likely to get exposed to different varieties of play and communication. It also helps them develop healthy ideas around gender. \"In our world and our society, we have very specific stereotypes ( ii A 1-t if; ~) of gender roles,\" said Mindi Reich-Shapiro, an assistant professor in the teacher education department of the Borough of Manhattan Community College, and one of the authors of a recent study. \"It's important for children to see other possibilities and other paths they can take.\" Despite mostly feeling supported by colleagues and family members, many of the male educators surveyed in the study reported facing social or cultural resistance in their careers as early education teachers. Some also reported that there were parents surprised or concerned that their child had a male teacher. And they had been advised by colleagues or other staff not to hug children. Reich-Shapiro and fellow researchers made several recommendations to increase male representation in the field. Low pay has long been acknowledged as a major issue in the early childhood field. Over 70% of male educators who said they intended to stay in the early education workforce noted an increased salary was a major motivating factor for them to commit to the career long-term. The report suggests paying all early childhood educators the way elementary school teachers are paid. Cities \tand programs \tshould \testablish \tsupport \tgroups \tfor \tmale \tearly \tchildhood educators and provide mentoring and professional development advice for male educators and their program leaders. The authors also suggest that traditional recruitment approaches for early childhood educators \"do not address the gender gap in the field. \" They recommend providing young men opportunities to work with children through training and volunteer programs, targeting groups of men who are considering a career change, such as fathers.",
+        "questions": [
+          {
+            "n": 51,
+            "text": "What do we learn from the first paragraph about early childhood education in the U. S. ?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It helps raise children's awareness of gender roles."
+              },
+              {
+                "letter": "B",
+                "text": "It exposes children to different ways of interaction."
+              },
+              {
+                "letter": "C",
+                "text": "It is negatively impacted by a lack of male teachers."
+              },
+              {
+                "letter": "D",
+                "text": "It clearly aims to form children's identity through play."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 52,
+            "text": "What does Mindi Reich-Shapiro emphasize in her comment on childhood education?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "The importance of broadening children's horizons."
+              },
+              {
+                "letter": "B",
+                "text": "The responsibilities of fathers for children's growth."
+              },
+              {
+                "letter": "C",
+                "text": "The urgency of creating teacher education programs."
+              },
+              {
+                "letter": "D",
+                "text": "The role of teachers in motivating children to learn."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 53,
+            "text": "What do we learn about male teachers from their responses in the study?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Some of them find it awkward when hugging children."
+              },
+              {
+                "letter": "B",
+                "text": "They feel pressured to keep up with female colleagues."
+              },
+              {
+                "letter": "C",
+                "text": "They find it hard to meet the expectations of kids' parents."
+              },
+              {
+                "letter": "D",
+                "text": "Many of them feel prejudiced against socially and culturall y."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 54,
+            "text": "What is needed for men to commit to early childhood education?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Higher pay."
+              },
+              {
+                "letter": "B",
+                "text": "Job security."
+              },
+              {
+                "letter": "C",
+                "text": "Social recognition."
+              },
+              {
+                "letter": "D",
+                "text": "Better working conditions."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 55,
+            "text": "What do the authors of the study recommend to bridge the gender gap m early childhood education?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Recruiting young men who have a passion for education young children."
+              },
+              {
+                "letter": "B",
+                "text": "Taking measures to attract prospective male teachers to work in the fi eld."
+              },
+              {
+                "letter": "C",
+                "text": "Persuading prospective fathers to consider a change in their caree r."
+              },
+              {
+                "letter": "D",
+                "text": "Providing male teachers with more opportunities for advancement."
+              }
+            ],
+            "answer": "A"
+          }
+        ]
+      }
+    ]
+  },
+  "translation": {
+    "directions": "For this part, you are allowed 30 minutes to translate a passage from Chinese into English.",
+    "chinese": ""
+  }
+}

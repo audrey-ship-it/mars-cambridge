@@ -1,0 +1,104 @@
+/* 2022年6月 第1套 CET-6 翻译题。
+ * 来源：2022年06月CET6题+解+音频\03、答案解析\2022.06英语六级考试解析第1套.pdf
+ * 核对：2022.06英语六级考试解析第1套.pdf p15（Part IV Translation 参考译文与难点注释）
+ * 验证状态：verified — 题干中文取自同批次真题 docx 并按句整理，参考译文据解析书 p15 逐句核对。 */
+
+export const translation202206S1 = {
+  "id": "cet6-2022-06-s1",
+  "meta": {
+    "level": "CET6",
+    "year": 2022,
+    "month": 6,
+    "set": 1,
+    "source": "2022年06月CET6题+解+音频\\03、答案解析\\2022.06英语六级考试解析第1套.pdf",
+    "answerSource": "2022.06英语六级考试解析第1套.pdf p15（Part IV Translation 参考译文与难点注释）",
+    "pages": "解析第15页",
+    "verified": true,
+    "verifiedAt": "2026-11-05",
+    "note": "题干中文取自同批次真题 docx 并按句整理，参考译文据解析书 p15 逐句核对。"
+  },
+  "title": "2022年6月 第1套",
+  "topic": "卢沟桥",
+  "directions": "For this part, you are allowed 30 minutes to translate a passage from Chinese into English.",
+  "passage": "卢沟桥位于天安门广场西南15公里处，横跨永定河，是北京现存最古老的多拱石桥。卢沟桥最初建成于1192年，1698年重建，由281根柱子支撑。每根柱子上都有一头石狮。这些石狮的头、背、腹部或爪子上都藏着更多的狮子。这些石狮生动逼真、千姿百态，是卢沟桥石刻艺术的精品。桥上的石狮不计其数，因而北京地区流传着“卢沟桥上的石狮子——数不清”的说法。卢沟桥不仅以其美学特征闻名于世，还被公认为石桥建筑史上的一座丰碑。",
+  "reference": "Located 15 km southwest of Tian'anmen Square, Lugou Bridge stretches over the Yongding River and is the oldest existing multi-arched stone bridge in Beijing. The original construction of the bridge was completed in 1192 and then in 1698 the bridge was reconstructed. The bridge is supported by 281 pillars, and on each pillar stands a stone lion. More lions hide themselves on the head and back, under the belly or on the paws of each lion. The lions are vivid with various postures and different expressions, and they are known as the fine works of stone carving art. As there are innumerable stone lions on the bridge, there is a saying in Beijing echoing, \"The lions on the Lugou Bridge are too numerous to count.\" Lugou Bridge is not only well-known in the world for its aesthetic features but also well recognized as a monument in the architectural history of stone bridges.",
+  "notes": [
+    [
+      "多拱石桥",
+      "multi-arched stone bridge"
+    ],
+    [
+      "横跨",
+      "stretch over; span"
+    ],
+    [
+      "现存最古老的",
+      "the oldest existing"
+    ],
+    [
+      "重建",
+      "reconstruct"
+    ],
+    [
+      "柱子",
+      "pillar"
+    ],
+    [
+      "石狮",
+      "stone lion"
+    ],
+    [
+      "藏在",
+      "hide oneself"
+    ],
+    [
+      "腹部",
+      "belly"
+    ],
+    [
+      "爪子",
+      "paw"
+    ],
+    [
+      "生动逼真",
+      "vivid"
+    ],
+    [
+      "千姿百态",
+      "various postures and different expressions"
+    ],
+    [
+      "石刻艺术",
+      "stone carving art"
+    ],
+    [
+      "精品",
+      "fine works"
+    ],
+    [
+      "不计其数",
+      "innumerable; too numerous to count"
+    ],
+    [
+      "流传着……的说法",
+      "there is a saying that..."
+    ],
+    [
+      "美学特征",
+      "aesthetic features"
+    ],
+    [
+      "丰碑",
+      "monument"
+    ]
+  ],
+  "points": [
+    "第一句：过去分词短语 Located 15 km southwest of Tian'anmen Square 前置作地点状语；“横跨永定河”用 stretches over；“是北京现存最古老的多拱石桥”是主句表语。",
+    "第二句：按时间顺序用被动语态，“最初建成于1192年”用 was completed in 1192，“1698年重建”用 was reconstructed；“由281根柱子支撑”可与上句合并为被动结构 is supported by 281 pillars。",
+    "第三句：地点状语 on each pillar 前置引起完全倒装，谓语 stands，主语 a stone lion，使画面感更强。",
+    "第四句：“藏着更多的狮子”可用 hide themselves；“头、背、腹部或爪子”用 on the head and back, under the belly or on the paws 的介词并列。",
+    "第五句：“生动逼真、千姿百态”用 vivid with various postures and different expressions；“是……精品”用 be known as the fine works of stone carving art。",
+    "第六句：“不计其数”用 innumerable；“因而”用 as 引导原因状语从句；“流传着……的说法”用 there is a saying... echoing，引语用 too numerous to count 意译“数不清”。",
+    "第七句：“不仅……还……”用 not only... but also... 连接两个表语；“以……闻名于世”用 be well-known in the world for；“被公认为”用 be well recognized as a monument in...。"
+  ]
+};

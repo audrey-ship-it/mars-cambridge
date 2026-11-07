@@ -1,0 +1,36 @@
+/* 2020年12月 第1套 CET-6 写作题。
+ * 来源：2020年12月CET6题+解+音频\01、真题PDF版（推荐打印）❤\2020.12六级真题第1套【可复制可搜索，打印首选】.pdf p12（Part I Writing 题干）
+ * 核对：2020年12月CET6题+解+音频\03、答案解析\2020.12英语六级考试第1套解析.pdf p1（审题引导/写作提纲/满分范文/参考译文）
+ * 验证状态：verified — 真题卷写作题干位于PDF末页（第12页，qp1首页为听力部分），已按qpW图逐词核对；解析册无范文点评栏目，点评为人工撰写 */
+
+export const writing202012S1 = {
+  "id": "cet6-2020-12-s1",
+  "meta": {
+    "level": "CET6",
+    "year": 2020,
+    "month": 12,
+    "set": 1,
+    "source": "2020年12月CET6题+解+音频\\01、真题PDF版（推荐打印）❤\\2020.12六级真题第1套【可复制可搜索，打印首选】.pdf p12（Part I Writing 题干）",
+    "answerSource": "2020年12月CET6题+解+音频\\03、答案解析\\2020.12英语六级考试第1套解析.pdf p1（审题引导/写作提纲/满分范文/参考译文）",
+    "pages": "原题第12页 / 解析第1页",
+    "verified": true,
+    "verifiedAt": "2026-11-05",
+    "note": "真题卷写作题干位于PDF末页（第12页，qp1首页为听力部分），已按qpW图逐词核对；解析册无范文点评栏目，点评为人工撰写"
+  },
+  "title": "2020年12月 第1套",
+  "topic": "议论文：培养学生创造力",
+  "directions": "For this part, you are allowed 30 minutes to write an essay on why students should be encouraged to develop creativity. You should write at least 150 words but no more than 200 words.",
+  "minWords": 150,
+  "maxWords": 200,
+  "model": "Creativity tends to be considered as an ability with which only a few people are endowed. In fact, it can be taught, practiced and developed. Unfortunately, the conventional teaching method focuses on convergent instead of divergent thinking. Simply put, students are always asked to solve problems that have one correct and well-established answer rather than come up with multiple solutions to open-ended questions.\n\nSuch neglect of developing creativity will hamper students' career growth. As everyone knows, creative minds are able to think out of the box. By making novel, original or even unorthodox suggestions, they often act as a savior of a team stuck on a tricky problem. It is no wonder that creativity is one of the soft skills employers value most. Furthermore, lack of this ability may have an adverse effect on students' mental health. That is because creativity goes a long way to equipping them for the real world characterized by rapid changes. It allows them to look at difficulties and frustrations from a fresh perspective, so that they can live with and adapt to the unknown.\n\nTo sum up, a creative person has a competitive edge over other job candidates and is more likely to keep composure amid uncertainties. School education should therefore lay more emphasis on fostering creativity among students.",
+  "modelZh": "创造力通常被认为仅是少数人与生俱来的能力。实际上，它可以被教导、实践和培养。遗憾的是，传统的教学方法注重聚合而非发散性思维。简单来说，学生总是被要求解决正确答案唯一且确定的问题，而非想出多个解决开放性问题的方案。\n\n如此忽视对创造力的培养会阻碍学生的职业发展。众所周知，有创造力的人能不受约束地思考。当团队因棘手的问题而一筹莫展时，他们往往能提出新颖独到甚至打破常规的建议，扮演着救星的角色。创造力是雇主最为看重的软实力之一也就不足为奇。此外，缺乏这种能力可能不利于学生的心理健康。这是因为创造力对他们做好准备应对瞬息万变的现实世界大有帮助。它使他们能够从全新的角度看待困难与挫折，从而能忍受并适应未知的状况。\n\n总之，有创造力的人拥有比其他求职者更强的竞争力，且更可能处变不惊。因此，学校教育应更加重视学生创造力的培养。",
+  "review": "题目要求围绕“为何要鼓励学生培养创造力”写作。开篇可借相关现实情形引出话题；主体部分应解答题目所问的问题，即着重阐述创造力之于学生的重要性；结尾部分可总结观点，发出呼吁。具体可按三段展开：第一段结合现实“传统教学方法忽视创造力的培养”以引出话题；第二段从“职场竞争”和“心理健康”两方面说明为何要培养学生的创造力；第三段总结观点，发出呼吁。",
+  "points": [
+    "首段以“Creativity tends to be considered as an ability with which only a few people are endowed”引出普遍认知，再用“In fact, it can be taught, practiced and developed”转折亮明观点，最后以“the conventional teaching method focuses on convergent instead of divergent thinking”指出现实问题，层层递进，符合审题引导“借现实情形引出话题”的要求。",
+    "第二段从“职场竞争”切入：“act as a savior of a team stuck on a tricky problem”“creativity is one of the soft skills employers value most”，紧扣审题提纲中“职场竞争”维度，论证具体形象。",
+    "以“Furthermore”转入“心理健康”维度：“lack of this ability may have an adverse effect on students' mental health”，并用“That is because...”因果句展开解释，两大论据与写作提纲一一对应。",
+    "高级表达密集：be endowed with、divergent thinking、think out of the box、unorthodox suggestions、have an adverse effect on、keep composure amid uncertainties 等均为加分短语。",
+    "句型多样：with which 引导的定语从句、It is no wonder that... 句型、过去分词短语 characterized by rapid changes 作后置定语、so that 引导结果状语从句，体现语言功底。",
+    "结尾用“To sum up”总结观点，再以“School education should therefore lay more emphasis on fostering creativity among students”发出呼吁，收束有力，符合“总结观点，发出呼吁”的提纲要求。"
+  ]
+};

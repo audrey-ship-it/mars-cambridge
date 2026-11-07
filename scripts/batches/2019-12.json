@@ -1,0 +1,17 @@
+[
+  { "year": 2019, "month": 12, "set": 1,
+    "zt": "D:/workspace_sunny/题库/cet/真题/2019年12月CET4题+解+音频/01、真题PDF版（推荐使用）❤/2019.12月四级真题第1套【可复制可划线查词】.pdf",
+    "ztTextFile": "scripts/batches/zt-text/2019-12-s1.txt",
+    "out": "src/data/generated/cet4-2019-12-s1.json", "verified": true,
+    "answersManual": { "banked": "BMDCKLOGEJ", "matching": "EDCGKFBJDH", "careful": "BCADCCBBAD" } },
+  { "year": 2019, "month": 12, "set": 2,
+    "zt": "D:/workspace_sunny/题库/cet/真题/2019年12月CET4题+解+音频/01、真题PDF版（推荐使用）❤/2019.12月四级真题第2套【可复制可划线查词】.pdf",
+    "ztTextFile": "scripts/batches/zt-text/2019-12-s2.txt",
+    "out": "src/data/generated/cet4-2019-12-s2.json", "verified": true,
+    "answersManual": { "banked": "BLKAOCEGDH", "matching": "EIBGDJAFCH", "careful": "CDACBDADCB" } },
+  { "year": 2019, "month": 12, "set": 3,
+    "zt": "D:/workspace_sunny/题库/cet/真题/2019年12月CET4题+解+音频/01、真题PDF版（推荐使用）❤/2019.12月四级真题第3套【可复制可划线查词】.pdf",
+    "ztTextFile": "scripts/batches/zt-text/2019-12-s3.txt",
+    "out": "src/data/generated/cet4-2019-12-s3.json", "verified": true,
+    "answersManual": { "banked": "OADCGHKNEF", "matching": "FIDGBEHAJC", "careful": "BCDBADABAC" } }
+]

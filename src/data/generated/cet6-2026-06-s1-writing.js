@@ -1,0 +1,35 @@
+/* 2026年6月 第1套 CET-6 写作题。
+ * 来源：2026年6月CET6题+答案+听力\2026.06六级真题第1套【可复制可搜索，打印首选】.pdf p1（Part I Writing 题干）
+ * 核对：2026年6月CET6题+答案+听力\2026年6月英语六级解析第2套.pdf p1（审题思路 / 范文&译文 / 话题词汇 / 写作模板）
+ * 验证状态：verified — 解析书（共3套合订本）写作栏目套号与真题卷套号错位：本套真题题干（城市化/热爱自然）对应的写作解析实际收录于《解析第2套》，已按开头句逐字核对确认一致后按实际内容录入；解析书其余栏目（听力、阅读）与真题卷套号一致。 */
+
+export const writing202606S1 = {
+  "id": "cet6-2026-06-s1",
+  "meta": {
+    "level": "CET6",
+    "year": 2026,
+    "month": 6,
+    "set": 1,
+    "source": "2026年6月CET6题+答案+听力\\2026.06六级真题第1套【可复制可搜索，打印首选】.pdf p1（Part I Writing 题干）",
+    "answerSource": "2026年6月CET6题+答案+听力\\2026年6月英语六级解析第2套.pdf p1（审题思路 / 范文&译文 / 话题词汇 / 写作模板）",
+    "pages": "原题第1页 / 解析第1页",
+    "verified": true,
+    "verifiedAt": "2026-11-05",
+    "note": "解析书（共3套合订本）写作栏目套号与真题卷套号错位：本套真题题干（城市化/热爱自然）对应的写作解析实际收录于《解析第2套》，已按开头句逐字核对确认一致后按实际内容录入；解析书其余栏目（听力、阅读）与真题卷套号一致。"
+  },
+  "title": "2026年6月 第1套",
+  "topic": "城市化下应培养对自然的热爱",
+  "directions": "For this part, you are allowed 30 minutes to write an essay that begins with the sentence “With the trend of Urbanization, it is vitally important for city residents to develop a stronger love for Nature.” You can make comments, cite examples or use your personal experiences to develop your essay. You should write at least 150 words but no more than 200 words. You should copy the sentence given in quotes at the beginning of your essay.",
+  "minWords": 150,
+  "maxWords": 200,
+  "model": "With the trend of urbanization, it is vitally important for city residents to develop a stronger love for nature. From my perspective, the reasons behind this are worth exploring.\n\nOn the personal level, a love for nature helps us relieve city stress. A brief walk in a park, for instance, can wash away a day's worries and bring inner peace. On the social level, if every resident truly values nature, they will take active steps to protect green spaces in the neighborhood. As a consequence, parks are kept clean, trees are cared for, and our community becomes more livable. On the contrary, if the environment were neglected or even destroyed, humans might lose their comfortable homeland in the end. On the global level, the impact is even greater. It is the collective love for nature from millions of city residents that drives greener policies and pushes climate action forward.\n\nIn conclusion, nature heals us, improves our cities, and protects our planet. Consequently, let's start with a small step today, like taking a walk in the sun or just picking up a little rubbish.",
+  "modelZh": "随着城市化的趋势，城市居民培养对大自然更深厚的热爱至关重要。在我看来，其背后的原因值得探讨。\n\n从个人层面而言，热爱大自然有助于我们缓解城市生活的压力。例如，在公园里散散步，就能洗去一天的烦恼，带来内心的平静。从社会层面来看，当每位居民真正珍视自然时，他会采取积极措施保护附近的绿地。因而，公园得以保持整洁，树木得到精心照料，我们的社区也会变得更宜居。相反，倘若环境被漠视甚至遭到破坏，人类最终可能会失去自己美好的家园。从全球层面来看，其影响更为深远。正是数百万城市居民对自然的集体热爱，推动了更环保的政策出台，并促进了气候行动的进展。\n\n总而言之，拥抱自然能治愈心灵、改善城市环境、守护我们的星球。因此，让我们从今天的一小步做起，比如去阳光下散散步，或者顺手捡起一片垃圾。",
+  "review": "作文要求以“随着城市化的趋势，城市居民培养对大自然更深厚的热爱至关重要”为开头展开论述。首段开门见山，表明个人观点。主体段进行具体论证，阐释城市居民培养对大自然更深厚热爱的重要性：一是个人层面，热爱大自然有助于缓解城市生活的压力；二是社会层面，珍视自然有助于采取措施保护环境；三是全球层面，对自然的热爱推动了环保政策和气候行动的实施。最后一段总结全文，阐述热爱自然对个人、社会和全世界的重要性，然后发出号召，呼吁大家热爱自然，共建更美好的未来。",
+  "points": [
+    "首段摘抄给定句，以“From my perspective, the reasons behind this are worth exploring.”开门见山，表明个人观点并引出下文。",
+    "个人层面：热爱大自然有助于缓解城市生活的压力，以公园散步为例说明。",
+    "社会层面：居民珍视自然会采取积极措施保护绿地，社区因而更宜居；再用“On the contrary, ...”从反面假设环境被漠视甚至破坏的后果。",
+    "全球层面：用强调句“It is the collective love for nature from millions of city residents that drives greener policies and pushes climate action forward.”指出集体热爱推动环保政策与气候行动。",
+    "结尾总结全文，阐述热爱自然对个人、社会和全世界的重要性，并发出号召，呼吁从小事做起热爱自然。"
+  ]
+};

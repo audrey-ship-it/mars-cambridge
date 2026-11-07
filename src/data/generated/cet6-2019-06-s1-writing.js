@@ -1,0 +1,36 @@
+/* 2019年6月 第1套 CET-6 写作题。
+ * 来源：2019年06月CET6题+解+音频/01、真题PDF版（推荐打印）❤/2019.06六级真题第1套【可复制可搜索，打印首选】.pdf p12（Part I Writing 题干）
+ * 核对：2019年06月CET6题+解+音频/03、答案解析/2019年06月真题解析第1套.pdf p1-p2（审题引导/满分范文/参考译文）
+ * 验证状态：verified — 题干与范文均与原件逐句核对 */
+
+export const writing201906S1 = {
+  "id": "cet6-2019-06-s1",
+  "meta": {
+    "level": "CET6",
+    "year": 2019,
+    "month": 6,
+    "set": 1,
+    "source": "2019年06月CET6题+解+音频/01、真题PDF版（推荐打印）❤/2019.06六级真题第1套【可复制可搜索，打印首选】.pdf p12（Part I Writing 题干）",
+    "answerSource": "2019年06月CET6题+解+音频/03、答案解析/2019年06月真题解析第1套.pdf p1-p2（审题引导/满分范文/参考译文）",
+    "pages": "原题第12页 / 解析第1-2页",
+    "verified": true,
+    "verifiedAt": "2026-11-05"
+  },
+  "title": "2019年6月 第1套",
+  "topic": "议论文：团队精神与沟通",
+  "directions": "For this part, you are allowed 30 minutes to write an essay on the importance of team spirit and communication in the workplace. You can cite examples to illustrate your views. You should write at least 150 words but no more than 200 words.",
+  "minWords": 150,
+  "maxWords": 200,
+  "model": "Outstanding leaders always give top priority to team building. They know a cohesive team composed of great communicators plays an irreplaceable role in enhancing the operational efficiency and productivity of an enterprise. Just as they say, many hands make light work.\n\nTeam members will only become highly motivated to fulfill their own duties when they stand united in the pursuit of a common goal and communicate smoothly. Moreover, mutual respect, support and encouragement in a team helps foster a sense of belonging, maintain harmony in the workplace and thus improve job satisfaction. Consider the tech giant Alibaba, whose huge success, as its CEO Jack Ma acknowledges, benefits considerably from joint efforts and efficient coordination among both clerks and departments, driving the corporation to handle arduous tasks, confront tough challenges and even pull through severe crises.\n\nIn short, team spirit and effective communication are conducive to employee and business performance alike. Any leader who has an ambition to run a successful business, therefore, must create a corporate culture that emphasizes teamwork and communication skills.",
+  "modelZh": "杰出的领导者总是将团队建设放在首位。他们明白，由善于沟通的人组成的有凝聚力的团队对于提升企业运营效率和生产力起着不可替代的作用。正所谓，众人拾柴火焰高。\n\n只有当团队成员团结一致地朝同一个目标奋进且能顺利沟通时，他们才会积极主动地履行自己的职责。此外，团队内部相互尊重、扶持和激励有助于培养归属感，保持工作场所的和谐氛围，从而提升工作满意度。想想科技巨头阿里巴巴，其CEO马云承认，公司的成功很大程度上得益于职员之间和部门之间的共同努力和有效配合，使得公司能够应对困难任务，直面艰巨挑战，甚至渡过严峻危机。\n\n简而言之，团队精神与有效沟通对员工表现和公司业绩均有所裨益。因此，但凡有志于在企业经营上取得成功的领导者都必须要营造出重视团队合作和沟通能力的企业文化。",
+  "review": "题目要求说明“工作中团队精神和沟通的重要性”，具有较强的现实意义，on the importance 明确论述方向是“为何重要”，考生切忌将过多笔墨放在如何培养团队精神和沟通能力上，仅可在结尾处简单提及。开篇即可结合现实引入话题，主体部分应详细阐述二者的重要性，可分别从“员工个人”和“公司整体”两个角度入手，论证方式可用举例论证、正反论证（阐述注重团队精神和有效沟通的益处，以及缺乏团队精神和沟通的消极后果）等。具体可按三段展开：第一段以“优秀企业注重团队建设”的事实总述团队精神和沟通对企业高效运转至关重要；第二段分别阐述团队精神和沟通对于员工个人和公司整体的重要性——前者提升员工积极性、归属感和工作满意度，后者提升企业应对艰巨任务、迎接挑战和渡过危机的能力；第三段总结观点：团队精神与有效的沟通有益于员工的表现和公司的业绩。",
+  "points": [
+    "首段以“Outstanding leaders always give top priority to team building”这一事实切入，开门见山，符合“结合现实引入话题”的审题要求。",
+    "用“a cohesive team composed of great communicators plays an irreplaceable role in...”点明主旨，irreplaceable、cohesive 等高级词汇提升表达档次。",
+    "引用谚语“Just as they say, many hands make light work”（众人拾柴火焰高）收束首段，生动凝练。",
+    "第二段从员工个人角度论证：“stand united in the pursuit of a common goal and communicate smoothly”与“foster a sense of belonging, maintain harmony...improve job satisfaction”层层递进，呼应提纲中“提升积极性、归属感和满意度”。",
+    "以“Consider the tech giant Alibaba”举例论证，借马云（Jack Ma）之口说明协作对企业成功的贡献，例证具体、权威、有说服力。",
+    "结尾“In short, ... are conducive to employee and business performance alike”一句话总括员工与公司两个层面，再以“Any leader... must create a corporate culture...”简短提出建议，回扣“如何培养”而不喧宾夺主，符合高分点拨。",
+    "全文高级表达密集：give top priority to、be conducive to、arduous tasks、pull through severe crises、corporate culture 等均为加分短语。"
+  ]
+};

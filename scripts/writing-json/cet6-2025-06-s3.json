@@ -1,0 +1,23 @@
+{
+  "id": "cet6-2025-06-s3",
+  "year": 2025,
+  "month": 6,
+  "set": 3,
+  "title": "2025年6月 第3套",
+  "topic": "AI对人类创造力的影响",
+  "directions": "For this part, you are allowed 30 minutes to write an essay that begins with the sentence “With the increasing application of AI technology, there is a growing concern that it may negatively impact human creativity.” You can make comments, cite examples or use your personal experiences to develop your essay. You should write at least 150 words but no more than 200 words. You should copy the sentence given in quotes at the beginning of your essay.",
+  "review": "题目要求考生写一篇以“随着人工智能技术应用的日益广泛，人们越来越担心它可能会对人类的创造力产生负面影响”开头的作文，考生可以通过发表评论、举例子或描述个人经历展开论述。根据题目提示，作文可以采取以下布局：开头段引出问题；中间段发表观点，列出具体论据；结尾段总结全文。考生写作时可以使用与“说明重要性”“阐述原因”相关的写作句型。",
+  "model": "With the increasing application of AI technology, there is a growing concern that it may negatively impact human creativity. Some people worry that AI might discourage people's independent thinking by offering quick solutions. For example, AI-powered tools like Deepseek can write essays quickly, potentially reducing students' motivation to come up with their own ideas.\n\nHowever, AI can greatly enhance human creativity when used correctly. Firstly, AI is good at handling repetitive tasks, freeing humans to focus on innovation. AI can help inspire designers to come up with new ideas when they get stuck, or help writers create more interesting stories. Secondly, AI can offer insights that humans might overlook. For example, in marketing, AI can analyze customer data to find hidden information. Thus, people can create more targeted and effective plans that they might not have thought of otherwise.\n\nThe main factor contributing to people's concern is the over-reliance on AI. How AI affects us depends on how we use it. If used wisely, it can stimulate creativity; if misused, it may stifle originality. The key is that we must ensure that AI products are just an aid, not something to be overly dependent on.",
+  "modelZh": "随着人工智能技术应用的日益广泛，人们越来越担心它可能会对人类的创造力产生负面影响。有人担心通过提供快速解决方案，人工智能可能会阻碍人们的独立思考。例如，像Deepseek这样的人工智能工具可以快速写出论文，这可能会削弱学生提出自己想法的动力。\n\n然而，当被正确使用时，人工智能其实是可以极大地提升人类的创造力的。首先，人工智能擅长处理重复性任务，从而让人类能够专注于创新。当设计师陷入困境时，人工智能可以帮助激发他们的灵感，提出新的想法，或者帮助作家创作出更有趣的故事。其次，人工智能可以提供人类可能会忽略的洞见。例如，在市场营销中，人工智能可以分析客户数据以发现隐藏的信息。因此，人们可以创建更有针对性且更有效的计划，而这些计划他们可能原本想不到。\n\n人们对人工智能的担忧主要源于对其过度依赖。人工智能会怎样影响我们取决于我们如何使用它。如果使用得当，它可以激发创造力；如果使用不当，它可能会抑制创新。关键在于，我们要确保人工智能产品只是一个辅助工具，而不是过度依赖的对象。",
+  "points": [
+    "引出话题，指出有人担心通过提供快速解决方案，人工智能可能会阻碍人们的独立思考。",
+    "发表观点，分别从“人工智能擅长处理重复性任务，从而让人类能够专注于创新”和“人工智能可以提供人类可能会忽略的洞见”两个方面指出人工智能可以极大地提升人类的创造力，分别由副词Firstly和Secondly引出。",
+    "总结全文，指出人们对人工智能的担忧主要源于对其过度依赖。我们要确保人工智能只是一个辅助工具，而不是过度依赖的对象。",
+    "运用亮点表达discourage、come up with、inspire、get stuck、targeted、stifle、originality、aid等；使用“The main factor contributing to... is...”句型分析现象产生的主要原因，结尾用“The key is that we must ensure that...”句型强调我们确保要做的事。"
+  ],
+  "source": "2025年06月CET6题+解+音频\\3.2025年06月六级真题（新更）\\2025.06六级真题第3套.pdf p1（Part I Writing 题干）",
+  "answerSource": "2025年06月CET6题+解+音频\\3.2025年06月六级真题（新更）\\2025.06英语六级解析第3套.pdf p1-p2（审题 / 参考范文&点评 / 范文译文 / 亮点词汇 / 写作句型）",
+  "pages": "原题第1页 / 解析第1-2页",
+  "verified": true,
+  "verifiedAt": "2026-11-05"
+}

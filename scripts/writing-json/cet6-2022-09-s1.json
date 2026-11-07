@@ -1,0 +1,26 @@
+{
+  "id": "cet6-2022-09-s1",
+  "year": 2022,
+  "month": 9,
+  "set": 1,
+  "title": "2022年9月 第1套",
+  "topic": "大学生数字技能",
+  "directions": "For this part, you are allowed 30 minutes to write an essay that begins with the sentence \"Nowadays more and more students are becoming increasingly aware of the importance of developing digital skills.\" You can make comments, cite examples or use your personal experiences to develop your essay. You should write at least 150 words but no more than 200 words.",
+  "review": "题干要求以\"Nowadays more and more students are becoming increasingly aware of the importance of developing digital skills.\"为开头句，论述培养数字技能的重要性，可评论、可举例，也可结合个人经历。范文采用三段式：首段以给定句开头，并指出在日益网络化的世界里，数字技能是充分参与社会生活的必备条件；第二段分层论证——先用\"First and foremost\"指出公共服务和商业交易纷纷转到线上，缺乏数字能力者寸步难行，并以微信这一超级应用反问举例，再用\"Secondly\"指出数字革命正在颠覆职场，大学生作为未来职场新生力量应首先重视数字能力培养，最后用\"Besides\"指出技术日新月异，大学生必须识别数字工作流程的新趋势、坚持学习以跟上数字化转型；结尾段用\"To conclude\"总结，呼吁提升数字能力以跟上时代步伐。",
+  "model": "The Importance of Developing Digital Skills\n\nNowadays students are becoming increasingly aware of the importance of developing digital skills. As we live in an increasingly networked world, it is crucial that everyone has the digital skills they need to fully participate in society.\n\nFirst and foremost, more than ever before, services, including public services and business transactions, are moving online. For those lacking basic digital capabilities, they may consider these services a burden, let alone enjoy the benefits they offer. Just think what your life would be like if you couldn't use the super popular multi-functional social media app—WeChat. Secondly, as the digital revolution overturns the workplace, college students, the new force in the future workplace, should first pay attention to the cultivation of digital ability. Besides, the rapid pace of technological change means digital techniques and technologies are also constantly evolving. It is therefore essential for our college students to identify the new trend in digital workflow and keep learning so that we can apply what we have learned and keep up with the trend of digital transformation.\n\nTo conclude, in today's digital age, there is an urgent need to improve our digital capabilities to keep pace with times.",
+  "modelZh": "培养数字技能的重要性\n\n如今，学生们越来越意识到培养数字技能的重要性。我们生活在一个日益网络化的世界里，每个人都必须具备充分参与社会生活所需的数字技能，这一点至关重要。\n\n首先，与以往任何时候相比，包括公共服务和商业交易在内的各种服务都在向线上转移。对缺乏基本数字能力的人来说，他们可能会把这些服务视为负担，更谈不上享受其带来的便利。试想一下，如果你不能使用超流行的多功能社交应用——微信，你的生活会是什么样子。其次，随着数字革命颠覆职场，大学生作为未来职场的新生力量，首先应当重视数字能力的培养。此外，技术变革日新月异，意味着数字技艺和技术也在不断演进。因此，我们大学生必须识别数字工作流程中的新趋势并坚持学习，这样才能学以致用，跟上数字化转型的潮流。\n\n总之，在当今的数字时代，我们迫切需要提升自身的数字能力，以跟上时代的步伐。",
+  "points": [
+    "首段以题干给定句开头，自然引出话题；随后用\"As we live in an increasingly networked world...\"补充时代背景，点明数字技能是参与社会生活的前提。",
+    "主体段用\"First and foremost\"\"Secondly\"\"Besides\"分层推进，从生活服务线上化、职场数字化、技术快速迭代三个角度论证培养数字技能的必要性，层次清晰。",
+    "以微信为例（\"Just think what your life would be like if you couldn't use the super popular multi-functional social media app—WeChat.\"），用反问句式让抽象道理具体可感。",
+    "\"let alone enjoy the benefits they offer\"中 let alone 的用法准确地道，凸显缺乏数字能力者的不便。",
+    "用\"It is therefore essential for our college students to identify the new trend...and keep learning so that...\"引出对大学生的建议，so that 引导目的状语从句，句式规范。",
+    "结尾\"To conclude...\"呼应开头，\"there is an urgent need to...\"发出呼吁，结构完整。"
+  ],
+  "source": "2022年09月CET6题+解+音频\\01、真题PDF版（推荐打印）❤\\2022.09英语六级真题第1套【可复制可搜索，打印首选】.pdf p1（Part I Writing 题干）",
+  "answerSource": "2022年09月CET6题+解+音频\\03、答案解析\\2022.09英语六级解析第1套.pdf p1（参考范文）",
+  "pages": "原题第1页 / 解析第1页",
+  "verified": true,
+  "verifiedAt": "2026-11-05",
+  "note": "解析册仅提供参考范文，无审题/译文/点评栏目，review、modelZh、points 为人工撰写；范文首句照抄原书（未完整复述题干给定句）。"
+}

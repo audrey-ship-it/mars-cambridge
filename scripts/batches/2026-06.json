@@ -1,0 +1,31 @@
+[
+  {
+    "year": 2026,
+    "month": 6,
+    "set": 1,
+    "zt": "D:/workspace_sunny/题库/cet/真题/2026年6月CET4题+答案+听力/2026.06四级真题第1套【可复制可搜索，打印首选】.pdf",
+    "ztTextFile": "scripts/batches/zt-text/2026-06-s1.txt",
+    "out": "src/data/generated/cet4-2026-06-s1.json",
+    "verified": true,
+    "answersManual": { "banked": "NAIKFOCGJD", "matching": "CIELAFJBDG", "careful": "DADCBACADD" }
+  },
+  {
+    "year": 2026,
+    "month": 6,
+    "set": 2,
+    "zt": "D:/workspace_sunny/题库/cet/真题/2026年6月CET4题+答案+听力/2026.06四级真题第2套【可复制可搜索，打印首选】.pdf",
+    "ztTextFile": "scripts/batches/zt-text/2026-06-s2.txt",
+    "out": "src/data/generated/cet4-2026-06-s2.json",
+    "verified": true,
+    "answersManual": { "banked": "NILGFDJMAC", "matching": "FLAHOEKMCI", "careful": "BCDBABDACD" }
+  },
+  {
+    "year": 2026,
+    "month": 6,
+    "set": 3,
+    "zt": "D:/workspace_sunny/题库/cet/真题/2026年6月CET4题+答案+听力/2026.06四级真题第3套【可复制可搜索，打印首选】.pdf",
+    "out": "src/data/generated/cet4-2026-06-s3.json",
+    "verified": true,
+    "answersManual": { "banked": "ILFNGCOAJM", "matching": "DJAEGCKFBH", "careful": "CDADACBDBA" }
+  }
+]

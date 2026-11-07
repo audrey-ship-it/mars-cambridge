@@ -1,0 +1,34 @@
+/* 2022年12月 第2套 CET-6 写作题。
+ * 来源：2022年12月CET6题+解+音频\01、真题PDF版（推荐打印）❤\2022.12六级真题第2套【可复制可搜索，打印首选】.pdf p1（Part I Writing 题干）
+ * 核对：2022年12月CET6题+解+音频\03、答案解析\2022.12六级真题第2套答案及详解.pdf p1（结构框图/范文点评）
+ * 验证状态：verified — 解析无范文译文栏目，modelZh 为人工翻译；范文中【1】—【6】句号标注已略去。 */
+
+export const writing202212S2 = {
+  "id": "cet6-2022-12-s2",
+  "meta": {
+    "level": "CET6",
+    "year": 2022,
+    "month": 12,
+    "set": 2,
+    "source": "2022年12月CET6题+解+音频\\01、真题PDF版（推荐打印）❤\\2022.12六级真题第2套【可复制可搜索，打印首选】.pdf p1（Part I Writing 题干）",
+    "answerSource": "2022年12月CET6题+解+音频\\03、答案解析\\2022.12六级真题第2套答案及详解.pdf p1（结构框图/范文点评）",
+    "pages": "原题第1页 / 解析第1页",
+    "verified": true,
+    "verifiedAt": "2026-11-05",
+    "note": "解析无范文译文栏目，modelZh 为人工翻译；范文中【1】—【6】句号标注已略去。"
+  },
+  "title": "2022年12月 第2套",
+  "topic": "批判性思维与理性选择",
+  "directions": "For this part, you are allowed 30 minutes to write an essay that begins with the sentence \"In an era of information explosion, it is vitally important to develop the ability to think critically and make rational choices.\" You can make statements, give reasons, or cite examples to develop your essay. You should write at least 150 words but no more than 200 words.",
+  "minWords": 150,
+  "maxWords": 200,
+  "model": "The Importance of Developing the Ability to Think Critically\n\nIn an era of information explosion, it is vitally important to develop the ability to think critically and make rational choices. In today's world, we have access to vast amounts of information, data, facts and research than ever before, which may be a blessing to some, but a nightmare to others. A key factor in managing such information overload is the ability to use critical thinking skills.\n\nFor one thing, critical thinking skills are crucial to making well-informed decisions in an age of information overload and fake news. Making a decision solely on the basis of emotion or gut instinct can result in unhealthy lifestyles, dire financial circumstances or unsound investments. Critical thinking, on the other hand, facilitates the development of informed, healthy decisions based on facts rather than faulty assumptions and also assists in sorting through extra noise. For another, being able to think critically will define one as a problem solver, who can see things from multiple perspectives and come up with creative solutions that others may not have considered.\n\nTo sum up, it is important to develop critical thinking skills so that we can form informed opinions and set ourselves apart from our peers in a competitive environment.",
+  "modelZh": "培养批判性思维能力的重要性\n\n在信息爆炸的时代，培养批判性思维、做出理性选择的能力至关重要。当今世界，我们能获取比以往任何时候都多的信息、数据、事实和研究成果，这对一些人来说可能是福音，对另一些人来说却是噩梦。应对这种信息过载的关键因素，在于运用批判性思维的能力。\n\n一方面，在信息过载和假新闻充斥的时代，批判性思维能力对做出明智的决定至关重要。仅凭情绪或直觉做决定，可能导致不健康的生活方式、糟糕的财务状况或不明智的投资。而批判性思维则能帮助人们基于事实而非错误假设做出明智、健康的决定，还有助于从杂音中筛选信息。另一方面，具备批判性思维能力会让人成为问题的解决者——能够从多个角度看待事物，并提出他人可能想不到的创造性解决方案。\n\n总而言之，培养批判性思维能力十分重要，它能使我们形成有见地的观点，并在竞争激烈的环境中从同龄人中脱颖而出。",
+  "review": "题干要求以\"In an era of information explosion, it is vitally important to develop the ability to think critically and make rational choices.\"为开头句，论述在信息爆炸时代培养批判性思维、做出理性选择的重要性，可陈述、可说理、可举例。范文采用三段式：首段以给定句引出话题，指出海量信息对有人是福音、对他人是噩梦，应对信息过载的关键在于运用批判性思维能力；第二段用\"For one thing...\"\"For another...\"从两方面论证——其一，批判性思维有助于在信息过载与假新闻时代做出明智决定：凭情绪或直觉做决定会导致不良后果，而批判性思维帮助人们基于事实做决策、过滤噪音；其二，批判性思维让人成为能从多角度看待问题、提出创造性方案的解决问题者；第三段用\"To sum up\"总结全文，重申培养批判性思维能让我们形成有见地的观点、在竞争中脱颖而出。",
+  "points": [
+    "【1】引出话题：在信息爆炸的时代，培养批判性思维和做出理性选择的能力至关重要。",
+    "【2】【3】指出解决信息过载问题的关键在于使用批判性思维的能力。",
+    "【4】【5】分别使用\"For one thing...\" \"For another...\"具体阐述培养批判性思维和做出理性选择的能力至关重要的原因。",
+    "【6】用\"To sum up...\"总结全文，再次强调培养批判性思维能力的重要性。"
+  ]
+};

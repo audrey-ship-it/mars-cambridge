@@ -1,0 +1,50 @@
+/* 2019年12月 CET-4 第3套 翻译题。
+ * 来源：原题 PDF 第7页 Part IV Translation（中文原文）+ 答案解析 PDF 第10页（参考译文/难点注释/话题词汇，人工读图逐字核对）。
+ * 验证状态：verified — 中文原文与真题 PDF 逐字核对，参考译文与解析 PDF 左栏英文逐句读图核对。 */
+
+export const translation201912S3 = {
+  id: 'cet4-2019-12-s3',
+  meta: {
+    level: 'CET4',
+    year: 2019,
+    month: 12,
+    set: 3,
+    source: '2019.12月四级真题第3套【可复制可划线查词】.pdf p7（Part IV Translation）',
+    answerSource: '2019.12英语四级解析第3套.pdf p10（Part IV Translation 参考译文与难点注释/话题词汇，印刷页62）',
+    pages: '原题第7页 / 解析第10页（印刷页62）',
+    verified: true,
+    verifiedAt: '2026-11-04',
+  },
+  title: '2019年12月 第3套',
+  topic: '中文姓名',
+  directions: 'For this part, you are allowed 30 minutes to translate a passage from Chinese into English.',
+  passage: '中国汉族人的全名由姓和名组成。中文姓名的特点是，姓总是在前，名跟在其后。千百年来，父姓一直世代相传。然而，如今，孩子跟母亲姓并不罕见。一般来说，名有一个或两个汉字，通常承载父母对孩子的愿望。从孩子的名字可以推断出父母希望孩子成为什么样的人，或者期望他们过什么样的生活。父母非常重视给孩子取名，因为名字往往会伴随孩子一生。',
+  reference: 'The full name of a Han Chinese consists of a family name and a given name. A characteristic of Chinese names is that the family name always comes first, followed by the given name. For thousands of years, the father\'s family name has been passed down from generation to generation. Today, however, it\'s not uncommon for a child to take the mother\'s family name. Generally speaking, each given name includes one or two Chinese characters, which usually reflects the parents\' expectations of the child. From children\'s names, it can be inferred what kind of people the parents want their children to be or what kind of life they expect their children to live. Parents attach great importance to naming their children for the reason that names will be the children\'s lifelong company.',
+  notes: [
+    ['汉族', 'Han Chinese'],
+    ['全名', 'full name'],
+    ['姓', 'family name; surname'],
+    ['名', 'given name'],
+    ['由……组成', 'consist of; be made up of'],
+    ['世代相传', 'be passed down from generation to generation'],
+    ['并不罕见', 'it is not uncommon'],
+    ['跟……姓', 'take one\'s family name'],
+    ['一般来说', 'generally speaking; generally'],
+    ['推断', 'infer'],
+    ['非常重视', 'attach great importance to'],
+    ['伴随一生', 'lifelong company'],
+    ['传统美德', 'traditional virtues'],
+    ['象征', 'symbolize'],
+    ['签名', 'signature'],
+    ['以……的名义', 'in the name of...'],
+    ['成名', 'make a name for oneself'],
+    ['用户名', 'user name'],
+    ['望子成龙', 'be highly ambitious for one\'s children'],
+    ['吉祥的', 'auspicious'],
+  ],
+  points: [
+    '第一句："中国汉族人的"作定语修饰"全名"，可译为 of a Han Chinese；"由A和B组成"一般译为 consist of A and B（主动语态）或 be made up of A and B（被动语态）；"全名"有固定的译法 the full name。',
+    '第二至四句：第二句中的"姓总是在前，名跟在其后"可处理为 that 引导的表语从句。第三句中的"一直"暗示本句用现在完成时，父姓是被人世代相传，因此应选用被动语态；"世代相传"有多种译法，常见的有 be passed down from generation to generation / from one generation to the next。第四句中，"……并不罕见"可保留原有的双重否定，译为 it\'s not uncommon...；"跟……姓"可译为 take one\'s family name/surname。',
+    '第五至七句：第五句句首的"一般来说"常用 generally speaking 来表达，也可更简单地译为 generally，其后用逗号与句子主干隔开；句子主干是两个分句，可直接译成两个并列分句，用 and 连接，即 each given name includes one or two Chinese characters and it often reflects the parents\' expectations of the child，也可像参考译文那样，将第二个分句处理成 which 引导的非限制性定语从句，对"名"进行进一步说明。第六句没有主语，需要增译主语 we/people 或译成被动语态 it can be inferred...。第七句中，"非常重视给孩子取名"可译为 attach great importance/much significance to naming their children。',
+  ],
+};

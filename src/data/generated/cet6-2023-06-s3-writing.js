@@ -1,0 +1,34 @@
+/* 2023年6月 第3套 CET-6 写作题。
+ * 来源：2023年06月CET6题+解+音频\01、真题PDF版（推荐打印）❤\2023.06英语六级真题第3套.pdf p1（Part I Writing 题干）
+ * 核对：2023年06月CET6题+解+音频\03、答案解析\2023.06六级真题第3套详解.pdf p1（结构框图/参考范文/范文点评/话题词汇）
+ * 验证状态：verified — 解析册无范文译文，译文为人工翻译 */
+
+export const writing202306S3 = {
+  "id": "cet6-2023-06-s3",
+  "meta": {
+    "level": "CET6",
+    "year": 2023,
+    "month": 6,
+    "set": 3,
+    "source": "2023年06月CET6题+解+音频\\01、真题PDF版（推荐打印）❤\\2023.06英语六级真题第3套.pdf p1（Part I Writing 题干）",
+    "answerSource": "2023年06月CET6题+解+音频\\03、答案解析\\2023.06六级真题第3套详解.pdf p1（结构框图/参考范文/范文点评/话题词汇）",
+    "pages": "原题第1页 / 解析第1页",
+    "verified": true,
+    "verifiedAt": "2026-11-05",
+    "note": "解析册无范文译文，译文为人工翻译"
+  },
+  "title": "2023年6月 第3套",
+  "topic": "学会如何学习",
+  "directions": "For this part, you are allowed 30 minutes to write an essay that begins with the sentence \"It is widely accepted that an important goal of education is to help students learn how to learn.\" You can make comments, cite examples or use your personal experiences to develop your essay. You should write at least 150 words but no more than 200 words.",
+  "minWords": 150,
+  "maxWords": 200,
+  "model": "The Importance of Learning How to Learn\n\nIt is widely accepted that an important goal of education is to help students learn how to learn. Learning how to learn is a skill that can improve our learning abilities and outcomes and apply the best methods for our goals.\n\nOne key benefit of learning how to learn for students is that it can help them master tough subjects and achieve their academic goals. By learning how to learn, students can improve their comprehension and application of new information. Furthermore, cultivating learning skills allows for continuous personal and professional growth. By constantly honing our learning abilities, we can adapt to new challenges and opportunities as they arise. Besides, learning how to learn helps foster a sense of resilience. When we encounter setbacks or obstacles, we are better able to persevere and find alternative ways to reach our goals.\n\nIn conclusion, learning how to learn is an essential skill in today's fast-paced world. By developing our own learning abilities and adopting effective strategies, we can continue to grow, adapt, and thrive throughout our lives.",
+  "modelZh": "学会如何学习的重要性\n\n人们普遍认为，教育的一个重要目标是帮助学生学会如何学习。学会如何学习是一种能提升我们的学习能力和学习成果、并帮助我们为目标选择最佳方法的技能。\n对学生而言，学会如何学习的一个主要好处是，它能帮助他们掌握难懂的学科，实现学业目标。通过学会如何学习，学生可以提高对新信息的理解和运用能力。此外，培养学习技能还能促进个人和职业的持续成长。通过不断磨炼学习能力，我们可以在新挑战和新机遇出现时从容应对。除此之外，学会如何学习还有助于培养韧性。当我们遇到挫折或障碍时，我们能更好地坚持不懈，并找到实现目标的其他途径。\n总之，学会如何学习是当今快节奏世界中的一项基本技能。通过培养自己的学习能力并采取有效的策略，我们可以在一生中不断成长、适应并蓬勃发展。",
+  "review": "本题为给定开头句的议论文，主题是教育的重要目标是帮助学生学会如何学习。文章须以所给句子开头，第一段引出话题后可进一步指出“学会如何学习”是一种能提升学习能力和学习效果、帮助我们为目标选择最佳方法的技能。第二段具体阐述其益处：帮助学生掌握难懂的学科、实现学术目标；促进个人和职业的持续成长，使人能适应新挑战和新机遇；培养韧性，让人在遭遇挫折时坚持不懈、另辟蹊径。第三段总结全文，重申观点：在当今快节奏的世界里，学会如何学习是一项基本技能。词数控制在150—200词。",
+  "points": [
+    "首句引出话题：人们普遍认为教育的一个重要目标是帮助学生学会如何学习。",
+    "随后进一步指出学会如何学习是一种对我们很有帮助的技能。",
+    "主体段分别使用“One key benefit of...”“Furthermore, ...”和“Besides, ...”具体阐述学会如何学习能帮助学生实现学术目标，促进个人和职业的持续成长，且有助于培养适应力。",
+    "结尾用“In conclusion, ...”总结全文，再次强调在当今快节奏的世界里，学会如何学习是一项基本技能。"
+  ]
+};

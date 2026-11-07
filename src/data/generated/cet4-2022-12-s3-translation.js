@@ -1,0 +1,51 @@
+/* 2022年12月 CET-4 第3套 翻译题。
+ * 来源：答案解析 PDF p10（Part IV Translation 参考译文/难点注释/译点），人工读图逐字核对。
+ * 验证状态：verified — 中文原文与参考译文均与原件逐句核对。 */
+
+export const translation202212S3 = {
+  id: 'cet4-2022-12-s3',
+  meta: {
+    level: 'CET4',
+    year: 2022,
+    month: 12,
+    set: 3,
+    source: '2022年12月CET4题+解+音频/03、答案解析/2022.12四级真题第3套答案及详解.pdf',
+    answerSource: '2022年12月四级真题第3套答案解析 PDF p10（Part IV Translation 参考译文/难点注释/译点）',
+    pages: '解析第10页',
+    verified: true,
+    verifiedAt: '2026-11-04',
+  },
+  title: '2022年12月 第3套',
+  topic: '冬至',
+  directions: 'For this part, you are allowed 30 minutes to translate a passage from Chinese into English.',
+  passage: '冬至(Winter Solstice)是全年白昼最短、黑夜最长的一天，标志着一年中最寒冷时节的开始。冬至过后，气温越来越低，人们的户外活动逐渐减少。农民地里活儿不多，主要忙于灌溉系统的维护和农作物的防冻，同时为来年春天播种做准备。中国人历来很重视冬至，许多地方都把冬至当作一个节日，庆祝方式各地不尽相同。北方人有冬至吃饺子(jiaozi)的习俗，南方人有冬至吃汤圆(tangyuan)的传统。',
+  reference: 'Winter Solstice is the day with the shortest daytime and the longest nighttime, marking the beginning of the coldest time of the year. After Winter Solstice, as the temperature gets colder, people\'s outdoor activities gradually decrease. Without much work in the field, farmers are mainly busy with the maintenance of the irrigation system and the protection of crops from freezing as well as the preparation for planting in the coming spring. The Chinese people have always been attaching great importance to Winter Solstice, which is regarded as a festival in many places and celebrated in different ways. On Winter Solstice, northerners have the custom of eating jiaozi, while southerners have the tradition of eating tangyuan.',
+  notes: [
+    ['冬至', 'Winter Solstice'],
+    ['白昼', 'daytime'],
+    ['黑夜', 'nighttime'],
+    ['最短的', 'shortest'],
+    ['最长的', 'longest'],
+    ['标志着', 'mark'],
+    ['最寒冷时节', 'the coldest time of the year'],
+    ['户外活动', 'outdoor activities'],
+    ['逐渐减少', 'gradually decrease'],
+    ['灌溉系统', 'irrigation system'],
+    ['维护', 'maintenance'],
+    ['农作物', 'crops'],
+    ['防冻', 'protection from freezing'],
+    ['播种', 'planting'],
+    ['来年春天', 'the coming spring'],
+    ['重视', 'attach great importance to'],
+    ['节日', 'festival'],
+    ['习俗', 'custom'],
+    ['传统', 'tradition'],
+    ['北方人', 'northerners'],
+    ['南方人', 'southerners'],
+  ],
+  points: [
+    '第一句："白昼最短、黑夜最长"修饰"一天"，可以处理成由 with 引导、后接名词短语的介词结构，也可以译为 which 引导的定语从句；"标志着一年中最寒冷时节的开始"可译为伴随状语，如参考译文，还可译为 which 引导的非限制性定语从句，即 which marks the beginning of the coldest time of the year。',
+    '第二句较短，句中的"冬至过后"为时间状语；"气温越来越低"既可译为 as 引导的伴随状语从句，也可译为由 with 引导的介词短语表示伴随，即 with the temperature getting colder。第三句在翻译时，可将"农民主要忙于……"译为主句，将"地里活儿不多"处理为由 without 引导的介词短语表示原因；"维护""防冻"和"做准备"可以译为并列的名词性短语，也可以处理成多个并列的动名词，即 maintaining the irrigation system, protecting the crops from freezing and preparing for planting in the coming spring。',
+    '第四句在翻译时，可将"中国人历来很重视冬至"处理为主句，根据本句的副词"历来"以及文段的现在时语境，可确定译文应使用现在完成进行时；本句后半部分与前部分联系紧密，可以结合被动语态，译作 which 引导的非限制性定语从句修饰"冬至"。第五句中的两个分句并列，且构成对比关系，可用连词 while 连接；"冬至"可译作时间状语放置句首，"吃饺子的习惯"可译为 the custom of eating jiaozi，"吃汤圆的传统"可译为 the tradition of eating tangyuan。',
+  ],
+};

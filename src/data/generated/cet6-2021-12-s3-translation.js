@@ -1,0 +1,98 @@
+/* 2021年12月 第3套 CET-6 翻译题。
+ * 来源：2021年12月CET6题+解+音频\03、答案解析\2021.12英语六级解析第3套.pdf
+ * 核对：2021.12英语六级解析第3套.pdf p9-p10（Part IV Translation 参考译文与难点注释）
+ * 验证状态：verified — 题干括注 (besiege) 按真题原样保留；参考译文分列 p9-p10，已合并逐句核对。 */
+
+export const translation202112S3 = {
+  "id": "cet6-2021-12-s3",
+  "meta": {
+    "level": "CET6",
+    "year": 2021,
+    "month": 12,
+    "set": 3,
+    "source": "2021年12月CET6题+解+音频\\03、答案解析\\2021.12英语六级解析第3套.pdf",
+    "answerSource": "2021.12英语六级解析第3套.pdf p9-p10（Part IV Translation 参考译文与难点注释）",
+    "pages": "解析第9-10页",
+    "verified": true,
+    "verifiedAt": "2026-11-05",
+    "note": "题干括注 (besiege) 按真题原样保留；参考译文分列 p9-p10，已合并逐句核对。"
+  },
+  "title": "2021年12月 第3套",
+  "topic": "井冈山",
+  "directions": "For this part, you are allowed 30 minutes to translate a passage from Chinese into English.",
+  "passage": "井冈山地处湖南、江西两省交界处，因其辉煌的革命历史被誉为“中国革命红色摇篮”。1927年10月，毛泽东、朱德等老一辈革命家率领中国工农红军来到这里，开展了艰苦卓绝的斗争，创建了第一个农村革命根据地，点燃了中国革命的星星之火，开辟了“农村包围(besiege)城市，武装夺取政权”这一具有中国特色的革命道路，中国革命从这里迈向胜利。井冈山现有100多处革命旧址，成为一个“没有围墙的革命历史博物馆”，是爱国主义和革命传统教育的重要基地。",
+  "reference": "Jinggangshan, located at the junction of Hunan and Jiangxi provinces, is known as \"the red cradle of Chinese revolution\" because of its brilliant revolutionary history. In October 1927, Mao Zedong, Zhu De and other revolutionaries of the older generation led the Chinese Workers' and Peasants' Red Army here, where they launched an arduous struggle, founded the first rural revolutionary base, lighted the sparks of the Chinese revolution and blazed the revolutionary trail with Chinese characteristics to \"besiege the cities from the countryside and seize state power with military force\". It is right from here that the Chinese revolution has marched towards victory. With more than 100 revolutionary sites, Jinggangshan has become a revolutionary history museum without walls and an important base for patriotism and revolutionary tradition education.",
+  "notes": [
+    [
+      "交界处",
+      "the junction of"
+    ],
+    [
+      "辉煌的革命历史",
+      "brilliant revolutionary history"
+    ],
+    [
+      "红色摇篮",
+      "the red cradle"
+    ],
+    [
+      "率领",
+      "lead"
+    ],
+    [
+      "中国工农红军",
+      "the Chinese Workers' and Peasants' Red Army"
+    ],
+    [
+      "开展斗争",
+      "launch a struggle"
+    ],
+    [
+      "艰苦卓绝",
+      "arduous"
+    ],
+    [
+      "农村革命根据地",
+      "rural revolutionary base"
+    ],
+    [
+      "点燃星星之火",
+      "light the sparks"
+    ],
+    [
+      "开辟道路",
+      "blaze the trail"
+    ],
+    [
+      "农村包围城市",
+      "besiege the cities from the countryside"
+    ],
+    [
+      "武装夺取政权",
+      "seize state power with military force"
+    ],
+    [
+      "迈向胜利",
+      "march towards victory"
+    ],
+    [
+      "革命旧址",
+      "revolutionary sites"
+    ],
+    [
+      "没有围墙的博物馆",
+      "a museum without walls"
+    ],
+    [
+      "爱国主义和革命传统教育",
+      "patriotism and revolutionary tradition education"
+    ]
+  ],
+  "points": [
+    "第一句：主语 Jinggangshan 后用过去分词短语 located at... 作后置定语；“因其辉煌的革命历史”用 because of 引导原因状语；“被誉为”用 be known as，宾语为 the red cradle of Chinese revolution。",
+    "第二句前半：时间状语 In October 1927 前置；“率领中国工农红军来到这里”用 led... here，其中 here 作宾语补足语；“开展了艰苦卓绝的斗争，创建了第一个农村革命根据地”用 where 引导的定语从句，与后面动作并列。",
+    "第二句中部：“点燃了……开辟了……”继续并列谓语（lighted, blazed），注意“开辟”用 blaze the trail；“具有中国特色的革命道路”用 with Chinese characteristics 后置修饰。",
+    "第二句末：“中国革命从这里迈向胜利”用强调句 It is right from here that...，时态用现在完成时 has marched。",
+    "第三句：“现有100多处革命旧址”用 With more than 100 revolutionary sites 作状语；主干“井冈山成为博物馆和基地”用 has become；“没有围墙的”用 without walls，“教育基地”用 an important base for... 顺译。"
+  ]
+};

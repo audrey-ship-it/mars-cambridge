@@ -1,0 +1,12 @@
+[
+  { "year": 2022, "month": 6, "set": 1,
+    "zt": "D:/workspace_sunny/题库/cet/真题/2022年06月CET4题+解+音频/01、真题PDF版（推荐打印）❤/2022.06四级真题第1套【可复制可搜索，打印首选】.pdf",
+    "out": "tmp-verify/dry-s1.json",
+    "verified": false,
+    "answersManual": { "banked": "AAAAAAAAAA", "matching": "AAAAAAAAAA", "careful": "AAAAAAAAAA" } },
+  { "year": 2022, "month": 6, "set": 2,
+    "zt": "D:/workspace_sunny/题库/cet/真题/2022年06月CET4题+解+音频/01、真题PDF版（推荐打印）❤/2022.06四级真题第2套【可复制可搜索，打印首选】.pdf",
+    "out": "tmp-verify/dry-s2.json",
+    "verified": false,
+    "answersManual": { "banked": "AAAAAAAAAA", "matching": "AAAAAAAAAA", "careful": "AAAAAAAAAA" } }
+]

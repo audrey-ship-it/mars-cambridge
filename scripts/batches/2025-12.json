@@ -1,0 +1,20 @@
+[
+  { "year": 2025, "month": 12, "set": 1,
+    "zt": "D:/workspace_sunny/题库/cet/真题/2025年12月CET4题+答案+音频/2025.12四级真题第1套.pdf",
+    "ztTextFile": "scripts/batches/zt-text/2025-12-s1.txt",
+    "out": "src/data/generated/cet4-2025-12-s1.json",
+    "verified": true,
+    "answersManual": { "banked": "CNDHJEIOGK", "matching": "EKCOGDLJAH", "careful": "ACABCACDBD" } },
+  { "year": 2025, "month": 12, "set": 2,
+    "zt": "D:/workspace_sunny/题库/cet/真题/2025年12月CET4题+答案+音频/2025.12四级真题第2套.pdf",
+    "ztTextFile": "scripts/batches/zt-text/2025-12-s2.txt",
+    "out": "src/data/generated/cet4-2025-12-s2.json",
+    "verified": true,
+    "answersManual": { "banked": "DELNAHCMFK", "matching": "DIFAKGBJEH", "careful": "ADBCCDBACD" } },
+  { "year": 2025, "month": 12, "set": 3,
+    "zt": "D:/workspace_sunny/题库/cet/真题/2025年12月CET4题+答案+音频/2025.12四级真题第3套.pdf",
+    "ztTextFile": "scripts/batches/zt-text/2025-12-s3.txt",
+    "out": "src/data/generated/cet4-2025-12-s3.json",
+    "verified": true,
+    "answersManual": { "banked": "MGHENOAIDK", "matching": "DAJFCIGBLH", "careful": "ABACDADCBD" } }
+]

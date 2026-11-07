@@ -1,0 +1,95 @@
+/* 2023年12月 第2套 CET-6 翻译题。
+ * 来源：2023年12月CET6题+解+音频\03、答案解析\2023.12英语六级真题第2套解析.pdf
+ * 核对：2023.12英语六级真题第2套解析.pdf p19（参考译文与译点精析）
+ * 验证状态：verified — 题干括注 social security 为原卷注释；解析为扫描件，译文按 p19 图像逐句抄录 */
+
+export const translation202312S2 = {
+  "id": "cet6-2023-12-s2",
+  "meta": {
+    "level": "CET6",
+    "year": 2023,
+    "month": 12,
+    "set": 2,
+    "source": "2023年12月CET6题+解+音频\\03、答案解析\\2023.12英语六级真题第2套解析.pdf",
+    "answerSource": "2023.12英语六级真题第2套解析.pdf p19（参考译文与译点精析）",
+    "pages": "解析第19页",
+    "verified": true,
+    "verifiedAt": "2026-11-05",
+    "note": "题干括注 social security 为原卷注释；解析为扫描件，译文按 p19 图像逐句抄录"
+  },
+  "title": "2023年12月 第2套",
+  "topic": "人口老龄化",
+  "directions": "For this part, you are allowed 30 minutes to translate a passage from Chinese into English.",
+  "passage": "随着经济与社会的发展，中国人口结构发生了显著变化，逐渐步入老龄化社会。中国老年人口将持续增加，人口老龄化趋势将更加明显。为了应对人口老龄化带来的种种挑战，国家正积极采取措施，加大对养老的支持。通过改革社会保障（social security）制度，政府不断增加社会保障经费，逐步扩大社会保障覆盖范围，使更多老年人受益。政府还鼓励各种社会团体为老年人提供服务。在政府和社会团体的共同努力下，老年人将生活得更加幸福。",
+  "reference": "With the development of the economy and society, China's population structure has undergone significant changes, and the country is gradually entering an aging society. The elderly population in China will continue to increase, and the trend of population aging will become more apparent. In order to address the various challenges brought by population aging, the country is actively taking measures to increase support for elderly care. By reforming the social security system, the government continuously increases social security funds and gradually expands the coverage of social security to benefit more elderly people. The government also encourages various social organizations to provide services for the elderly. With the joint efforts of the government and social organizations, the elderly will live a happier life.",
+  "notes": [
+    [
+      "人口结构",
+      "population structure"
+    ],
+    [
+      "发生显著变化",
+      "undergo significant changes"
+    ],
+    [
+      "步入老龄化社会",
+      "enter an aging society"
+    ],
+    [
+      "老年人口",
+      "the elderly population"
+    ],
+    [
+      "人口老龄化趋势",
+      "the trend of population aging"
+    ],
+    [
+      "更加明显",
+      "become more apparent"
+    ],
+    [
+      "应对……挑战",
+      "address the challenges"
+    ],
+    [
+      "积极采取措施",
+      "actively take measures"
+    ],
+    [
+      "加大对养老的支持",
+      "increase support for elderly care"
+    ],
+    [
+      "社会保障制度",
+      "the social security system"
+    ],
+    [
+      "社会保障经费",
+      "social security funds"
+    ],
+    [
+      "覆盖范围",
+      "coverage"
+    ],
+    [
+      "社会团体",
+      "social organizations"
+    ],
+    [
+      "共同努力",
+      "joint efforts"
+    ],
+    [
+      "生活得更加幸福",
+      "live a happier life"
+    ]
+  ],
+  "points": [
+    "第一句：“随着经济与社会的发展”用 with 介词短语作背景；“中国人口结构发生了显著变化”用现在完成时 has undergone significant changes；“逐渐步入老龄化社会”与前半句用 and 连接，主语换成 the country，用 is gradually entering an aging society。",
+    "第二句：两个分句并列，均表将来趋势，用 will continue to increase 和 will become more apparent；“老年人口”译为 the elderly population，“人口老龄化趋势”译为 the trend of population aging。",
+    "第三句：“为了应对……挑战”用 In order to + 动词原形作目的状语，译为 In order to address the various challenges brought by population aging，过去分词 brought by 作后置定语；“国家正积极采取措施”用现在进行时 is actively taking measures；“加大对养老的支持”用不定式 to increase support for elderly care 表目的。",
+    "第四句：“通过改革社会保障制度”用 By + 动名词作方式状语；“政府不断增加……逐步扩大……”是主干，用一般现在时 continuously increases... and gradually expands...；“使更多老年人受益”用不定式 to benefit more elderly people 表结果。",
+    "第五句：“还鼓励”译为 also encourages；“鼓励某人做某事”用 encourage sb. to do sth. 结构，译为 encourages various social organizations to provide services for the elderly。",
+    "第六句：“在……的共同努力下”用 With the joint efforts of... 作状语；“老年人将生活得更加幸福”用将来时 the elderly will live a happier life。"
+  ]
+};

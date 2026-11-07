@@ -1,0 +1,36 @@
+/* 2022年9月 第3套 CET-6 写作题。
+ * 来源：2022年09月CET6题+解+音频\01、真题PDF版（推荐打印）❤\2022.09英语六级真题第3套【可复制可搜索，打印首选】.pdf p1（Part I Writing 题干）
+ * 核对：2022年09月CET6题+解+音频\03、答案解析\2022.09英语六级解析第3套.pdf p1（参考范文）
+ * 验证状态：verified — 解析册为单页简版，无审题/译文/点评栏目，review、modelZh、points 为人工撰写。 */
+
+export const writing202209S3 = {
+  "id": "cet6-2022-09-s3",
+  "meta": {
+    "level": "CET6",
+    "year": 2022,
+    "month": 9,
+    "set": 3,
+    "source": "2022年09月CET6题+解+音频\\01、真题PDF版（推荐打印）❤\\2022.09英语六级真题第3套【可复制可搜索，打印首选】.pdf p1（Part I Writing 题干）",
+    "answerSource": "2022年09月CET6题+解+音频\\03、答案解析\\2022.09英语六级解析第3套.pdf p1（参考范文）",
+    "pages": "原题第1页 / 解析第1页",
+    "verified": true,
+    "verifiedAt": "2026-11-05",
+    "note": "解析册为单页简版，无审题/译文/点评栏目，review、modelZh、points 为人工撰写。"
+  },
+  "title": "2022年9月 第3套",
+  "topic": "互信与开放促进合作",
+  "directions": "For this part, you are allowed 30 minutes to write an essay that begins with the sentence \"It is now widely accepted that mutual trust and openness is the key to promoting cooperation.\" You can make comments, cite examples or use your personal experiences to develop your essay. You should write at least 150 words but no more than 200 words.",
+  "minWords": 150,
+  "maxWords": 200,
+  "model": "The Importance of Mutual Trust and Openness in Promoting Cooperation\n\nIt is now widely accepted that mutual trust and openness is the key to promoting cooperation. As for me, I totally agree with the idea that mutual trust and openness play a crucial role in boosting cooperation.\n\nTo begin with, the best bosses understand the art of delegation. It strongly suggests that mutual trust is the premise of cooperation. With trust in each other, people of diverse temperaments, experiences, thinking modes and backgrounds can have a better understanding and communication, thus reducing unnecessary conflicts and frictions and promoting cooperation. Second, being open and inclusive reinforces the foundation for win-win cooperation. The Belt and Road Initiative could serve as a perfect example. The initiative welcomes countries along the routes to actively participate and invites friends from the rest of the world to join this great project with open arms, which will provide an inclusive platform for all the countries involved.\n\nIn sum, at no time should we underestimate the power of mutual trust and openness to promote cooperation. In conducting exchanges among colleagues or between countries, we need to be open and stick to the principle of mutual respect and trust to seize the opportunities for win-win cooperation.",
+  "modelZh": "互信与开放对促进合作的重要性\n\n人们普遍认为，互信与开放是促进合作的关键。就我而言，我完全赞同互信与开放在推动合作中发挥着至关重要的作用。\n\n首先，最优秀的管理者懂得授权的艺术。这有力地表明，互信是合作的前提。彼此信任能让不同性格、经历、思维方式和背景的人更好地理解与沟通，从而减少不必要的冲突与摩擦，促进合作。其次，开放包容筑牢了合作共赢的基础。\"一带一路\"倡议就是一个绝佳的例子。该倡议欢迎沿线国家积极参与，张开双臂邀请世界各国的朋友加入这一伟大工程，为所有参与国提供了一个包容的平台。\n\n总之，我们绝不应低估互信与开放对促进合作的力量。在同事之间或国家之间的交往中，我们需要秉持开放的态度，坚持相互尊重与信任的原则，抓住合作共赢的机遇。",
+  "review": "题干要求以\"It is now widely accepted that mutual trust and openness is the key to promoting cooperation.\"为开头句，论述互信与开放对促进合作的关键作用，可评论、可举例，也可结合个人经历。范文采用三段式：首段以给定句开头，并用\"As for me, I totally agree with the idea that...\"明确表态；第二段分两层论证——先用\"To begin with\"从管理实践切入，指出最好的管理者懂得授权的艺术，说明互信是合作的前提，彼此信任能让背景各异的人更好沟通、减少不必要的冲突与摩擦；再用\"Second\"指出开放包容筑牢合作共赢的基础，并举\"一带一路\"倡议为例，说明开放平台欢迎各国积极参与；结尾段用\"In sum\"总结，以倒装句\"at no time should we underestimate...\"强调不可低估互信与开放的力量，呼吁在同事间、国家间交往中坚持相互尊重与信任，抓住合作共赢的机遇。",
+  "points": [
+    "首段以给定句开头，\"As for me, I totally agree with the idea that...\"直接表明立场，同位语从句使用规范。",
+    "\"To begin with\"\"Second\"\"In sum\"标志词清晰，论证层次分明。",
+    "以\"the best bosses understand the art of delegation\"从管理实践切入论证互信是合作的前提，角度新颖。",
+    "\"people of diverse temperaments, experiences, thinking modes and backgrounds\"四重并列，展现词汇丰富度。",
+    "举\"一带一路\"倡议（The Belt and Road Initiative）为例论证开放包容促进共赢，例证宏大贴切，\"with open arms\"\"inclusive platform\"表达地道。",
+    "结尾\"at no time should we underestimate...\"否定词前置构成倒装，语气强烈，重申观点有力。"
+  ]
+};

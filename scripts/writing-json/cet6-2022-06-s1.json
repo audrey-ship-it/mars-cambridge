@@ -1,0 +1,26 @@
+{
+  "id": "cet6-2022-06-s1",
+  "year": 2022,
+  "month": 6,
+  "set": 1,
+  "title": "2022年6月 第1套",
+  "topic": "环保生活方式",
+  "directions": "For this part, you are allowed 30 minutes to write an essay that begins with the sentence \"Nowadays more and more people choose to live an environmentally friendly lifestyle.\" You can make comments, cite examples, or use your personal experiences to develop your essay. You should write at least 150 words but no more than 200 words.",
+  "review": "题干要求以\"Nowadays more and more people choose to live an environmentally friendly lifestyle.\"为开头句写一篇文章，围绕\"越来越多人选择环保生活方式\"这一现象展开，可评论、可举例，也可结合个人经历。范文采用三段式：首段以给定句引出话题，并援引CCTV调查说明关注环保的人数创历史新高；第二段先分析人们选择环保生活的原因——环境污染敲响警钟、低碳生活日渐流行，再列举相应行动——新能源汽车普及、人们偏爱可回收产品；第三段用\"To sum up\"总结全文，强调环保生活是每个人的责任，能让人与自然更加和谐并带来诸多益处。写作时注意紧扣\"环保生活方式\"主题，原因与措施要具体，结尾呼应开头。",
+  "model": "Live an Environmentally Friendly Lifestyle\n\nNowadays more and more people choose to live an environmentally friendly lifestyle. According to a recent survey by CCTV, the number of people who pay attention to environmental protection is at a record high.\n\nMultiple factors need to be considered for this considerable progress. First and foremost, with the rapid development of our society, increasingly growing enterprises and factories around our city as well as the ways that people travel have led to serious environment pollution, which, as a wake-up call, has arisen people's awareness of protecting the environment. Furthermore, the low-carbon lifestyle has been in vogue recently, especially among young people. For all these reasons, people have proactively taken a series of effective actions to live an eco-friendly life. First of all, the wide popularity of new energy vehicles is an outstanding example, which has contributed a lot to the reduction of carbon emission. Besides, many people prefer to use some recyclable products in their daily life.\n\nTo sum up, it is our responsibility to live an environmentally-friendly life, driving a more harmonious relationship between nature and ourselves. Such an excellent lifestyle will endow us as well as the earth with numerous benefits.",
+  "modelZh": "过环保的生活方式\n\n如今，越来越多的人选择过环保的生活方式。根据中央电视台最近的一项调查，关注环保的人数创历史新高。\n\n取得这一可观的进展需要考虑多方面的因素。首先，随着社会的快速发展，我们城市周围不断增长的企业和工厂以及人们的出行方式造成了严重的环境污染，这如同一记警钟，唤醒了人们保护环境的意识。此外，低碳生活方式近来十分流行，尤其是在年轻人当中。基于所有这些原因，人们主动采取了一系列有效行动来过环保的生活。首先，新能源汽车的广泛普及就是一个突出的例子，它为减少碳排放做出了很大贡献。此外，许多人在日常生活中更喜欢使用可回收产品。\n\n总之，过环保的生活是我们的责任，它能让人与自然之间形成更加和谐的关系。这种极好的生活方式将给我们以及地球带来无数益处。",
+  "points": [
+    "【1】【2】引出话题：越来越多的人选择了环保的生活方式，关注环保的人数创历史新高。",
+    "【3】指出很多因素促使人们选择环保生活。",
+    "【4】【5】分别使用\"First and foremost...\" \"Furthermore...\"具体阐述人们选择环保的生活方式的原因。",
+    "【6】指出人们为环保生活采取了相应的措施。",
+    "【7】【8】分别使用\"First of all...\" \"Besides...\"具体阐述人们为环保生活采取的行动。",
+    "【9】【10】用to sum up总结全文，重申环保生活的重要性和积极影响。"
+  ],
+  "source": "2022年06月CET6题+解+音频\\01、真题PDF版（推荐打印）❤\\2022.06六级真题第1套【可复制可搜索，打印首选】.pdf p1（Part I Writing 题干）",
+  "answerSource": "2022年06月CET6题+解+音频\\03、答案解析\\2022.06英语六级考试解析第1套.pdf p23（结构框图/范文点评）",
+  "pages": "原题第1页 / 解析第23页",
+  "verified": true,
+  "verifiedAt": "2026-11-05",
+  "note": "解析无范文译文栏目，modelZh 为人工翻译；范文中【1】—【10】为原书句号标注，录入时已略去。"
+}

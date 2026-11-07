@@ -1,0 +1,20 @@
+[
+  { "year": 2021, "month": 6, "set": 1,
+    "zt": "tmp-verify/zt1-fixed.txt",
+    "ztTextFile": "tmp-verify/zt1-fixed.txt",
+    "out": "tmp-verify/dry-2106-s1.json",
+    "verified": false,
+    "answersManual": { "banked": "AAAAAAAAAA", "matching": "AAAAAAAAAA", "careful": "AAAAAAAAAA" } },
+  { "year": 2021, "month": 6, "set": 2,
+    "zt": "tmp-verify/zt2-fixed.txt",
+    "ztTextFile": "tmp-verify/zt2-fixed.txt",
+    "out": "tmp-verify/dry-2106-s2.json",
+    "verified": false,
+    "answersManual": { "banked": "AAAAAAAAAA", "matching": "AAAAAAAAAA", "careful": "AAAAAAAAAA" } },
+  { "year": 2021, "month": 6, "set": 3,
+    "zt": "tmp-verify/zt3-fixed.txt",
+    "ztTextFile": "tmp-verify/zt3-fixed.txt",
+    "out": "tmp-verify/dry-2106-s3.json",
+    "verified": false,
+    "answersManual": { "banked": "AAAAAAAAAA", "matching": "AAAAAAAAAA", "careful": "AAAAAAAAAA" } }
+]

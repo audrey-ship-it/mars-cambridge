@@ -1,0 +1,42 @@
+{
+  "id": "cet6-2024-06-s2",
+  "year": 2024,
+  "month": 6,
+  "set": 2,
+  "title": "2024年6月 第2套",
+  "topic": "竹子文化",
+  "passage": "中国盛产竹子，是最早开发利用竹资源的国家。竹子在中国分布广泛，品种丰富。竹子实用性强，用于生产和生活的许多方面，如筷子、桌椅的制作和桥梁、房屋的建造。中国人爱竹，自古以来就有无数文人以竹为主题，创作了绚丽多彩的文学和绘画作品。竹子主干（stem）笔直，象征正直的品格。竹子具有强大的生命力和适应能力，无论环境多么恶劣，都能够顽强生存，因而寓意坚韧不拔的精神。几千年来，竹子一直被视为中华民族品格的象征。",
+  "reference": "China is rich in bamboo and is the first country to exploit and utilize bamboo resources. Bamboo is extensively distributed and diverse in variety within China. Bamboo is highly versatile and is used in various aspects of production and daily life, such as the making of chopsticks, tables, and chairs, as well as the construction of bridges and houses. The Chinese have a deep affection for bamboo, and since ancient times, numerous scholars have created colorful literature and paintings on the theme of bamboo. The stem of bamboo is straight, symbolizing integrity. Bamboo exhibits remarkable vitality and adaptability, able to survive toughly no matter how harsh the environment is, thus embodying the spirit of unwavering perseverance. For thousands of years, bamboo has been esteemed as a representation of the character of the Chinese nation.",
+  "notes": [
+    ["盛产", "be rich in"],
+    ["开发利用", "exploit and utilize"],
+    ["竹资源", "bamboo resources"],
+    ["分布广泛", "be extensively distributed"],
+    ["品种丰富", "be diverse in variety"],
+    ["实用性强", "be highly versatile"],
+    ["筷子、桌椅的制作", "the making of chopsticks, tables and chairs"],
+    ["绚丽多彩", "colorful"],
+    ["以竹为主题", "on the theme of bamboo"],
+    ["正直的品格", "integrity"],
+    ["适应能力", "adaptability"],
+    ["顽强生存", "survive toughly"],
+    ["寓意", "embody; symbolize"],
+    ["坚韧不拔的精神", "the spirit of unwavering perseverance"],
+    ["被视为", "be esteemed as"]
+  ],
+  "points": [
+    "第一句：主干为“中国盛产竹子”，译为 China is rich in bamboo；“是最早开发利用竹资源的国家”用 and 连接，译为 is the first country to exploit and utilize bamboo resources，序数词后用不定式作定语。",
+    "第二句：说明竹子在中国的情况，用一般现在时；“分布广泛、品种丰富”并列译作 is extensively distributed and diverse in variety within China。",
+    "第三句：主干“竹子实用性强”译为 Bamboo is highly versatile；“用于生产和生活的许多方面”用被动语态 is used in various aspects of production and daily life；“如……”用 such as... as well as... 列举。",
+    "第四句：两个分句用 and 连接；第二个分句用 there be 句型转化的主谓结构，译为 numerous scholars have created colorful literature and paintings on the theme of bamboo；“自古以来”用 since ancient times，句子用现在完成时；“以竹为主题”处理为介词短语。",
+    "第五句：“竹子主干笔直”译为 The stem of bamboo is straight；“象征正直的品格”用现在分词短语 symbolizing integrity 作伴随状语。",
+    "第六句：主干“竹子具有强大的生命力和适应能力”译为 Bamboo exhibits remarkable vitality and adaptability；“无论环境多么恶劣，都能够顽强生存”用形容词加不定式 able to survive toughly no matter how harsh the environment is 作补充说明；“因而寓意坚韧不拔的精神”用现在分词短语 thus embodying the spirit of unwavering perseverance 表结果。",
+    "第七句：“几千年来”用 For thousands of years，句子用现在完成时 has been esteemed as，表示持续到现在的状态；“中华民族品格的象征”译为 a representation of the character of the Chinese nation。"
+  ],
+  "source": "2024年06月CET6题+解+音频\\2024年6月六级真题-答案解析\\2024.6六级第二套解析.pdf",
+  "answerSource": "2024.6六级第二套解析.pdf p19（参考译文）",
+  "pages": "解析第19页",
+  "verified": true,
+  "verifiedAt": "2026-11-05",
+  "note": "题干括注 stem 为原卷注释；参考译文与同批次 docx 解析逐句核对，OCR 连写词已按句意拆分"
+}

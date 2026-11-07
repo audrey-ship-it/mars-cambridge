@@ -1,0 +1,104 @@
+/* 2023年12月 第3套 CET-6 翻译题。
+ * 来源：2023年12月CET6题+解+音频\03、答案解析\2023.12英语六级真题第3套解析.pdf
+ * 核对：2023.12英语六级真题第3套解析.pdf p11（参考译文与译点精析）
+ * 验证状态：verified — 参考译文见 p11，译点精析续至 p12；扫描件个别连写词按句意补空格 */
+
+export const translation202312S3 = {
+  "id": "cet6-2023-12-s3",
+  "meta": {
+    "level": "CET6",
+    "year": 2023,
+    "month": 12,
+    "set": 3,
+    "source": "2023年12月CET6题+解+音频\\03、答案解析\\2023.12英语六级真题第3套解析.pdf",
+    "answerSource": "2023.12英语六级真题第3套解析.pdf p11（参考译文与译点精析）",
+    "pages": "解析第11-12页",
+    "verified": true,
+    "verifiedAt": "2026-11-05",
+    "note": "参考译文见 p11，译点精析续至 p12；扫描件个别连写词按句意补空格"
+  },
+  "title": "2023年12月 第3套",
+  "topic": "养老服务",
+  "directions": "For this part, you are allowed 30 minutes to translate a passage from Chinese into English.",
+  "passage": "近年来，中国老龄人口持续增长。中国政府正采取各种措施，推进养老服务体系建设，使老年人晚年生活健康幸福。全国兴建了各类养老服务机构。为了提升养老机构的服务质量，政府颁布了一系列标准，加强对养老机构的监管。许多城市为方便老年人用餐，开设了社区食堂，为他们提供价格实惠的饭菜。行动不便的老年人还能享受上门送餐服务。同时，中国还在积极探索居家和社区养老等其他养老模式，以确保所有老年人老有所养。",
+  "reference": "In recent years, the elderly population in China has continued to grow. The Chinese government is taking various measures to promote the construction of the elderly care service system, so that the elderly can live a healthy and happy life in their later years. Various elderly care service institutions have been built nationwide. In order to improve the service quality of elderly care institutions, the government has issued a series of standards to strengthen the supervision of elderly care institutions. Many cities have opened community canteens to facilitate dining for the elderly, providing them with affordable meals. Elderly people with limited mobility can also enjoy door-to-door meal delivery services. At the same time, China is actively exploring other elderly care models such as home- and community-based elderly care to ensure that all elderly people are supported in old age.",
+  "notes": [
+    [
+      "老龄人口",
+      "the elderly population"
+    ],
+    [
+      "持续增长",
+      "continue to grow"
+    ],
+    [
+      "采取各种措施",
+      "take various measures"
+    ],
+    [
+      "养老服务体系建设",
+      "the construction of the elderly care service system"
+    ],
+    [
+      "晚年生活",
+      "life in their later years"
+    ],
+    [
+      "全国",
+      "nationwide"
+    ],
+    [
+      "养老服务机构",
+      "elderly care service institutions"
+    ],
+    [
+      "提升服务质量",
+      "improve the service quality"
+    ],
+    [
+      "颁布一系列标准",
+      "issue a series of standards"
+    ],
+    [
+      "加强对……的监管",
+      "strengthen the supervision of"
+    ],
+    [
+      "社区食堂",
+      "community canteens"
+    ],
+    [
+      "方便老年人用餐",
+      "facilitate dining for the elderly"
+    ],
+    [
+      "价格实惠的",
+      "affordable"
+    ],
+    [
+      "行动不便的",
+      "with limited mobility"
+    ],
+    [
+      "上门送餐服务",
+      "door-to-door meal delivery services"
+    ],
+    [
+      "居家和社区养老",
+      "home- and community-based elderly care"
+    ],
+    [
+      "老有所养",
+      "be supported in old age"
+    ]
+  ],
+  "points": [
+    "第一句：“近年来”提示现在完成时，译为 In recent years, the elderly population in China has continued to grow。",
+    "第二句：主语为 The Chinese government，用现在进行时 is taking various measures；“推进养老服务体系建设”用不定式 to promote the construction of the elderly care service system 表目的；“使老年人晚年生活健康幸福”用 so that 引导的目的状语从句，译为 so that the elderly can live a healthy and happy life in their later years。",
+    "第三句：无主语句，改译为被动语态 Various elderly care service institutions have been built nationwide，用现在完成时被动。",
+    "第四句：“为了提升养老机构的服务质量”用 In order to + 动词原形作目的状语；“政府颁布了一系列标准”译为 the government has issued a series of standards，用现在完成时；“加强对养老机构的监管”用不定式 to strengthen the supervision of elderly care institutions 表目的。",
+    "第五句：主干“许多城市开设了社区食堂”译为 Many cities have opened community canteens；“为方便老年人用餐”用不定式 to facilitate dining for the elderly 作目的状语；“为他们提供价格实惠的饭菜”用现在分词短语 providing them with affordable meals 作伴随状语。",
+    "第六句：“行动不便的老年人”用 with limited mobility 作后置定语，译为 Elderly people with limited mobility；“享受上门送餐服务”译为 can also enjoy door-to-door meal delivery services。",
+    "第七句：主干“中国还在积极探索其他养老模式”译为 China is actively exploring other elderly care models；“居家和社区养老等”用 such as home- and community-based elderly care；“以确保所有老年人老有所养”用不定式 to ensure that all elderly people are supported in old age 表目的。"
+  ]
+};

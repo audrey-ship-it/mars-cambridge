@@ -1,0 +1,33 @@
+/* 2025年12月 第3套 CET-6 写作题。
+ * 来源：2025年12月CET6题+答案+音频\2025.12六级真题第3套.pdf p1（Part I Writing 题干）
+ * 核对：2025年12月CET6题+答案+音频\2025.12英语六级解析第3套.pdf p1（审题 / 参考范文&点评 / 范文译文）
+ * 验证状态：verified — 题干与范文均与原件逐句核对 */
+
+export const writing202512S3 = {
+  "id": "cet6-2025-12-s3",
+  "meta": {
+    "level": "CET6",
+    "year": 2025,
+    "month": 12,
+    "set": 3,
+    "source": "2025年12月CET6题+答案+音频\\2025.12六级真题第3套.pdf p1（Part I Writing 题干）",
+    "answerSource": "2025年12月CET6题+答案+音频\\2025.12英语六级解析第3套.pdf p1（审题 / 参考范文&点评 / 范文译文）",
+    "pages": "原题第1页 / 解析第1页",
+    "verified": true,
+    "verifiedAt": "2026-11-05"
+  },
+  "title": "2025年12月 第3套",
+  "topic": "教师对学生发展的深远影响",
+  "directions": "For this part, you are allowed 30 minutes to write an essay that begins with the sentence “It is believed that teachers can exert a profound influence on their students' academic pursuit and personal development.” You can make comments, cite examples or use your personal experiences to develop your essay. You should write at least 150 words but no more than 200 words. You should copy the sentence given in quotes at the beginning of your essay.",
+  "minWords": 150,
+  "maxWords": 200,
+  "model": "It is believed that teachers can exert a profound influence on their students' academic pursuit and personal development. This influence is not limited to short-term guidance but extends to long-term shaping, laying the groundwork for students' academic growth and life choices.\n\nAcademically, excellent teachers often go beyond textbook teaching. They help students build systematic learning frameworks instead of just imparting knowledge. For example, they may guide science students to connect theories with real-world applications, or teach language learners to use context to memorize words. Such methods not only improve students' exam scores but also ignite their lasting passion for learning. For personal development, teachers act as role models of integrity and resilience, instilling essential life values in students. When students face failures, teachers emphasizing “effort over results” help them develop a growth mindset; when conflicts arise among peers, those advocating empathy teach them to communicate harmoniously, both of which are beneficial to their future social lives.\n\nIn conclusion, teachers are more than knowledge providers—they are mentors for students' overall growth. Their influence on academic study and personal values enables students to grow into capable and virtuous individuals, making their role vital in the life journey of their students.",
+  "modelZh": "人们认为，教师能对学生的学业追求和个人发展产生深远影响。这种影响不仅限于短期指导，还延伸到了长期塑造的作用，为学生的学业成长和人生选择奠定基础。\n\n在学术上，优秀的教师往往不局限于课本教学。他们帮学生构建系统的学习框架，而不仅仅传授知识。例如，他们会引导理科学生将理论与实际应用相结合，或教语言学习者借助语境记单词。这类方法不仅能提高学生的考试成绩，还能点燃他们对学习的持久热情。在个人成长方面，教师是正直与坚韧的典范，培养学生重要的人生价值观。当学生面临失败时，强调“努力重于结果”的教师可以帮助他们培养成长型思维；当同学之间发生冲突时，倡导同理心的教师会教他们和谐沟通，这两种能力都对他们的社会生活有益处。\n\n总之，教师不仅仅是知识的传授者，更是学生全面成长的导师。他们在学业和个人价值观上的影响，能够让学生成长为有能力、品德高尚的人，这使得教师这一角色在学生的成长历程中至关重要。",
+  "review": "题目要求考生写一篇以“人们认为，教师能对学生的学业追求和个人发展产生深远影响”为开头的作文，考生可以通过发表评论、举例子或描述个人经历展开论述。开头段以指定句开篇，简要点明教师会对学生产生影响；中间段对这种影响展开具体论述；结尾段总结全文，强调教师角色的意义，升华主题。",
+  "points": [
+    "以给定句子引出话题，描述教师对学生“学业追求和个人发展”的短期和长期影响，为下文论证做铺垫。",
+    "从学术和个人成长两方面分别论述优秀教师对学生产生的影响。",
+    "总结全文，升华主题。",
+    "布局借鉴：开头段以指定句开篇，简要点明教师会对学生产生影响；中间段对这种影响展开具体论述；结尾段总结全文，强调教师角色的意义，升华主题。"
+  ]
+};

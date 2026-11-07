@@ -1,0 +1,20 @@
+[
+  { "year": 2022, "month": 12, "set": 1,
+    "zt": "D:/workspace_sunny/题库/cet/真题/2022年12月CET4题+解+音频/01、真题PDF版（推荐打印）❤/2022.12四级真题第1套.pdf",
+    "ztTextFile": "scripts/batches/zt-text/2022-12-s1.txt",
+    "out": "src/data/generated/cet4-2022-12-s1.json",
+    "verified": true,
+    "answersManual": { "banked": "LHBMEODCAF", "matching": "DGBDLAJDCH", "careful": "ABCDBCBDCA" } },
+  { "year": 2022, "month": 12, "set": 2,
+    "zt": "D:/workspace_sunny/题库/cet/真题/2022年12月CET4题+解+音频/01、真题PDF版（推荐打印）❤/2022.12四级真题第2套.pdf",
+    "ztTextFile": "scripts/batches/zt-text/2022-12-s2.txt",
+    "out": "src/data/generated/cet4-2022-12-s2.json",
+    "verified": true,
+    "answersManual": { "banked": "KBLADEHGFI", "matching": "CHEBDCAGDF", "careful": "BDCACDBABC" } },
+  { "year": 2022, "month": 12, "set": 3,
+    "zt": "D:/workspace_sunny/题库/cet/真题/2022年12月CET4题+解+音频/01、真题PDF版（推荐打印）❤/2022.12四级真题第3套.pdf",
+    "ztTextFile": "scripts/batches/zt-text/2022-12-s3.txt",
+    "out": "src/data/generated/cet4-2022-12-s3.json",
+    "verified": true,
+    "answersManual": { "banked": "DNHGALEJCF", "matching": "DJBGADKCHF", "careful": "DADCABADCB" } }
+]

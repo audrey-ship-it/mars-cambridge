@@ -1,0 +1,35 @@
+/* 2022年6月 第2套 CET-6 写作题。
+ * 来源：2022年06月CET6题+解+音频\01、真题PDF版（推荐打印）❤\2022.06六级真题第2套【可复制可搜索，打印首选】.pdf p1（Part I Writing 题干）
+ * 核对：2022年06月CET6题+解+音频\03、答案解析\2022.06英语六级真题解析第2套 .pdf p38（结构框图/范文点评）
+ * 验证状态：verified — 解析无范文译文栏目，modelZh 为人工翻译；原书点评【2】【3】【4】为一条综合点评，录入时按三个分论点拆分；范文中【1】—【5】句号标注已略去。 */
+
+export const writing202206S2 = {
+  "id": "cet6-2022-06-s2",
+  "meta": {
+    "level": "CET6",
+    "year": 2022,
+    "month": 6,
+    "set": 2,
+    "source": "2022年06月CET6题+解+音频\\01、真题PDF版（推荐打印）❤\\2022.06六级真题第2套【可复制可搜索，打印首选】.pdf p1（Part I Writing 题干）",
+    "answerSource": "2022年06月CET6题+解+音频\\03、答案解析\\2022.06英语六级真题解析第2套 .pdf p38（结构框图/范文点评）",
+    "pages": "原题第1页 / 解析第38页",
+    "verified": true,
+    "verifiedAt": "2026-11-05",
+    "note": "解析无范文译文栏目，modelZh 为人工翻译；原书点评【2】【3】【4】为一条综合点评，录入时按三个分论点拆分；范文中【1】—【5】句号标注已略去。"
+  },
+  "title": "2022年6月 第2套",
+  "topic": "终身学习新技能",
+  "directions": "For this part, you are allowed 30 minutes to write an essay that begins with the sentence \"Nowadays more and more people keep learning new skills to adapt to a fast-changing world.\" You can make comments, cite examples, or use your personal experiences to develop your essay. You should write at least 150 words but no more than 200 words.",
+  "minWords": 150,
+  "maxWords": 200,
+  "model": "Keep Learning, Keep Progress\n\nNowadays more and more people keep learning new skills to adapt to a fast-changing world. Only by learning new skills constantly can we avoid obsolescence in such a society where knowledge and technology upgrade in a rapid way.\n\nWith regard to college students, what matters most is the development of new knowledge and skills. Only by constant learning can they keep pace with the changing world and build up the foundation for earning a place in the work after graduation. In addition, it is of vital importance for employees to engage in lifelong learning, for fast-changing economic technology lowers the demand for workers and creates new jobs with higher demands, forcing people without required skills into unemployment. Meanwhile, old people should continue to learn new skills as well to meet their needs in daily life. Take electronic products for example. It is necessary for old people to learn how to use smartphones in contacting someone and scanning QR Code outside.\n\nIn a nutshell, lifelong learning has been a hot word for a long time, and it's never too late to learn. So, are you ready to learn new skills?",
+  "modelZh": "不断学习，不断进步\n\n如今，越来越多的人不断学习新技能，以适应快速变化的世界。在这样一个知识和技术快速升级的社会里，只有不断学习新技能，我们才能避免被淘汰。\n\n对于大学生而言，最重要的是新知识和新技能的培养。只有不断学习，他们才能跟上变化的世界，为毕业后在职场赢得一席之地打下基础。此外，雇员参加终身学习也至关重要，因为快速变化的经济技术降低了对普通工人的需求，同时创造出要求更高的新岗位，迫使不具备所需技能的人失业。与此同时，老年人也应继续学习新技能，以满足日常生活的需要。以电子产品为例，老年人有必要学会如何使用智能手机联系他人、在户外扫码。\n\n总而言之，终身学习长期以来都是热门话题，学习永远不晚。那么，你准备好学习新技能了吗？",
+  "review": "题干要求以\"Nowadays more and more people keep learning new skills to adapt to a fast-changing world.\"为开头句，论述不断学习新技能以适应快速变化的世界的必要性，可通过评论、举例或个人经历展开。范文采用三段式：首段以给定句引出话题，并用倒装句\"Only by learning new skills constantly can we avoid obsolescence...\"点明不断学习才能避免被淘汰；第二段用\"With regard to...\"\"In addition...\"\"Meanwhile...\"从大学生、雇员、老年人三类人群的角度具体阐述学习新技能的重要性，并以老年人学习使用智能手机为例；第三段用\"In a nutshell\"总结全文，重申终身学习的重要性，以问句收尾引发读者思考。",
+  "points": [
+    "【1】引出话题：越来越多的人不断学习新技能来适应快速变化的世界。",
+    "【2】用\"With regard to...\"引出第一个分论点，从大学生角度阐述学习新技能的重要性。",
+    "【3】用\"In addition...\"引出第二个分论点，从雇员角度阐述学习新技能的重要性。",
+    "【4】用\"Meanwhile...\"引出第三个分论点，从老年人角度阐述学习新技能的重要性。",
+    "【5】用in a nutshell总结全文，重申终身学习新技能的重要性。"
+  ]
+};

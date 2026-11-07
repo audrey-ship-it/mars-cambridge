@@ -1,0 +1,20 @@
+[
+  { "year": 2021, "month": 6, "set": 1,
+    "zt": "D:/workspace_sunny/题库/cet/真题/2021年06月CET4题+解+音频/01、真题PDF版（推荐打印）❤/2021.06四级真题第1套.pdf",
+    "ztTextFile": "scripts/batches/zt-text/2021-06-s1.txt",
+    "out": "src/data/generated/cet4-2021-06-s1.json",
+    "verified": true,
+    "answersManual": { "banked": "CFEKGMJNOA", "matching": "EGJCHEDAIF", "careful": "CBBCDBCDAA" } },
+  { "year": 2021, "month": 6, "set": 2,
+    "zt": "D:/workspace_sunny/题库/cet/真题/2021年06月CET4题+解+音频/01、真题PDF版（推荐打印）❤/2021.06四级真题第2套.pdf",
+    "ztTextFile": "scripts/batches/zt-text/2021-06-s2.txt",
+    "out": "src/data/generated/cet4-2021-06-s2.json",
+    "verified": true,
+    "answersManual": { "banked": "IBDOCLFJNK", "matching": "CHEBKDGAIF", "careful": "BDACDBACDD" } },
+  { "year": 2021, "month": 6, "set": 3,
+    "zt": "D:/workspace_sunny/题库/cet/真题/2021年06月CET4题+解+音频/01、真题PDF版（推荐打印）❤/2021.06四级真题第3套.pdf",
+    "ztTextFile": "scripts/batches/zt-text/2021-06-s3.txt",
+    "out": "src/data/generated/cet4-2021-06-s3.json",
+    "verified": true,
+    "answersManual": { "banked": "EBJDHIKOCG", "matching": "GDKBIFJCIE", "careful": "ABCCDCADAB" } }
+]

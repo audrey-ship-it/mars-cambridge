@@ -1,0 +1,441 @@
+{
+  "id": "cet4-2020-09-s1",
+  "meta": {
+    "level": "CET4",
+    "year": 2020,
+    "month": 9,
+    "set": 1,
+    "source": "../../mars-cet/tmp-verify/zt1-fixed.txt",
+    "answerSource": "人工读图答案（待复核后置 verified）",
+    "verified": false,
+    "warnings": [
+      "选词选项数=18（应为15）",
+      "选词空位数=0（应为10）",
+      "长篇段落数=7（应≥10）"
+    ]
+  },
+  "reading": {
+    "banked": {
+      "passage": "There're three main types of financial stress people encounter. The first type is apparent in people being stressed about the 26 ups and downs of investment markets-actually not so much the ups, but 27 the downs. These people are usually unable or unprepared to endure the long haul. The next common type of financial stress is that caused by debt. In a 28 percentage of cases of debt-induced financial stress, credit cards and loans will be a central element. Often there'll be a car loan and perhaps a mortgage, but credit cards often seem to be the gateway to debt-related financial difficulties for many. The third type of stress and __2_9__ the least known is inherited financial stress, which is the most destructive. It is experienced by those who have grown up in households where their parents regularly 30 and fought about money. Money therefore becomes a stressful topic, and so the thought of sitting down and planning is an unattractive 31 Those suffering inherited financial anxiety 32 to follow one of two patterns. Either they put their head in the sand, they would 33 examining their financial statements, budgeting, and discussing financial matters with those closest to them. Alternatively, they would go to the other 34 , and micro-analyze everything, to the point of complete __3_5__ . They're convinced that whatever decision they make will be the wrong one.",
+      "options": [
+        {
+          "letter": "A",
+          "word": "appearance"
+        },
+        {
+          "letter": "F",
+          "word": "extreme"
+        },
+        {
+          "letter": "K",
+          "word": "proposition"
+        },
+        {
+          "letter": "B",
+          "word": "argued"
+        },
+        {
+          "letter": "G",
+          "word": "inaction"
+        },
+        {
+          "letter": "L",
+          "word": "rebelled"
+        },
+        {
+          "letter": "C",
+          "word": "avoid"
+        },
+        {
+          "letter": "H",
+          "word": "incredibly"
+        },
+        {
+          "letter": "M",
+          "word": "statement"
+        },
+        {
+          "letter": "D",
+          "word": "considerable"
+        },
+        {
+          "letter": "I",
+          "word": "normal"
+        },
+        {
+          "letter": "N",
+          "word": "tend"
+        },
+        {
+          "letter": "E",
+          "word": "definitely"
+        },
+        {
+          "letter": "J",
+          "word": "possibly"
+        },
+        {
+          "letter": "O",
+          "word": "traditional"
+        },
+        {
+          "letter": "A",
+          "word": "Imagine"
+        },
+        {
+          "letter": "C",
+          "word": "The"
+        },
+        {
+          "letter": "E",
+          "word": "The"
+        }
+      ],
+      "answers": [
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    "matching": {
+      "title": "Doctor's orders: Let children just play",
+      "paragraphs": [
+        {
+          "label": "F",
+          "text": "By 2009, a study of Los Angeles kindergarten classrooms found that five-year-olds were so burdened with academic requirements that they were down to an average of just 19 minutes per day of \"choice time,\" when they were permitted to play freely with blocks, toys or other children. One in four Los Angeles teachers reported there was no time at all for \"free play.\" Increased academic pressures have left 30 percent of U.S. kindergarten classes without any recess. Such findings prompted the American Academy of Pediatrics to issue a policy statement in 2013 on the \"crucial role of recess in school.\""
+        },
+        {
+          "label": "G",
+          "text": "Pediatricians aren't the only ones who have noticed. Tn a report titled \"Crisis in the Kindergarten,\" a group of educators, health professionals and child advocates called the loss of play in early childhood ''a tragedy, both for the children themselves and for our nation and the world.\" Kids in play-based kindergartens \"end up equally good or better at reading and other intellectual skills, and they are more likely to become well-adjusted healthy people,\" the Alliance for Childhood said in 2009. Indeed, new research demonstrates why playing with blocks might have been time better spent, Yogman said. The trial assessed the effectiveness of an early mathematics intervention ( -tffii) aimed at preschoolers. The results showed almost no gains in math achievement."
+        },
+        {
+          "label": "H",
+          "text": "Another playtime thief: the growing proportion of kids' time spent in front of screens and digital devices, even among preschoolers. Last year, Common Sense Media reported that children up through age eight spent an average of two hours and 19 minutes in front of screens each day, including an average of 42 minutes a day for those under two. This increase of digital use comes with rising risks of obesity, sleep deprivation and cognitive ( iJ.. 9'11 a-ii ) , language and social-emotional delays, the American Academy of Pediatrics warned in 2016."
+        },
+        {
+          "label": "I",
+          "text": "\"I respect that parents have busy lives and it's easy to hand a child an iPhone,\" Yogman said. \"But there's a cost to that. For young children, it's much too passive. And kids really learn better when they're actively engaged and have to really discover things.\""
+        },
+        {
+          "label": "J",
+          "text": "The decline of play is a special hazard for the roughly 1 in 5 children in the United States who live in poverty. These 14 million children most urgently need to develop the resilience ( -'pJ.1 <J}J ) that is cultivated with play. Instead, Yogman said, they are disproportionately affected by some of the trends that are making play scarce: academic pressures at schools that need to improve test scores, outside play areas that are limited or unsafe, and parents who lack the time or energy to share in playtime."
+        },
+        {
+          "label": "K",
+          "text": "Yogman also worries about the pressures that squeeze playtime for more affluent kids. \"The notion that as parents we need to schedule every minute of their time is not doing them a great service,\" he said. Even well-meaning parents may be \"robbing them of the opportunity to have that joy of discovery and curiosity-the opportunity to find things out on their own.\""
+        },
+        {
+          "label": "L",
+          "text": "Play may not be a hard sell to kids. But UCLA pediatrician Carlos Lerner acknowledged that the pediatricians' new prescription may meet with skepticism OZ-iit.) from parents, who are anxious for advice on how to give their kids a leg up in the world. They should welcome the simplicity of the message, Lerner said. \"It's liberating to be able to offer them this advice: that you spending time with your child and letting him play is one of the most valuable things you can do,\" he said. \"It doesn't have to involve spending a lot of money or time, or joining a parenting group. It's something we can offer that's achievable. They just don't recognize it right now as particularly valuable.\""
+        }
+      ],
+      "questions": [
+        {
+          "n": 36,
+          "text": "Increased use of digital devices steals away children's playtime."
+        },
+        {
+          "n": 37,
+          "text": "Since the beginning of this century, an increasing amount of time has been shifted in public schools from recess to academic activities."
+        },
+        {
+          "n": 38,
+          "text": "It has been acknowledged that while kids may welcome pediatricians' recommendation, their parents may doubt its feasibility."
+        },
+        {
+          "n": 39,
+          "text": "According to some professionals, deprivation of young children's playtime will do harm not only to children themselves but to the country and the world."
+        },
+        {
+          "n": 40,
+          "text": "By playing with children, parents can prevent them from being harmed by stress."
+        },
+        {
+          "n": 41,
+          "text": "Playing with digital devices discourages kids from active discovery, according to pediatrician Dr. Michael Yogman."
+        },
+        {
+          "n": 42,
+          "text": "The suggestion of letting children simply play may sound like going backwards to parents who want to help build their children's skills."
+        },
+        {
+          "n": 43,
+          "text": "Dr. Michael Yogman believes the idea that parents should carefully schedule children's time may not be helpful to their growth."
+        },
+        {
+          "n": 44,
+          "text": "One quarter of teachers in an American city said that children in kindergartens had no time for playing freely."
+        },
+        {
+          "n": 45,
+          "text": "According to a pediatrician, no matter what kind of play children engage in, they are learning how to create things."
+        }
+      ],
+      "answers": [
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A",
+        "A"
+      ]
+    },
+    "careful": [
+      {
+        "passage": "Americans spend billions of dollars each year trying to change their weight with diets, gym memberships and plastic surgery. Trying to live up to the images of ''perfect\" models and movie heroes has a dark side, anxiety, depression, as well as unhealthy strategies for weight loss or muscle gain. It also has a financial cost. Having an eating disorder boosts annual health care costs by nearly US$ 2,000 per person. Why is there both external and internal pressure to look \"perfect\"? One reason is that society rewards people who are thin and healthy-looking. Researchers have shown that body mass index is related to wages and income. Especially for women, there is a clear penalty at work for being overweight or obese. Some studies have also found an impact for men, though a less noticeable one. While the research literature is clear that labor market success is partly based on how employers and customers perceive your body image, no one had explored the other side of the question. Does a person's own perception of body image matter to earnings and other indicators of success in the workplace? Our recently published study answered this question by tracking a large national random sample of Americans over a critical time period when bodies change from teenage shape into adult form and when people build their identities. As in other research, women in our sample tend to over-perceive their weight-they think they're heavier than they are-while men tend to under-perceive theirs. We found no relationship between the average person's self-perception of weight and labor market outcomes, although self-perceived weight can influence self-esteem ( i1l .:if.,(;), mental health and health behaviors. While the continued gender penalty in the tabor market is frustrating, our finding that misperceived weight does not harm workers is more heartening. Since employers' perception of weight is what matters in the tabor market, changing discrimination laws to include body type as a category would help. Michigan is the only state that prohibits discrimination on the basis of weight and height. We believe expanding such protections would make the labor market more fair and efficient.",
+        "questions": [
+          {
+            "n": 46,
+            "text": "What does the author say may have an adverse impact on people?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Undergoing plastic surgeries in pursuit of beauty."
+              },
+              {
+                "letter": "B",
+                "text": "Imitating the lifestyles of heroes and role models."
+              },
+              {
+                "letter": "C",
+                "text": "Striving to achieve perfection regardless of financial cost."
+              },
+              {
+                "letter": "D",
+                "text": "Attempting to meet society's expectation of appearance."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 47,
+            "text": "What have researchers found out about people's earnings?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "They are closely related to people's social status."
+              },
+              {
+                "letter": "B",
+                "text": "They have to do with people's body weight and shape."
+              },
+              {
+                "letter": "C",
+                "text": "They seem to matter much less to men than to women."
+              },
+              {
+                "letter": "D",
+                "text": "They may not be equal to people's contributions."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 48,
+            "text": "What does the author's recent study focus on?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Previous literature on indicators of competitiveness in the workplace."
+              },
+              {
+                "letter": "B",
+                "text": "Traits that matter most in one's pursuit of success in the labor market."
+              },
+              {
+                "letter": "C",
+                "text": "Whether self-perception of body image impacts one's workplace success."
+              },
+              {
+                "letter": "D",
+                "text": "How bosses' perception of body image impacts employees' advancement."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 49,
+            "text": "What is the finding of the author's recent research?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Being overweight actually does not do much harm to the overall well-being of employees."
+              },
+              {
+                "letter": "B",
+                "text": "People are not adversely affected in the workplace by false self-perception of body weight."
+              },
+              {
+                "letter": "C",
+                "text": "Self-esteem helps to combat gender inequality in the workplace."
+              },
+              {
+                "letter": "D",
+                "text": "Gender inequality continues to frustrate a lot of female employees."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 50,
+            "text": "What does the author think would help improve the situation in the labor market?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Banning discrimination on the basis of employees' body image."
+              },
+              {
+                "letter": "B",
+                "text": "Expanding protection of women against gender discrimination."
+              },
+              {
+                "letter": "C",
+                "text": "Helping employees change their own perception of beauty."
+              },
+              {
+                "letter": "D",
+                "text": "Excluding body shape as a category in the labor contract."
+              }
+            ],
+            "answer": "A"
+          }
+        ]
+      },
+      {
+        "passage": "The work-life balance is dead. By this, I'm not advocating that you should give up your pursuit of having a fulfilling career and a thriving personal life, and I'm definitely not saying that you have to give up one to have the other. I also acknowledge that we have a work-life problem, but I'm arguing that the concept of balance has never been helpful, because it's too limiting. You see, our language makes a difference, and how we refer to things matters because it affects our thinking and therefore our actions. At the minimum, most of us work because we want to be able to support ourselves, our families, and the people around us. In the ideal world, we're all doing work that we're proud of and that provides meaning and purpose to us. But even if your job doesn't give you shivers of joy each new day, working is a part of what each of us does and the contribution we make to society. When you separate work and life, it's a little bit harder to make that connection. But when you think of work as part of a full life and a complete experience, it becomes easier to see that success in one aspect often supports another. Losing your balance and falling isn't pleasant. A goal to balance suggests that things could quickly get off balance, and that causes terrible outcomes. rt's more constructive to think of solutions that continue to evolve over shifts in life and work. Rather than falling or failing, you may have good days or better days or not-so-good days. These variations are normal, and it's more useful to think of life as something that is ever evolving and changing, rather than a high-risk enterprise where things could go wrong with one misstep. How we talk to ourselves matters, and how we talk about issues makes a difference. Let's bury \"work-life balance\" and think bigger and better about work-life fulfillment to do a little less balancing and a lot more living.",
+        "questions": [
+          {
+            "n": 51,
+            "text": "What does the author suggest by saying \"The work-life balance is dead\"?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "The hope of achieving a thriving life is impossible to realize."
+              },
+              {
+                "letter": "B",
+                "text": "The pursuit of a fulfilling career involves personal sacrifice."
+              },
+              {
+                "letter": "C",
+                "text": "The imbalance between work and life simply doesn't exist anymore."
+              },
+              {
+                "letter": "D",
+                "text": "The concept of work-life balance contributes little to a fulfilling life."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 52,
+            "text": "What does the author say about our use of language?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It impacts how we think and behave."
+              },
+              {
+                "letter": "B",
+                "text": "It changes with the passage of time."
+              },
+              {
+                "letter": "C",
+                "text": "It reflects how we communicate."
+              },
+              {
+                "letter": "D",
+                "text": "It differs from person to person."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 53,
+            "text": "What does the author say we do in an ideal world?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "We do work that betters the lives of our families and friends."
+              },
+              {
+                "letter": "B",
+                "text": "We do work that gives us bursts of joy each new day."
+              },
+              {
+                "letter": "C",
+                "text": "We do meaningful work that contributes to society."
+              },
+              {
+                "letter": "D",
+                "text": "We do demanding work that brings our capacity into full play."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 54,
+            "text": "What does the author say about life?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "It is cyclical."
+              },
+              {
+                "letter": "B",
+                "text": "It is dynamic."
+              },
+              {
+                "letter": "C",
+                "text": "It is fulfilling."
+              },
+              {
+                "letter": "D",
+                "text": "It is risky."
+              }
+            ],
+            "answer": "A"
+          },
+          {
+            "n": 55,
+            "text": "What does the author advise us to do?",
+            "options": [
+              {
+                "letter": "A",
+                "text": "Make life as simple as possible."
+              },
+              {
+                "letter": "B",
+                "text": "Talk about balance in simpler terms."
+              },
+              {
+                "letter": "C",
+                "text": "Balance life and work in a new way."
+              },
+              {
+                "letter": "D",
+                "text": "Strive for a more fulfilling life."
+              }
+            ],
+            "answer": "A"
+          }
+        ]
+      }
+    ]
+  },
+  "translation": {
+    "directions": "For this part, you are allowed 30 minutes to translate a passage from Chinese into English.",
+    "chinese": ""
+  }
+}

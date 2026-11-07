@@ -1,0 +1,35 @@
+/* 2026年6月 第2套 CET-6 写作题。
+ * 来源：2026年6月CET6题+答案+听力\2026.06六级真题第2套【可复制可搜索，打印首选】.pdf p1（Part I Writing 题干）
+ * 核对：2026年6月CET6题+答案+听力\2026年6月英语六级解析第3套.pdf p1-p2（审题思路 / 范文&译文 / 话题词汇 / 写作模板）
+ * 验证状态：verified — 解析书（共3套合订本）写作栏目套号与真题卷套号错位：本套真题题干（年轻人的责任感）对应的写作解析实际收录于《解析第3套》，已按开头句逐字核对确认一致后按实际内容录入；解析书其余栏目（听力、阅读）与真题卷套号一致。 */
+
+export const writing202606S2 = {
+  "id": "cet6-2026-06-s2",
+  "meta": {
+    "level": "CET6",
+    "year": 2026,
+    "month": 6,
+    "set": 2,
+    "source": "2026年6月CET6题+答案+听力\\2026.06六级真题第2套【可复制可搜索，打印首选】.pdf p1（Part I Writing 题干）",
+    "answerSource": "2026年6月CET6题+答案+听力\\2026年6月英语六级解析第3套.pdf p1-p2（审题思路 / 范文&译文 / 话题词汇 / 写作模板）",
+    "pages": "原题第1页 / 解析第1-2页",
+    "verified": true,
+    "verifiedAt": "2026-11-05",
+    "note": "解析书（共3套合订本）写作栏目套号与真题卷套号错位：本套真题题干（年轻人的责任感）对应的写作解析实际收录于《解析第3套》，已按开头句逐字核对确认一致后按实际内容录入；解析书其余栏目（听力、阅读）与真题卷套号一致。"
+  },
+  "title": "2026年6月 第2套",
+  "topic": "增强年轻人的责任感",
+  "directions": "For this part, you are allowed 30 minutes to write an essay that begins with the sentence “In an era of rapid social development, it is vitally important to enhance young people's sense of responsibility.” You can make comments, cite examples or use your personal experiences to develop your essay. You should write at least 150 words but no more than 200 words. You should copy the sentence given in quotes at the beginning of your essay.",
+  "minWords": 150,
+  "maxWords": 200,
+  "model": "In an era of rapid social development, it is vitally important to enhance young people's sense of responsibility. As far as I am concerned, this sense serves as both a compass for personal growth and a glue for our society.\n\nThe reasons are clear. For one thing, responsibility helps young people stay on track in a time full of distractions. Short videos and online games easily consume precious hours. If a responsible young person knows what can be done and what can never be done, he can figure out how to manage time and focus on self-improvement. By contrast, if they lack this inner guide, they may drift aimlessly. For another, responsibility pushes young people to care for others, not just themselves. In fast-growing cities, volunteer work, which brings warmth to the community, makes a significant difference. Only when young people step up to help one another can society remain lively and hopeful. Without such a spirit, even the richest citizen appears cold.\n\nOn the whole, it is through a strong sense of responsibility that young people can grow mature and build a warmer society. Let us begin with small steps, like helping a neighbor or keeping a daily plan, to develop this quality step by step.",
+  "modelZh": "在社会飞速发展的当下，增强年轻人的责任感至关重要。在我看来，这种责任感既是个人成长的指南针，也是维系社会团结的黏合剂。\n\n原因显而易见。一方面，在充满干扰的时代，责任感能帮助年轻人坚守正轨。短视频和网络游戏很容易消耗宝贵的时间。有责任感的年轻人知道何事可为、何事不可为，因而能合理规划时间，专注于自我提升。与之相反，若缺乏这种内在指引，他们可能会漫无目的地漂泊。另一方面，责任感促使年轻人不仅关心自己，也关心他人。在快速发展的城市中，志愿工作为社区带来温暖，发挥着重要作用。只有当年轻人挺身而出互相帮助时，社会才能保持生机与希望。若缺乏这种精神，即使是最富足的人也会显得冷漠。\n\n总而言之，正是凭借强烈的责任感，年轻人才能走向成熟，并构建一个更温暖的社会。让我们从小事做起，比如帮助邻居或坚持每日计划，一步步培养这种品质。",
+  "review": "作文要求以“在社会快速发展的时代，增强年轻人的责任感至关重要”为开头展开论述。首段强调增强年轻人责任感的重要性，并表明个人观点。主体段进行具体论证，阐释增强年轻人责任感的原因：一是责任感使人自律，在充满诱惑的时代不迷失自我；二是责任感使人利他，为高速发展的社会增添温度。最后一段总结升华，再次强调年轻人责任感的重要性，然后发出号召，呼吁大家增强责任感并付诸行动。",
+  "points": [
+    "首段摘抄给定句，以“As far as I am concerned, this sense serves as both a compass for personal growth and a glue for our society.”表明个人观点，比喻贴切。",
+    "主体段从两方面论证：一方面责任感使人自律，在充满干扰的时代坚守正轨（“For one thing, ... stay on track in a time full of distractions.”），举短视频和网络游戏为例。",
+    "用“By contrast, if they lack this inner guide, they may drift aimlessly.”从反面论证缺乏责任感的后果。",
+    "另一方面责任感使人利他（“For another, ...”），以志愿工作为例；倒装句“Only when young people step up to help one another can society remain lively and hopeful.”增强语势。",
+    "结尾段总结升华，再次强调责任感的重要性并发出号召，呼吁从小事做起、付诸行动。"
+  ]
+};

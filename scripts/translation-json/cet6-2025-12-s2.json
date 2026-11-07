@@ -1,0 +1,39 @@
+{
+  "id": "cet6-2025-12-s2",
+  "year": 2025,
+  "month": 12,
+  "set": 2,
+  "title": "2025年12月 第2套",
+  "topic": "自强自立",
+  "passage": "中华民族崇尚自强自立的精神，这一精神深植于中国文化之中，是民族生存与发展的重要支撑。改革开放以来，中国在自强自立的征程上，持续加大科研投入，在信息技术、人工智能、航天工程等领域不断取得新突破。5G网络覆盖全国，远程医疗发展迅速，电子支付的使用全球领先，嫦娥探月工程展现了航天领域引人注目的发展。自强自立精神成为推动国家现代化进程的强大动力，激励着中国人民为实现民族复兴(rejuvenation)的中国梦不断奋进。",
+  "reference": "The Chinese nation upholds the spirit of self-improvement and self-reliance, which is deeply rooted in Chinese culture and serves as a vital pillar for the nation's survival and development. Since the reform and opening-up, China has continuously increased investment in scientific research in its journey of self-improvement and self-reliance, achieving new breakthroughs in fields such as information technology, artificial intelligence, and aerospace engineering. 5G networks now cover the entire country; telemedicine has developed rapidly; the adoption of electronic payment leads the world, and Chang'e lunar exploration program has demonstrated remarkable progress in aerospace. The spirit of self-improvement and self-reliance has become a powerful driving force in advancing the nation's modernization, inspiring the Chinese people to strive relentlessly toward realizing the Chinese Dream of national rejuvenation.",
+  "notes": [
+    ["崇尚", "uphold"],
+    ["自强自立", "self-improvement and self-reliance"],
+    ["深植于", "be deeply rooted in"],
+    ["重要支撑", "vital pillar"],
+    ["改革开放以来", "since the reform and opening-up"],
+    ["征程", "journey"],
+    ["科研投入", "investment in scientific research"],
+    ["新突破", "new breakthroughs"],
+    ["覆盖全国", "cover the entire country"],
+    ["远程医疗", "telemedicine"],
+    ["电子支付", "electronic payment"],
+    ["全球领先", "lead the world"],
+    ["嫦娥探月工程", "Chang'e lunar exploration program"],
+    ["强大动力", "a powerful driving force"],
+    ["民族复兴", "national rejuvenation"]
+  ],
+  "points": [
+    "第一句为阐释核心精神的定义句，主句“中华民族崇尚……精神”译为The Chinese nation upholds the spirit of...；后两个分句“这一精神深植于……”和“是……重要支撑”共同说明该精神的特点与作用，合并译为which 引导的非限制性定语从句，并用and 连接两个并列谓语is deeply rooted and serves as，使句子逻辑紧凑。",
+    "第二句描述具体实践与成就；时间状语“改革开放以来”译为Since the reform and opening-up；“在……征程上”译为介词短语in its journey of... 作状语；两个主要动作“加大投入”和“取得突破”有先后与因果关系，前者作主句谓语和宾语has increased investment，后者译为现在分词短语achieving breakthroughs... 作结果状语。",
+    "第三句为并列结构，列举四项具体成就，宜采用三个独立分句，用分号和and 连接，形成清晰的排比列举效果；时态上，“5G网络”和“电子支付”描述当前普遍状态，用一般现在时；“远程医疗”和“嫦娥探月工程”强调已完成并持续产生影响，用现在完成时；“嫦娥探月工程”译为Chang'e lunar exploration program。",
+    "第四句总结“精神”的作用与影响；主干“精神成为强大动力”译为The spirit...has become a powerful driving force；“推动……”作“动力”的具体指向，译为介词短语in advancing；“激励着……”是精神成为动力后产生的伴随性结果，译为现在分词短语inspiring... 作状语；“为实现……不断奋进”译为不定式短语to strive...toward realizing... 作目的状语；“民族复兴”译为national rejuvenation。"
+  ],
+  "source": "2025年12月CET6题+答案+音频/2025.12英语六级解析第2套.pdf",
+  "answerSource": "2025.12英语六级解析第2套.pdf p18-p19（Part IV Translation 参考译文/译点精析）",
+  "pages": "解析第18-19页",
+  "verified": true,
+  "verifiedAt": "2026-11-05",
+  "note": "解析该套为纯扫描件，参考译文跨第18-19页，由图片逐句录入；题干取自真题卷文字层"
+}

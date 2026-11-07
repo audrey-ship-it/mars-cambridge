@@ -1,0 +1,51 @@
+/* 2022年6月 CET-4 第2套 翻译题。
+ * 来源：解析 PDF《2022.06英语四级解析第2套》p10（Part IV Translation 参考译文/难点注释/话题词汇，人工读图逐字核对）。
+ * 验证状态：verified — 题干（中文原文已清洗）与参考译文均与原件逐句核对。 */
+
+export const translation202206S2 = {
+  id: 'cet4-2022-06-s2',
+  meta: {
+    level: 'CET4',
+    year: 2022,
+    month: 6,
+    set: 2,
+    source: '2022年06月CET4题+解+音频/03、答案解析/2022.06英语四级解析第2套.pdf',
+    answerSource: '2022.06英语四级解析第2套.pdf p10（Part IV Translation 参考译文与难点注释/话题词汇）',
+    pages: '解析第10页',
+    verified: true,
+    verifiedAt: '2026-11-04',
+  },
+  title: '2022年6月 第2套',
+  topic: '亡羊补牢',
+  directions: 'For this part, you are allowed 30 minutes to translate a passage from Chinese into English.',
+  passage: '从前有个人养了一群羊。一天早上他准备出去放羊，发现少了一只。他仔细一看，看到羊栏(sheepfold)上有个窟窿。显然，夜间有狼钻进羊圈叼走了羊。邻居劝他修羊栏，可是他不听。第二天，他发现狼又通过窟窿叼走一只羊。他想起邻居的话，就赶快堵上窟窿，把羊栏补好。此后，他的羊再也没有被狼叼走。故事告诉我们：出了问题及时补救，可以防止蒙受更大损失。',
+  reference: 'There was once a man who kept a flock of sheep. One morning, he was about to herd them when he noticed that one sheep was missing. Upon examination, he found a hole in the sheepfold. Obviously, it was a wolf that got in and took the sheep away at night. His neighbor advised him to fix the sheepfold, but he didn\'t listen. The next day, he found that another sheep had been stolen by the wolf through the hole. Then he remembered his neighbor\'s words and hurried to mend the sheepfold by plugging up the hole. From then on, no sheep was lost ever again. This story tells us that when something goes wrong, we can prevent bigger losses by doing something about it in time.',
+  notes: [
+    ['牧羊人', 'shepherd'],
+    ['羊群', 'a flock of sheep'],
+    ['放牧', 'graze; herd'],
+    ['少了', 'missing; lost; gone'],
+    ['仔细一看', 'upon examination; take a close look'],
+    ['羊栏', 'sheepfold'],
+    ['窟窿', 'hole'],
+    ['狼', 'wolf'],
+    ['邻居', 'neighbor'],
+    ['修补', 'fix; repair; mend'],
+    ['堵上', 'plug up'],
+    ['此后', 'from then on'],
+    ['吃掉，吞食', 'devour'],
+    ['闯入', 'break into'],
+    ['羊圈', 'fold'],
+    ['纠正，更正', 'put right'],
+    ['马厩', 'stable'],
+    ['犯错误', 'make mistakes'],
+    ['防止', 'prevent'],
+    ['损失', 'loss'],
+    ['及时', 'in time'],
+  ],
+  points: [
+    '第一句可以选用 There was once... 结构翻译，即"There was once a man who kept a flock of sheep."。注意这里要用 who 或 that 引导定语从句，不能把关系代词省略，否则就会出现 there be 句式中常见的两个谓语动词的错误。',
+    '第二句可以用 sb. was/were about to do... when sb. did... 这一句型来翻译；"少了一只"可以翻译为 one sheep was missing/lost/gone。第三句中，"仔细一看"可以翻译为介词短语 Upon examination，也可以把"仔细一看"翻译为 took a close look，与后面的动词"看到"构成并列谓语；"羊栏上有个窟窿"可以翻译为 a hole in the sheepfold，注意介词要用 in。第四句中，"显然"除了用副词翻译以外，还可以用 It was obvious/evident/apparent/clear that... 句型来翻译；"夜间有狼钻进羊圈叼走了羊"选用强调结构 It was...that... 来翻译，这样更能突出"狼"是羊失踪的罪魁祸首，也使句式富于变化。',
+    '第五至九句：第五句中"可是"一词表明前后句之间存在转折关系，可以用 but 或者 although 来连接前后分句；"修羊栏"可以翻译为 fix/repair/mend the sheepfold。第六句中，"狼又通过窟窿叼走一只羊"可以用被动语态翻译，也可以用主动语态翻译，即 the wolf had stolen another sheep through the hole，注意时态最好用过去完成时。第七句可在句子开头处增加 Then 或 At that time，使译文更为流畅；"赶快堵上窟窿，把羊栏补好"的重点在于通过"堵上窟窿"这一方式"把羊栏补好"，所以把后者作为谓语动词，与"想起邻居的话"并列作谓语，前者用介词+动名词形式引出作方式状语。第八句可以按照汉语语序，选用被动语态进行顺译；"再也没有"可以翻译为 no...ever again，ever 加强语气。第九句为无主句，在翻译中需要根据上下文增加主语 we，如参考译文所示。',
+  ],
+};

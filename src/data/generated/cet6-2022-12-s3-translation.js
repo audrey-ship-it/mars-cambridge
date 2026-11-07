@@ -1,0 +1,95 @@
+/* 2022年12月 第3套 CET-6 翻译题。
+ * 来源：2022年12月CET6题+解+音频/03、答案解析/2022.12六级真题第3套答案及详解.pdf
+ * 核对：2022.12六级真题第3套答案及详解.pdf p9（Part IV Translation 参考译文与难点注释）
+ * 验证状态：verified — 题干括注英文（the Yunnan-Guizhou Plateau、canyon）按原文保留；原文半角逗号统一改为中文逗号 */
+
+export const translation202212S3 = {
+  "id": "cet6-2022-12-s3",
+  "meta": {
+    "level": "CET6",
+    "year": 2022,
+    "month": 12,
+    "set": 3,
+    "source": "2022年12月CET6题+解+音频/03、答案解析/2022.12六级真题第3套答案及详解.pdf",
+    "answerSource": "2022.12六级真题第3套答案及详解.pdf p9（Part IV Translation 参考译文与难点注释）",
+    "pages": "解析第9页",
+    "verified": true,
+    "verifiedAt": "2026-11-05",
+    "note": "题干括注英文（the Yunnan-Guizhou Plateau、canyon）按原文保留；原文半角逗号统一改为中文逗号"
+  },
+  "title": "2022年12月 第3套",
+  "topic": "云贵高原",
+  "directions": "For this part, you are allowed 30 minutes to translate a passage from Chinese into English.",
+  "passage": "云贵高原(the Yunnan-Guizhou Plateau)大部分位于云南、贵州省境内，总面积约50万平方公里，平均海拔2000-4000米，是中国第四大高原。云贵高原西高东低，河流众多，形成了许多又深又陡的峡谷(canyon)。峡谷中许多地方土壤肥沃，非常有利于多种农作物生长。云贵高原独特的自然环境造就了生物和文化的多样性。它是中国森林和矿产资源类型十分丰富的地区，也是古人类起源的重要地区。云贵高原是中国少数民族数量最多的地区，各民族都保留了自己丰富多彩的文化传统。",
+  "reference": "Most of the Yunnan-Guizhou Plateau is located in Yunnan and Guizhou provinces. With a total area of about 500,000 square kilometers and an average elevation of 2,000-4,000 meters, it is the fourth largest plateau in China. Being high in the west and low in the east with numerous rivers flowing through, the plateau has thus allowed the formation of many deep and steep canyons. The fertile soil in many parts of the canyon is very conducive to the growth of many kinds of crops. The unique natural environment of the Yunnan-Guizhou Plateau has created biological and cultural diversity. It is not only an area with abundant types of forest and mineral resources in China, but also an important place witnessing the origin of ancient humans. Besides, it embraces the largest number of ethnic minorities in China, each of which has preserved its rich and diverse cultural traditions.",
+  "notes": [
+    [
+      "云贵高原",
+      "the Yunnan-Guizhou Plateau"
+    ],
+    [
+      "总面积",
+      "total area"
+    ],
+    [
+      "平均海拔",
+      "average elevation"
+    ],
+    [
+      "西高东低",
+      "high in the west and low in the east"
+    ],
+    [
+      "峡谷",
+      "canyon"
+    ],
+    [
+      "又深又陡",
+      "deep and steep"
+    ],
+    [
+      "土壤肥沃",
+      "fertile soil"
+    ],
+    [
+      "有利于",
+      "be conducive to; be beneficial to"
+    ],
+    [
+      "农作物",
+      "crops"
+    ],
+    [
+      "独特的自然环境",
+      "unique natural environment"
+    ],
+    [
+      "生物和文化的多样性",
+      "biological and cultural diversity"
+    ],
+    [
+      "矿产资源",
+      "mineral resources"
+    ],
+    [
+      "古人类",
+      "ancient humans"
+    ],
+    [
+      "少数民族",
+      "ethnic minorities"
+    ],
+    [
+      "文化传统",
+      "cultural traditions"
+    ]
+  ],
+  "points": [
+    "第一句把“大部分位于云南、贵州省境内”处理为主句，用 Most of... is located in...；“总面积约50万平方公里、平均海拔2000-4000米”用 With... 介词短语作状语前置，随后用 it is the fourth largest plateau in China 作主句，避免一句过长。",
+    "第二句“西高东低、河流众多”是地形特征，用 Being high in the west and low in the east with numerous rivers flowing through 作原因状语（现在分词 + with 复合结构）；主句用现在完成时 has thus allowed the formation of...，thus 点明因果。",
+    "第三句原文以“土壤”为主语，译文沿用 The fertile soil in many parts of the canyon；“非常有利于”用 be very conducive to 搭配名词短语 the growth of many kinds of crops。",
+    "第四句用现在完成时 has created 表示自然环境造成的结果；“生物和文化的多样性”译为 biological and cultural diversity，注意两个形容词并列修饰。",
+    "第五句用 not only... but also... 连接两个表语；“森林和矿产资源类型十分丰富”处理为 with abundant types of forest and mineral resources in China，用介词短语后置；“古人类起源的重要地区”译为 an important place witnessing the origin of ancient humans，现在分词作后置定语。",
+    "第六句用 Besides 承接递进；“少数民族数量最多”用 embrace the largest number of ethnic minorities，动词 embrace 比 have 更书面；“各民族都保留了自己的文化传统”处理为 each of which 引导的定语从句，用现在完成时 has preserved 表示保留至今。"
+  ]
+};

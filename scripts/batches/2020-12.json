@@ -1,0 +1,20 @@
+[
+  { "year": 2020, "month": 12, "set": 1,
+    "zt": "D:/workspace_sunny/题库/cet/真题/2020年12月CET4题+解+音频/01、真题PDF版（推荐打印）❤/2020.12月四级真题第1套【可复制可划线查词】.pdf",
+    "ztTextFile": "scripts/batches/zt-text/2020-12-s1.txt",
+    "out": "src/data/generated/cet4-2020-12-s1.json",
+    "verified": true,
+    "answersManual": { "banked": "CMGAOJKFIH", "matching": "HDKBGIECHF", "careful": "DABCDADBCB" } },
+  { "year": 2020, "month": 12, "set": 2,
+    "zt": "D:/workspace_sunny/题库/cet/真题/2020年12月CET4题+解+音频/01、真题PDF版（推荐打印）❤/2020.12月四级真题第2套【可复制可划线查词】.pdf",
+    "ztTextFile": "scripts/batches/zt-text/2020-12-s2.txt",
+    "out": "src/data/generated/cet4-2020-12-s2.json",
+    "verified": true,
+    "answersManual": { "banked": "BGKLCHIDNO", "matching": "EHMJDFNICL", "careful": "ADBCDBCACD" } },
+  { "year": 2020, "month": 12, "set": 3,
+    "zt": "D:/workspace_sunny/题库/cet/真题/2020年12月CET4题+解+音频/01、真题PDF版（推荐打印）❤/2020.12月四级真题第3套【可复制可划线查词】.pdf",
+    "ztTextFile": "scripts/batches/zt-text/2020-12-s3.txt",
+    "out": "src/data/generated/cet4-2020-12-s3.json",
+    "verified": true,
+    "answersManual": { "banked": "KGMLOFHADN", "matching": "FJOCHLDAMI", "careful": "CBDADACDBC" } }
+]

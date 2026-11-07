@@ -1,0 +1,53 @@
+/* 2023年6月 CET-4 第1套 翻译题。
+ * 来源：答案解析 PDF 第15页（Part IV Translation 中文原文/参考译文/难点注释/话题词汇，人工读图逐字核对）。
+ * 验证状态：verified — 题干取自题面，参考译文与注释均与原件逐句核对。 */
+
+export const translation202306S1 = {
+  id: 'cet4-2023-06-s1',
+  meta: {
+    level: 'CET4',
+    year: 2023,
+    month: 6,
+    set: 1,
+    source: '2023年6月四级真题-答案解析/2023.06四级真题第1套详解.pdf',
+    answerSource: '2023.06四级真题第1套详解.pdf p15（Part IV Translation 参考译文/难点注释/话题词汇）',
+    pages: '解析第15页',
+    verified: true,
+    verifiedAt: '2026-11-04',
+  },
+  title: '2023年6月 第1套',
+  topic: '继续教育',
+  directions: 'For this part, you are allowed 30 minutes to translate a passage from Chinese into English.',
+  passage: '中国越来越重视终身教育，发展继续教育是构建终身教育体系的有效途径。高校作为人才培养的基地，拥有先进的教学理念和优越的教学资源，理应成为继续教育的办学主体。因此，近年来许多高校适应社会需求，加强与用人单位沟通，努力探索一条符合中国国情的继续教育发展新路，以使继续教育在国家发展战略中发挥更大的作用。',
+  reference: 'China attaches more and more importance to lifelong education, and the development of continuing education is an effective way to build a lifelong education system. As the base for talent cultivation, universities have advanced teaching concepts and superior teaching resources, so they should become the main providers of continuing education. Therefore, in recent years, a number of universities have been trying to explore a new path for developing continuing education that suits to China\'s specific conditions by catering to social needs and strengthening communications with employers, so that continuing education can play a greater role in the national development strategy.',
+  notes: [
+    ['终身教育', 'lifelong education'],
+    ['继续教育', 'continuing education'],
+    ['构建终身教育体系', 'build a lifelong education system'],
+    ['有效途径', 'an effective way'],
+    ['人才培养的基地', 'the base for talent cultivation'],
+    ['先进的教学理念', 'advanced teaching concepts'],
+    ['优越的教学资源', 'superior teaching resources'],
+    ['办学主体', 'main providers'],
+    ['社会需求', 'social needs'],
+    ['用人单位', 'employers'],
+    ['符合中国国情的', 'suited to China\'s specific conditions'],
+    ['国家发展战略', 'national development strategy'],
+    ['发挥更大的作用', 'play a greater role'],
+    ['成人教育', 'adult education'],
+    ['职业教育', 'vocational education'],
+    ['在职教育', 'in-service education'],
+    ['职业转型', 'career transition'],
+    ['短期课程', 'short-term course'],
+    ['长期课程', 'long-term course'],
+    ['在线学习', 'online learning'],
+    ['远程学习', 'distance learning'],
+    ['培训中心', 'training center'],
+    ['实践经验', 'practical experience'],
+  ],
+  points: [
+    '第一句是对客观事实的陈述，因此时态应用一般现在时。前后两个分句可用 and 连接构成并列句。"越来越重视"可译为 attach more and more importance to；"构建终身教育体系的有效途径"可译为 an effective way to build a lifelong education system。',
+    '第二句中，"作为人才培养的基地"可处理为 as 结构并置于句首，即 As the base for talent cultivation；"优越的教学资源"可译为 superior teaching resources。后两个分句之间存在因果关系，可以用连词 so 表现内含的逻辑；翻译"继续教育的办学主体"时可采用意译法，即将其理解为"继续教育的主要提供者"，译为 main providers of continuing education。',
+    '第三句较长，需要注意译文的衔接。由"近年来"一词可知，本句时态应用现在完成进行时。通过分析分句之间的逻辑关系可知，前两个分句是第三个分句的具体做法，因此可将第三个分句作为主句，用介词 by 引出前两个分句所表达的内容，如参考译文所示。"一条符合中国国情的继续教育发展新路"内容较多，可以先翻译"一条继续教育发展新路"，再将"符合中国国情的"处理为定语从句，即 a new path for developing continuing education that suits to China\'s specific conditions。最后一个分句中，"以使"表示目的，可以用 so that/in order that 结构引出目的状语从句；"发挥更大的作用"既可直译为 play a greater role in，也可理解为"做出更大的贡献"，意译为 make greater contributions to。',
+  ],
+};

@@ -1,0 +1,42 @@
+{
+  "id": "cet6-2021-06-s2",
+  "year": 2021,
+  "month": 6,
+  "set": 2,
+  "title": "2021年6月 第2套",
+  "topic": "青海",
+  "passage": "青海是中国西北部的一个省份，平均海拔3000米以上，大部分地区为高山和高原。青海省得名于全国最大的咸水湖青海湖。青海湖被誉为“中国最美的湖泊”，是最受欢迎的旅游景点之一，也是摄影师和艺术家的天堂。青海山川壮丽，地大物博，石油和天然气储量丰富，省内许多城市的经济在石油和天然气工业带动下得到了长足发展。青海尤以水资源丰富而闻名，是中国三大河流长江、黄河和澜沧江的发源地，在中国的水生态中发挥着重要作用。",
+  "reference": "Qinghai is a province in northwestern China with an average altitude of more than 3,000 meters and most areas of the province are high mountains and plateaus. The province is named after Qinghai Lake, the largest saltwater lake in China. Known as the most beautiful lake in China, Qinghai Lake is one of the most popular tourist attractions and a paradise for photographers and artists. Qinghai features magnificent landscapes, vast territory as well as abundant oil and natural gas resources. The oil and natural gas industry has given impetus to the substantial economic growth of many cities within the province. Qinghai is especially renowned for its rich water resources. It serves as the headstream of China's three major rivers, namely the Yangtze River, the Yellow River and the Lancang River, playing a vital role in China's water ecosystem.",
+  "notes": [
+    ["平均海拔", "average altitude"],
+    ["咸水湖", "saltwater lake"],
+    ["得名于", "be named after"],
+    ["被誉为", "be known as"],
+    ["旅游景点", "tourist attractions"],
+    ["天堂", "paradise"],
+    ["山川壮丽", "magnificent landscapes"],
+    ["地大物博", "vast territory and abundant resources"],
+    ["储量丰富", "abundant reserves of"],
+    ["长足发展", "substantial growth; rapid development"],
+    ["在……带动下", "under the impetus of; driven by"],
+    ["尤以……闻名", "be especially renowned for"],
+    ["发源地", "headstream; source"],
+    ["水生态", "water ecosystem"],
+    ["发挥着重要作用", "play a vital role in"],
+    ["三大河流", "three major rivers"]
+  ],
+  "points": [
+    "第一句：主干是“青海是省份”；“平均海拔3000米以上”用 with 引导的介词短语作后置修饰；“大部分地区为高山和高原”与主句并列，也可用定语从句 which is dominated by high mountains and plateaus 合并。",
+    "第二句：用被动语态 be named after；“全国最大的咸水湖青海湖”既可作同位语，也可用 which 引导的非限制性定语从句补充说明。",
+    "第三句：过去分词短语 Known as the most beautiful lake in China 作状语；“是最受欢迎的旅游景点之一，也是……天堂”用 one of the most popular tourist attractions and a paradise for... 并列结构。",
+    "第四句：可用 features 表“以……为特色”；“山川壮丽、地大物博，石油和天然气储量丰富”处理为 features + 并列宾语，或 with 短语；as well as 连接并列成分。",
+    "第五句：“在石油和天然气工业带动下得到长足发展”可用 under the impetus of 引导状语；“经济”作主语时用被动语态 has been greatly developed。",
+    "第六句：“尤以……闻名”用 be renowned for；“发源地”译作 headstream/source；“发挥着重要作用”用现在分词 playing a vital role 作伴随或结果状语。"
+  ],
+  "source": "2021年06月CET6题+解+音频\\03、答案解析\\2021.06英语六级答案解析第2套.pdf",
+  "answerSource": "2021.06英语六级答案解析第2套.pdf p15（Part IV Translation 参考译文与难点注释）",
+  "pages": "解析第15页",
+  "verified": true,
+  "verifiedAt": "2026-11-05",
+  "note": "题干中文取自同批次真题 docx（该解析 PDF 中文层为乱码），参考译文据解析书 p15 逐句核对。"
+}

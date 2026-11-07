@@ -1,0 +1,52 @@
+/* 2019年6月 CET-4 第1套 翻译题。
+ * 来源：真题第1套 docx/PDF（中文题干）+ 答案解析 PDF 第15页 Part IV Translation（参考译文/译点/话题词汇，人工读图逐字核对）。
+ * 验证状态：verified — 中文原文与真题逐句核对，参考译文与解析 PDF 左侧英文逐句读图核对。 */
+
+export const translation201906S1 = {
+  id: 'cet4-2019-06-s1',
+  meta: {
+    level: 'CET4',
+    year: 2019,
+    month: 6,
+    set: 1,
+    source: '2019年06月四级真题第1套.docx（Part IV Translation）',
+    answerSource: '2019.06英语四级解析第1套.pdf p15（Part IV Translation 参考译文与难点注释/话题词汇）',
+    pages: '原题第10页 / 解析第15页',
+    verified: true,
+    verifiedAt: '2026-11-04',
+  },
+  title: '2019年6月 第1套',
+  topic: '舞狮',
+  directions: 'For this part, you are allowed 30 minutes to translate a passage from Chinese into English.',
+  passage: '舞狮作为中国传统民间表演已有2000多年历史。在狮子舞中，两位表演者同披一件狮子服，一个舞动头部，另一个舞动身体和尾巴。他们熟练配合，模仿狮子的各种动作。狮子是兽中之王，象征幸福和好运，所以人们通常在春节和其他节日期间表演狮子舞。狮子舞也可能出现在其他重要场合，如商店开业和结婚典礼，往往吸引许多人观赏。',
+  reference: 'The lion dance has been a traditional Chinese folk art for more than 2,000 years. In the lion dance, two performers share a lion costume, one moving the head and the other moving the body and tail. They skillfully cooperate to imitate the various movements of a lion. As the king of beasts, the lion symbolizes happiness and good luck, so people usually perform lion dances during the Spring Festival and other festivals. Lion dances can also be seen on other important occasions, such as store openings and wedding ceremonies, which often attract many people to watch.',
+  notes: [
+    ['传统的', 'traditional'],
+    ['民间艺术', 'folk art'],
+    ['狮子舞', 'the lion dance'],
+    ['狮子服', 'lion costume'],
+    ['熟练地', 'skillfully'],
+    ['配合', 'cooperate'],
+    ['模仿', 'imitate'],
+    ['动作', 'movement'],
+    ['兽中之王', 'the king of beasts'],
+    ['象征', 'symbolize; be a symbol of'],
+    ['好运', 'good luck'],
+    ['春节', 'the Spring Festival'],
+    ['重要场合', 'important occasion'],
+    ['商店开业', 'store opening'],
+    ['结婚典礼', 'wedding ceremony'],
+    ['吸引', 'attract'],
+    ['艺术形式', 'art form'],
+    ['起源于', 'originate from'],
+    ['龙潭虎穴', "the lion's den"],
+    ['某物最大的一份', "the lion's share of sth."],
+    ['敢于冒险的', 'be willing to take risks'],
+    ['文学大师', 'literary lion'],
+  ],
+  points: [
+    '第一句翻译时，"作为中国传统民间表演"可以用 be a traditional Chinese folk art 来表达，也可以用"as + 名词短语"来表达；"已有2000多年历史"可译为 has been... for more than 2,000 years，注意使用现在完成时。第二句中，"狮子舞"指具体的舞狮表演，可用 the lion dance 来表达；"一个舞动头部，另一个舞动身体和尾巴"可处理为现在分词短语作状语，即 one moving the head and the other moving the body and tail。',
+    '第三句可以有两种处理方式：一是像译文那样将"模仿狮子的各种动作"处理为目的状语，即 They skillfully cooperate to imitate the various movements of a lion；二是将"他们……模仿狮子的各种动作"作为句子的主干，把"熟练配合"处理为方式状语 by cooperating skillfully。',
+    '第四句中的"狮子是兽中之王"和"象征幸福和好运"是因果关系，可处理成"状语+主干"结构，译为 As/Being the king of beasts, the lion symbolizes/is symbolic of/is a symbol of...；也可以处理成"主干+状语"结构，译为 The lion is the king of beasts, symbolizing...。第五句相对较长，"出现在其他重要场合"可处理为主干，还可译为 is also likely to occur on other important occasions；"往往……"是结果，可处理为非限制性定语从句；"许多人"在此处指很多观众，故后面部分还可译为 which tend to attract/more often than not attract a large audience。',
+  ],
+};
