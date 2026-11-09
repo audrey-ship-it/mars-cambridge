@@ -1,11 +1,11 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import Logo from '../components/Logo.jsx'
 import Icon from '../components/Icons.jsx'
 import { readingSets } from '../data/readingSets.js'
 import { readingSets6 } from '../data/readingSets6.js'
 import { examVars, examTheme } from '../utils/examTheme.js'
-import { getExamLevel, withExamParam } from '../utils/examLevel.js'
+import { resolveExamLevel, withExamParam } from '../utils/examLevel.js'
 
 /* ── 配色：深蓝主色 + 点缀色（CET-4 黄 / CET-6 薄荷青绿），由 examTheme 注入 CSS 变量 ── */
 
@@ -87,8 +87,9 @@ function BrandMark() {
 
 export default function Home() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
 
-  const exam = getExamLevel() === 'cet6' ? 'CET-6' : 'CET-4'
+  const exam = resolveExamLevel(searchParams) === 'cet6' ? 'CET-6' : 'CET-4'
   const theme = examTheme(exam)
   const structure = EXAM_STRUCTURE[exam === 'CET-6' ? 'cet6' : 'cet4']
   const latest = (exam === 'CET-6' ? readingSets6 : readingSets).slice(0, 3)
@@ -234,12 +235,14 @@ export default function Home() {
                 <motion.div
                   initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }} transition={{ delay: i * 0.06 }}
-                  className="h-full border border-[#e1e5f0] rounded-[14px] p-7 bg-white transition hover:border-[var(--accent)] hover:shadow-[0_8px_24px_-12px_rgba(16,24,20,.18)]"
+                  className="group relative h-full border border-[#e1e5f0] rounded-[14px] p-7 bg-white overflow-hidden transition hover:border-[var(--accent)] hover:shadow-[0_8px_24px_-12px_rgba(16,24,20,.18)]"
                 >
                   <div className="w-[52px] h-[52px] rounded-[10px] bg-[var(--accent-soft)] text-[var(--accent)] grid place-items-center mb-[22px]">
                     <Icon name={mod.icon} className="w-[26px] h-[26px]" />
                   </div>
-                  <h3 className="text-[22px] font-bold mb-2">{mod.title}</h3>
+                  <span className="absolute inset-x-0 top-0 h-[3px] bg-[var(--hl)] opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <h3 className="text-[22px] font-bold">{mod.title}</h3>
+                  <span className="block w-[22px] h-[3px] rounded-sm bg-[var(--hl)] mt-2.5 mb-3" />
                   <p className="text-base leading-[1.75] text-gray-600 mb-[18px]">{mod.desc}</p>
                   <div className="flex flex-wrap">
                     {mod.tags.map(tag => (
