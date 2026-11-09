@@ -37,7 +37,7 @@ const MODULES = [
 /* 网站特点（右侧卡片）：均对应站内已有功能 */
 const FEATURES = [
   { icon: 'clock', title: '整套模考', desc: '按真实考试顺序与时间计时' },
-  { icon: 'check', title: '错题本', desc: '答对才移出，不会点一次就丢' },
+  { icon: 'check', title: '分部分作答', desc: '逐部分进入，交卷前看清每部分进度' },
   { icon: 'headphones', title: '听力原音频', desc: '倍速播放，交卷后标出答案依据' },
   { icon: 'pen', title: '写作 · 翻译参考', desc: '范文与参考译文对照，草稿自动保存' },
 ]

@@ -88,6 +88,17 @@ function PracticeRunner({ setId, set, keys }) {
   const nextSection = isLastTab ? null : SECTIONS[tabIndex + 1]
   const cur = sectionStats[tab]
 
+  // 交卷后重做当前部分：清空本部分作答并回到未交卷状态，其余部分保留，重新交卷后统一计分
+  const redoSection = () => {
+    const label = SECTIONS.find((x) => x.id === tab)?.label
+    if (!window.confirm(`重做「${label}」？本部分的作答将清空，需要重新交卷。`)) return
+    const next = { ...answers, [tab]: {} }
+    setAnswers(next)
+    setSubmitted(false)
+    saveJSON(`${keys.readingProgress}:${setId}`, { answers: next, submitted: false })
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   const goNext = () => {
     if (!nextSection) return
     setTab(nextSection.id)
@@ -221,6 +232,15 @@ function PracticeRunner({ setId, set, keys }) {
             </div>
           )}
         </div>
+        <div className="flex items-center gap-2 shrink-0">
+        {submitted && (
+          <button
+            onClick={redoSection}
+            className="rounded-xl px-4 py-2 text-sm font-bold border border-gray-200 text-gray-600 hover:border-[var(--accent)] hover:text-[var(--accent)]"
+          >
+            ↺ 重做本部分
+          </button>
+        )}
         {nextSection ? (
           <button
             onClick={goNext}
@@ -242,6 +262,7 @@ function PracticeRunner({ setId, set, keys }) {
             {submitted ? '已交卷' : '交卷'}
           </button>
         )}
+        </div>
       </div>
     </div>
   )

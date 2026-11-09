@@ -180,6 +180,18 @@ function PracticeRunner({ setId, set, isCet6 }) {
     setSubmitted(true)
   }
 
+  // 交卷后重做当前 Section：只清空本部分作答，其余保留，重新评分后统一计分
+  function redoSection() {
+    const g = sectionGroups[activeSection]
+    if (!confirm(`重做「${g.label.split(' · ')[0]}」？本部分的作答将清空，需要重新评分。`)) return
+    const next = { ...answers }
+    g.items.forEach((item) => item.questions.forEach((q) => { delete next[q.n] }))
+    saveJSON(progressKey, { answers: next })
+    setAnswers(next)
+    setSubmitted(false)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   function handleReset() {
     if (!confirm('确定重置本套听力的所有作答？')) return
     setAnswers({})
@@ -352,6 +364,9 @@ function PracticeRunner({ setId, set, isCet6 }) {
                 <button onClick={handleSubmit}
                   className="w-full py-3 rounded-2xl bg-[var(--accent)] text-white font-bold hover:bg-[var(--accent-deep)] transition-colors"
                 >重新评分</button>
+                <button onClick={redoSection}
+                  className="w-full py-2 rounded-2xl bg-white border border-gray-200 text-gray-700 font-bold hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors text-sm"
+                >↺ 重做本部分</button>
                 <button onClick={handleReset}
                   className="w-full py-2 rounded-2xl bg-gray-100 text-gray-600 font-bold hover:bg-gray-200 transition-colors text-sm"
                 >↺ 重置所有作答</button>
