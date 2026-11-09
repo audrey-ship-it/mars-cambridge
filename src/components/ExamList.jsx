@@ -3,9 +3,13 @@ import Icon from './Icons.jsx'
 
 /* 列表页共用：页头 + CET-4/6 分段切换 + 按考试月份分组的套题列表 */
 
-export function LevelSwitch({ isCet6, onChange }) {
+export function LevelSwitch({ isCet6, onChange, prominent = false }) {
   return (
-    <div className="inline-flex p-0.5 rounded-lg bg-gray-200/70" role="tablist" aria-label="考试级别">
+    <div
+      className={'inline-flex p-0.5 rounded-lg ' + (prominent ? 'bg-gray-200/80 p-1' : 'bg-gray-200/70')}
+      role="tablist"
+      aria-label="考试级别"
+    >
       {[{ code: 'cet4', label: 'CET-4' }, { code: 'cet6', label: 'CET-6' }].map((e) => {
         const active = (e.code === 'cet6') === isCet6
         return (
@@ -15,8 +19,12 @@ export function LevelSwitch({ isCet6, onChange }) {
             aria-selected={active}
             onClick={() => onChange(e.code)}
             className={
-              'px-4 py-1.5 rounded-md text-sm font-bold transition-colors ' +
-              (active ? 'bg-white text-[var(--accent)] shadow-sm' : 'text-gray-500 hover:text-gray-800')
+              (prominent ? 'px-5 py-2 rounded-md text-base font-bold transition-colors ' : 'px-4 py-1.5 rounded-md text-sm font-bold transition-colors ') +
+              (active
+                ? prominent
+                  ? 'bg-[var(--accent-deep)] text-white shadow-sm'
+                  : 'bg-white text-[var(--accent)] shadow-sm'
+                : 'text-gray-500 hover:text-gray-800')
             }
           >
             {e.label}
