@@ -52,6 +52,9 @@ export default function MockExamList() {
           </Link>
         }
       />
+      <p className="mb-5 rounded-xl border border-[var(--accent-border)] bg-[var(--accent-softer)] px-4 py-2.5 text-sm text-gray-700">
+        模考按真实考试条件进行，<b>不支持查词</b>；开始后立即计时。
+      </p>
       <SetGroups items={items} />
     </div>
   )

@@ -179,7 +179,30 @@ export default function MockExam() {
     )
   }
 
-  return <MockExamRunner key={`${setId}-${isCet6}`} exam={exam} setId={setId} isCet6={isCet6} />
+  return <MockExamGate key={`${setId}-${isCet6}`} exam={exam} setId={setId} isCet6={isCet6} backTo={backTo} />
+}
+
+// 首次进入某套模考时的开考须知；已有进度（继续 / 查看结果）直接进入
+function MockExamGate({ exam, setId, isCet6, backTo }) {
+  const [started, setStarted] = useState(() => Boolean(loadProgress(setId, isCet6)))
+  if (started) return <MockExamRunner exam={exam} setId={setId} isCet6={isCet6} />
+  const mins = isCet6 ? '30' : '25'
+  return (
+    <div className="min-h-screen flex items-center justify-center px-5 py-10" style={examVars(isCet6 ? 'cet6' : 'cet4')}>
+      <div className="max-w-md w-full rounded-2xl bg-white border border-gray-200 shadow-lg p-6">
+        <h1 className="text-xl font-extrabold text-gray-900">开考须知</h1>
+        <ul className="mt-4 space-y-2.5 text-[15px] text-gray-700 leading-relaxed list-disc pl-5">
+          <li>点击「开始」后立即计时：写作 30 分钟 → 听力 {mins} 分钟 → 阅读 40 分钟 → 翻译 30 分钟。</li>
+          <li>模考按真实考试条件进行，<b>不支持查词</b>（右键 / 双击无效）。</li>
+          <li>中途离开可暂停，进度会保存在本机浏览器。</li>
+        </ul>
+        <div className="mt-6 flex gap-3">
+          <Link to={backTo} className="flex-1 text-center rounded-xl border border-gray-200 py-2.5 text-sm font-bold text-gray-600 hover:border-[var(--accent-border)]">返回</Link>
+          <button type="button" onClick={() => setStarted(true)} className="flex-1 rounded-xl bg-[var(--accent-deep)] text-white py-2.5 text-sm font-bold hover:bg-[var(--accent-hover)]">开始模考</button>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 function MockExamRunner({ exam, setId, isCet6 }) {
