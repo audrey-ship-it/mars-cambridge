@@ -1,6 +1,5 @@
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import Logo from '../components/Logo.jsx'
 import Icon from '../components/Icons.jsx'
 import { LevelSwitch } from '../components/ExamList.jsx'
 import { readingSets } from '../data/readingSets.js'
@@ -74,18 +73,6 @@ function Eyebrow({ children }) {
   )
 }
 
-function BrandMark() {
-  return (
-    <Link to="/" className="flex items-center gap-2.5">
-      <Logo size={40} />
-      <div className="leading-tight">
-        <div className="font-extrabold tracking-tight text-gray-900 text-[15px]">Mars CET</div>
-        <div className="text-xs font-semibold tracking-[.18em] text-gray-400">火星四六级</div>
-      </div>
-    </Link>
-  )
-}
-
 export default function Home() {
   const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
@@ -104,8 +91,8 @@ export default function Home() {
 
       {/* ═══ 顶栏（桌面端左侧让出侧边栏宽度，由 Layout 的 ml-52 处理） ═══ */}
       <header className="sticky top-0 z-30 bg-[#f6f7fb]/90 backdrop-blur-xl border-b border-[#e1e5f0] hidden md:block">
-        <div className="max-w-[1080px] mx-auto px-8 h-16 flex items-center gap-6">
-          <BrandMark />
+        <div className="max-w-[1080px] mx-auto px-8 h-16 flex items-center gap-3">
+          <span className="text-sm font-semibold text-gray-500">选择级别</span>
           <LevelSwitch isCet6={exam === 'CET-6'} onChange={onLevelChange} prominent />
           <nav className="ml-auto flex items-center gap-7 text-base font-semibold text-gray-600">
             {NAV_LINKS.map(n => (
