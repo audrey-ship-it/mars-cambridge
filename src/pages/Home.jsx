@@ -2,10 +2,11 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import Logo from '../components/Logo.jsx'
 import Icon from '../components/Icons.jsx'
+import { LevelSwitch } from '../components/ExamList.jsx'
 import { readingSets } from '../data/readingSets.js'
 import { readingSets6 } from '../data/readingSets6.js'
 import { examVars, examTheme } from '../utils/examTheme.js'
-import { resolveExamLevel, withExamParam } from '../utils/examLevel.js'
+import { resolveExamLevel, setExamLevel, withExamParam } from '../utils/examLevel.js'
 
 /* ── 配色：深蓝主色 + 点缀色（CET-4 黄 / CET-6 薄荷青绿），由 examTheme 注入 CSS 变量 ── */
 
@@ -87,11 +88,15 @@ function BrandMark() {
 
 export default function Home() {
   const navigate = useNavigate()
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
 
   const exam = resolveExamLevel(searchParams) === 'cet6' ? 'CET-6' : 'CET-4'
   const theme = examTheme(exam)
   const structure = EXAM_STRUCTURE[exam === 'CET-6' ? 'cet6' : 'cet4']
+  const onLevelChange = (code) => {
+    setExamLevel(code)
+    setSearchParams({ exam: code })
+  }
   const latest = (exam === 'CET-6' ? readingSets6 : readingSets).slice(0, 3)
 
   return (
@@ -112,6 +117,7 @@ export default function Home() {
               </button>
             ))}
           </nav>
+          <LevelSwitch isCet6={exam === 'CET-6'} onChange={onLevelChange} />
           <button
             onClick={() => navigate(withExamParam('/reading'))}
             className="px-5 py-2.5 rounded-lg bg-[var(--accent-deep)] text-white text-base font-bold hover:bg-[var(--accent)] transition-colors"
@@ -136,6 +142,9 @@ export default function Home() {
 
         <div className="relative max-w-[1080px] mx-auto px-6 md:px-8 pt-14 md:pt-[70px] pb-[54px] grid lg:grid-cols-[1.1fr_.9fr] gap-10 lg:gap-14 items-center">
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+            <div className="md:hidden mb-4">
+              <LevelSwitch isCet6={exam === 'CET-6'} onChange={onLevelChange} />
+            </div>
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-[var(--accent-border)] text-sm font-bold text-[var(--accent-deep)]">
               <span className="w-1.5 h-1.5 rounded-full bg-[var(--hl)] shadow-[0_0_0_2px_var(--accent-deep)]" />
               {exam} · 大学英语四六级备考
