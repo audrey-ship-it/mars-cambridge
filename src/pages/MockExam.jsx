@@ -192,7 +192,7 @@ function MockExamGate({ exam, setId, isCet6, backTo }) {
       <div className="max-w-md w-full rounded-2xl bg-white border border-gray-200 shadow-lg p-6">
         <h1 className="text-xl font-extrabold text-gray-900">开考须知</h1>
         <ul className="mt-4 space-y-2.5 text-[15px] text-gray-700 leading-relaxed list-disc pl-5">
-          <li>点击「开始」后立即计时：写作 30 分钟 → 听力 {mins} 分钟 → 阅读 40 分钟 → 翻译 30 分钟。</li>
+          <li>每个部分需点击顶部的钟表才开始计时，计时前不能作答：写作 30 分钟 → 听力 {mins} 分钟 → 阅读 40 分钟 → 翻译 30 分钟。</li>
           <li>模考按真实考试条件进行，<b>不支持查词</b>（右键 / 双击无效）。</li>
           <li>中途离开可暂停，进度会保存在本机浏览器。</li>
         </ul>
@@ -217,7 +217,7 @@ function MockExamRunner({ exam, setId, isCet6 }) {
   const [submitted, setSubmitted] = useState(
     initial?.submitted ?? { writing: false, listening: false, reading: false, translation: false }
   )
-  const [paused, setPaused] = useState(false)
+  const [paused, setPaused] = useState(true) // 每个部分都需点击钟表才开始计时
   const [remountAt, setRemountAt] = useState(0)
 
   const activeSection = SECTIONS[activeIndex].id
@@ -279,7 +279,7 @@ function MockExamRunner({ exam, setId, isCet6 }) {
     const idx = SECTIONS.findIndex((s) => s.id === sectionId)
     if (idx < SECTIONS.length - 1) {
       setActiveIndex(idx + 1)
-      setPaused(false)
+      setPaused(true)
     }
   }
 
@@ -292,7 +292,7 @@ function MockExamRunner({ exam, setId, isCet6 }) {
     setTimers(timers0)
     setAnswers(EMPTY_ANSWERS)
     setSubmitted({ writing: false, listening: false, reading: false, translation: false })
-    setPaused(false)
+    setPaused(true)
     setRemountAt((n) => n + 1)
   }
 
@@ -338,6 +338,7 @@ function MockExamRunner({ exam, setId, isCet6 }) {
             <SectionTimer
               seconds={timers[activeSection]}
               running={!paused && !submitted[activeSection]}
+              notStarted={timers[activeSection] >= SECTIONS[activeIndex].duration}
               onTogglePause={() => setPaused((p) => !p)}
             />
             <button
@@ -351,7 +352,21 @@ function MockExamRunner({ exam, setId, isCet6 }) {
       </div>
 
       {/* 各 Section 内容 */}
-      <div className="max-w-5xl mx-auto px-4 lg:px-6 py-6">
+      <div className="max-w-5xl mx-auto px-4 lg:px-6 py-6 relative">
+        {paused && !submitted[activeSection] && (
+          <div className="sticky top-24 z-20 h-0">
+            <button
+              type="button"
+              onClick={() => setPaused(false)}
+              className="mx-auto flex items-center gap-2 rounded-2xl bg-[var(--accent-deep)] text-white shadow-xl px-5 py-3 text-[15px] font-bold hover:bg-[var(--accent-hover)]"
+            >
+              {timers[activeSection] >= SECTIONS[activeIndex].duration
+                ? '▶ 点击钟表或此处开始计时，开始后才能作答'
+                : '▶ 已暂停，点击继续'}
+            </button>
+          </div>
+        )}
+        <div inert={paused && !submitted[activeSection]} className={paused && !submitted[activeSection] ? 'opacity-50 select-none' : ''}>
         {activeSection === 'writing' && (
           <WritingSection
             exam={exam}
@@ -393,6 +408,7 @@ function MockExamRunner({ exam, setId, isCet6 }) {
             onSubmit={() => handleSubmitSection('translation')}
           />
         )}
+        </div>
       </div>
     </div>
   )
