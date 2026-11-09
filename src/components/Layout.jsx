@@ -12,7 +12,7 @@ export default function Layout({ children }) {
   return (
     <div className="min-h-screen bg-gray-50" style={examVars(level)}>
       <Sidebar />
-      <div className="md:ml-44">
+      <div className="md:ml-52">
         {children}
       </div>
     </div>
