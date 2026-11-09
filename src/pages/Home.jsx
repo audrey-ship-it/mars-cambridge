@@ -178,10 +178,6 @@ export default function Home() {
             initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }}
             className="bg-white border border-[#e1e5f0] rounded-2xl overflow-hidden shadow-[0_1px_2px_rgba(16,24,20,.04),0_12px_32px_-12px_rgba(16,24,20,.12)]"
           >
-            <div className="px-5 py-4 border-b border-[#eef1ed]">
-              <div className="text-[17px] font-bold">为什么选 Mars CET</div>
-              <div className="text-sm text-gray-500">专为 {exam} 备考设计的练习功能</div>
-            </div>
             {FEATURES.map((f) => (
               <div key={f.title} className="flex items-start gap-4 px-[22px] py-4 border-t border-[#f1f3f0] first:border-t-0">
                 <span className="w-10 h-10 rounded-lg bg-[var(--accent-soft)] text-[var(--accent)] grid place-items-center shrink-0">
