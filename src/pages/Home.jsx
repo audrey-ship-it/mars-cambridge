@@ -92,7 +92,6 @@ export default function Home() {
       {/* ═══ 顶栏（桌面端左侧让出侧边栏宽度，由 Layout 的 ml-52 处理） ═══ */}
       <header className="sticky top-0 z-30 bg-[#f6f7fb]/90 backdrop-blur-xl border-b border-[#e1e5f0] hidden md:block">
         <div className="max-w-[1080px] mx-auto px-8 h-16 flex items-center gap-3">
-          <span className="text-sm font-semibold text-gray-500">选择级别</span>
           <LevelSwitch isCet6={exam === 'CET-6'} onChange={onLevelChange} prominent />
           <nav className="ml-auto flex items-center gap-7 text-base font-semibold text-gray-600">
             {NAV_LINKS.map(n => (
