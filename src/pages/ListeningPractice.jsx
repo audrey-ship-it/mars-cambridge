@@ -99,6 +99,33 @@ export function ListeningPractice() {
   return <PracticeRunner key={setId} setId={setId} set={set} isCet6={isCet6} />
 }
 
+/* 把三个 section 合成块级视图，每块显示 transcript + questions */
+function buildSectionGroups(set) {
+  return set.meta.level === 'CET6'
+    ? [
+        { key: 'a', label: 'Section A · 长对话', items: set.sections.a },
+        { key: 'b', label: 'Section B · 听力篇章', items: set.sections.b },
+        { key: 'c', label: 'Section C · 讲座/讲话', items: set.sections.c },
+      ]
+    : [
+        { key: 'news', label: 'Section A · 短篇新闻', items: set.sections.news },
+        { key: 'conv', label: 'Section B · 长对话', items: set.sections.conversations },
+        { key: 'pass', label: 'Section C · 听力篇章', items: set.sections.passages },
+      ]
+}
+
+/* 评分前提示：列出每个 Section 还有几题未答 */
+function unansweredDetail(set, answers) {
+  return buildSectionGroups(set)
+    .map((g) => {
+      const qs = g.items.flatMap((item) => item.questions)
+      return { label: g.label.split(' · ')[0], left: qs.filter((q) => !answers[q.n]).length }
+    })
+    .filter((x) => x.left > 0)
+    .map((x) => `${x.label} 还有 ${x.left} 题`)
+    .join('、')
+}
+
 function PracticeRunner({ setId, set, isCet6 }) {
   const progressKey = `${isCet6 ? CET6_KEYS.listeningProgress : CET4_KEYS.listeningProgress}:${setId}`
   const saved = loadJSON(progressKey)
@@ -112,6 +139,22 @@ function PracticeRunner({ setId, set, isCet6 }) {
     saveJSON(progressKey, { ...cur, answers })
   }, [answers, progressKey])
 
+  // 把三个 section 合成一个"块级视图"，每块显示 transcript + questions
+  const sectionGroups = buildSectionGroups(set)
+
+  // 每部分题量与已答数：用于标签进度、右侧分部分进度和「下一部分」按钮
+  const sectionStats = sectionGroups.map((g) => {
+    const qs = g.items.flatMap((item) => item.questions)
+    return { key: g.key, label: g.label, total: qs.length, done: qs.filter((q) => answers[q.n]).length }
+  })
+  const isLastSection = activeSection === sectionGroups.length - 1
+  const nextGroup = isLastSection ? null : sectionGroups[activeSection + 1]
+  function goNext() {
+    if (!nextGroup) return
+    setActiveSection(activeSection + 1)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   function setKey(n, v) {
     setAnswers((a) => ({ ...a, [n]: v }))
   }
@@ -120,7 +163,8 @@ function PracticeRunner({ setId, set, isCet6 }) {
     const allAnswers = collectAllAnswers(set, answers)
     const unanswered = Object.keys(allAnswers).filter((k) => !allAnswers[k]).length
     if (unanswered > 0) {
-      const ok = confirm(`还有 ${unanswered} 题未作答，确定交卷吗？`)
+      const detail = unansweredDetail(set, allAnswers)
+      const ok = confirm(`有题目未作答：${detail}。确定评分吗？`)
       if (!ok) return
     }
     let right = 0
@@ -162,20 +206,6 @@ function PracticeRunner({ setId, set, isCet6 }) {
   const total = 25
   const answered = countAnswered()
 
-  // 把三个 section 合成一个"块级视图"，每块显示 transcript + questions
-  const isCet6Data = set.meta.level === 'CET6'
-  const sectionGroups = isCet6Data
-    ? [
-        { key: 'a', label: 'Section A · 长对话', items: set.sections.a },
-        { key: 'b', label: 'Section B · 听力篇章', items: set.sections.b },
-        { key: 'c', label: 'Section C · 讲座/讲话', items: set.sections.c },
-      ]
-    : [
-        { key: 'news', label: 'Section A · 短篇新闻', items: set.sections.news },
-        { key: 'conv', label: 'Section B · 长对话', items: set.sections.conversations },
-        { key: 'pass', label: 'Section C · 听力篇章', items: set.sections.passages },
-      ]
-
   return (
     <div className="min-h-screen bg-[#f7f8f5]" style={examVars(isCet6 ? 'cet6' : 'cet4')}>
       {/* 音频播放器 */}
@@ -196,8 +226,13 @@ function PracticeRunner({ setId, set, isCet6 }) {
           {sectionGroups.map((g, i) => (
             <button key={g.key}
               onClick={() => setActiveSection(i)}
-              className={`px-4 py-2 rounded-xl text-xs font-bold border transition-all ${activeSection === i ? 'bg-[var(--accent)] text-white border-[var(--accent)]' : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300'}`}
-            >{g.label}</button>
+              className={`px-4 py-2 rounded-xl text-sm font-bold border transition-all ${activeSection === i ? 'bg-[var(--accent)] text-white border-[var(--accent)]' : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300'}`}
+            >
+              {g.label}
+              <span className="ml-1.5 tabular-nums opacity-80">
+                {sectionStats[i].done >= sectionStats[i].total ? '✓' : `${sectionStats[i].done}/${sectionStats[i].total}`}
+              </span>
+            </button>
           ))}
         </div>
 
@@ -278,6 +313,24 @@ function PracticeRunner({ setId, set, isCet6 }) {
               <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
                 <div className="h-full bg-[var(--accent)] transition-all" style={{ width: `${(answered / total) * 100}%` }} />
               </div>
+              <ul className="mt-4 space-y-1">
+                {sectionStats.map((st, i) => {
+                  const complete = st.done >= st.total
+                  return (
+                    <li key={st.key}>
+                      <button
+                        onClick={() => setActiveSection(i)}
+                        className={'w-full flex items-center justify-between rounded-lg px-2.5 py-1.5 text-sm text-left transition-colors ' + (activeSection === i ? 'bg-[var(--accent-soft)] font-bold text-[var(--accent-deep)]' : 'text-gray-600 hover:bg-gray-50')}
+                      >
+                        <span>{st.label.split(' · ')[0]}</span>
+                        <span className={'tabular-nums ' + (complete ? 'text-green-700 font-bold' : submitted ? 'text-gray-500' : 'px-1.5 rounded bg-[var(--hl-soft)] text-[var(--accent-deep)] font-bold')}>
+                          {complete ? '✓' : `${st.done}/${st.total}`}
+                        </span>
+                      </button>
+                    </li>
+                  )
+                })}
+              </ul>
               {submitted && (
                 <div className="mt-4 text-center">
                   <div className="text-xs text-gray-500 mb-1">得分</div>
@@ -286,7 +339,11 @@ function PracticeRunner({ setId, set, isCet6 }) {
               )}
             </div>
 
-            {!submitted ? (
+            {!submitted && nextGroup ? (
+              <button onClick={goNext}
+                className="w-full py-3 rounded-2xl bg-[var(--accent)] text-white font-bold hover:bg-[var(--accent-deep)] transition-colors"
+              >下一部分：{nextGroup.label.split(' · ')[0]} →</button>
+            ) : !submitted ? (
               <button onClick={handleSubmit}
                 className="w-full py-3 rounded-2xl bg-[var(--accent)] text-white font-bold hover:bg-[var(--accent-deep)] transition-colors"
               >评分</button>
