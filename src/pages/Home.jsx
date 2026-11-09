@@ -1,6 +1,7 @@
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import Icon from '../components/Icons.jsx'
+import FeatureIcon from '../components/FeatureIcons.jsx'
 import { LevelSwitch } from '../components/ExamList.jsx'
 import { readingSets } from '../data/readingSets.js'
 import { readingSets6 } from '../data/readingSets6.js'
@@ -37,8 +38,8 @@ const MODULES = [
 const FEATURES = [
   { icon: 'clock', title: '整套模考', desc: '按真实考试顺序与时间计时' },
   { icon: 'check', title: '错题本', desc: '答对才移出，不会点一次就丢' },
-  { icon: 'listening', title: '听力原音频', desc: '倍速播放，交卷后标出答案依据' },
-  { icon: 'writing', title: '写作 · 翻译参考', desc: '范文与参考译文对照，草稿自动保存' },
+  { icon: 'headphones', title: '听力原音频', desc: '倍速播放，交卷后标出答案依据' },
+  { icon: 'pen', title: '写作 · 翻译参考', desc: '范文与参考译文对照，草稿自动保存' },
 ]
 
 /* 备考流程 */
@@ -180,9 +181,7 @@ export default function Home() {
           >
             {FEATURES.map((f) => (
               <div key={f.title} className="flex items-center gap-4 px-[22px] py-3.5 border-t border-[#f1f3f0] first:border-t-0">
-                <span className="w-10 h-10 rounded-lg bg-[var(--accent-soft)] text-[var(--accent)] grid place-items-center shrink-0">
-                  <Icon name={f.icon} className="w-5 h-5" />
-                </span>
+                <FeatureIcon name={f.icon} className="w-14 h-14 shrink-0 -my-1" />
                 <div>
                   <div className="text-[17px] font-bold">{f.title}</div>
                   <div className="text-sm text-gray-600 leading-relaxed mt-0.5">{f.desc}</div>
