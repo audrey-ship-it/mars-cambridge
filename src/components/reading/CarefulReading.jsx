@@ -35,7 +35,7 @@ export default function CarefulReading({ passage, answers, onChange, submitted }
                             ? 'bg-red-50 border-red-300 text-red-700'
                             : 'border-transparent text-gray-600'
                         : checked
-                          ? 'bg-blue-50 border-blue-300'
+                          ? 'bg-[var(--accent-soft)] border-[var(--accent-border)]'
                           : 'border-transparent hover:bg-gray-50')
                     }
                   >

@@ -1,7 +1,8 @@
 import { NavLink, useLocation } from 'react-router-dom';
 import { withExamParam } from '../utils/examLevel.js';
+import Logo from './Logo.jsx';
 
-/* 左侧导航条目（CET-4 范围；样式参照 mars-cambridge 侧边栏：深绿底 + 黄色选中块） */
+/* 左侧导航条目（CET-4 范围；深蓝底 + 当前级别点缀色（黄 / 薄荷青绿）选中标记） */
 const ITEMS = [
   { to: '/', label: '首页', icon: '🏠', end: true },
   { to: '/reading', label: '阅读', icon: '📄' },
@@ -19,14 +20,14 @@ export default function Sidebar() {
   return (
     <>
       {/* 桌面端：固定左侧 */}
-      <aside className="hidden md:flex fixed left-0 top-0 bottom-0 w-44 flex-col items-center bg-[#064e3b] py-5 z-40">
-        <NavLink to="/" className="w-16 h-16 rounded-2xl bg-amber-300 flex items-center justify-center text-3xl font-black text-[#064e3b] hover:bg-amber-200 transition">
-          M
+      <aside className="hidden md:flex fixed left-0 top-0 bottom-0 w-44 flex-col items-center bg-[var(--accent-deep)] py-5 z-40">
+        <NavLink to="/" aria-label="Mars CET 首页" className="hover:opacity-90 transition">
+          <Logo size={64} />
         </NavLink>
         <nav className="flex-1 flex flex-col items-center justify-center gap-1 w-full px-3 overflow-y-auto">
           {ITEMS.map((it) => (
             it.ready === false ? (
-              <div key={it.to} className="w-full flex flex-col items-center gap-0.5 rounded-2xl px-3 py-2.5 text-emerald-100/30 cursor-not-allowed">
+              <div key={it.to} className="w-full flex flex-col items-center gap-0.5 rounded-2xl px-3 py-2.5 text-indigo-100/30 cursor-not-allowed">
                 <span className="text-xl leading-6">{it.icon}</span>
                 <span className="text-sm font-bold">{it.label}</span>
               </div>
@@ -37,7 +38,7 @@ export default function Sidebar() {
                 end={it.end}
                 className={({ isActive }) =>
                   `w-full flex flex-col items-center gap-0.5 rounded-2xl px-3 py-2.5 transition ${
-                    isActive ? 'bg-amber-300 text-[#064e3b]' : 'text-emerald-100/80 hover:bg-white/10 hover:text-white'
+                    isActive ? 'bg-white/10 text-white shadow-[inset_3px_0_0_var(--hl)]' : 'text-indigo-100/80 hover:bg-white/10 hover:text-white'
                   }`
                 }
               >
@@ -50,14 +51,14 @@ export default function Sidebar() {
       </aside>
 
       {/* 窄屏：顶部横向图标条 */}
-      <aside className="md:hidden sticky top-0 z-40 bg-[#064e3b]">
+      <aside className="md:hidden sticky top-0 z-40 bg-[var(--accent-deep)]">
         <div className="flex items-center gap-1 px-3 py-2 overflow-x-auto">
-          <NavLink to="/" className="shrink-0 w-9 h-9 rounded-xl bg-amber-300 flex items-center justify-center text-lg font-black text-[#064e3b]">
-            M
+          <NavLink to="/" aria-label="Mars CET 首页" className="shrink-0">
+            <Logo size={36} />
           </NavLink>
           {ITEMS.filter((it) => !it.end).map((it) => (
             it.ready === false ? (
-              <div key={it.to} className="shrink-0 flex items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-bold text-emerald-100/30 cursor-not-allowed">
+              <div key={it.to} className="shrink-0 flex items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-bold text-indigo-100/30 cursor-not-allowed">
                 <span>{it.icon}</span>
                 <span>{it.label}</span>
               </div>
@@ -67,7 +68,7 @@ export default function Sidebar() {
                 to={withExamParam(it.to)}
                 className={({ isActive }) =>
                   `shrink-0 flex items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-bold transition ${
-                    isActive ? 'bg-amber-300 text-[#064e3b]' : 'text-emerald-100/80'
+                    isActive ? 'bg-white/10 text-white shadow-[inset_0_-3px_0_var(--hl)]' : 'text-indigo-100/80'
                   }`
                 }
               >

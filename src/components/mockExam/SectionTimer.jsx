@@ -17,7 +17,7 @@ export default function SectionTimer({ seconds, running, onTogglePause }) {
       </span>
       <button
         onClick={onTogglePause}
-        className="rounded-xl border border-gray-200 px-3 py-1.5 text-xs font-bold text-gray-500 hover:border-[#0d7656] hover:text-[#0d7656] transition"
+        className="rounded-xl border border-gray-200 px-3 py-1.5 text-xs font-bold text-gray-500 hover:border-[var(--accent)] hover:text-[var(--accent)] transition"
       >
         {running ? '⏸ 暂停' : '▶ 继续'}
       </button>

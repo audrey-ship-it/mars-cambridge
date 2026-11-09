@@ -65,7 +65,7 @@ export function ListeningList() {
               <div>
                 <div className="flex items-center gap-2">
                   <span className="font-bold text-gray-900">{s.meta.year}年{s.meta.month}月 第{s.meta.set}套</span>
-                  {s.meta.verified && <span className="text-[10px] font-bold bg-emerald-500 text-white px-2 py-0.5 rounded-full">已核对</span>}
+                  {s.meta.verified && <span className="text-[10px] font-bold bg-[var(--accent)] text-white px-2 py-0.5 rounded-full">已核对</span>}
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -92,7 +92,7 @@ export function ListeningPractice() {
     return (
       <div className="min-h-screen max-w-3xl mx-auto px-4 py-8">
         <p className="text-sm text-gray-600 mb-3">未找到该套听力数据。</p>
-        <Link to={isCet6 ? '/listening?exam=cet6' : '/listening'} className="text-sm text-blue-600 font-bold">返回列表</Link>
+        <Link to={isCet6 ? '/listening?exam=cet6' : '/listening'} className="text-sm text-[var(--accent)] font-bold">返回列表</Link>
       </div>
     )
   }
@@ -244,7 +244,7 @@ function PracticeRunner({ setId, set, isCet6 }) {
                                         ? 'bg-red-50 border-red-300 text-red-700'
                                         : 'border-transparent text-gray-600'
                                     : checked
-                                      ? 'bg-blue-50 border-blue-300'
+                                      ? 'bg-[var(--accent-soft)] border-[var(--accent-border)]'
                                       : 'border-transparent hover:bg-gray-50')
                                 }
                               >
@@ -388,14 +388,14 @@ function TranscriptBlock({ text, quotes = [], answerQuotes = {}, highlight = fal
   }
 
   return (
-    <div className="bg-emerald-50/40 border-b border-gray-100">
+    <div className="bg-[var(--accent-softer)] border-b border-gray-100">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="w-full px-4 py-2.5 flex items-center gap-2 text-left text-xs font-bold text-emerald-700 hover:bg-emerald-50 transition-colors"
+        className="w-full px-4 py-2.5 flex items-center gap-2 text-left text-xs font-bold text-[var(--accent)] hover:bg-[var(--accent-soft)] transition-colors"
       >
         <span>{open ? '▼' : '▶'}</span>
         <span className="uppercase tracking-wider">Transcript 原文</span>
-        <span className="font-normal text-emerald-600/70">{open ? '点击隐藏' : '点击查看'}</span>
+        <span className="font-normal text-[var(--accent)]/70">{open ? '点击隐藏' : '点击查看'}</span>
         {highlight && <span className="ml-auto font-normal text-[10px] text-yellow-700 bg-yellow-100 px-2 py-0.5 rounded-full">荧光笔已标记答案句</span>}
       </button>
       {open && (

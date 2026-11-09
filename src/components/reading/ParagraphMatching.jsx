@@ -27,7 +27,7 @@ export default function ParagraphMatching({ section, answers, onChange, submitte
                         ? 'bg-emerald-50 border-emerald-400 text-emerald-700'
                         : isWrong
                           ? 'bg-red-50 border-red-400 text-red-700'
-                          : 'border-gray-300 bg-blue-50 text-blue-700')
+                          : 'border-gray-300 bg-[var(--accent-soft)] text-[var(--accent)]')
                     }
                     value={userAns}
                     onChange={(e) => onChange(q.n, e.target.value)}
@@ -41,7 +41,7 @@ export default function ParagraphMatching({ section, answers, onChange, submitte
                     ))}
                   </select>
                   {isWrong && (
-                    <span className="text-base font-bold text-emerald-600">→ {correct}</span>
+                    <span className="text-base font-bold text-green-700">→ {correct}</span>
                   )}
                 </div>
               </div>

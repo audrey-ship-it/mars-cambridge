@@ -23,7 +23,7 @@ export default function BankedCloze({ section, answers, onChange, submitted }) {
                 ? 'bg-emerald-50 border-emerald-400 text-emerald-700'
                 : isWrong
                   ? 'bg-red-50 border-red-400 text-red-700'
-                  : 'border-gray-300 bg-blue-50 text-blue-700')
+                  : 'border-gray-300 bg-[var(--accent-soft)] text-[var(--accent)]')
             }
             value={userAns}
             onChange={(e) => onChange(blankNo, e.target.value)}
@@ -37,7 +37,7 @@ export default function BankedCloze({ section, answers, onChange, submitted }) {
             ))}
           </select>
           {isWrong && (
-            <span className="text-base font-bold text-emerald-600 ml-0.5">→ {correct}</span>
+            <span className="text-base font-bold text-green-700 ml-0.5">→ {correct}</span>
           )}
         </span>
       )

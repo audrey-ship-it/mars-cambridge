@@ -34,7 +34,7 @@ export default function ReadingPractice() {
           <p className="text-sm text-gray-600 mb-3">未找到该套阅读数据。</p>
           <Link
             to={isCET6 ? '/reading?exam=cet6' : '/reading'}
-            className="text-sm text-blue-600 font-bold"
+            className="text-sm text-[var(--accent)] font-bold"
           >
             返回阅读列表
           </Link>
@@ -142,7 +142,7 @@ function PracticeRunner({ setId, set, keys }) {
     <div className="min-h-screen max-w-3xl mx-auto px-4 py-8">
       <header className="mb-4">
         <div className="flex items-center justify-between">
-          <Link to={`/reading${set.meta.level === 'CET6' ? '?exam=cet6' : ''}`} className="text-sm text-blue-600 font-bold">
+          <Link to={`/reading${set.meta.level === 'CET6' ? '?exam=cet6' : ''}`} className="text-sm text-[var(--accent)] font-bold">
             ← 返回列表
           </Link>
           <button
@@ -170,8 +170,8 @@ function PracticeRunner({ setId, set, keys }) {
               className={
                 'rounded-xl px-3 py-1.5 text-sm font-bold border transition ' +
                 (tab === s.id
-                  ? 'bg-blue-600 text-white border-blue-600'
-                  : 'bg-white text-gray-600 border-gray-200 hover:border-blue-300')
+                  ? 'bg-[var(--accent)] text-white border-[var(--accent)]'
+                  : 'bg-white text-gray-600 border-gray-200 hover:border-[var(--accent-border)]')
               }
             >
               {s.label}
@@ -184,10 +184,10 @@ function PracticeRunner({ setId, set, keys }) {
 
       <div className="mt-6 rounded-2xl bg-white border border-gray-200 p-4 flex items-center justify-between sticky bottom-3">
         <div className="text-sm text-gray-500">
-          已答 <span className="font-bold text-blue-600">{answeredCount}</span> / {totalQuestions}
+          已答 <span className="font-bold text-[var(--accent)]">{answeredCount}</span> / {totalQuestions}
           {submitted && (
             <span className="ml-3">
-              得分 <span className="font-bold text-green-600">{scoreOf()}</span> / {totalQuestions}
+              得分 <span className="font-bold text-green-700">{scoreOf()}</span> / {totalQuestions}
             </span>
           )}
         </div>
@@ -198,7 +198,7 @@ function PracticeRunner({ setId, set, keys }) {
             'rounded-xl px-5 py-2 text-sm font-bold ' +
             (submitted
               ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-              : 'bg-blue-600 text-white hover:bg-blue-700')
+              : 'bg-[var(--accent)] text-white hover:bg-[var(--accent-hover)]')
           }
         >
           {submitted ? '已交卷' : '交卷'}

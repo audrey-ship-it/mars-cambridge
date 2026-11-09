@@ -296,7 +296,7 @@ export function GrammarList() {
               <div className="flex items-center gap-3">
                 <div className="font-bold text-gray-900">{u.title}</div>
                 <span className="text-xs px-2 py-0.5 rounded-full bg-[var(--accent-soft)] text-[var(--accent)] font-bold">45 题</span>
-                {attempted && <span className="text-xs px-2 py-0.5 rounded-full bg-amber-300 text-[#064e3b] font-bold">得分 {scored}/45</span>}
+                {attempted && <span className="text-xs px-2 py-0.5 rounded-full bg-[var(--hl)] text-[var(--accent-deep)] font-bold">得分 {scored}/45</span>}
                 <span className="ml-auto text-gray-300">→</span>
               </div>
               <p className="text-sm text-gray-500 mt-1.5">{u.desc}</p>

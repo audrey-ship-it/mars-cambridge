@@ -26,7 +26,7 @@ export default class ErrorBoundary extends Component {
             </div>
             <div className="flex gap-3">
               <button
-                className="rounded-xl bg-blue-600 text-white px-4 py-2 text-sm font-bold"
+                className="rounded-xl bg-[#2b2e7a] text-white px-4 py-2 text-sm font-bold"
                 onClick={() => window.location.reload()}
               >
                 刷新页面

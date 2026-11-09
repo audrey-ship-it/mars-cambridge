@@ -88,12 +88,12 @@ export default function MockExamList() {
               <div>
                 <div className="flex items-center gap-2">
                   <span className="font-bold text-gray-900">{e.meta.year}年{e.meta.month}月 第{e.meta.set}套</span>
-                  <span className="text-[10px] font-bold bg-emerald-500 text-white px-2 py-0.5 rounded-full">已核对</span>
+                  <span className="text-[10px] font-bold bg-[var(--accent)] text-white px-2 py-0.5 rounded-full">已核对</span>
                   {isDone && (
-                    <span className="text-[10px] font-bold bg-blue-100 text-blue-600 px-2 py-0.5 rounded-full">已完成</span>
+                    <span className="text-[10px] font-bold bg-[var(--accent-soft)] text-[var(--accent)] px-2 py-0.5 rounded-full">已完成</span>
                   )}
                   {isStarted && (
-                    <span className="text-[10px] font-bold bg-amber-100 text-amber-600 px-2 py-0.5 rounded-full">进行中</span>
+                    <span className="text-[10px] font-bold bg-[var(--hl-soft)] text-[var(--accent-deep)] px-2 py-0.5 rounded-full">进行中</span>
                   )}
                 </div>
               </div>
@@ -101,7 +101,7 @@ export default function MockExamList() {
                 {isDone ? (
                   <span className="text-xs text-gray-500">查看结果</span>
                 ) : isStarted ? (
-                  <span className="text-xs text-amber-600 font-bold">继续模考</span>
+                  <span className="text-xs text-[var(--accent)] font-bold">继续模考</span>
                 ) : (
                   <span className="text-xs text-[var(--accent)] font-bold">开始模考</span>
                 )}

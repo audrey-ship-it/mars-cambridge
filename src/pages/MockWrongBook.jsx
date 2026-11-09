@@ -237,7 +237,7 @@ function WrongBookInner({ isCet6, onSwitch }) {
                     <span className="text-xs text-red-400">错 {e.count} 次</span>
                   )}
                   {redoRes === 'correct' && (
-                    <span className="ml-auto text-xs font-bold text-emerald-600">✓ 答对，已移出</span>
+                    <span className="ml-auto text-xs font-bold text-green-700">✓ 答对，已移出</span>
                   )}
                 </div>
 
@@ -270,7 +270,7 @@ function WrongBookInner({ isCet6, onSwitch }) {
                               : showWrong
                                 ? 'bg-red-50 border-red-300 text-red-700'
                                 : checked
-                                  ? 'bg-blue-50 border-blue-300'
+                                  ? 'bg-[var(--accent-soft)] border-[var(--accent-border)]'
                                   : 'border-transparent hover:bg-gray-50')
                         }
                       >

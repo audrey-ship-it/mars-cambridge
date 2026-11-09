@@ -66,7 +66,7 @@ export default function ReadingList() {
                   {set.meta.year}年{set.meta.month}月 第{set.meta.set}套
                 </div>
                 {set.meta.verified ? (
-                  <span className="text-xs bg-green-50 text-green-700 rounded-full px-2 py-0.5">
+                  <span className="text-xs bg-[var(--accent-soft)] text-[var(--accent)] rounded-full px-2 py-0.5">
                     已核对
                   </span>
                 ) : (

@@ -173,7 +173,7 @@ export default function MockExam() {
       <div className="min-h-screen max-w-3xl mx-auto px-4 py-8">
         <div className="rounded-2xl bg-white border border-dashed border-gray-200 p-6">
           <p className="text-sm text-gray-600 mb-3">该套模考数据未就绪或未人工核对。</p>
-          <Link to={backTo} className="text-sm text-blue-600 font-bold">← 返回真题中心</Link>
+          <Link to={backTo} className="text-sm text-[var(--accent)] font-bold">← 返回真题中心</Link>
         </div>
       </div>
     )
@@ -415,7 +415,7 @@ function WritingSection({ exam, setId, isCet6, submitted, onSubmit }) {
           onChange={(e) => onInput(e.target.value)}
           disabled={submitted}
           placeholder="Write your essay here……（草稿自动保存）"
-          className="w-full h-80 rounded-xl border border-gray-200 p-4 text-[21px] leading-[1.7] text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#0d7656]/30 resize-y disabled:bg-gray-50"
+          className="w-full h-80 rounded-xl border border-gray-200 p-4 text-[21px] leading-[1.7] text-gray-800 focus:outline-none focus:ring-2 focus:ring-[var(--accent-border)] resize-y disabled:bg-gray-50"
         />
         <div className="flex items-center gap-2 mt-3 text-xs">
           <span className={countColor}>词数 {wordCount}（要求 {w.minWords}–{w.maxWords}）</span>
@@ -479,14 +479,14 @@ function TranscriptBlock({ text }) {
   if (!text) return null
 
   return (
-    <div className="bg-emerald-50/40 border-b border-gray-100">
+    <div className="bg-[var(--accent-softer)] border-b border-gray-100">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="w-full px-4 py-2.5 flex items-center gap-2 text-left text-xs font-bold text-emerald-700 hover:bg-emerald-50 transition-colors"
+        className="w-full px-4 py-2.5 flex items-center gap-2 text-left text-xs font-bold text-[var(--accent)] hover:bg-[var(--accent-soft)] transition-colors"
       >
         <span>{open ? '▼' : '▶'}</span>
         <span className="uppercase tracking-wider">Transcript 原文</span>
-        <span className="font-normal text-emerald-600/70">{open ? '点击隐藏' : '点击查看'}</span>
+        <span className="font-normal text-[var(--accent)]/70">{open ? '点击隐藏' : '点击查看'}</span>
       </button>
       {open && (
         <div className="px-4 pb-4 text-[21px] leading-[1.7] text-gray-700 whitespace-pre-line">{text}</div>
@@ -575,7 +575,7 @@ function ListeningSection({ exam, groups, answers, setAnswers, submitted, onSubm
                                     ? 'bg-red-50 border-red-300 text-red-700'
                                     : 'border-transparent text-gray-600'
                                 : checked
-                                  ? 'bg-blue-50 border-blue-300'
+                                  ? 'bg-[var(--accent-soft)] border-[var(--accent-border)]'
                                   : 'border-transparent hover:bg-gray-50')
                             }
                           >
@@ -604,9 +604,9 @@ function ListeningSection({ exam, groups, answers, setAnswers, submitted, onSubm
 
       <div className="mt-6 rounded-2xl bg-white border border-gray-200 p-4 flex items-center justify-between sticky bottom-3">
         <div className="text-sm text-gray-500">
-          已答 <span className="font-bold text-blue-600">{answered}</span> / {total}
+          已答 <span className="font-bold text-[var(--accent)]">{answered}</span> / {total}
           {submitted && (
-            <span className="ml-3">得分 <span className="font-bold text-green-600">{right}</span> / {total}</span>
+            <span className="ml-3">得分 <span className="font-bold text-green-700">{right}</span> / {total}</span>
           )}
         </div>
         {!submitted ? (
@@ -699,9 +699,9 @@ function ReadingSection({ exam, answers, setAnswers, submitted, onSubmit }) {
 
       <div className="mt-6 rounded-2xl bg-white border border-gray-200 p-4 flex items-center justify-between sticky bottom-3">
         <div className="text-sm text-gray-500">
-          已答 <span className="font-bold text-blue-600">{answeredCount}</span> / {totalQuestions}
+          已答 <span className="font-bold text-[var(--accent)]">{answeredCount}</span> / {totalQuestions}
           {submitted && (
-            <span className="ml-3">得分 <span className="font-bold text-green-600">{right}</span> / {totalQuestions}</span>
+            <span className="ml-3">得分 <span className="font-bold text-green-700">{right}</span> / {totalQuestions}</span>
           )}
         </div>
         {!submitted ? (
@@ -757,7 +757,7 @@ function TranslationSection({ exam, setId, isCet6, submitted, onSubmit }) {
           onChange={(e) => onInput(e.target.value)}
           disabled={submitted}
           placeholder="在这里写下你的英文翻译……（草稿自动保存）"
-          className="w-full h-72 rounded-xl border border-gray-200 p-4 text-[21px] leading-[1.7] text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#0d7656]/30 resize-y disabled:bg-gray-50"
+          className="w-full h-72 rounded-xl border border-gray-200 p-4 text-[21px] leading-[1.7] text-gray-800 focus:outline-none focus:ring-2 focus:ring-[var(--accent-border)] resize-y disabled:bg-gray-50"
         />
         <div className="flex items-center gap-2 mt-3 text-xs text-gray-400">
           <span>词数 {wordCount}</span>
