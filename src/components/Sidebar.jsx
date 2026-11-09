@@ -21,19 +21,19 @@ export default function Sidebar() {
   return (
     <>
       {/* 桌面端：固定左侧 */}
-      <aside className="hidden md:flex fixed left-0 top-0 bottom-0 w-52 flex-col bg-[var(--accent-deep)] px-3 py-5 z-40">
+      <aside className="hidden md:flex fixed left-0 top-0 bottom-0 w-[232px] flex-col bg-[var(--accent-deep)] px-4 py-6 z-40">
         <NavLink
           to="/"
           aria-label="Mars CET 首页"
-          className="flex items-center gap-2.5 px-2 pb-5 mb-3 border-b border-white/10"
+          className="flex items-center gap-3 px-3 pb-6 mb-4 border-b border-white/10"
         >
           <Logo size={44} className="shrink-0" />
           <div className="leading-tight">
-            <div className="text-white font-bold text-base">Mars CET</div>
-            <div className="text-xs tracking-[.16em] text-indigo-100/70">火星四六级</div>
+            <div className="text-white font-bold text-lg">Mars CET</div>
+            <div className="text-[13px] tracking-[.16em] text-indigo-100/70">火星四六级</div>
           </div>
         </NavLink>
-        <div className="px-2 pb-2 text-xs tracking-[.18em] text-indigo-100/50">学习</div>
+        <div className="px-3 pb-2.5 text-[13px] tracking-[.18em] text-indigo-100/50">学习</div>
         <nav className="flex-1 overflow-y-auto">
           {ITEMS.map((it) => (
             <NavLink
@@ -41,7 +41,7 @@ export default function Sidebar() {
               to={withExamParam(it.to)}
               end={it.end}
               className={({ isActive }) =>
-                `relative flex items-center gap-3 rounded-lg px-3 py-2.5 mb-0.5 text-[15px] font-semibold transition-colors ${
+                `relative flex items-center gap-3.5 rounded-lg px-3 py-3 mb-1 text-[17px] font-semibold transition-colors ${
                   isActive ? 'bg-white/12 text-white' : 'text-white/70 hover:bg-white/10 hover:text-white'
                 }`
               }
@@ -51,14 +51,14 @@ export default function Sidebar() {
                   {isActive && (
                     <span className="absolute left-0 top-2 bottom-2 w-[3px] rounded-r bg-[var(--hl)]" />
                   )}
-                  <Icon name={it.icon} className={'w-[18px] h-[18px] ' + (isActive ? 'text-[var(--hl)]' : '')} />
+                  <Icon name={it.icon} className={'w-5 h-5 ' + (isActive ? 'text-[var(--hl)]' : '')} />
                   {it.label}
                 </>
               )}
             </NavLink>
           ))}
         </nav>
-        <div className="px-2 pt-3 text-xs text-indigo-100/50">进度保存在本机浏览器</div>
+        <div className="px-3 pt-3 text-[13px] text-indigo-100/50">进度保存在本机浏览器</div>
       </aside>
 
       {/* 窄屏：顶部横向图标条 */}
