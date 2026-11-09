@@ -35,10 +35,10 @@ const MODULES = [
 
 /* 网站特点（右侧卡片）：均对应站内已有功能 */
 const FEATURES = [
-  { icon: 'clock', title: '整套模考', desc: '按真实考试顺序和时间做题，写作、听力、阅读、翻译依次计时。' },
-  { icon: 'check', title: '错题本', desc: '错题自动收录，答对才移出，不会点一次就丢。' },
-  { icon: 'listening', title: '听力原音频', desc: '0.75–1.5 倍速播放，原文对照，交卷后标出答案依据。' },
-  { icon: 'writing', title: '写作 · 翻译参考', desc: '写作范文对照、翻译参考译文与译点，草稿自动保存。' },
+  { icon: 'clock', title: '整套模考', desc: '按真实考试顺序与时间计时' },
+  { icon: 'check', title: '错题本', desc: '答对才移出，不会点一次就丢' },
+  { icon: 'listening', title: '听力原音频', desc: '倍速播放，交卷后标出答案依据' },
+  { icon: 'writing', title: '写作 · 翻译参考', desc: '范文与参考译文对照，草稿自动保存' },
 ]
 
 /* 备考流程 */
@@ -179,7 +179,7 @@ export default function Home() {
             className="bg-white border border-[#e1e5f0] rounded-2xl overflow-hidden shadow-[0_1px_2px_rgba(16,24,20,.04),0_12px_32px_-12px_rgba(16,24,20,.12)]"
           >
             {FEATURES.map((f) => (
-              <div key={f.title} className="flex items-start gap-4 px-[22px] py-4 border-t border-[#f1f3f0] first:border-t-0">
+              <div key={f.title} className="flex items-center gap-4 px-[22px] py-3.5 border-t border-[#f1f3f0] first:border-t-0">
                 <span className="w-10 h-10 rounded-lg bg-[var(--accent-soft)] text-[var(--accent)] grid place-items-center shrink-0">
                   <Icon name={f.icon} className="w-5 h-5" />
                 </span>
@@ -191,7 +191,7 @@ export default function Home() {
             ))}
             <button
               onClick={() => scrollToSection('modules')}
-              className="block w-full text-center py-3.5 text-base font-bold text-[var(--accent)] bg-[var(--accent-softer)] border-t border-[#eef1ed] hover:bg-[var(--accent-soft)] transition-colors"
+              className="block w-full text-center py-3 text-base font-bold text-[var(--accent)] bg-[var(--accent-softer)] border-t border-[#eef1ed] hover:bg-[var(--accent-soft)] transition-colors"
             >
               查看专项模块
             </button>
