@@ -6,7 +6,7 @@ import Icon from './Icons.jsx'
 export function LevelSwitch({ isCet6, onChange, prominent = false }) {
   return (
     <div
-      className={'inline-flex p-0.5 rounded-lg ' + (prominent ? 'bg-gray-200/80 p-1' : 'bg-gray-200/70')}
+      className={'inline-flex p-0.5 rounded-lg ' + (prominent ? 'bg-white p-1 border-2 border-[var(--accent-deep)]' : 'bg-gray-200/70')}
       role="tablist"
       aria-label="考试级别"
     >
@@ -19,7 +19,7 @@ export function LevelSwitch({ isCet6, onChange, prominent = false }) {
             aria-selected={active}
             onClick={() => onChange(e.code)}
             className={
-              (prominent ? 'px-5 py-2 rounded-md text-base font-bold transition-colors ' : 'px-4 py-1.5 rounded-md text-sm font-bold transition-colors ') +
+              (prominent ? 'relative px-6 py-2 rounded-md text-lg font-bold transition-colors ' : 'px-4 py-1.5 rounded-md text-sm font-bold transition-colors ') +
               (active
                 ? prominent
                   ? 'bg-[var(--accent-deep)] text-white shadow-sm'
@@ -28,6 +28,9 @@ export function LevelSwitch({ isCet6, onChange, prominent = false }) {
             }
           >
             {e.label}
+            {prominent && active && (
+              <span className="absolute left-3 right-3 bottom-0.5 h-[3px] rounded-sm bg-[var(--hl)]" />
+            )}
           </button>
         )
       })}
