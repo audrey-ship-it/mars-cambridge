@@ -19,6 +19,36 @@ function scrollToSection(id) {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
 }
 
+/* 备考流程 */
+const STEPS = [
+  { title: '摸底', desc: '从最近一套真题开始，了解自己目前的水平。' },
+  { title: '专项训练', desc: '按阅读、听力、翻译、写作、语法、单词逐项练习。' },
+  { title: '整套模考', desc: '按正式考试顺序和时间完成整套，熟悉节奏。' },
+  { title: '错题复盘', desc: '错题自动进入错题本，答对后才移出。' },
+]
+
+/* 考试结构（试卷结构：2016 年 6 月起的新题型；以全国大学英语四六级考试委员会官方说明为准） */
+const EXAM_STRUCTURE = {
+  cet4: {
+    total: '125 分钟',
+    rows: [
+      { part: '写作', time: '30 分钟', content: '短文写作 1 篇', weight: '15%' },
+      { part: '听力', time: '25 分钟', content: '长对话 · 短篇新闻 · 听力篇章，共 25 题', weight: '35%' },
+      { part: '阅读', time: '40 分钟', content: '选词填空 · 长篇阅读 · 仔细阅读，共 30 题', weight: '35%' },
+      { part: '翻译', time: '30 分钟', content: '段落汉译英 1 篇', weight: '15%' },
+    ],
+  },
+  cet6: {
+    total: '130 分钟',
+    rows: [
+      { part: '写作', time: '30 分钟', content: '短文写作 1 篇', weight: '15%' },
+      { part: '听力', time: '30 分钟', content: '长对话 · 听力篇章 · 讲座，共 25 题', weight: '35%' },
+      { part: '阅读', time: '40 分钟', content: '选词填空 · 长篇阅读 · 仔细阅读，共 30 题', weight: '35%' },
+      { part: '翻译', time: '30 分钟', content: '段落汉译英 1 篇', weight: '15%' },
+    ],
+  },
+}
+
 /* 专项模块 */
 const MODULES = [
   { icon: '📄', title: '阅读理解', desc: '选词填空 · 长篇阅读 · 仔细阅读，真题逐套训练', tags: ['选词填空', '段落匹配', '四选一'], color: 'emerald', link: '/reading', ready: true },
@@ -53,6 +83,7 @@ export default function Home() {
 
   const exam = getExamLevel() === 'cet6' ? 'CET-6' : 'CET-4'
   const theme = examTheme(exam)
+  const structure = EXAM_STRUCTURE[exam === 'CET-6' ? 'cet6' : 'cet4']
 
   return (
     <div id="top" className="min-h-screen bg-[#f7f8f5] text-[var(--accent-deep)] overflow-x-hidden" style={examVars(exam)}>
@@ -161,6 +192,67 @@ export default function Home() {
               <span className="font-extrabold text-gray-900"> 2019–2026</span> · 进度本地保存
             </p>
           </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ 备考流程 ═══ */}
+      <section className="py-20 bg-[#f7f8f5] border-t border-gray-100">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 bg-[var(--accent-soft)] text-[var(--accent-deep)] text-sm font-bold px-3.5 py-1.5 rounded-full border border-[var(--accent-border)] mb-4">
+              <span className="inline-block w-5 h-[3px] rounded-sm bg-[var(--hl)]" />
+              备考流程
+            </div>
+            <h2 className="text-4xl font-extrabold text-gray-900 mb-3 tracking-tight">四步，从摸底到提分</h2>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {STEPS.map((st, i) => (
+              <div key={st.title} className="bg-white rounded-2xl p-6 border border-gray-200">
+                <div className="w-10 h-10 rounded-xl bg-[var(--accent-deep)] text-[var(--hl)] grid place-items-center text-lg font-extrabold mb-4">{i + 1}</div>
+                <h3 className="text-[22px] font-bold text-gray-900 mb-2">{st.title}</h3>
+                <p className="text-base text-gray-600 leading-relaxed">{st.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ 考试结构（随当前级别切换） ═══ */}
+      <section className="py-20 bg-white border-t border-gray-100">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center gap-2 bg-[var(--accent-soft)] text-[var(--accent-deep)] text-sm font-bold px-3.5 py-1.5 rounded-full border border-[var(--accent-border)] mb-4">
+              <span className="inline-block w-5 h-[3px] rounded-sm bg-[var(--hl)]" />
+              考试结构
+            </div>
+            <h2 className="text-4xl font-extrabold text-gray-900 mb-3 tracking-tight">{exam} 考什么、考多久</h2>
+            <p className="text-gray-600 text-lg">全卷 {structure.total} · 满分 710 分 · 以全国大学英语四六级考试委员会官方说明为准</p>
+          </div>
+          <div className="overflow-x-auto rounded-2xl border border-gray-200">
+            <table className="w-full text-base text-left">
+              <thead className="bg-[var(--accent-deep)] text-white">
+                <tr>
+                  <th className="px-5 py-3.5 font-bold">部分</th>
+                  <th className="px-5 py-3.5 font-bold whitespace-nowrap">时间</th>
+                  <th className="px-5 py-3.5 font-bold">内容</th>
+                  <th className="px-5 py-3.5 font-bold whitespace-nowrap">分值占比</th>
+                </tr>
+              </thead>
+              <tbody>
+                {structure.rows.map((r) => (
+                  <tr key={r.part} className="border-t border-gray-200">
+                    <td className="px-5 py-4 font-bold text-gray-900 whitespace-nowrap">
+                      <span className="inline-block w-1.5 h-4 rounded-sm bg-[var(--hl)] mr-2 align-middle" />
+                      {r.part}
+                    </td>
+                    <td className="px-5 py-4 text-gray-700 whitespace-nowrap">{r.time}</td>
+                    <td className="px-5 py-4 text-gray-700">{r.content}</td>
+                    <td className="px-5 py-4 text-gray-700 whitespace-nowrap">{r.weight}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
