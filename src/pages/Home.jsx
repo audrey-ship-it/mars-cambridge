@@ -33,6 +33,14 @@ const MODULES = [
   { icon: 'mock', title: '模拟考试', desc: '按考试结构完整模考，计时与结果复盘', tags: ['整套模考', '计时', '复盘'], link: '/mock' },
 ]
 
+/* 网站特点（右侧卡片）：均对应站内已有功能 */
+const FEATURES = [
+  { icon: 'clock', title: '整套模考', desc: '按真实考试顺序和时间做题，写作、听力、阅读、翻译依次计时。' },
+  { icon: 'check', title: '错题本', desc: '错题自动收录，答对才移出，不会点一次就丢。' },
+  { icon: 'listening', title: '听力原音频', desc: '0.75–1.5 倍速播放，原文对照，交卷后标出答案依据。' },
+  { icon: 'writing', title: '写作 · 翻译参考', desc: '写作范文对照、翻译参考译文与译点，草稿自动保存。' },
+]
+
 /* 备考流程 */
 const STEPS = [
   { title: '摸底', desc: '从最近一套真题开始，了解自己目前的水平。' },
@@ -84,7 +92,10 @@ export default function Home() {
     setExamLevel(code)
     setSearchParams({ exam: code })
   }
-  const latest = (exam === 'CET-6' ? readingSets6 : readingSets).slice(0, 3)
+  const sets = exam === 'CET-6' ? readingSets6 : readingSets
+  const years = sets.map((x) => x.meta.year)
+  const yearRange = `${Math.min(...years)}–${Math.max(...years)}`
+  const verifiedAll = sets.length > 0 && sets.every((x) => x.meta.verified)
 
   return (
     <div id="top" className="min-h-screen bg-[#f6f7fb] text-[#151521] overflow-x-hidden" style={examVars(exam)}>
@@ -162,37 +173,32 @@ export default function Home() {
             </div>
           </motion.div>
 
-          {/* 右侧：最近三套真题 */}
+          {/* 右侧：网站特点 */}
           <motion.div
             initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }}
             className="bg-white border border-[#e1e5f0] rounded-2xl overflow-hidden shadow-[0_1px_2px_rgba(16,24,20,.04),0_12px_32px_-12px_rgba(16,24,20,.12)]"
           >
-            <div className="flex items-center justify-between px-5 py-4 border-b border-[#eef1ed]">
-              <div>
-                <div className="text-[17px] font-bold">{exam} 历年真题</div>
-                <div className="text-sm text-gray-500">按考试时间倒序排列</div>
-              </div>
-              <span className="text-sm font-bold text-[var(--accent)] bg-[var(--accent-soft)] px-3 py-1 rounded-full">已核对</span>
+            <div className="px-5 py-4 border-b border-[#eef1ed]">
+              <div className="text-[17px] font-bold">为什么选 Mars CET</div>
+              <div className="text-sm text-gray-500">专为 {exam} 备考设计的练习功能</div>
             </div>
-            {latest.map((set) => (
-              <Link
-                key={set.id}
-                to={withExamParam(`/reading/${set.id}`)}
-                className="flex items-center justify-between px-[22px] py-4 border-t border-[#f1f3f0] first:border-t-0 hover:bg-[var(--accent-softer)] transition-colors"
-              >
+            {FEATURES.map((f) => (
+              <div key={f.title} className="flex items-start gap-4 px-[22px] py-4 border-t border-[#f1f3f0] first:border-t-0">
+                <span className="w-10 h-10 rounded-lg bg-[var(--accent-soft)] text-[var(--accent)] grid place-items-center shrink-0">
+                  <Icon name={f.icon} className="w-5 h-5" />
+                </span>
                 <div>
-                  <div className="text-[17px] font-bold">{set.meta.year}年{set.meta.month}月 第{set.meta.set}套</div>
-                  <div className="text-sm text-gray-500">阅读 · 听力 · 翻译 · 写作</div>
+                  <div className="text-[17px] font-bold">{f.title}</div>
+                  <div className="text-sm text-gray-600 leading-relaxed mt-0.5">{f.desc}</div>
                 </div>
-                <Icon name="arrow" className="w-4 h-4 text-gray-300" />
-              </Link>
+              </div>
             ))}
-            <Link
-              to={withExamParam('/mock')}
-              className="block text-center py-3.5 text-base font-bold text-[var(--accent)] bg-[var(--accent-softer)] border-t border-[#eef1ed] hover:bg-[var(--accent-soft)] transition-colors"
+            <button
+              onClick={() => scrollToSection('modules')}
+              className="block w-full text-center py-3.5 text-base font-bold text-[var(--accent)] bg-[var(--accent-softer)] border-t border-[#eef1ed] hover:bg-[var(--accent-soft)] transition-colors"
             >
-              查看全部真题
-            </Link>
+              查看专项模块
+            </button>
           </motion.div>
         </div>
 
@@ -200,10 +206,10 @@ export default function Home() {
         <div className="relative max-w-[1016px] mx-auto mb-[52px] px-6 md:px-0">
           <div className="grid grid-cols-2 lg:grid-cols-4 bg-white border border-[#e1e5f0] rounded-2xl overflow-hidden">
             {[
-              { ic: '98', big: '98 套', small: '历年真题' },
-              { ic: '年', big: '2019–2026', small: '覆盖年份' },
+              { ic: String(sets.length), big: `${sets.length} 套`, small: `${exam} 历年真题` },
+              { ic: '年', big: yearRange, small: '覆盖年份' },
               { ic: '7', big: '7 个', small: '专项模块' },
-              { ic: '存', big: '本机', small: '进度自动保存' },
+              ...(verifiedAll ? [{ ic: '✓', big: '已核对', small: '题库数据逐套核对' }] : [{ ic: '4', big: '4 部分', small: '写作 · 听力 · 阅读 · 翻译' }]),
             ].map((s, i) => (
               <div key={s.small} className={'flex items-center gap-3.5 p-5 border-[#eef1ed] ' + (i % 2 ? 'border-l ' : '') + (i > 1 ? 'border-t lg:border-t-0 ' : '') + (i > 0 ? 'lg:border-l' : '')}>
                 <span className="w-10 h-10 rounded-lg bg-[var(--accent-soft)] text-[var(--accent)] grid place-items-center font-extrabold shrink-0">{s.ic}</span>
