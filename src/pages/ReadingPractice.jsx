@@ -6,6 +6,7 @@ import { CET4_KEYS, CET6_KEYS, loadJSON, saveJSON, removeKey } from '../utils/st
 import BankedCloze from '../components/reading/BankedCloze.jsx'
 import ParagraphMatching from '../components/reading/ParagraphMatching.jsx'
 import CarefulReading from '../components/reading/CarefulReading.jsx'
+import WordLookup from '../components/WordLookup.jsx'
 
 const SECTIONS = [
   { id: 'banked', label: 'A 选词填空' },
@@ -217,7 +218,7 @@ function PracticeRunner({ setId, set, keys }) {
         </div>
       </div>
 
-      {renderSection()}
+      <WordLookup isCet6={set.meta.level === 'CET6'}>{renderSection()}</WordLookup>
 
       <div className="mt-6 rounded-2xl bg-white border border-gray-200 p-4 flex items-center justify-between gap-3 sticky bottom-3">
         <div className="text-sm text-gray-500">

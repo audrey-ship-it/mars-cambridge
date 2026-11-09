@@ -10,6 +10,7 @@ import { CET4_KEYS, CET6_KEYS, loadJSON, saveJSON, removeKey } from '../utils/st
 import { examVars } from '../utils/examTheme.js'
 import { resolveExamLevel, setExamLevel } from '../utils/examLevel.js'
 import SectionAudio from '../components/listening/SectionAudio.jsx'
+import WordLookup from '../components/WordLookup.jsx'
 
 const EMPTY_ANSWERS = {} // { [q.n]: 'A' }
 
@@ -251,7 +252,7 @@ function PracticeRunner({ setId, set, isCet6 }) {
         {/* 主内容：左题目 + 原文，右操作栏 */}
         <div className="lg:grid lg:grid-cols-12 lg:gap-4">
           {/* 左：文章 + 题目 */}
-          <div className="lg:col-span-9 space-y-5">
+          <WordLookup isCet6={isCet6} className="lg:col-span-9 space-y-5"><div className="space-y-5">
             {sectionGroups[activeSection].items.map((item, idx) => (
               <div key={idx} className="rounded-2xl bg-white border border-gray-200 overflow-hidden">
                 <div className="bg-gray-50 px-4 py-2.5 border-b border-gray-200 text-xs font-bold text-gray-600">
@@ -312,7 +313,7 @@ function PracticeRunner({ setId, set, isCet6 }) {
                 </div>
               </div>
             ))}
-          </div>
+          </div></WordLookup>
 
           {/* 右：操作栏 */}
           <div className="lg:col-span-3 mt-5 lg:mt-0 lg:sticky lg:top-[80px] self-start space-y-3">
