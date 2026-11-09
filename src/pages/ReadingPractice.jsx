@@ -77,10 +77,31 @@ function PracticeRunner({ setId, set, keys }) {
     Object.keys(answers.matching).filter(Boolean).length +
     Object.keys(answers.careful).filter(Boolean).length
 
+  // 每部分的题量与已答数：用于标签进度、「下一部分」提示和交卷确认
+  const sectionStats = {
+    banked: { total: set.sections.banked.answers.length, done: Object.keys(answers.banked).filter(Boolean).length },
+    matching: { total: set.sections.matching.answers.length, done: Object.keys(answers.matching).filter(Boolean).length },
+    careful: { total: set.sections.careful.reduce((sum, p) => sum + p.questions.length, 0), done: Object.keys(answers.careful).filter(Boolean).length },
+  }
+  const tabIndex = SECTIONS.findIndex((x) => x.id === tab)
+  const isLastTab = tabIndex === SECTIONS.length - 1
+  const nextSection = isLastTab ? null : SECTIONS[tabIndex + 1]
+  const cur = sectionStats[tab]
+
+  const goNext = () => {
+    if (!nextSection) return
+    setTab(nextSection.id)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   const submit = () => {
     if (submitted) return
     if (answeredCount < totalQuestions) {
-      const ok = window.confirm(`还有 ${totalQuestions - answeredCount} 题未作答，确认交卷？`)
+      const detail = SECTIONS
+        .filter((x) => sectionStats[x.id].done < sectionStats[x.id].total)
+        .map((x) => `${x.label} 还有 ${sectionStats[x.id].total - sectionStats[x.id].done} 题`)
+        .join('、')
+      const ok = window.confirm(`有题目未作答：${detail}。确认交卷？`)
       if (!ok) return
     }
     setSubmitted(true)
@@ -175,6 +196,11 @@ function PracticeRunner({ setId, set, keys }) {
               }
             >
               {s.label}
+              {sectionStats[s.id].total > 0 && (
+                <span className="ml-1.5 tabular-nums opacity-80">
+                  {sectionStats[s.id].done >= sectionStats[s.id].total ? '✓' : `${sectionStats[s.id].done}/${sectionStats[s.id].total}`}
+                </span>
+              )}
             </button>
           ))}
         </div>
@@ -182,27 +208,40 @@ function PracticeRunner({ setId, set, keys }) {
 
       {renderSection()}
 
-      <div className="mt-6 rounded-2xl bg-white border border-gray-200 p-4 flex items-center justify-between sticky bottom-3">
+      <div className="mt-6 rounded-2xl bg-white border border-gray-200 p-4 flex items-center justify-between gap-3 sticky bottom-3">
         <div className="text-sm text-gray-500">
-          已答 <span className="font-bold text-[var(--accent)]">{answeredCount}</span> / {totalQuestions}
+          <div>
+            本部分 <span className="font-bold text-[var(--accent)]">{cur.done}</span> / {cur.total}
+            <span className="mx-2 text-gray-300">·</span>
+            全卷已答 <span className="font-bold text-[var(--accent)]">{answeredCount}</span> / {totalQuestions}
+          </div>
           {submitted && (
-            <span className="ml-3">
+            <div className="mt-0.5">
               得分 <span className="font-bold text-green-700">{scoreOf()}</span> / {totalQuestions}
-            </span>
+            </div>
           )}
         </div>
-        <button
-          onClick={submit}
-          disabled={submitted}
-          className={
-            'rounded-xl px-5 py-2 text-sm font-bold ' +
-            (submitted
-              ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-              : 'bg-[var(--accent)] text-white hover:bg-[var(--accent-hover)]')
-          }
-        >
-          {submitted ? '已交卷' : '交卷'}
-        </button>
+        {nextSection ? (
+          <button
+            onClick={goNext}
+            className="rounded-xl px-5 py-2 text-sm font-bold bg-[var(--accent)] text-white hover:bg-[var(--accent-hover)] shrink-0"
+          >
+            下一部分：{nextSection.label} →
+          </button>
+        ) : (
+          <button
+            onClick={submit}
+            disabled={submitted}
+            className={
+              'rounded-xl px-5 py-2 text-sm font-bold shrink-0 ' +
+              (submitted
+                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                : 'bg-[var(--accent)] text-white hover:bg-[var(--accent-hover)]')
+            }
+          >
+            {submitted ? '已交卷' : '交卷'}
+          </button>
+        )}
       </div>
     </div>
   )
