@@ -6,8 +6,8 @@ export default function ParagraphMatching({ section, answers, onChange, submitte
   return (
     <div className="lg:grid lg:grid-cols-12 lg:gap-4">
       {/* 题目列：桌面端粘性 + 独立滚动 */}
-      <div className="rounded-xl bg-white border border-gray-200 p-4 mb-4 lg:mb-0 lg:col-span-5 lg:sticky lg:top-[84px] lg:max-h-[calc(100vh-100px)] lg:overflow-y-auto">
-        <div className="text-base font-bold text-gray-500 mb-3">题目（选择对应段落）</div>
+      <div className="rounded-xl bg-white border border-gray-200 border-t-[6px] border-t-[var(--hl)] p-4 mb-4 lg:mb-0 lg:col-span-5 lg:sticky lg:top-[84px] lg:max-h-[calc(100vh-100px)] lg:overflow-y-auto">
+        <div className="inline-block rounded-md bg-[var(--hl)] text-[var(--accent-deep)] text-base font-bold px-2.5 py-0.5 mb-3">题目（选择对应段落）</div>
         <div className="space-y-2">
           {section.questions.map((q, idx) => {
             const correct = section.answers[idx]
