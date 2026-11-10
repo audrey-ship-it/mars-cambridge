@@ -172,7 +172,7 @@ export default function MockExam() {
     return (
       <div className="min-h-screen max-w-3xl mx-auto px-4 py-8">
         <div className="rounded-2xl bg-white border border-dashed border-gray-200 p-6">
-          <p className="text-sm text-gray-600 mb-3">该套模考数据未就绪或未人工核对。</p>
+          <p className="text-sm text-gray-600 mb-3">该套模考数据暂未就绪。</p>
           <Link to={backTo} className="text-sm text-[var(--accent)] font-bold">← 返回真题中心</Link>
         </div>
       </div>

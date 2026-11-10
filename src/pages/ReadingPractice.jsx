@@ -188,9 +188,6 @@ function PracticeRunner({ setId, set, keys }) {
         <h1 className="text-xl font-bold mt-2">
           {set.meta.level === 'CET6' ? 'CET-6' : 'CET-4'} · {set.meta.year}年{set.meta.month}月 第{set.meta.set}套 · 阅读
         </h1>
-        {!set.meta.verified && (
-          <p className="text-xs text-amber-600 mt-1">数据待人工核对，暂不代表官方</p>
-        )}
       </header>
 
       <div className="sticky top-0 z-10 bg-gray-50 py-2 mb-3">

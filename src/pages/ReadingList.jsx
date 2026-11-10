@@ -18,7 +18,7 @@ export default function ReadingList() {
     set: set.meta.set,
     to: `/reading/${set.id}${query}`,
     verified: set.meta.verified,
-    pendingText: '待核对',
+    pendingText: '整理中',
   }))
 
   return (

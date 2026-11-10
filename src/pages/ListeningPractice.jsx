@@ -66,7 +66,6 @@ export function ListeningList() {
               <div>
                 <div className="flex items-center gap-2">
                   <span className="font-bold text-gray-900">{s.meta.year}年{s.meta.month}月 第{s.meta.set}套</span>
-                  {s.meta.verified && <span className="text-[10px] font-bold bg-[var(--accent)] text-white px-2 py-0.5 rounded-full">已核对</span>}
                 </div>
               </div>
               <div className="flex items-center gap-3">
