@@ -176,7 +176,7 @@ function PracticeRunner({ setId, set, keys }) {
       <header className="mb-4">
         <div className="flex items-center justify-between">
           <Link to={`/reading${set.meta.level === 'CET6' ? '?exam=cet6' : ''}`} className="text-sm text-[var(--accent)] font-bold">
-            ← 返回列表
+            ← 返回 {set.meta.level === 'CET6' ? 'CET-6' : 'CET-4'} 阅读真题列表
           </Link>
           <button
             onClick={reset}
@@ -186,8 +186,7 @@ function PracticeRunner({ setId, set, keys }) {
           </button>
         </div>
         <h1 className="text-xl font-bold mt-2">
-          {set.meta.level === 'CET6' ? 'CET-6 ' : ''}
-          {set.meta.year}年{set.meta.month}月 第{set.meta.set}套 · 阅读
+          {set.meta.level === 'CET6' ? 'CET-6' : 'CET-4'} · {set.meta.year}年{set.meta.month}月 第{set.meta.set}套 · 阅读
         </h1>
         {!set.meta.verified && (
           <p className="text-xs text-amber-600 mt-1">数据待人工核对，暂不代表官方</p>

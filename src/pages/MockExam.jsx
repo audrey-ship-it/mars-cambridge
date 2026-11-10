@@ -306,9 +306,9 @@ function MockExamRunner({ exam, setId, isCet6 }) {
       {/* 顶部 sticky 栏 */}
       <div className="sticky top-0 z-30 bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-5xl mx-auto px-4 lg:px-6 py-3 flex items-center gap-3 flex-wrap">
-          <Link to={backToList} className="text-sm text-gray-500 hover:text-gray-800 shrink-0">← 真题</Link>
+          <Link to={backToList} className="text-sm text-gray-500 hover:text-gray-800 shrink-0">← 返回 {isCet6 ? 'CET-6' : 'CET-4'} 模考真题列表</Link>
           <div className="text-sm font-bold text-gray-900 shrink-0">
-            {exam.meta.year}年{exam.meta.month}月 第{exam.meta.set}套
+            {isCet6 ? 'CET-6' : 'CET-4'} · {exam.meta.year}年{exam.meta.month}月 第{exam.meta.set}套
           </div>
           {/* Section tabs */}
           <div className="flex gap-1.5">

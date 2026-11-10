@@ -15,7 +15,7 @@ function fmtTime(s) {
   return `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
 }
 
-function PracticeItem({ set, done, onDone, backTo }) {
+function PracticeItem({ set, done, onDone, backTo, lvLabel }) {
   const saved = useMemo(() => loadJSON(draftKey(set.id), null), [set.id]);
   const [text, setText] = useState(saved?.text ?? '');
   const [seconds, setSeconds] = useState(saved?.seconds ?? 0);
@@ -53,8 +53,8 @@ function PracticeItem({ set, done, onDone, backTo }) {
   return (
     <div>
       <div className="flex items-center gap-3 mb-4">
-        <Link to={backTo} className="text-sm text-gray-500 hover:text-gray-800">← 列表</Link>
-        <h1 className="text-lg font-bold text-gray-900">{set.title} · 写作</h1>
+        <Link to={backTo} className="text-sm text-gray-500 hover:text-gray-800">← 返回 {lvLabel} 写作真题列表</Link>
+        <h1 className="text-lg font-bold text-gray-900">{lvLabel} · {set.title} · 写作</h1>
         <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-500">{set.topic}</span>
         {done && <span className="text-xs px-2 py-0.5 rounded-full bg-[var(--accent-soft)] text-[var(--accent)] font-bold">已完成</span>}
         <span className="ml-auto text-sm font-mono text-gray-500">{fmtTime(seconds)}</span>
@@ -141,7 +141,7 @@ export default function WritingPractice() {
   if (set) {
     return (
       <div className="max-w-3xl mx-auto px-4 lg:px-6 py-6" style={examVars(isCet6 ? 'cet6' : 'cet4')}>
-        <PracticeItem set={set} done={!!progress[set.id]?.done} onDone={() => markDone(set.id)} backTo={backTo} />
+        <PracticeItem set={set} done={!!progress[set.id]?.done} onDone={() => markDone(set.id)} backTo={backTo} lvLabel={isCet6 ? 'CET-6' : 'CET-4'} />
       </div>
     );
   }

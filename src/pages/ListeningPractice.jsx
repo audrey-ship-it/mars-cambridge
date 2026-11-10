@@ -224,8 +224,8 @@ function PracticeRunner({ setId, set, isCet6 }) {
       {/* 音频播放器 */}
       <div className="sticky top-0 z-30 bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-6xl mx-auto px-4 lg:px-6 py-3 flex items-center gap-4">
-          <Link to={isCet6 ? '/listening?exam=cet6' : '/listening'} className="text-sm text-gray-500 hover:text-gray-800 shrink-0">← 列表</Link>
-          <div className="text-sm font-bold text-gray-900 truncate">{set.meta.year}年{set.meta.month}月 第{set.meta.set}套</div>
+          <Link to={isCet6 ? '/listening?exam=cet6' : '/listening'} className="text-sm text-gray-500 hover:text-gray-800 shrink-0">← 返回 {isCet6 ? 'CET-6' : 'CET-4'} 听力真题列表</Link>
+          <div className="text-sm font-bold text-gray-900 truncate">{isCet6 ? 'CET-6' : 'CET-4'} · {set.meta.year}年{set.meta.month}月 第{set.meta.set}套</div>
           <div className="ml-auto hidden sm:flex items-center gap-2 text-xs text-gray-500 shrink-0">
             <span>{answered}/{total} 已答</span>
             {submitted && <span className="text-[var(--accent)] font-bold">得分 {countRight()}/{total}</span>}
