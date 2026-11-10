@@ -212,7 +212,7 @@ const LISTENING = {
               },
               {
                 "letter": "D",
-                "text": "Make use of phone apps 1 · 2024年6月六级真题(第一套) · 淘宝：谈辰图书企业店"
+                "text": "Make use of phone apps 1 · 2024年6月六级真题(第一套) · "
               }
             ],
             "answer": "D"
