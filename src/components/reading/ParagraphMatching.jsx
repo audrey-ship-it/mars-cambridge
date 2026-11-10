@@ -6,7 +6,7 @@ export default function ParagraphMatching({ section, answers, onChange, submitte
   return (
     <div className="lg:grid lg:grid-cols-12 lg:gap-4">
       {/* 题目列：桌面端粘性 + 独立滚动 */}
-      <div className="rounded-xl bg-white border border-gray-200 border-t-[6px] border-t-[var(--hl)] p-4 mb-4 lg:mb-0 lg:col-span-5 lg:sticky lg:top-[84px] lg:max-h-[calc(100vh-100px)] lg:overflow-y-auto">
+      <div className="rounded-xl bg-white border border-gray-200 border-t-[6px] border-t-[var(--hl)] p-4 mb-4 lg:mb-0 lg:col-span-5 lg:order-2 lg:sticky lg:top-[84px] lg:max-h-[calc(100vh-100px)] lg:overflow-y-auto">
         <div className="inline-block rounded-md bg-[var(--hl)] text-[var(--accent-deep)] text-base font-bold px-2.5 py-0.5 mb-3">题目（选择对应段落）</div>
         <div className="space-y-2">
           {section.questions.map((q, idx) => {
@@ -53,7 +53,7 @@ export default function ParagraphMatching({ section, answers, onChange, submitte
       </div>
 
       {/* 文章列 */}
-      <div className="space-y-3 lg:col-span-7">
+      <div className="space-y-3 lg:col-span-7 lg:order-1">
         {section.paragraphs.map((p) => (
           <div key={p.label} className="rounded-xl bg-white border border-gray-200 p-4 text-[21px] leading-[1.7]">
             <span className="inline-block rounded bg-gray-100 px-2 py-0.5 text-base font-bold mr-2">
