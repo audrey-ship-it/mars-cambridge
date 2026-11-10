@@ -57,7 +57,7 @@ export default function BankedCloze({ section, answers, onChange, submitted }) {
           ))}
         </div>
       </div>
-      <div className="rounded-xl bg-white border border-gray-200 p-4 text-[22px] leading-[1.7]">
+      <div className="rounded-xl bg-white border border-gray-200 p-4 text-[21px] leading-[1.7]">
         {nodes}
       </div>
     </div>
