@@ -96,7 +96,6 @@ export default function Home() {
   const sets = exam === 'CET-6' ? readingSets6 : readingSets
   const years = sets.map((x) => x.meta.year)
   const yearRange = `${Math.min(...years)}–${Math.max(...years)}`
-  const verifiedAll = sets.length > 0 && sets.every((x) => x.meta.verified)
 
   return (
     <div id="top" className="min-h-screen bg-[#f6f7fb] text-[#151521] overflow-x-hidden" style={examVars(exam)}>
@@ -204,7 +203,7 @@ export default function Home() {
               { ic: String(sets.length), big: `${sets.length} 套`, small: `${exam} 历年真题` },
               { ic: '年', big: yearRange, small: '覆盖年份' },
               { ic: '7', big: '7 个', small: '专项模块' },
-              ...(verifiedAll ? [{ ic: '✓', big: '已核对', small: '题库数据逐套核对' }] : [{ ic: '4', big: '4 部分', small: '写作 · 听力 · 阅读 · 翻译' }]),
+              { ic: <Icon name="words" className="w-5 h-5" />, big: '生词本', small: '阅读时右键查词，一键加入复习' },
             ].map((s, i) => (
               <div key={s.small} className={'flex items-center gap-3.5 p-5 border-[#eef1ed] ' + (i % 2 ? 'border-l ' : '') + (i > 1 ? 'border-t lg:border-t-0 ' : '') + (i > 0 ? 'lg:border-l' : '')}>
                 <span className="w-10 h-10 rounded-lg bg-[var(--accent-soft)] text-[var(--accent)] grid place-items-center font-extrabold shrink-0">{s.ic}</span>
