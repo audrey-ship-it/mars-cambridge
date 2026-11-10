@@ -47,8 +47,8 @@ export default function BankedCloze({ section, answers, onChange, submitted }) {
 
   return (
     <div>
-      <div className="rounded-xl bg-white border border-gray-200 p-3 mb-4">
-        <div className="text-base font-bold text-gray-500 mb-2">词汇选项</div>
+      <div className="rounded-xl bg-white border border-gray-200 border-t-[6px] border-t-[var(--hl)] p-3 mb-4">
+        <div className="inline-block rounded-md bg-[var(--hl)] text-[var(--accent-deep)] text-base font-bold px-2.5 py-0.5 mb-2">词汇选项</div>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 text-lg">
           {[...section.options].sort((a, b) => a.letter.localeCompare(b.letter)).map((opt) => (
             <div key={opt.letter} className="text-gray-700">
