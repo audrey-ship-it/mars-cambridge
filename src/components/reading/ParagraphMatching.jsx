@@ -16,10 +16,12 @@ export default function ParagraphMatching({ section, answers, onChange, submitte
             const isRight = showResult && userAns === correct
             const isWrong = showResult && userAns && userAns !== correct
             return (
-              <div key={q.n} className="flex items-start gap-2 text-[21px]">
-                <span className="font-bold text-gray-500 shrink-0 w-8">{q.n}.</span>
-                <div className="flex-1">{q.text}</div>
-                <div className="flex items-center gap-1 shrink-0">
+              <div key={q.n} className="text-[21px] pb-2">
+                <div className="flex items-start gap-2">
+                  <span className="font-bold text-gray-500 shrink-0 w-8">{q.n}.</span>
+                  <div className="flex-1">{q.text}</div>
+                </div>
+                <div className="flex items-center justify-end gap-2 mt-1.5">
                   <select
                     className={
                       'rounded-lg border text-lg font-bold px-1.5 py-1 ' +
