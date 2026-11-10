@@ -6,8 +6,10 @@ export default function CarefulReading({ passage, answers, onChange, submitted }
   return (
     <div className="lg:grid lg:grid-cols-12 lg:gap-4">
       {/* 文章列 */}
-      <div className="rounded-xl bg-white border border-gray-200 p-4 text-[21px] leading-[1.7] mb-4 lg:mb-0 lg:col-span-7 whitespace-pre-wrap">
-        {passage.passage}
+      <div className="rounded-xl bg-white border border-gray-200 p-4 text-[21px] leading-[1.7] mb-4 lg:mb-0 lg:col-span-7 space-y-4">
+        {passage.passage.split('\n').map((para, i) => (
+          <p key={i}>{para}</p>
+        ))}
       </div>
 
       {/* 题目列：桌面端粘性 + 独立滚动 */}
