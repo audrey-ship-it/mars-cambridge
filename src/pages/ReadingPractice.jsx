@@ -30,7 +30,7 @@ export default function ReadingPractice() {
   const set = useMemo(() => (isCET6 ? getReadingSet6(setId) : getReadingSet(setId)), [setId, isCET6])
   if (!set) {
     return (
-      <div className="min-h-screen max-w-3xl mx-auto px-4 py-8">
+      <div className="min-h-screen max-w-6xl mx-auto px-4 lg:px-6 py-8">
         <div className="rounded-2xl bg-white border border-dashed border-gray-200 p-6">
           <p className="text-sm text-gray-600 mb-3">未找到该套阅读数据。</p>
           <Link
@@ -172,7 +172,7 @@ function PracticeRunner({ setId, set, keys }) {
   }
 
   return (
-    <div className="min-h-screen max-w-3xl mx-auto px-4 py-8">
+    <div className="min-h-screen max-w-6xl mx-auto px-4 lg:px-6 py-8">
       <header className="mb-4">
         <div className="flex items-center justify-between">
           <Link to={`/reading${set.meta.level === 'CET6' ? '?exam=cet6' : ''}`} className="text-sm text-[var(--accent)] font-bold">
