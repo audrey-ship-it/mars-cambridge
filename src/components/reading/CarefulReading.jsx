@@ -13,7 +13,7 @@ export default function CarefulReading({ passage, answers, onChange, submitted }
       </div>
 
       {/* 题目列：桌面端粘性 + 独立滚动 */}
-      <div className="space-y-4 lg:col-span-5 lg:sticky lg:top-[84px] lg:max-h-[calc(100vh-100px)] lg:overflow-y-auto">
+      <div className="space-y-4 lg:col-span-5 lg:sticky lg:top-[84px] lg:max-h-[calc(100vh-200px)] lg:overflow-y-auto">
         {passage.questions.map((q) => (
           <div key={q.n} className="rounded-xl bg-white border border-gray-200 border-t-[6px] border-t-[var(--hl)] p-4">
             <div className="text-[21px] mb-2">
