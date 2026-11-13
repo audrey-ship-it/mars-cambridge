@@ -72,7 +72,7 @@ export default function Me() {
     <div className="max-w-3xl mx-auto px-4 lg:px-6 py-8" style={examVars(level)}>
       <div className="flex flex-wrap items-center gap-4 mb-5">
         <div className="flex-1 min-w-[200px]">
-          <h1 className="text-2xl font-extrabold text-gray-900">我的学习</h1>
+          <h1 className="text-2xl font-extrabold text-gray-900">学习记录</h1>
           <p className="text-xs text-gray-500 mt-1">学习记录保存在本机浏览器；换设备或清缓存会丢失。</p>
         </div>
         {hasPlan ? (
@@ -219,7 +219,7 @@ function ExamPlanDialog({ level, plan, onSave, onSkip, onClear, onClose }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4" onClick={onClose}>
       <div className="w-full max-w-sm rounded-2xl bg-white border-t-[6px] border-t-[var(--hl)] p-5 shadow-2xl" style={examVars(lv)} onClick={(e) => e.stopPropagation()}>
         <h3 className="text-lg font-extrabold text-gray-900">你准备哪次考试？</h3>
-        <p className="text-sm text-gray-500 mt-1">选好后会显示倒计时，也可以先跳过，之后在「我的」页再设置。</p>
+        <p className="text-sm text-gray-500 mt-1">选好后会显示倒计时，也可以先跳过，之后在「学习记录」页再设置。</p>
         <div className="text-sm font-bold mt-4 mb-2">考试级别</div>
         <div className="flex gap-2">
           {[['cet4', '四级'], ['cet6', '六级']].map(([v, l]) => (
