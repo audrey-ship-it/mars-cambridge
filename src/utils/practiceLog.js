@@ -84,8 +84,10 @@ export function usePracticeSession({ kind, setId, level, title, getStats }) {
   useEffect(() => {
     let seconds = 0
     let base = safeStats(statsRef.current)
+    // 页面可见，或音频正在播放（听力锁屏/切走后继续听）时都计入学习时间
+    const audioPlaying = () => Array.from(document.querySelectorAll('audio')).some((a) => !a.paused && !a.ended)
     const tick = setInterval(() => {
-      if (document.visibilityState === 'visible') seconds += 1
+      if (document.visibilityState === 'visible' || audioPlaying()) seconds += 1
     }, 1000)
 
     const flush = () => {
@@ -115,7 +117,7 @@ export function usePracticeSession({ kind, setId, level, title, getStats }) {
       seconds = 0
     }
     const onHide = () => {
-      if (document.visibilityState === 'hidden') flush()
+      if (document.visibilityState === 'hidden' && !audioPlaying()) flush()
     }
     document.addEventListener('visibilitychange', onHide)
     window.addEventListener('pagehide', flush)
