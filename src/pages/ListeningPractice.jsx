@@ -10,6 +10,7 @@ import { CET4_KEYS, CET6_KEYS, loadJSON, saveJSON, removeKey } from '../utils/st
 import { examVars } from '../utils/examTheme.js'
 import { resolveExamLevel, setExamLevel } from '../utils/examLevel.js'
 import SectionAudio from '../components/listening/SectionAudio.jsx'
+import { usePracticeSession, titleOfSet } from '../utils/practiceLog.js'
 import WordLookup from '../components/WordLookup.jsx'
 
 const EMPTY_ANSWERS = {} // { [q.n]: 'A' }
@@ -199,6 +200,23 @@ function PracticeRunner({ setId, set, isCet6 }) {
     setActiveSection(0)
     removeKey(progressKey)
   }
+
+  usePracticeSession({
+    kind: 'listening',
+    setId,
+    level: isCet6 ? 'cet6' : 'cet4',
+    title: titleOfSet(setId),
+    getStats: () => {
+      const all = collectAllAnswers(set, answers)
+      let right = 0
+      Object.entries(all).forEach(([n, v]) => {
+        if (!v) return
+        const q = findQuestionInSection(findQuestionSection(set, parseInt(n, 10)), parseInt(n, 10))
+        if (q && q.answer && v === q.answer) right++
+      })
+      return { answered: Object.values(all).filter(Boolean).length, correct: right }
+    },
+  })
 
   function countAnswered() {
     return Object.values(collectAllAnswers(set, answers)).filter(Boolean).length

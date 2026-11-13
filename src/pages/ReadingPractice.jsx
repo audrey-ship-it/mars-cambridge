@@ -6,6 +6,7 @@ import { CET4_KEYS, CET6_KEYS, loadJSON, saveJSON, removeKey } from '../utils/st
 import BankedCloze from '../components/reading/BankedCloze.jsx'
 import ParagraphMatching from '../components/reading/ParagraphMatching.jsx'
 import CarefulReading from '../components/reading/CarefulReading.jsx'
+import { usePracticeSession, levelOfSet, titleOfSet } from '../utils/practiceLog.js'
 import WordLookup from '../components/WordLookup.jsx'
 
 const SECTIONS = [
@@ -142,6 +143,14 @@ function PracticeRunner({ setId, set, keys }) {
     })
     return right
   }
+
+  usePracticeSession({
+    kind: 'reading',
+    setId,
+    level: levelOfSet(setId),
+    title: titleOfSet(setId),
+    getStats: () => ({ answered: answeredCount, correct: scoreOf() }),
+  })
 
   const renderSection = () => {
     if (tab === 'banked')
