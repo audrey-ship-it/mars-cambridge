@@ -64,12 +64,12 @@ export default function SectionAudio({ src }) {
   const pct = dur ? (cur / dur) * 100 : 0
 
   return (
-    <div className="flex items-center gap-3 bg-blue-50/70 rounded-xl px-3 py-2.5">
+    <div className="flex items-center gap-3 bg-[var(--accent-softer)] rounded-xl px-3 py-2.5">
       <audio ref={ref} src={src} preload="metadata" />
       <button
         onClick={toggle}
         aria-label={playing ? '暂停' : '播放'}
-        className="w-9 h-9 shrink-0 rounded-full bg-blue-500 hover:bg-blue-600 text-white flex items-center justify-center transition-colors"
+        className="w-9 h-9 shrink-0 rounded-full bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white flex items-center justify-center transition-colors"
       >
         {playing ? (
           <svg width="13" height="13" viewBox="0 0 12 12" fill="currentColor"><rect x="1" y="0" width="3.5" height="12" rx="1" /><rect x="7.5" y="0" width="3.5" height="12" rx="1" /></svg>
@@ -80,12 +80,12 @@ export default function SectionAudio({ src }) {
 
       <div
         onClick={seek}
-        className="flex-1 h-2 bg-blue-100 rounded-full cursor-pointer relative overflow-hidden"
+        className="flex-1 h-2 bg-[var(--accent-soft)] rounded-full cursor-pointer relative overflow-hidden"
         role="slider"
         aria-label="进度"
         aria-valuenow={Math.round(pct)}
       >
-        <div className="h-full bg-blue-500 rounded-full" style={{ width: `${pct}%` }} />
+        <div className="h-full bg-[var(--accent)] rounded-full" style={{ width: `${pct}%` }} />
       </div>
 
       <span className="text-xs text-gray-500 tabular-nums shrink-0 w-16 text-center">
@@ -99,7 +99,7 @@ export default function SectionAudio({ src }) {
             onClick={() => changeRate(r)}
             className={
               'px-1.5 py-0.5 rounded text-[11px] font-bold transition-colors ' +
-              (rate === r ? 'bg-blue-500 text-white' : 'text-blue-400 hover:text-blue-600')
+              (rate === r ? 'bg-[var(--accent)] text-white' : 'text-gray-400 hover:text-[var(--accent)]')
             }
           >
             {r}x

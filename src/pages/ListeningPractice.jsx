@@ -10,6 +10,7 @@ import { CET4_KEYS, CET6_KEYS, loadJSON, saveJSON, removeKey } from '../utils/st
 import { examVars } from '../utils/examTheme.js'
 import { resolveExamLevel, setExamLevel } from '../utils/examLevel.js'
 import SectionAudio from '../components/listening/SectionAudio.jsx'
+import WordLookup from '../components/WordLookup.jsx'
 
 const EMPTY_ANSWERS = {} // { [q.n]: 'A' }
 
@@ -65,7 +66,6 @@ export function ListeningList() {
               <div>
                 <div className="flex items-center gap-2">
                   <span className="font-bold text-gray-900">{s.meta.year}年{s.meta.month}月 第{s.meta.set}套</span>
-                  {s.meta.verified && <span className="text-[10px] font-bold bg-emerald-500 text-white px-2 py-0.5 rounded-full">已核对</span>}
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -92,11 +92,38 @@ export function ListeningPractice() {
     return (
       <div className="min-h-screen max-w-3xl mx-auto px-4 py-8">
         <p className="text-sm text-gray-600 mb-3">未找到该套听力数据。</p>
-        <Link to={isCet6 ? '/listening?exam=cet6' : '/listening'} className="text-sm text-blue-600 font-bold">返回列表</Link>
+        <Link to={isCet6 ? '/listening?exam=cet6' : '/listening'} className="text-sm text-[var(--accent)] font-bold">返回列表</Link>
       </div>
     )
   }
   return <PracticeRunner key={setId} setId={setId} set={set} isCet6={isCet6} />
+}
+
+/* 把三个 section 合成块级视图，每块显示 transcript + questions */
+function buildSectionGroups(set) {
+  return set.meta.level === 'CET6'
+    ? [
+        { key: 'a', label: 'Section A · 长对话', items: set.sections.a },
+        { key: 'b', label: 'Section B · 听力篇章', items: set.sections.b },
+        { key: 'c', label: 'Section C · 讲座/讲话', items: set.sections.c },
+      ]
+    : [
+        { key: 'news', label: 'Section A · 短篇新闻', items: set.sections.news },
+        { key: 'conv', label: 'Section B · 长对话', items: set.sections.conversations },
+        { key: 'pass', label: 'Section C · 听力篇章', items: set.sections.passages },
+      ]
+}
+
+/* 评分前提示：列出每个 Section 还有几题未答 */
+function unansweredDetail(set, answers) {
+  return buildSectionGroups(set)
+    .map((g) => {
+      const qs = g.items.flatMap((item) => item.questions)
+      return { label: g.label.split(' · ')[0], left: qs.filter((q) => !answers[q.n]).length }
+    })
+    .filter((x) => x.left > 0)
+    .map((x) => `${x.label} 还有 ${x.left} 题`)
+    .join('、')
 }
 
 function PracticeRunner({ setId, set, isCet6 }) {
@@ -112,6 +139,22 @@ function PracticeRunner({ setId, set, isCet6 }) {
     saveJSON(progressKey, { ...cur, answers })
   }, [answers, progressKey])
 
+  // 把三个 section 合成一个"块级视图"，每块显示 transcript + questions
+  const sectionGroups = buildSectionGroups(set)
+
+  // 每部分题量与已答数：用于标签进度、右侧分部分进度和「下一部分」按钮
+  const sectionStats = sectionGroups.map((g) => {
+    const qs = g.items.flatMap((item) => item.questions)
+    return { key: g.key, label: g.label, total: qs.length, done: qs.filter((q) => answers[q.n]).length }
+  })
+  const isLastSection = activeSection === sectionGroups.length - 1
+  const nextGroup = isLastSection ? null : sectionGroups[activeSection + 1]
+  function goNext() {
+    if (!nextGroup) return
+    setActiveSection(activeSection + 1)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   function setKey(n, v) {
     setAnswers((a) => ({ ...a, [n]: v }))
   }
@@ -120,7 +163,8 @@ function PracticeRunner({ setId, set, isCet6 }) {
     const allAnswers = collectAllAnswers(set, answers)
     const unanswered = Object.keys(allAnswers).filter((k) => !allAnswers[k]).length
     if (unanswered > 0) {
-      const ok = confirm(`还有 ${unanswered} 题未作答，确定交卷吗？`)
+      const detail = unansweredDetail(set, allAnswers)
+      const ok = confirm(`有题目未作答：${detail}。确定评分吗？`)
       if (!ok) return
     }
     let right = 0
@@ -134,6 +178,18 @@ function PracticeRunner({ setId, set, isCet6 }) {
     saveJSON(progressKey, payload)
     setAnswers(allAnswers)
     setSubmitted(true)
+  }
+
+  // 交卷后重做当前 Section：只清空本部分作答，其余保留，重新评分后统一计分
+  function redoSection() {
+    const g = sectionGroups[activeSection]
+    if (!confirm(`重做「${g.label.split(' · ')[0]}」？本部分的作答将清空，需要重新评分。`)) return
+    const next = { ...answers }
+    g.items.forEach((item) => item.questions.forEach((q) => { delete next[q.n] }))
+    saveJSON(progressKey, { answers: next })
+    setAnswers(next)
+    setSubmitted(false)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   function handleReset() {
@@ -162,27 +218,13 @@ function PracticeRunner({ setId, set, isCet6 }) {
   const total = 25
   const answered = countAnswered()
 
-  // 把三个 section 合成一个"块级视图"，每块显示 transcript + questions
-  const isCet6Data = set.meta.level === 'CET6'
-  const sectionGroups = isCet6Data
-    ? [
-        { key: 'a', label: 'Section A · 长对话', items: set.sections.a },
-        { key: 'b', label: 'Section B · 听力篇章', items: set.sections.b },
-        { key: 'c', label: 'Section C · 讲座/讲话', items: set.sections.c },
-      ]
-    : [
-        { key: 'news', label: 'Section A · 短篇新闻', items: set.sections.news },
-        { key: 'conv', label: 'Section B · 长对话', items: set.sections.conversations },
-        { key: 'pass', label: 'Section C · 听力篇章', items: set.sections.passages },
-      ]
-
   return (
     <div className="min-h-screen bg-[#f7f8f5]" style={examVars(isCet6 ? 'cet6' : 'cet4')}>
       {/* 音频播放器 */}
       <div className="sticky top-0 z-30 bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-6xl mx-auto px-4 lg:px-6 py-3 flex items-center gap-4">
-          <Link to={isCet6 ? '/listening?exam=cet6' : '/listening'} className="text-sm text-gray-500 hover:text-gray-800 shrink-0">← 列表</Link>
-          <div className="text-sm font-bold text-gray-900 truncate">{set.meta.year}年{set.meta.month}月 第{set.meta.set}套</div>
+          <Link to={isCet6 ? '/listening?exam=cet6' : '/listening'} className="text-sm text-gray-500 hover:text-gray-800 shrink-0">← 返回 {isCet6 ? 'CET-6' : 'CET-4'} 听力真题列表</Link>
+          <div className="text-sm font-bold text-gray-900 truncate">{isCet6 ? 'CET-6' : 'CET-4'} · {set.meta.year}年{set.meta.month}月 第{set.meta.set}套</div>
           <div className="ml-auto hidden sm:flex items-center gap-2 text-xs text-gray-500 shrink-0">
             <span>{answered}/{total} 已答</span>
             {submitted && <span className="text-[var(--accent)] font-bold">得分 {countRight()}/{total}</span>}
@@ -196,15 +238,20 @@ function PracticeRunner({ setId, set, isCet6 }) {
           {sectionGroups.map((g, i) => (
             <button key={g.key}
               onClick={() => setActiveSection(i)}
-              className={`px-4 py-2 rounded-xl text-xs font-bold border transition-all ${activeSection === i ? 'bg-[var(--accent)] text-white border-[var(--accent)]' : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300'}`}
-            >{g.label}</button>
+              className={`px-4 py-2 rounded-xl text-sm font-bold border transition-all ${activeSection === i ? 'bg-[var(--accent)] text-white border-[var(--accent)]' : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300'}`}
+            >
+              {g.label}
+              <span className="ml-1.5 tabular-nums opacity-80">
+                {sectionStats[i].done >= sectionStats[i].total ? '✓' : `${sectionStats[i].done}/${sectionStats[i].total}`}
+              </span>
+            </button>
           ))}
         </div>
 
         {/* 主内容：左题目 + 原文，右操作栏 */}
         <div className="lg:grid lg:grid-cols-12 lg:gap-4">
           {/* 左：文章 + 题目 */}
-          <div className="lg:col-span-9 space-y-5">
+          <WordLookup isCet6={isCet6} className="lg:col-span-9 space-y-5"><div className="space-y-5">
             {sectionGroups[activeSection].items.map((item, idx) => (
               <div key={idx} className="rounded-2xl bg-white border border-gray-200 overflow-hidden">
                 <div className="bg-gray-50 px-4 py-2.5 border-b border-gray-200 text-xs font-bold text-gray-600">
@@ -244,7 +291,7 @@ function PracticeRunner({ setId, set, isCet6 }) {
                                         ? 'bg-red-50 border-red-300 text-red-700'
                                         : 'border-transparent text-gray-600'
                                     : checked
-                                      ? 'bg-blue-50 border-blue-300'
+                                      ? 'bg-[var(--accent-soft)] border-[var(--accent-border)]'
                                       : 'border-transparent hover:bg-gray-50')
                                 }
                               >
@@ -265,7 +312,7 @@ function PracticeRunner({ setId, set, isCet6 }) {
                 </div>
               </div>
             ))}
-          </div>
+          </div></WordLookup>
 
           {/* 右：操作栏 */}
           <div className="lg:col-span-3 mt-5 lg:mt-0 lg:sticky lg:top-[80px] self-start space-y-3">
@@ -278,6 +325,24 @@ function PracticeRunner({ setId, set, isCet6 }) {
               <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
                 <div className="h-full bg-[var(--accent)] transition-all" style={{ width: `${(answered / total) * 100}%` }} />
               </div>
+              <ul className="mt-4 space-y-1">
+                {sectionStats.map((st, i) => {
+                  const complete = st.done >= st.total
+                  return (
+                    <li key={st.key}>
+                      <button
+                        onClick={() => setActiveSection(i)}
+                        className={'w-full flex items-center justify-between rounded-lg px-2.5 py-1.5 text-sm text-left transition-colors ' + (activeSection === i ? 'bg-[var(--accent-soft)] font-bold text-[var(--accent-deep)]' : 'text-gray-600 hover:bg-gray-50')}
+                      >
+                        <span>{st.label.split(' · ')[0]}</span>
+                        <span className={'tabular-nums ' + (complete ? 'text-green-700 font-bold' : submitted ? 'text-gray-500' : 'px-1.5 rounded bg-[var(--hl-soft)] text-[var(--accent-deep)] font-bold')}>
+                          {complete ? '✓' : `${st.done}/${st.total}`}
+                        </span>
+                      </button>
+                    </li>
+                  )
+                })}
+              </ul>
               {submitted && (
                 <div className="mt-4 text-center">
                   <div className="text-xs text-gray-500 mb-1">得分</div>
@@ -286,7 +351,11 @@ function PracticeRunner({ setId, set, isCet6 }) {
               )}
             </div>
 
-            {!submitted ? (
+            {!submitted && nextGroup ? (
+              <button onClick={goNext}
+                className="w-full py-3 rounded-2xl bg-[var(--accent)] text-white font-bold hover:bg-[var(--accent-deep)] transition-colors"
+              >下一部分：{nextGroup.label.split(' · ')[0]} →</button>
+            ) : !submitted ? (
               <button onClick={handleSubmit}
                 className="w-full py-3 rounded-2xl bg-[var(--accent)] text-white font-bold hover:bg-[var(--accent-deep)] transition-colors"
               >评分</button>
@@ -295,6 +364,9 @@ function PracticeRunner({ setId, set, isCet6 }) {
                 <button onClick={handleSubmit}
                   className="w-full py-3 rounded-2xl bg-[var(--accent)] text-white font-bold hover:bg-[var(--accent-deep)] transition-colors"
                 >重新评分</button>
+                <button onClick={redoSection}
+                  className="w-full py-2 rounded-2xl bg-white border border-gray-200 text-gray-700 font-bold hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors text-sm"
+                >↺ 重做本部分</button>
                 <button onClick={handleReset}
                   className="w-full py-2 rounded-2xl bg-gray-100 text-gray-600 font-bold hover:bg-gray-200 transition-colors text-sm"
                 >↺ 重置所有作答</button>
@@ -388,14 +460,14 @@ function TranscriptBlock({ text, quotes = [], answerQuotes = {}, highlight = fal
   }
 
   return (
-    <div className="bg-emerald-50/40 border-b border-gray-100">
+    <div className="bg-[var(--accent-softer)] border-b border-gray-100">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="w-full px-4 py-2.5 flex items-center gap-2 text-left text-xs font-bold text-emerald-700 hover:bg-emerald-50 transition-colors"
+        className="w-full px-4 py-2.5 flex items-center gap-2 text-left text-xs font-bold text-[var(--accent)] hover:bg-[var(--accent-soft)] transition-colors"
       >
         <span>{open ? '▼' : '▶'}</span>
         <span className="uppercase tracking-wider">Transcript 原文</span>
-        <span className="font-normal text-emerald-600/70">{open ? '点击隐藏' : '点击查看'}</span>
+        <span className="font-normal text-[var(--accent)]/70">{open ? '点击隐藏' : '点击查看'}</span>
         {highlight && <span className="ml-auto font-normal text-[10px] text-yellow-700 bg-yellow-100 px-2 py-0.5 rounded-full">荧光笔已标记答案句</span>}
       </button>
       {open && (

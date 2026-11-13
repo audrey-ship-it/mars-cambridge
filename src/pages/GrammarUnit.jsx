@@ -209,8 +209,8 @@ export function GrammarUnit() {
   return (
     <div className="max-w-3xl mx-auto px-4 lg:px-6 py-6" style={examVars(isCet6 ? 'cet6' : 'cet4')}>
       <div className="flex items-center gap-3 mb-4">
-        <Link to={isCet6 ? '/grammar?exam=cet6' : '/grammar'} className="text-sm text-gray-500 hover:text-gray-800">← 列表</Link>
-        <h1 className="text-lg font-bold text-gray-900">{unit.title}</h1>
+        <Link to={isCet6 ? '/grammar?exam=cet6' : '/grammar'} className="text-sm text-gray-500 hover:text-gray-800">← 返回 {isCet6 ? 'CET-6' : 'CET-4'} 语法列表</Link>
+        <h1 className="text-lg font-bold text-gray-900">{isCet6 ? 'CET-6' : 'CET-4'} · {unit.title}</h1>
         <span className="ml-auto text-sm text-gray-500">当前得分 <b className="text-[var(--accent)]">{doneCount}/45</b></span>
       </div>
 
@@ -296,7 +296,7 @@ export function GrammarList() {
               <div className="flex items-center gap-3">
                 <div className="font-bold text-gray-900">{u.title}</div>
                 <span className="text-xs px-2 py-0.5 rounded-full bg-[var(--accent-soft)] text-[var(--accent)] font-bold">45 题</span>
-                {attempted && <span className="text-xs px-2 py-0.5 rounded-full bg-amber-300 text-[#064e3b] font-bold">得分 {scored}/45</span>}
+                {attempted && <span className="text-xs px-2 py-0.5 rounded-full bg-[var(--hl)] text-[var(--accent-deep)] font-bold">得分 {scored}/45</span>}
                 <span className="ml-auto text-gray-300">→</span>
               </div>
               <p className="text-sm text-gray-500 mt-1.5">{u.desc}</p>

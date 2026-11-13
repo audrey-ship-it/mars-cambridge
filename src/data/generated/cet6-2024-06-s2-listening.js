@@ -204,7 +204,7 @@ const LISTENING = {
               },
               {
                 "letter": "B",
-                "text": "They have made the residents unusually proud. · 2024年6月六级真题(第二套) · 10 淘宝：谈辰图书企业店"
+                "text": "They have made the residents unusually proud. · 2024年6月六级真题(第二套) · 10 "
               },
               {
                 "letter": "C",
@@ -421,7 +421,7 @@ const LISTENING = {
               },
               {
                 "letter": "D",
-                "text": "We are likely to underestimate how much we can be swayed by a convincing article 11 · 2024年6月六级真题(第二套) · 淘宝：谈辰图书企业店"
+                "text": "We are likely to underestimate how much we can be swayed by a convincing article 11 · 2024年6月六级真题(第二套) · "
               }
             ],
             "answer": "D"

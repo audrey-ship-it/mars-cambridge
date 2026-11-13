@@ -23,7 +23,7 @@ export default function BankedCloze({ section, answers, onChange, submitted }) {
                 ? 'bg-emerald-50 border-emerald-400 text-emerald-700'
                 : isWrong
                   ? 'bg-red-50 border-red-400 text-red-700'
-                  : 'border-gray-300 bg-blue-50 text-blue-700')
+                  : 'border-gray-300 bg-[var(--accent-soft)] text-[var(--accent)]')
             }
             value={userAns}
             onChange={(e) => onChange(blankNo, e.target.value)}
@@ -37,7 +37,7 @@ export default function BankedCloze({ section, answers, onChange, submitted }) {
             ))}
           </select>
           {isWrong && (
-            <span className="text-base font-bold text-emerald-600 ml-0.5">→ {correct}</span>
+            <span className="text-base font-bold text-green-700 ml-0.5">→ {correct}</span>
           )}
         </span>
       )
@@ -47,8 +47,8 @@ export default function BankedCloze({ section, answers, onChange, submitted }) {
 
   return (
     <div>
-      <div className="rounded-xl bg-white border border-gray-200 p-3 mb-4">
-        <div className="text-base font-bold text-gray-500 mb-2">词汇选项</div>
+      <div className="rounded-xl bg-white border border-gray-200 border-t-[6px] border-t-[var(--hl)] p-3 mb-4">
+        <div className="inline-block rounded-md bg-[var(--hl)] text-[var(--accent-deep)] text-base font-bold px-2.5 py-0.5 mb-2">词汇选项</div>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 text-lg">
           {[...section.options].sort((a, b) => a.letter.localeCompare(b.letter)).map((opt) => (
             <div key={opt.letter} className="text-gray-700">
@@ -57,7 +57,7 @@ export default function BankedCloze({ section, answers, onChange, submitted }) {
           ))}
         </div>
       </div>
-      <div className="rounded-xl bg-white border border-gray-200 p-4 text-[22px] leading-[1.7]">
+      <div className="rounded-xl bg-white border border-gray-200 p-4 text-[21px] leading-[1.7]">
         {nodes}
       </div>
     </div>

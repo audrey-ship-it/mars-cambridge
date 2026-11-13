@@ -172,14 +172,37 @@ export default function MockExam() {
     return (
       <div className="min-h-screen max-w-3xl mx-auto px-4 py-8">
         <div className="rounded-2xl bg-white border border-dashed border-gray-200 p-6">
-          <p className="text-sm text-gray-600 mb-3">该套模考数据未就绪或未人工核对。</p>
-          <Link to={backTo} className="text-sm text-blue-600 font-bold">← 返回真题中心</Link>
+          <p className="text-sm text-gray-600 mb-3">该套模考数据暂未就绪。</p>
+          <Link to={backTo} className="text-sm text-[var(--accent)] font-bold">← 返回真题中心</Link>
         </div>
       </div>
     )
   }
 
-  return <MockExamRunner key={`${setId}-${isCet6}`} exam={exam} setId={setId} isCet6={isCet6} />
+  return <MockExamGate key={`${setId}-${isCet6}`} exam={exam} setId={setId} isCet6={isCet6} backTo={backTo} />
+}
+
+// 首次进入某套模考时的开考须知；已有进度（继续 / 查看结果）直接进入
+function MockExamGate({ exam, setId, isCet6, backTo }) {
+  const [started, setStarted] = useState(() => Boolean(loadProgress(setId, isCet6)))
+  if (started) return <MockExamRunner exam={exam} setId={setId} isCet6={isCet6} />
+  const mins = isCet6 ? '30' : '25'
+  return (
+    <div className="min-h-screen flex items-center justify-center px-5 py-10" style={examVars(isCet6 ? 'cet6' : 'cet4')}>
+      <div className="max-w-md w-full rounded-2xl bg-white border border-gray-200 shadow-lg p-6">
+        <h1 className="text-xl font-extrabold text-gray-900">开考须知</h1>
+        <ul className="mt-4 space-y-2.5 text-[15px] text-gray-700 leading-relaxed list-disc pl-5">
+          <li>每个部分需点击顶部的钟表才开始计时，计时前不能作答：写作 30 分钟 → 听力 {mins} 分钟 → 阅读 40 分钟 → 翻译 30 分钟。</li>
+          <li>模考按真实考试条件进行，<b>不支持查词</b>（右键 / 双击无效）。</li>
+          <li>中途离开可暂停，进度会保存在本机浏览器。</li>
+        </ul>
+        <div className="mt-6 flex gap-3">
+          <Link to={backTo} className="flex-1 text-center rounded-xl border border-gray-200 py-2.5 text-sm font-bold text-gray-600 hover:border-[var(--accent-border)]">返回</Link>
+          <button type="button" onClick={() => setStarted(true)} className="flex-1 rounded-xl bg-[var(--accent-deep)] text-white py-2.5 text-sm font-bold hover:bg-[var(--accent-hover)]">开始模考</button>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 function MockExamRunner({ exam, setId, isCet6 }) {
@@ -194,7 +217,7 @@ function MockExamRunner({ exam, setId, isCet6 }) {
   const [submitted, setSubmitted] = useState(
     initial?.submitted ?? { writing: false, listening: false, reading: false, translation: false }
   )
-  const [paused, setPaused] = useState(false)
+  const [paused, setPaused] = useState(true) // 每个部分都需点击钟表才开始计时
   const [remountAt, setRemountAt] = useState(0)
 
   const activeSection = SECTIONS[activeIndex].id
@@ -256,7 +279,7 @@ function MockExamRunner({ exam, setId, isCet6 }) {
     const idx = SECTIONS.findIndex((s) => s.id === sectionId)
     if (idx < SECTIONS.length - 1) {
       setActiveIndex(idx + 1)
-      setPaused(false)
+      setPaused(true)
     }
   }
 
@@ -269,7 +292,7 @@ function MockExamRunner({ exam, setId, isCet6 }) {
     setTimers(timers0)
     setAnswers(EMPTY_ANSWERS)
     setSubmitted({ writing: false, listening: false, reading: false, translation: false })
-    setPaused(false)
+    setPaused(true)
     setRemountAt((n) => n + 1)
   }
 
@@ -283,9 +306,9 @@ function MockExamRunner({ exam, setId, isCet6 }) {
       {/* 顶部 sticky 栏 */}
       <div className="sticky top-0 z-30 bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-5xl mx-auto px-4 lg:px-6 py-3 flex items-center gap-3 flex-wrap">
-          <Link to={backToList} className="text-sm text-gray-500 hover:text-gray-800 shrink-0">← 真题</Link>
+          <Link to={backToList} className="text-sm text-gray-500 hover:text-gray-800 shrink-0">← 返回 {isCet6 ? 'CET-6' : 'CET-4'} 模考真题列表</Link>
           <div className="text-sm font-bold text-gray-900 shrink-0">
-            {exam.meta.year}年{exam.meta.month}月 第{exam.meta.set}套
+            {isCet6 ? 'CET-6' : 'CET-4'} · {exam.meta.year}年{exam.meta.month}月 第{exam.meta.set}套
           </div>
           {/* Section tabs */}
           <div className="flex gap-1.5">
@@ -315,6 +338,7 @@ function MockExamRunner({ exam, setId, isCet6 }) {
             <SectionTimer
               seconds={timers[activeSection]}
               running={!paused && !submitted[activeSection]}
+              notStarted={timers[activeSection] >= SECTIONS[activeIndex].duration}
               onTogglePause={() => setPaused((p) => !p)}
             />
             <button
@@ -328,7 +352,21 @@ function MockExamRunner({ exam, setId, isCet6 }) {
       </div>
 
       {/* 各 Section 内容 */}
-      <div className="max-w-5xl mx-auto px-4 lg:px-6 py-6">
+      <div className="max-w-5xl mx-auto px-4 lg:px-6 py-6 relative">
+        {paused && !submitted[activeSection] && (
+          <div className="sticky top-24 z-20 h-0">
+            <button
+              type="button"
+              onClick={() => setPaused(false)}
+              className="mx-auto flex items-center gap-2 rounded-2xl bg-[var(--accent-deep)] text-white shadow-xl px-5 py-3 text-[15px] font-bold hover:bg-[var(--accent-hover)]"
+            >
+              {timers[activeSection] >= SECTIONS[activeIndex].duration
+                ? '▶ 点击钟表或此处开始计时，开始后才能作答'
+                : '▶ 已暂停，点击继续'}
+            </button>
+          </div>
+        )}
+        <div inert={paused && !submitted[activeSection]} className={paused && !submitted[activeSection] ? 'opacity-50 select-none' : ''}>
         {activeSection === 'writing' && (
           <WritingSection
             exam={exam}
@@ -370,6 +408,7 @@ function MockExamRunner({ exam, setId, isCet6 }) {
             onSubmit={() => handleSubmitSection('translation')}
           />
         )}
+        </div>
       </div>
     </div>
   )
@@ -415,7 +454,7 @@ function WritingSection({ exam, setId, isCet6, submitted, onSubmit }) {
           onChange={(e) => onInput(e.target.value)}
           disabled={submitted}
           placeholder="Write your essay here……（草稿自动保存）"
-          className="w-full h-80 rounded-xl border border-gray-200 p-4 text-[21px] leading-[1.7] text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#0d7656]/30 resize-y disabled:bg-gray-50"
+          className="w-full h-80 rounded-xl border border-gray-200 p-4 text-[21px] leading-[1.7] text-gray-800 focus:outline-none focus:ring-2 focus:ring-[var(--accent-border)] resize-y disabled:bg-gray-50"
         />
         <div className="flex items-center gap-2 mt-3 text-xs">
           <span className={countColor}>词数 {wordCount}（要求 {w.minWords}–{w.maxWords}）</span>
@@ -479,14 +518,14 @@ function TranscriptBlock({ text }) {
   if (!text) return null
 
   return (
-    <div className="bg-emerald-50/40 border-b border-gray-100">
+    <div className="bg-[var(--accent-softer)] border-b border-gray-100">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="w-full px-4 py-2.5 flex items-center gap-2 text-left text-xs font-bold text-emerald-700 hover:bg-emerald-50 transition-colors"
+        className="w-full px-4 py-2.5 flex items-center gap-2 text-left text-xs font-bold text-[var(--accent)] hover:bg-[var(--accent-soft)] transition-colors"
       >
         <span>{open ? '▼' : '▶'}</span>
         <span className="uppercase tracking-wider">Transcript 原文</span>
-        <span className="font-normal text-emerald-600/70">{open ? '点击隐藏' : '点击查看'}</span>
+        <span className="font-normal text-[var(--accent)]/70">{open ? '点击隐藏' : '点击查看'}</span>
       </button>
       {open && (
         <div className="px-4 pb-4 text-[21px] leading-[1.7] text-gray-700 whitespace-pre-line">{text}</div>
@@ -575,7 +614,7 @@ function ListeningSection({ exam, groups, answers, setAnswers, submitted, onSubm
                                     ? 'bg-red-50 border-red-300 text-red-700'
                                     : 'border-transparent text-gray-600'
                                 : checked
-                                  ? 'bg-blue-50 border-blue-300'
+                                  ? 'bg-[var(--accent-soft)] border-[var(--accent-border)]'
                                   : 'border-transparent hover:bg-gray-50')
                             }
                           >
@@ -604,9 +643,9 @@ function ListeningSection({ exam, groups, answers, setAnswers, submitted, onSubm
 
       <div className="mt-6 rounded-2xl bg-white border border-gray-200 p-4 flex items-center justify-between sticky bottom-3">
         <div className="text-sm text-gray-500">
-          已答 <span className="font-bold text-blue-600">{answered}</span> / {total}
+          已答 <span className="font-bold text-[var(--accent)]">{answered}</span> / {total}
           {submitted && (
-            <span className="ml-3">得分 <span className="font-bold text-green-600">{right}</span> / {total}</span>
+            <span className="ml-3">得分 <span className="font-bold text-green-700">{right}</span> / {total}</span>
           )}
         </div>
         {!submitted ? (
@@ -699,9 +738,9 @@ function ReadingSection({ exam, answers, setAnswers, submitted, onSubmit }) {
 
       <div className="mt-6 rounded-2xl bg-white border border-gray-200 p-4 flex items-center justify-between sticky bottom-3">
         <div className="text-sm text-gray-500">
-          已答 <span className="font-bold text-blue-600">{answeredCount}</span> / {totalQuestions}
+          已答 <span className="font-bold text-[var(--accent)]">{answeredCount}</span> / {totalQuestions}
           {submitted && (
-            <span className="ml-3">得分 <span className="font-bold text-green-600">{right}</span> / {totalQuestions}</span>
+            <span className="ml-3">得分 <span className="font-bold text-green-700">{right}</span> / {totalQuestions}</span>
           )}
         </div>
         {!submitted ? (
@@ -757,7 +796,7 @@ function TranslationSection({ exam, setId, isCet6, submitted, onSubmit }) {
           onChange={(e) => onInput(e.target.value)}
           disabled={submitted}
           placeholder="在这里写下你的英文翻译……（草稿自动保存）"
-          className="w-full h-72 rounded-xl border border-gray-200 p-4 text-[21px] leading-[1.7] text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#0d7656]/30 resize-y disabled:bg-gray-50"
+          className="w-full h-72 rounded-xl border border-gray-200 p-4 text-[21px] leading-[1.7] text-gray-800 focus:outline-none focus:ring-2 focus:ring-[var(--accent-border)] resize-y disabled:bg-gray-50"
         />
         <div className="flex items-center gap-2 mt-3 text-xs text-gray-400">
           <span>词数 {wordCount}</span>

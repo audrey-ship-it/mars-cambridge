@@ -844,7 +844,7 @@ function HomeContent({ ds, keys, isCet6 }) {
       action: () => navigate(`/words/official${q}`),
     },
     {
-      id: 'review', title: '错词复习',
+      id: 'review', title: '生词 · 错词复习',
       subtitle: wrongCount ? `${wrongCount} 个待复习` : '暂无错词',
       desc: wrongCount ? '集中复习拼写中拼错的单词，答对 2 次后自动移出错词本。' : '拼写中拼错的单词会自动收集到这里。',
       gold: true, disabled: !wrongCount, action: () => wrongCount && navigate(`/words/wrong${q}`),
@@ -1145,10 +1145,10 @@ export function VocabWrongBook() {
     lists.flat().forEach((x) => map.set(x.w, x))
     freq.forEach((x) => { if (!map.has(x.w)) map.set(x.w, x) })
     topics.forEach((t) => t.items.forEach((x) => { if (!map.has(x.w)) map.set(x.w, x) }))
-    return entries.map(([w]) => ({ w, ipa: map.get(w)?.ipa || '', zh: map.get(w)?.zh || '' }))
+    return entries.map(([w]) => ({ w, ipa: map.get(w)?.ipa || '', zh: map.get(w)?.zh || '' })).filter((x) => x.zh)
   }, [entries, lists, freq, topics])
 
-  if (entries.length === 0) {
+  if (items.length === 0) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-16 text-center" style={examVars(isCet6 ? 'cet6' : 'cet4')}>
         <p className="text-4xl mb-3">🎉</p>
@@ -1163,8 +1163,8 @@ export function VocabWrongBook() {
       <SpellPractice
         key={`wrong-${isCet6 ? 'cet6' : 'cet4'}`}
         words={items}
-        title="错词本循环"
-        subtitle={`${items.length} 个错词 · 答对 2 次移出`}
+        title="生词 · 错词复习"
+        subtitle={`${items.length} 个错词 · 答对 2 次移出${entries.length > items.length ? ` · ${entries.length - items.length} 个暂无释义的生词未列入拼写` : ''}`}
         centerTo={`/words${q}`}
         backTo={`/words${q}`}
         backLabel="错词本"

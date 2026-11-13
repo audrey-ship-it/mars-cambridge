@@ -6,16 +6,19 @@ export default function CarefulReading({ passage, answers, onChange, submitted }
   return (
     <div className="lg:grid lg:grid-cols-12 lg:gap-4">
       {/* 文章列 */}
-      <div className="rounded-xl bg-white border border-gray-200 p-4 text-[21px] leading-[1.7] mb-4 lg:mb-0 lg:col-span-7 whitespace-pre-wrap">
-        {passage.passage}
+      <div className="rounded-xl bg-white border border-gray-200 p-4 text-[21px] leading-[1.7] mb-4 lg:mb-0 lg:col-span-7 space-y-4">
+        {passage.passage.split('\n').map((para, i) => (
+          <p key={i}>{para}</p>
+        ))}
       </div>
 
       {/* 题目列：桌面端粘性 + 独立滚动 */}
       <div className="space-y-4 lg:col-span-5 lg:sticky lg:top-[84px] lg:max-h-[calc(100vh-100px)] lg:overflow-y-auto">
         {passage.questions.map((q) => (
-          <div key={q.n} className="rounded-xl bg-white border border-gray-200 p-4">
-            <div className="text-[21px] font-bold mb-2">
-              {q.n}. {q.text}
+          <div key={q.n} className="rounded-xl bg-white border border-gray-200 border-t-[6px] border-t-[var(--hl)] p-4">
+            <div className="text-[21px] mb-2">
+              <span className="font-bold text-gray-500 mr-1.5">{q.n}.</span>
+              {q.text}
             </div>
             <div className="space-y-1.5">
               {[...q.options].sort((a, b) => a.letter.localeCompare(b.letter)).map((opt) => {
@@ -35,7 +38,7 @@ export default function CarefulReading({ passage, answers, onChange, submitted }
                             ? 'bg-red-50 border-red-300 text-red-700'
                             : 'border-transparent text-gray-600'
                         : checked
-                          ? 'bg-blue-50 border-blue-300'
+                          ? 'bg-[var(--accent-soft)] border-[var(--accent-border)]'
                           : 'border-transparent hover:bg-gray-50')
                     }
                   >
