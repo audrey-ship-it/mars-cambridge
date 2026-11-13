@@ -13,6 +13,7 @@ const ITEMS = [
   { to: '/grammar', label: '语法', icon: 'grammar' },
   { to: '/words', label: '单词', icon: 'words' },
   { to: '/mock', label: '模考', icon: 'mock' },
+  { to: '/me', label: '我的', icon: 'me' },
 ];
 
 export default function Sidebar() {

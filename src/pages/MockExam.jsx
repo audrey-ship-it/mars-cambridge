@@ -4,6 +4,7 @@
 // 阅读/听力交卷写错题本（覆盖式），写作/翻译只存草稿不判分
 
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { usePracticeSession, levelOfSet, titleOfSet } from '../utils/practiceLog.js'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { getMockExam } from '../data/mockExamCatalog.js'
 import { getMockExam6 } from '../data/mockExamCatalog6.js'
@@ -223,6 +224,23 @@ function MockExamRunner({ exam, setId, isCet6 }) {
   const activeSection = SECTIONS[activeIndex].id
   const allSubmitted = SECTIONS.every((s) => submitted[s.id])
   const [startedAt] = useState(() => initial?.startedAt ?? Date.now())
+
+  usePracticeSession({
+    kind: 'mock',
+    setId,
+    level: levelOfSet(setId),
+    title: titleOfSet(setId),
+    getStats: () => {
+      const l = answers.listening || {}
+      const r = answers.reading || {}
+      const answered =
+        Object.values(l).filter(Boolean).length +
+        Object.keys(r.banked || {}).filter(Boolean).length +
+        Object.keys(r.matching || {}).filter(Boolean).length +
+        Object.keys(r.careful || {}).filter(Boolean).length
+      return { answered, correct: scoreListening(exam, l, groups) + scoreReading(exam, r) }
+    },
+  })
 
   // 持久化进度
   useEffect(() => {

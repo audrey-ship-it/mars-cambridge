@@ -4,6 +4,7 @@ import { writingSets } from '../data/writingSets.js';
 import { writingSets6 } from '../data/writingSets6.js';
 import { loadJSON, saveJSON } from '../utils/storage.js';
 import { examVars } from '../utils/examTheme.js';
+import { usePracticeSession, levelOfSet, titleOfSet } from '../utils/practiceLog.js';
 import { resolveExamLevel, setExamLevel } from '../utils/examLevel.js';
 
 function draftKey(setId) { return `mars_${setId.startsWith('cet6') ? 'cet6' : 'cet4'}_writing_draft:${setId}`; }
@@ -44,6 +45,13 @@ function PracticeItem({ set, done, onDone, backTo, lvLabel }) {
   };
 
   const wordCount = text.trim() ? text.trim().split(/\s+/).filter(Boolean).length : 0;
+  usePracticeSession({
+    kind: 'writing',
+    setId: set.id,
+    level: levelOfSet(set.id),
+    title: set.title || titleOfSet(set.id),
+    getStats: () => ({ answered: wordCount, words: wordCount }),
+  });
   const countColor =
     wordCount === 0 ? 'text-gray-400'
       : wordCount < set.minWords ? 'text-amber-500'

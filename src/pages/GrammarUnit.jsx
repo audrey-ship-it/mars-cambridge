@@ -3,6 +3,7 @@ import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { grammarUnits, grammarPlanned } from '../data/grammarSets.js';
 import { grammarUnits6, grammarPlanned6 } from '../data/grammarSets6.js';
 import { loadJSON, saveJSON } from '../utils/storage.js';
+import { usePracticeSession } from '../utils/practiceLog.js';
 import { examVars } from '../utils/examTheme.js';
 import { resolveExamLevel, setExamLevel } from '../utils/examLevel.js';
 
@@ -192,6 +193,22 @@ export function GrammarUnit() {
     const merged = fn(prev);
     saveJSON(keys.mistakes, merged);
     return merged;
+  });
+
+  usePracticeSession({
+    kind: 'grammar',
+    setId: unitId,
+    level: isCet6 ? 'cet6' : 'cet4',
+    title: unit?.title || '',
+    getStats: () => {
+      if (!unit) return { answered: 0, correct: 0 };
+      const st = progress[unitId] || {};
+      const answered = TYPES.reduce((sum, t) => {
+        const a = st[t.key]?.answers || {};
+        return sum + Object.keys(a).filter((k) => a[k] !== '' && a[k] !== undefined).length;
+      }, 0);
+      return { answered, correct: TYPES.reduce((sum, t) => sum + countRight(unit, t.key, st), 0) };
+    },
   });
 
   if (!unit) {

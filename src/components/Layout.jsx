@@ -2,6 +2,7 @@ import { useSearchParams } from 'react-router-dom';
 import Sidebar from './Sidebar.jsx';
 import { examVars } from '../utils/examTheme.js';
 import { getExamLevel } from '../utils/examLevel.js';
+import PracticeSummary from './PracticeSummary.jsx';
 
 /* 全局布局：桌面端左侧固定导航（内容区左移让位），窄屏顶部导航条。
  * 根元素注入当前级别的主题变量，侧边栏据此显示黄色（CET-4）/ 薄荷青绿（CET-6）标记。 */
@@ -15,6 +16,7 @@ export default function Layout({ children }) {
       <div className="md:ml-[232px]">
         {children}
       </div>
+      <PracticeSummary />
     </div>
   );
 }

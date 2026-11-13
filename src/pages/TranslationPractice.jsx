@@ -4,6 +4,7 @@ import { translationSets } from '../data/translationSets.js';
 import { translationSets6 } from '../data/translationSets6.js';
 import { loadJSON, saveJSON } from '../utils/storage.js';
 import { examVars } from '../utils/examTheme.js';
+import { usePracticeSession, levelOfSet, titleOfSet } from '../utils/practiceLog.js';
 import { resolveExamLevel, setExamLevel } from '../utils/examLevel.js';
 
 function draftKey(setId) { return `mars_${setId.startsWith('cet6') ? 'cet6' : 'cet4'}_translation_draft:${setId}`; }
@@ -47,6 +48,13 @@ function PracticeItem({ set, done, onDone, backTo, lvLabel }) {
   };
 
   const wordCount = text.trim() ? text.trim().split(/\s+/).filter(Boolean).length : 0;
+  usePracticeSession({
+    kind: 'translation',
+    setId: set.id,
+    level: levelOfSet(set.id),
+    title: set.title || titleOfSet(set.id),
+    getStats: () => ({ answered: wordCount, words: wordCount }),
+  });
 
   return (
     <div>
