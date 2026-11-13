@@ -10,6 +10,7 @@ import { VocabPage, VocabWrongBook, VocabListPage, TopicStudy, ReadingStudy } fr
 import MockExamList from './pages/MockExamList.jsx'
 import MockExam from './pages/MockExam.jsx'
 import MockWrongBook from './pages/MockWrongBook.jsx'
+import Me from './pages/Me.jsx'
 import Layout from './components/Layout.jsx'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
 
@@ -37,6 +38,7 @@ export default function App() {
           <Route path="/words/reading/:chunkId" element={<ReadingStudy />} />
           <Route path="/words/official" element={<VocabPage tab="official" />} />
           <Route path="/words/:listId" element={<VocabListPage />} />
+          <Route path="/me" element={<Me />} />
           <Route path="/mock" element={<MockExamList />} />
           <Route path="/mock/wrong" element={<MockWrongBook />} />
           <Route path="/mock/:setId" element={<MockExam />} />
