@@ -74,7 +74,9 @@ export default function Sidebar() {
               )}
             </NavLink>
           ))}
-          <div className="my-2 mx-1.5 h-px bg-white/10" />
+        </nav>
+        <div className="shrink-0 pt-2">
+          <div className="mb-2 mx-1.5 h-px bg-white/10" />
           <div className="px-3 pb-2 text-[13px] tracking-[.18em] text-indigo-100/50">个人</div>
           <NavLink
             to={withExamParam(ME.to)}
@@ -93,7 +95,7 @@ export default function Sidebar() {
               </>
             )}
           </NavLink>
-        </nav>
+        </div>
         <div className="px-3 pt-3 text-[13px] text-indigo-100/50">进度保存在本机浏览器</div>
       </aside>
 
